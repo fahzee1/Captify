@@ -39,8 +39,7 @@
 		1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */; };
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		1107316D18863C670065D77F /* AwesomeUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316C18863C670065D77F /* AwesomeUser.m */; };
-		11073171188641B50065D77F /* UserDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 11073170188641B50065D77F /* UserDataFetcher.m */; };
-		11073174188641CE0065D77F /* ChallengeDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 11073173188641CE0065D77F /* ChallengeDataFetcher.m */; };
+		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,10 +109,8 @@
 		1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		1107316B18863C670065D77F /* AwesomeUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeUser.h; sourceTree = "<group>"; };
 		1107316C18863C670065D77F /* AwesomeUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeUser.m; sourceTree = "<group>"; };
-		1107316F188641B50065D77F /* UserDataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataFetcher.h; sourceTree = "<group>"; };
-		11073170188641B50065D77F /* UserDataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataFetcher.m; sourceTree = "<group>"; };
-		11073172188641CE0065D77F /* ChallengeDataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeDataFetcher.h; sourceTree = "<group>"; };
-		11073173188641CE0065D77F /* ChallengeDataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeDataFetcher.m; sourceTree = "<group>"; };
+		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
+		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +226,8 @@
 		1107312F18863A510065D77F /* User */ = {
 			isa = PBXGroup;
 			children = (
+				110731791888D2850065D77F /* Views */,
+				110731781888D2720065D77F /* View Controllers */,
 				1107312E18863A2D0065D77F /* Models */,
 			);
 			name = User;
@@ -294,12 +293,24 @@
 		1107316E188641470065D77F /* API */ = {
 			isa = PBXGroup;
 			children = (
-				1107316F188641B50065D77F /* UserDataFetcher.h */,
-				11073170188641B50065D77F /* UserDataFetcher.m */,
-				11073172188641CE0065D77F /* ChallengeDataFetcher.h */,
-				11073173188641CE0065D77F /* ChallengeDataFetcher.m */,
+				110731751888C6230065D77F /* AwesomeAPICLient.h */,
+				110731761888C6230065D77F /* AwesomeAPICLient.m */,
 			);
 			name = API;
+			sourceTree = "<group>";
+		};
+		110731781888D2720065D77F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		110731791888D2850065D77F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,8 +421,7 @@
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
 				1107316218863B2E0065D77F /* UIActivityIndicatorView+AFNetworking.m in Sources */,
-				11073171188641B50065D77F /* UserDataFetcher.m in Sources */,
-				11073174188641CE0065D77F /* ChallengeDataFetcher.m in Sources */,
+				110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1107316D18863C670065D77F /* AwesomeUser.m in Sources */,
