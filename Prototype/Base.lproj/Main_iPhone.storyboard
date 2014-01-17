@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="iqy-gJ-h2Z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pLe-7R-CnF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -45,10 +45,10 @@
             </objects>
             <point key="canvasLocation" x="456" y="22"/>
         </scene>
-        <!--View Controller - loginScreen-->
+        <!--Login View Controller - loginScreen-->
         <scene sceneID="Xto-I7-cUd">
             <objects>
-                <viewController title="loginScreen" id="pLe-7R-CnF" sceneMemberID="viewController">
+                <viewController title="loginScreen" id="pLe-7R-CnF" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ICB-e1-Y53"/>
                         <viewControllerLayoutGuide type="bottom" id="egG-Mr-lEZ"/>
@@ -76,10 +76,17 @@
                                 <state key="normal" title="Login button or slide something in or use keyboard">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="loginButton:" destination="pLe-7R-CnF" eventType="touchUpInside" id="PUd-y1-NcP"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="passwordField" destination="AIQ-8t-L5L" id="W4p-3n-l8e"/>
+                        <outlet property="usernameField" destination="V5X-1Z-dLY" id="OMW-l8-J2y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d27-1a-rPZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

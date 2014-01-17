@@ -40,6 +40,7 @@
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		1107316D18863C670065D77F /* AwesomeUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316C18863C670065D77F /* AwesomeUser.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
+		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,8 @@
 		1107316C18863C670065D77F /* AwesomeUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeUser.m; sourceTree = "<group>"; };
 		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
+		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +305,8 @@
 		110731781888D2720065D77F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1186B1171888D7CE0082F35F /* LoginViewController.h */,
+				1186B1181888D7CE0082F35F /* LoginViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -431,6 +436,7 @@
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
+				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
