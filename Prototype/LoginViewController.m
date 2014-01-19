@@ -7,12 +7,19 @@
 //
 
 #import "LoginViewController.h"
+#import "AwesomeUser.h"
 #import "AwesomeAPICLient.h"
+#import "UIActivityIndicatorView+AFNetworking.h"
+#import "UIAlertView+AFNetworking.h"
+#import "SSKeychain.h"
 
-@interface LoginViewController ()
+
+@interface LoginViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activitySpinner;
+@property (weak, nonatomic) IBOutlet UIButton *myLoginButton;
 
 @end
 
@@ -31,7 +38,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.passwordField.secureTextEntry = YES;
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    self.usernameField.delegate = self;
+    self.passwordField.delegate = self;
+    NSString *username = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
+    NSString *password = [SSKeychain passwordForService:@"login" account:username];
+    if (username){
+        self.usernameField.text = username;
+    }
+    if (password){
+        self.passwordField.text = password;
+    }
+    if (!username){
+        [self.usernameField becomeFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,21 +87,50 @@
                       andMessage:nil];
         return;
     }
+    // if we're connected to the internet, login
+    if ([[AwesomeAPICLient sharedClient] connected]){
+        NSURLSessionDataTask *task = [AwesomeUser loginWithUsername:self.usernameField.text
+                                                           password:self.passwordField.text
+                                                           callback:^(BOOL wasSuccessful, id data, BOOL failure) {
+                                                               if (wasSuccessful) {
+                                                                   // save password in keychain
+                                                                [SSKeychain setPassword:self.passwordField.text
+                                                                             forService:@"login"
+                                                                                account:self.usernameField.text];
+                                                                
+                                                                   // show home screen
+                                                                   NSLog(@"show home screen");
+                                                                   [self performSegueWithIdentifier:@"unWindToHomeID" sender:self];
+                                                            
+                                                                   
+                                                               }
+                                                               else if (!wasSuccessful && !failure){
+                                                                   // user error, show alert and reshow button
+                                                                   [self alertErrorWithType:LoginError
+                                                                                   andField:nil
+                                                                                 andMessage:[data valueForKey:@"message"]];
+                                                                   sender.hidden = NO;
+                                                               }
+                                                               else{
+                                                                   // failure, reshow button
+                                                                   sender.hidden = NO;
+                                                               }
+                                                                
+                                                           }];
+        // If FAILURE, show alert
+        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+        
+        // Show and start spinning activity indicator
+        UIActivityIndicatorView *spinner = self.activitySpinner;
+        spinner.hidden = NO;
+        [spinner setAnimatingWithStateOfTask:task];
+        // Hide login button
+        sender.hidden = YES;
     
-    [[AwesomeAPICLient sharedClient] loginWithUsername:self.usernameField.text
-                                              password:self.passwordField.text
-                                          withCallback:^(BOOL wasSuccessful, id data) {
-                                              if (wasSuccessful){
-                                                  NSLog(@"success %@", data);
-                                                  // open to show home screen
-            
-                                              }else{
-                                                  NSLog(@"error %@", data);
-                                                  [self alertErrorWithType:LoginError
-                                                                  andField:nil andMessage:[data valueForKey:@"message"]];
-                                                }
-                                          }];
-    
+    // if no internet connection, alert no connection
+    }else{
+        [self alertErrorWithType:LoginError andField:nil andMessage:@"No internet connection!"];
+    }
 
 }
 
@@ -117,5 +166,20 @@
     
 }
 
+#pragma -mark Text Field Delegate
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField.placeholder isEqualToString:@"Username"]){
+        [self.passwordField becomeFirstResponder];
+    }
+    if ([textField.placeholder isEqualToString:@"Password"]){
+        [textField resignFirstResponder];
+        [self loginButton:self.myLoginButton];
+    }
+    
+
+    
+    return YES;
+}
 @end

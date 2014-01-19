@@ -8,13 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, BOOL failure);
+
 @interface AwesomeUser : NSObject
 
-@property (nonatomic, assign) NSUInteger userID;
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, unsafe_unretained) NSURL *avatarImageURL;
 @property(nonatomic, assign, getter = isLogged) BOOL logged;
 
-+ (instancetype)sharedAccount;
+
+
++ (instancetype)sharedClient;
+
+
++ (NSURLSessionDataTask *)loginWithUsername:(NSString *)username
+                                 password:(NSString *)password
+                                 callback:(AwesomeAPICompleteBlock)block;
 
 @end

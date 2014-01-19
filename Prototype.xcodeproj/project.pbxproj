@@ -41,6 +41,9 @@
 		1107316D18863C670065D77F /* AwesomeUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316C18863C670065D77F /* AwesomeUser.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
+		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
+		1186B156188B39290082F35F /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B155188B39290082F35F /* SSKeychain.m */; };
+		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +117,11 @@
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1186B154188B39290082F35F /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = "../../../Downloads/sskeychain-master/SSKeychain.h"; sourceTree = "<group>"; };
+		1186B155188B39290082F35F /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = "../../../Downloads/sskeychain-master/SSKeychain.m"; sourceTree = "<group>"; };
+		1186B157188B45D10082F35F /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		1186B158188B45D10082F35F /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
 				110730F11876640F0065D77F /* Foundation.framework in Frameworks */,
@@ -162,6 +171,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1186B152188B38DC0082F35F /* Security.framework */,
 				110730F01876640E0065D77F /* Foundation.framework */,
 				110730F21876640F0065D77F /* CoreGraphics.framework */,
 				110730F41876640F0065D77F /* UIKit.framework */,
@@ -230,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				110731791888D2850065D77F /* Views */,
-				110731781888D2720065D77F /* View Controllers */,
+				110731781888D2720065D77F /* Controllers */,
 				1107312E18863A2D0065D77F /* Models */,
 			);
 			name = User;
@@ -239,6 +249,8 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				1186B154188B39290082F35F /* SSKeychain.h */,
+				1186B155188B39290082F35F /* SSKeychain.m */,
 				1107315118863B2E0065D77F /* UIKit+AFNetworking */,
 				1107313418863B1E0065D77F /* AFNetworking */,
 			);
@@ -302,13 +314,15 @@
 			name = API;
 			sourceTree = "<group>";
 		};
-		110731781888D2720065D77F /* View Controllers */ = {
+		110731781888D2720065D77F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				1186B1171888D7CE0082F35F /* LoginViewController.h */,
 				1186B1181888D7CE0082F35F /* LoginViewController.m */,
+				1186B157188B45D10082F35F /* HomeViewController.h */,
+				1186B158188B45D10082F35F /* HomeViewController.m */,
 			);
-			name = "View Controllers";
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		110731791888D2850065D77F /* Views */ = {
@@ -437,7 +451,9 @@
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
+				1186B156188B39290082F35F /* SSKeychain.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
+				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,6 +593,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

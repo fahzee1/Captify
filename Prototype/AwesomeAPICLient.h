@@ -8,15 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPSessionManager.h"
+#import "AFNetworkReachabilityManager.h"
 
-typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data);
+//static NSString * const AwesomeAPIBaseUrlString = @"http://127.0.0.1:8000";
+static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
+static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
+
 
 @interface AwesomeAPICLient : AFHTTPSessionManager
 
 + (instancetype)sharedClient;
 
-- (void)loginWithUsername:(NSString *)username
-                 password:(NSString*)password
-             withCallback:(AwesomeAPICompleteBlock)block;
+- (BOOL)connected;
+
+- (void)startMonitoringConnection;
+
+- (void)stopMonitoringConnection;
+
+- (void)startNetworkActivity;
+
+- (void)stopNetworkActivity;
+
+
 
 @end
