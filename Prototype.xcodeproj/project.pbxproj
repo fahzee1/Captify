@@ -38,12 +38,16 @@
 		1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315B18863B2E0065D77F /* UIImageView+AFNetworking.m */; };
 		1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */; };
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
-		1107316D18863C670065D77F /* AwesomeUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316C18863C670065D77F /* AwesomeUser.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
 		1186B156188B39290082F35F /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B155188B39290082F35F /* SSKeychain.m */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
+		1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B15B188C6F850082F35F /* SignUpViewController.m */; };
+		1186B162188E188D0082F35F /* UserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B160188E188D0082F35F /* UserModel.xcdatamodeld */; };
+		1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B169188E2D0D0082F35F /* CoreData.framework */; };
+		1186B1BA188E372F0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1B9188E372F0082F35F /* User.m */; };
+		1186B1BD188E38920082F35F /* User+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BC188E38920082F35F /* User+Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,8 +115,6 @@
 		1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
 		1107315F18863B2E0065D77F /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		1107316B18863C670065D77F /* AwesomeUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeUser.h; sourceTree = "<group>"; };
-		1107316C18863C670065D77F /* AwesomeUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeUser.m; sourceTree = "<group>"; };
 		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -122,6 +124,14 @@
 		1186B155188B39290082F35F /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = "../../../Downloads/sskeychain-master/SSKeychain.m"; sourceTree = "<group>"; };
 		1186B157188B45D10082F35F /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1186B158188B45D10082F35F /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		1186B15A188C6F850082F35F /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		1186B15B188C6F850082F35F /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		1186B161188E188D0082F35F /* UserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserModel.xcdatamodel; sourceTree = "<group>"; };
+		1186B169188E2D0D0082F35F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		1186B1B8188E372F0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1186B1B9188E372F0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1186B1BB188E38920082F35F /* User+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Utils.h"; sourceTree = "<group>"; };
+		1186B1BC188E38920082F35F /* User+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+Utils.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
@@ -171,6 +182,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1186B169188E2D0D0082F35F /* CoreData.framework */,
 				1186B152188B38DC0082F35F /* Security.framework */,
 				110730F01876640E0065D77F /* Foundation.framework */,
 				110730F21876640F0065D77F /* CoreGraphics.framework */,
@@ -187,8 +199,6 @@
 				110731001876640F0065D77F /* AppDelegate.m */,
 				110731021876640F0065D77F /* Main_iPhone.storyboard */,
 				11073105187664100065D77F /* Main_iPad.storyboard */,
-				11073108187664100065D77F /* ViewController.h */,
-				11073109187664100065D77F /* ViewController.m */,
 				1107310B187664100065D77F /* Images.xcassets */,
 				1107316E188641470065D77F /* API */,
 				1107312F18863A510065D77F /* User */,
@@ -230,8 +240,11 @@
 		1107312E18863A2D0065D77F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1107316B18863C670065D77F /* AwesomeUser.h */,
-				1107316C18863C670065D77F /* AwesomeUser.m */,
+				1186B160188E188D0082F35F /* UserModel.xcdatamodeld */,
+				1186B1B8188E372F0082F35F /* User.h */,
+				1186B1B9188E372F0082F35F /* User.m */,
+				1186B1BB188E38920082F35F /* User+Utils.h */,
+				1186B1BC188E38920082F35F /* User+Utils.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -317,10 +330,14 @@
 		110731781888D2720065D77F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				11073108187664100065D77F /* ViewController.h */,
+				11073109187664100065D77F /* ViewController.m */,
 				1186B1171888D7CE0082F35F /* LoginViewController.h */,
 				1186B1181888D7CE0082F35F /* LoginViewController.m */,
 				1186B157188B45D10082F35F /* HomeViewController.h */,
 				1186B158188B45D10082F35F /* HomeViewController.m */,
+				1186B15A188C6F850082F35F /* SignUpViewController.h */,
+				1186B15B188C6F850082F35F /* SignUpViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -432,8 +449,10 @@
 			files = (
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
+				1186B1BA188E372F0082F35F /* User.m in Sources */,
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
+				1186B162188E188D0082F35F /* UserModel.xcdatamodeld in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
@@ -441,9 +460,9 @@
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
 				1107316218863B2E0065D77F /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */,
+				1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
-				1107316D18863C670065D77F /* AwesomeUser.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
@@ -453,6 +472,7 @@
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
 				1186B156188B39290082F35F /* SSKeychain.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
+				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -685,6 +705,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1186B160188E188D0082F35F /* UserModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1186B161188E188D0082F35F /* UserModel.xcdatamodel */,
+			);
+			currentVersion = 1186B161188E188D0082F35F /* UserModel.xcdatamodel */;
+			path = UserModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 110730E51876640E0065D77F /* Project object */;
 }

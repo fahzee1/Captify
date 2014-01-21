@@ -8,9 +8,11 @@
 
 #import "HomeViewController.h"
 #import "LoginViewController.h"
-#import "AwesomeUser.h"
+
 
 @interface HomeViewController ()
+
+@property (nonatomic, retain)NSManagedObject *myUser;
 
 @end
 
@@ -34,9 +36,11 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     //if user not logged in segue to login screen
-       if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
+       if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged2"]){
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-    }
+       }else{
+           [self fetchSuperUserWithName:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+       }
 
 }
 
@@ -49,6 +53,27 @@
 
 - (IBAction)logout:(UIButton *)sender {
     [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+}
+
+
+#pragma -mark Core Data
+- (void)fetchSuperUserWithName:(NSString *)name
+{
+    
+    // Request Entity
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+    
+    // Filter if I want
+    request.predicate = [NSPredicate predicateWithFormat:@"(User.super_user = 1) and (User.username = %@)",name];
+    
+    // Sort if i want
+    //request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
+    //                                                                                 ascending:YES
+    //                                                                                  selector:@selector(localizedCaseInsensitiveCompare:)]];
+    NSError *error;
+    NSArray *fetch = [self.managedObjectContext executeFetchRequest:request error:&error];
+    self.myUser = [fetch firstObject];
+    NSLog(@"%@",self.myUser);
 }
 
 #pragma -mark Segues

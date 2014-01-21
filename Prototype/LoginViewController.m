@@ -7,7 +7,7 @@
 //
 
 #import "LoginViewController.h"
-#import "AwesomeUser.h"
+#import "User+Utils.h"
 #import "AwesomeAPICLient.h"
 #import "UIActivityIndicatorView+AFNetworking.h"
 #import "UIAlertView+AFNetworking.h"
@@ -38,6 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationController setNavigationBarHidden:NO];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
@@ -65,7 +66,7 @@
 - (IBAction)loginButton:(UIButton *)sender {
  
     // if both username and password are blank ask for username
-    if ([self.usernameField.text length] == 0 && ([self.passwordField.text length] == 0)){
+    if ([self.usernameField.text length] == 0 && [self.passwordField.text length] == 0){
         [self alertErrorWithType:LoginAttempt
                         andField:@"username"
                       andMessage:nil];
@@ -87,10 +88,12 @@
                       andMessage:nil];
         return;
     }
+    [self.passwordField resignFirstResponder];
     // if we're connected to the internet, login
     if ([[AwesomeAPICLient sharedClient] connected]){
-        NSURLSessionDataTask *task = [AwesomeUser loginWithUsername:self.usernameField.text
-                                                           password:self.passwordField.text
+        NSDictionary *params = @{@"username": self.usernameField.text,
+                                 @"password": self.passwordField.text};
+        NSURLSessionDataTask *task = [User loginWithUsernameAndPassword:params
                                                            callback:^(BOOL wasSuccessful, id data, BOOL failure) {
                                                                if (wasSuccessful) {
                                                                    // save password in keychain
@@ -99,7 +102,6 @@
                                                                                 account:self.usernameField.text];
                                                                 
                                                                    // show home screen
-                                                                   NSLog(@"show home screen");
                                                                    [self performSegueWithIdentifier:@"unWindToHomeID" sender:self];
                                                             
                                                                    
@@ -165,6 +167,7 @@
     }
     
 }
+
 
 #pragma -mark Text Field Delegate
 
