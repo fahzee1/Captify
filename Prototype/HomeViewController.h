@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User+Utils.h"
 
 @interface HomeViewController : UIViewController
 
 @property (nonatomic, retain)NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain)User *myUser;
 
 @end

@@ -44,10 +44,11 @@
 		1186B156188B39290082F35F /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B155188B39290082F35F /* SSKeychain.m */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
 		1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B15B188C6F850082F35F /* SignUpViewController.m */; };
-		1186B162188E188D0082F35F /* UserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B160188E188D0082F35F /* UserModel.xcdatamodeld */; };
 		1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B169188E2D0D0082F35F /* CoreData.framework */; };
-		1186B1BA188E372F0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1B9188E372F0082F35F /* User.m */; };
 		1186B1BD188E38920082F35F /* User+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BC188E38920082F35F /* User+Utils.m */; };
+		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
+		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
+		1186B1C6188F79CE0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C5188F79CE0082F35F /* User.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,12 +127,14 @@
 		1186B158188B45D10082F35F /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		1186B15A188C6F850082F35F /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		1186B15B188C6F850082F35F /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
-		1186B161188E188D0082F35F /* UserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B169188E2D0D0082F35F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		1186B1B8188E372F0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		1186B1B9188E372F0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1186B1BB188E38920082F35F /* User+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Utils.h"; sourceTree = "<group>"; };
 		1186B1BC188E38920082F35F /* User+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+Utils.m"; sourceTree = "<group>"; };
+		1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
+		1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
+		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
+		1186B1C4188F79CE0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1186B1C5188F79CE0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,9 +243,9 @@
 		1107312E18863A2D0065D77F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1186B160188E188D0082F35F /* UserModel.xcdatamodeld */,
-				1186B1B8188E372F0082F35F /* User.h */,
-				1186B1B9188E372F0082F35F /* User.m */,
+				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
+				1186B1C4188F79CE0082F35F /* User.h */,
+				1186B1C5188F79CE0082F35F /* User.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
 			);
@@ -262,6 +265,8 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */,
+				1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */,
 				1186B154188B39290082F35F /* SSKeychain.h */,
 				1186B155188B39290082F35F /* SSKeychain.m */,
 				1107315118863B2E0065D77F /* UIKit+AFNetworking */,
@@ -449,12 +454,12 @@
 			files = (
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
-				1186B1BA188E372F0082F35F /* User.m in Sources */,
+				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
-				1186B162188E188D0082F35F /* UserModel.xcdatamodeld in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
+				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
@@ -470,6 +475,7 @@
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
+				1186B1C6188F79CE0082F35F /* User.m in Sources */,
 				1186B156188B39290082F35F /* SSKeychain.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
@@ -707,13 +713,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		1186B160188E188D0082F35F /* UserModel.xcdatamodeld */ = {
+		1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				1186B161188E188D0082F35F /* UserModel.xcdatamodel */,
+				1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */,
 			);
-			currentVersion = 1186B161188E188D0082F35F /* UserModel.xcdatamodel */;
-			path = UserModel.xcdatamodeld;
+			currentVersion = 1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */;
+			path = MyUserModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

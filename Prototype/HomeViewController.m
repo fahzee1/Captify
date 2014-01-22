@@ -12,7 +12,8 @@
 
 @interface HomeViewController ()
 
-@property (nonatomic, retain)NSManagedObject *myUser;
+@property (weak, nonatomic) IBOutlet UILabel *username;
+@property (weak, nonatomic) IBOutlet UILabel *score;
 
 @end
 
@@ -36,12 +37,12 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     //if user not logged in segue to login screen
-       if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged2"]){
+       if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
        }else{
-           [self fetchSuperUserWithName:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+           self.username.text = self.myUser.username;
+           self.score.text = [self.myUser.score stringValue];
        }
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,26 +56,6 @@
     [self performSegueWithIdentifier:@"segueToLogin" sender:self];
 }
 
-
-#pragma -mark Core Data
-- (void)fetchSuperUserWithName:(NSString *)name
-{
-    
-    // Request Entity
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    
-    // Filter if I want
-    request.predicate = [NSPredicate predicateWithFormat:@"(User.super_user = 1) and (User.username = %@)",name];
-    
-    // Sort if i want
-    //request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name"
-    //                                                                                 ascending:YES
-    //                                                                                  selector:@selector(localizedCaseInsensitiveCompare:)]];
-    NSError *error;
-    NSArray *fetch = [self.managedObjectContext executeFetchRequest:request error:&error];
-    self.myUser = [fetch firstObject];
-    NSLog(@"%@",self.myUser);
-}
 
 #pragma -mark Segues
 - (IBAction)unwindToHomeController:(UIStoryboardSegue *)segue

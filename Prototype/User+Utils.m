@@ -9,6 +9,7 @@
 #import "User+Utils.h"
 #import "AwesomeAPICLient.h"
 #import "HomeViewController.h"
+#import "AppDelegate.h"
 
 
 @implementation User (Utils)
@@ -24,18 +25,20 @@
 }
 
 
-+ (User *)CreateUserWithParams:(NSDictionary *)params
++ (User *)CreateOrGetUserWithParams:(NSDictionary *)params
   inManagedObjectContext:(NSManagedObjectContext *)context;
 {
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"(User.super_user = 1) and (User.username = %@)",[params valueForKey:@"username"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) and (username = %@)",[params valueForKey:@"username"]];
     
     NSError *error;
     NSArray *fetch = [context executeFetchRequest:request error:&error];
-    if (fetch)
+    NSLog(@"%@",fetch);
+    if (![fetch count] == 0)
     {
+        NSLog(@"i was called");
         return [fetch firstObject];
     }
     
@@ -45,7 +48,7 @@
     [user setValue:[params valueForKey:@"facebook_user"] forKey:@"facebook_user"];
     [user setValue:[params valueForKey:@"privacy"] forKey:@"private"];
     [user setValue:[NSNumber numberWithBool:YES] forKey:@"super_user"];
-    //[user setValue:[params valueForKey:@"last_activity"] forKey:@"last_activity"];
+    [user setValue:[params valueForKey:@"timestamp"] forKey:@"timestamp"];
     return user;
 }
 
@@ -61,31 +64,44 @@
                                          success:^(NSURLSessionDataTask *task, id responseObject) {
                                              // things went well
                                              if ([[responseObject valueForKey:@"code"] intValue] == 1){
+                                                 // get params from response
                                                  NSString *username = [responseObject valueForKeyPath:@"user.username"];
+                                                 NSNumber *score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"] intValue]];
+                                                 NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
+                                                 NSNumber *privacy = [NSNumber numberWithInt:[[responseObject valueForKey:@"privacy"] intValue]];
+                                                 NSDate *date = [NSDate date];
+                                                 NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
+                                                 
+                                                 // prepare to get or create a user
+                                                 NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                                                 NSDictionary *gcParams = @{@"username": username,
+                                                                         @"score": score,
+                                                                         @"facebook_user":facebook,
+                                                                         @"privacy":privacy,
+                                                                         @"super_user":super_user,
+                                                                         @"timestamp":date};
+                                                 
+                                                 User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
                                                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                                  [defaults setValue:username forKey:@"username"];
                                                  [defaults setBool:YES forKey:@"logged"];
-                                                 //[defaults setInteger:[[responseObject valueForKey:@"score"] intValue] forKey:@"score"];
-                                                 //[defaults setInteger:[[responseObject valueForKey:@"privacy"] intValue] forKey:@"privacy"];
-                                                 //[defaults setBool:[[responseObject valueForKey:@"facebook_user"] boolValue] forKey:@"facebook_user"];
-                                                 //[defaults setBool:1 forKey:@"logged"];
-                                                 //[defaults synchronize];
+                                                 [defaults synchronize];
                                                  
                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                     block(YES,responseObject, NO);
+                                                     block(YES,context, user, NO);
                                                  });
                                              }
                                              // things did not go well because of user
                                              if ([[responseObject valueForKey:@"code"] intValue] == -1){
                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                     block(NO,responseObject, NO);
+                                                     block(NO,responseObject, nil, NO);
                                                  });
                                                  
                                              }
                                              // things did not go well because of me
                                              if ([[responseObject valueForKey:@"code"] intValue] == -10){
                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                     block(NO,responseObject, NO);
+                                                     block(NO,responseObject, nil,NO);
                                                  });
                                                  
                                              }
@@ -93,10 +109,72 @@
                                          } failure:^(NSURLSessionDataTask *task, NSError *error) {
                                              // something very unexpected happened
                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                 block(NO,error, YES);
+                                                 block(NO,error,nil, YES);
                                              });
                                              
                                              
+                                         }];
+}
+
++ (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
+                                    callback:(AwesomeAPICompleteBlock)block;
+{
+    return [[AwesomeAPICLient sharedClient] POST:AwesomeAPIRegisterUrlString
+                                      parameters:params
+                                         success:^(NSURLSessionDataTask *task, id responseObject) {
+                                              // things went well
+                                             if ([[responseObject valueForKey:@"code"] intValue] == 1){
+                                                 // get params from response
+                                                 NSString *username = [responseObject valueForKeyPath:@"username"];
+                                                 NSNumber *score = [NSNumber numberWithInt:0];
+                                                 NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
+                                                 NSNumber *privacy = [NSNumber numberWithInt:0];
+                                                 NSDate *date = [NSDate date];
+                                                 NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
+                                                 
+                                                // prepare to get or create a user
+                                                 NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                                                 NSDictionary *gcParams = @{@"username": username,
+                                                                            @"score": score,
+                                                                            @"facebook_user":facebook,
+                                                                            @"privacy":privacy,
+                                                                            @"super_user":super_user,
+                                                                            @"timestamp":date};
+                                                 
+                                                 User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                                 [defaults setValue:username forKey:@"username"];
+                                                 [defaults setBool:YES forKey:@"logged"];
+                                                 [defaults synchronize];
+                                                 
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     block(YES,context, user, NO);
+                                                 });
+
+                                                 
+                                             }
+                                             
+                                             // things did not go well because of user
+                                             if ([[responseObject valueForKey:@"code"] intValue] == -1){
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     block(NO,responseObject, nil, NO);
+                                                 });
+                                                 
+                                             }
+                                             
+                                             // things did not go well because of me
+                                             if ([[responseObject valueForKey:@"code"] intValue] == -10){
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     block(NO,responseObject, nil,NO);
+                                                 });
+                                             }
+                                         }
+                                         failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                             // something very unexpected happened
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 block(NO,error,nil, YES);
+                                             });
+
                                          }];
 }
 

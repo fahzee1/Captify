@@ -8,7 +8,7 @@
 
 #import "User.h"
 
-typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, BOOL failure);
+typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user, BOOL failure);
 
 @interface User (Utils)
 
@@ -17,10 +17,13 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, BOOL failu
 - (BOOL)isFacebookUser;
 - (BOOL)isPrivate;
 
-+ (User *)CreateUserWithParams:(NSDictionary *)params
++ (User *)CreateOrGetUserWithParams:(NSDictionary *)params
         inManagedObjectContext:(NSManagedObjectContext *)context;
 
 
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params
+                                              callback:(AwesomeAPICompleteBlock)block;
+
++ (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block;
 @end

@@ -7,6 +7,14 @@
 //
 
 #import "SignUpViewController.h"
+#import "AwesomeAPICLient.h"
+#import "User+Utils.h"
+#import "UIAlertView+AFNetworking.h"
+#import "UIActivityIndicatorView+AFNetworking.h"
+#import "SSKeychain.h"
+#import "HomeViewController.h"
+
+
 
 @interface SignUpViewController ()<UITextFieldDelegate>
 
@@ -34,6 +42,8 @@
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
     self.emailField.delegate = self;
+    [self.navigationController setNavigationBarHidden:NO];
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view.
 }
 
@@ -77,11 +87,72 @@
     }
     
     [self.emailField resignFirstResponder];
-    
-
+    [self registerUserIsFacebook:NO button:sender];
     
 }
 
+
+
+- (void)registerUserIsFacebook:(BOOL)fb
+                        button:(UIButton *)sender
+{
+    NSString *fbook = fb? @"yes":@"no";
+    if ([[AwesomeAPICLient sharedClient] connected]){
+        NSDictionary *params = @{@"username": self.usernameField.text,
+                                 @"password": self.passwordField.text,
+                                 @"email": self.emailField.text,
+                                 @"fbook_user": fbook};
+        
+        NSURLSessionDataTask *task = [User registerWithParams:params
+                                                     callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                         if (wasSuccessful){
+                                                             // data here will be the managed object context to pass to homeview controller
+                                                             // if needed
+                                                             
+                                                             // save password in keychain
+                                                             [SSKeychain setPassword:self.passwordField.text
+                                                                          forService:@"login"
+                                                                             account:self.usernameField.text];
+                                                             
+                                                             // show home screen
+                                                             UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+                                                             HomeViewController *homevc = (HomeViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"homeScreen"];                                                                   homevc.myUser = user;
+                                                             homevc.managedObjectContext = data;
+                                                             [self presentViewController:homevc animated:YES completion:NULL];
+                                                             
+
+                                                         }
+                                                         else if (!wasSuccessful && !failure){
+                                                             [self alertErrorWithType:SignUpError
+                                                                             andField:nil
+                                                                           andMessage:[data valueForKey:@"message"]];
+                                                             sender.hidden = NO;
+                                                             
+                                                         }
+                                                         else{
+                                                             // failure alert handled by "show alertviewfortaskwitherror..
+                                                             sender.hidden = NO;
+                                                             
+                                                         }
+                                                         
+                                                     }];
+        // If FAILURE, show alert
+        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+        
+        // Show and start spinning activity indicator
+        UIActivityIndicatorView *spinner = self.activitySpinner;
+        spinner.hidden = NO;
+        [spinner setAnimatingWithStateOfTask:task];
+        // Hide login button
+        sender.hidden = YES;
+        
+        // if no internet connection, alert no connection
+    }else{
+        [self alertErrorWithType:SignUpError andField:nil andMessage:@"No internet connection!"];
+    }
+ 
+    
+}
 
 
 - (void)alertErrorWithType:(NSUInteger)type

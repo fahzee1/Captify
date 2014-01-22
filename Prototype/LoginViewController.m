@@ -12,6 +12,7 @@
 #import "UIActivityIndicatorView+AFNetworking.h"
 #import "UIAlertView+AFNetworking.h"
 #import "SSKeychain.h"
+#import "HomeViewController.h"
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -88,37 +89,55 @@
                       andMessage:nil];
         return;
     }
+    
     [self.passwordField resignFirstResponder];
+    [self loginUserIsFacebook:NO button:sender];
+    
+   
+}
+
+
+- (void)loginUserIsFacebook:(BOOL)fb
+                        button:(UIButton *)sender
+{
     // if we're connected to the internet, login
     if ([[AwesomeAPICLient sharedClient] connected]){
         NSDictionary *params = @{@"username": self.usernameField.text,
                                  @"password": self.passwordField.text};
         NSURLSessionDataTask *task = [User loginWithUsernameAndPassword:params
-                                                           callback:^(BOOL wasSuccessful, id data, BOOL failure) {
-                                                               if (wasSuccessful) {
-                                                                   // save password in keychain
-                                                                [SSKeychain setPassword:self.passwordField.text
-                                                                             forService:@"login"
-                                                                                account:self.usernameField.text];
-                                                                
-                                                                   // show home screen
-                                                                   [self performSegueWithIdentifier:@"unWindToHomeID" sender:self];
-                                                            
+                                                               callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                                   if (wasSuccessful) {
+                                                                       // data here will be the managed object context to pass to homeview controller
+                                                                       // if needed
+                                                                       
+                                                                       // save password in keychain
+                                                                       [SSKeychain setPassword:self.passwordField.text
+                                                                                    forService:@"login"
+                                                                                       account:self.usernameField.text];
+                                                                       
+                                                                       
+                                                                       // show home screen
+                                                                       UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+                                                                       HomeViewController *homevc = (HomeViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"homeScreen"];                                                                   homevc.myUser = user;
+                                                                       homevc.managedObjectContext = data;
+                                                                       [self presentViewController:homevc animated:YES completion:NULL];
+                                                                       
+                                                                       
+                                                                       
+                                                                   }
+                                                                   else if (!wasSuccessful && !failure){
+                                                                       // user error, show alert and reshow button
+                                                                       [self alertErrorWithType:LoginError
+                                                                                       andField:nil
+                                                                                     andMessage:[data valueForKey:@"message"]];
+                                                                       sender.hidden = NO;
+                                                                   }
+                                                                   else{
+                                                                       // failure alert handled by "show alertviewfortaskwitherror..
+                                                                       sender.hidden = NO;
+                                                                   }
                                                                    
-                                                               }
-                                                               else if (!wasSuccessful && !failure){
-                                                                   // user error, show alert and reshow button
-                                                                   [self alertErrorWithType:LoginError
-                                                                                   andField:nil
-                                                                                 andMessage:[data valueForKey:@"message"]];
-                                                                   sender.hidden = NO;
-                                                               }
-                                                               else{
-                                                                   // failure, reshow button
-                                                                   sender.hidden = NO;
-                                                               }
-                                                                
-                                                           }];
+                                                               }];
         // If FAILURE, show alert
         [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
         
@@ -128,13 +147,14 @@
         [spinner setAnimatingWithStateOfTask:task];
         // Hide login button
         sender.hidden = YES;
-    
-    // if no internet connection, alert no connection
+        
+        // if no internet connection, alert no connection
     }else{
         [self alertErrorWithType:LoginError andField:nil andMessage:@"No internet connection!"];
     }
-
+    
 }
+
 
 
 - (void)alertErrorWithType:(NSUInteger)type
