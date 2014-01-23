@@ -11,7 +11,7 @@
 
 @interface HomeViewController : UIViewController
 
-@property (nonatomic, retain)NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain)User *myUser;
+
+@property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 
 @end

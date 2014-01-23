@@ -8,7 +8,9 @@
 
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
+#import "ViewController.h"
 #import "HomeViewController.h"
+#import "User+Utils.h"
 
 @implementation AppDelegate
 
@@ -19,6 +21,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged2"]){
+            // if not logged in show login screen
+         UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+         ViewController *homevc = (ViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"startScreen"];
+         UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:homevc];
+         [self.window makeKeyAndVisible];
+         [self.window.rootViewController presentViewController:navC animated:NO completion:Nil];
+     }else{
+         // open up to home screen and pass user
+         NSError *error;
+         NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+         if (uri){
+             NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+             User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+             HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
+             vc.myUser = user;
+         }
+     }
+   
         return YES;
 }
 

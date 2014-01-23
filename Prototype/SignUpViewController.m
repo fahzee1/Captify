@@ -116,8 +116,10 @@
                                                              
                                                              // show home screen
                                                              UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-                                                             HomeViewController *homevc = (HomeViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"homeScreen"];                                                                   homevc.myUser = user;
-                                                             homevc.managedObjectContext = data;
+                                                             HomeViewController *homevc = (HomeViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"homeScreen"];
+                                                             if (user){
+                                                                 homevc.myUser = user;
+                                                             }
                                                              [self presentViewController:homevc animated:YES completion:NULL];
                                                              
 

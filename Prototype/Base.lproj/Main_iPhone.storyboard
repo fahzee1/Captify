@@ -7,7 +7,7 @@
         <!--View Controller - startScreen-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController title="startScreen" id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="startScreen" title="startScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="72v-U7-EYj"/>
                         <viewControllerLayoutGuide type="bottom" id="2qy-aa-bHg"/>
