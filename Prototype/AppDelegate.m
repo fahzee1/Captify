@@ -21,25 +21,34 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+
+    if ([defaults valueForKey:@"facebook_user"]){
+        NSLog(@"facebook user");
+        //Whenever a person opens the app, check for cached sesssion
+        if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded){
+            //if theres one just open silently without showing login
+            [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                               allowLoginUI:NO
+                                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                              //Handler for session state changes
+                                              // This method will be called EACH time the session state changes
+                                              [self sessionStateChanged:session state:status error:error];
+                                          }];
+        }
+
+    }
     
-     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged2"]){
+    if (![defaults valueForKey:@"facebook_user"] && ![defaults valueForKey:@"logged"]){
+         NSLog(@" not facebook user and not logged in");
             // if not logged in show login screen
-         UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-         ViewController *homevc = (ViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"startScreen"];
-         UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:homevc];
-         [self.window makeKeyAndVisible];
-         [self.window.rootViewController presentViewController:navC animated:NO completion:Nil];
-     }else{
+         [self showLoginScreen];
+        }
+    if (![defaults valueForKey:@"facebook_user"] && [defaults valueForKey:@"logged"]){
+        NSLog(@" not facebook user logged in");
          // open up to home screen and pass user
-         NSError *error;
-         NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-         if (uri){
-             NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-             User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-             HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
-             vc.myUser = user;
-         }
-     }
+         [self showHomeScreen];
+        }
    
         return YES;
 }
@@ -72,6 +81,7 @@
     [self saveContext];
 }
 
+
 - (void)saveContext
 {
     NSError *error = nil;
@@ -85,6 +95,7 @@
         }
     }
 }
+
 
 #pragma mark - Core Data stack
 
@@ -166,5 +177,138 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+
+#pragma mark - Facebook SDk
+-(void)sessionStateChanged:(FBSession *)session
+                     state:(FBSessionState)status
+                     error:(NSError *)error
+{
+    __block NSString *alertText;
+    __block NSString *alertTitle;
+    
+    //session opened successully
+    if (!error && status == FBSessionStateOpen){
+        NSLog(@"Session opened");
+        //show user logged in UI
+        [self showHomeScreenFromFacebook];
+        return;
+        
+    }
+    if (status == FBSessionStateClosed || status == FBSessionStateClosedLoginFailed){
+        //if the session is closed
+        NSLog(@"Session closed");
+        //show user logged out view
+        [self showLoginScreenFromFacebook];
+        return;
+        
+    }
+    //Handle errors
+    if (error) {
+        NSLog(@"Error");
+        //if the error requires people do something outside the app to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES) {
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
+        }else{
+            //if the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled){
+                NSLog(@"User cancelled login");
+                
+                //handle session closures that happen outside of the app
+            }else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again";
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        //show user logged out UI
+        //[self userLoggedOut];
+    }
+}
+
+
+
+#pragma mark - convience methods
+- (void)showLoginScreen
+{
+    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    ViewController *homevc = (ViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"startScreen"];
+    UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:homevc];
+    [self.window makeKeyAndVisible];
+    [self.window.rootViewController presentViewController:navC animated:NO completion:nil];
+    return;
+    
+    
+}
+
+- (void)showLoginScreenFromFacebook
+{
+    UIViewController *topController = [self topMostController];
+    if ([topController isKindOfClass:[UINavigationController class]]){
+        if ([((UINavigationController *)topController).visibleViewController isMemberOfClass:[ViewController class]]){
+            return;
+        }else{
+            
+            [[self topMostController] dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+    }
+    return;
+}
+
+- (void)showHomeScreenFromFacebook
+{
+    NSError *error;
+    HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
+    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+    if (uri){
+        NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+        User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+        vc.myUser = user;
+    }
+    
+    return;
+}
+
+
+- (void)showHomeScreen
+{
+    NSError *error;
+    HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
+    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+    if (uri){
+        NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+        User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+        vc.myUser = user;
+    }
+    
+
+    return;
+}
+
+-(UIViewController*) topMostController {
+    UIViewController *topController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+    return topController;
+}
+
+-(void)showMessage:(NSString *)message
+         withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:message
+                               delegate:self
+                      cancelButtonTitle:@"Ok!"
+                      otherButtonTitles:nil] show];
+}
+
+
+
 
 @end

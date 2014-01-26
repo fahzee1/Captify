@@ -48,7 +48,8 @@
 		1186B1BD188E38920082F35F /* User+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BC188E38920082F35F /* User+Utils.m */; };
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
-		1186B1C6188F79CE0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C5188F79CE0082F35F /* User.m */; };
+		1186B1C81894777C0082F35F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B1C71894777C0082F35F /* FacebookSDK.framework */; };
+		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,8 +134,9 @@
 		1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
 		1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
-		1186B1C4188F79CE0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		1186B1C5188F79CE0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1186B1C71894777C0082F35F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		1186B1C91895C39B0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1186B1CA1895C39B0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
 				110730F11876640F0065D77F /* Foundation.framework in Frameworks */,
+				1186B1C81894777C0082F35F /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +188,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1186B1C71894777C0082F35F /* FacebookSDK.framework */,
 				1186B169188E2D0D0082F35F /* CoreData.framework */,
 				1186B152188B38DC0082F35F /* Security.framework */,
 				110730F01876640E0065D77F /* Foundation.framework */,
@@ -244,8 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				1186B1C4188F79CE0082F35F /* User.h */,
-				1186B1C5188F79CE0082F35F /* User.m */,
+				1186B1C91895C39B0082F35F /* User.h */,
+				1186B1CA1895C39B0082F35F /* User.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
 			);
@@ -460,6 +464,7 @@
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
+				1186B1CB1895C39B0082F35F /* User.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
@@ -475,7 +480,6 @@
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
-				1186B1C6188F79CE0082F35F /* User.m in Sources */,
 				1186B156188B39290082F35F /* SSKeychain.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
@@ -616,6 +620,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
@@ -630,6 +638,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";

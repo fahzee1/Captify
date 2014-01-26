@@ -22,6 +22,9 @@
                                 <state key="normal" image="active_404">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="facebookLogin:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="v5w-e8-1OA"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Be-QC-67Y">
                                 <rect key="frame" x="137" y="415" width="43" height="30"/>
@@ -184,7 +187,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bm5-Jo-c8A">
-                                <rect key="frame" x="113" y="193" width="79" height="21"/>
+                                <rect key="frame" x="103" y="193" width="129" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -207,10 +210,15 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GCZ-Yd-IBE">
+                                <rect key="frame" x="111" y="129" width="64" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="profileImage" destination="GCZ-Yd-IBE" id="Lh7-eF-Mcz"/>
                         <outlet property="score" destination="hYw-gi-4Zq" id="R0I-Wa-HEV"/>
                         <outlet property="username" destination="Bm5-Jo-c8A" id="Gwp-11-xjd"/>
                         <segue destination="TjI-5v-qLp" kind="modal" identifier="segueToLogin" animates="NO" id="hGA-mP-LdE"/>

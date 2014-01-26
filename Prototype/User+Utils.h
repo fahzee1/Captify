@@ -26,4 +26,10 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 
 + (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block;
+
++ (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
+                                    callback:(AwesomeAPICompleteBlock)block;
+
++ (void)getFacebookPicWithUser:(User *)user
+                     imageview:(UIImageView *)iv;
 @end

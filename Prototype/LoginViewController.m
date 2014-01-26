@@ -13,6 +13,7 @@
 #import "UIAlertView+AFNetworking.h"
 #import "SSKeychain.h"
 #import "HomeViewController.h"
+#import "AppDelegate.h"
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -117,12 +118,13 @@
                                                                        
                                                                        
                                                                        // show home screen
-                                                                       UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-                                                                       HomeViewController *homevc = (HomeViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"homeScreen"];
+                                                                       AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+                                                                       HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
                                                                        if (user){
-                                                                           homevc.myUser = user;
+                                                                           vc.myUser = user;
+                                                                
                                                                        }
-                                                                       [self presentViewController:homevc animated:YES completion:NULL];
+                                                                       [self dismissViewControllerAnimated:YES completion:nil];
                                                                        
                                                                        
                                                                        

@@ -14,6 +14,7 @@
 static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
 static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
 static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
+static NSString * const AwesomeAPIFacebookUrlString = @"api/v1/register/facebook";
 
 @interface AwesomeAPICLient : AFHTTPSessionManager
 
