@@ -97,148 +97,158 @@
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block
 {
-    
-    return [[AwesomeAPICLient sharedClient] POST:AwesomeAPILoginUrlString
-                                      parameters:params
-                                         success:^(NSURLSessionDataTask *task, id responseObject) {
-                                             // things went well
-                                             if ([[responseObject valueForKey:@"code"] intValue] == 1){
-                                                 // get params from response
-                                                 User *user = nil;
-                                                NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-                                                NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-                                                if (uri){
-                                                     NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-                                                     NSError *error;
-                                                     user = (id) [context existingObjectWithID:superuserID error:&error];
-                                                 }
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    return [client POST:AwesomeAPILoginUrlString
+                          parameters:params
+                             success:^(NSURLSessionDataTask *task, id responseObject) {
+                                  [client stopNetworkActivity];
+                                 // things went well
+                                 if ([[responseObject valueForKey:@"code"] intValue] == 1){
+                                     // get params from response
+                                     User *user = nil;
+                                    NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                                    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+                                    if (uri){
+                                         NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                                         NSError *error;
+                                         user = (id) [context existingObjectWithID:superuserID error:&error];
+                                     }
 
-                                                 NSString *username = [responseObject valueForKeyPath:@"user.username"];
-                                                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                 [defaults setValue:username forKey:@"username"];
-                                                 [defaults setBool:YES forKey:@"logged"];
-                    
-                                                 if ([user.username isEqualToString:username]){
-                                                       [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
-                                                 }else{
-                                                     user = [self CreateOrGetUserWithParams:@{@"username": username}
-                                                                     inManagedObjectContext:context];
-                                                     [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
+                                     NSString *username = [responseObject valueForKeyPath:@"user.username"];
+                                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                     [defaults setValue:username forKey:@"username"];
+                                     [defaults setBool:YES forKey:@"logged"];
+        
+                                     if ([user.username isEqualToString:username]){
+                                           [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
+                                     }else{
+                                         user = [self CreateOrGetUserWithParams:@{@"username": username}
+                                                         inManagedObjectContext:context];
+                                         [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
 
-                                                 }
-                                                
-                                                 [defaults synchronize];
-                                                 
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         block(YES,context, user, NO);
-                                                     });
-                                                 }}
-                                             // things did not go well because of user
-                                             if ([[responseObject valueForKey:@"code"] intValue] == -1){
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         block(NO,responseObject, nil,NO);
-                                                     });
-                                                 }
-                                             }
-                                             // things did not go well because of me
-                                             if ([[responseObject valueForKey:@"code"] intValue] == -10){
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         block(NO,responseObject, nil, NO);
-                                                     });
-                                                 }
-                                             }
-                                             
-                                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                             // something very unexpected happened
-                                             if (block){
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     block(NO,error,nil,YES);
-                                                 });
-                                             }
-                                             
-                                         }];
+                                     }
+                                    
+                                     [defaults synchronize];
+                                     
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             block(YES,context, user, NO);
+                                         });
+                                     }}
+                                 // things did not go well because of user
+                                 if ([[responseObject valueForKey:@"code"] intValue] == -1){
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             block(NO,responseObject, nil,NO);
+                                         });
+                                     }
+                                 }
+                                 // things did not go well because of me
+                                 if ([[responseObject valueForKey:@"code"] intValue] == -10){
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             block(NO,responseObject, nil, NO);
+                                         });
+                                     }
+                                 }
+                                 
+                             } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                  [client stopNetworkActivity];
+                                 // something very unexpected happened
+                                 if (block){
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         block(NO,error,nil,YES);
+                                     });
+                                 }
+                                 
+                             }];
 }
 
 + (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                     callback:(AwesomeAPICompleteBlock)block;
 {
-    return [[AwesomeAPICLient sharedClient] POST:AwesomeAPIRegisterUrlString
-                                      parameters:params
-                                         success:^(NSURLSessionDataTask *task, id responseObject) {
-                                              // things went well
-                                             if ([[responseObject valueForKey:@"code"] intValue] == 1){
-                                                 // get params from response
-                                                 NSString *username = [responseObject valueForKeyPath:@"username"];
-                                                 NSNumber *score = [NSNumber numberWithInt:0];
-                                                 NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
-                                                 NSNumber *privacy = [NSNumber numberWithInt:0];
-                                                 NSDate *date = [NSDate date];
-                                                 NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
-                                                 
-                                                // prepare to get or create a user
-                                                 NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-                                                 NSDictionary *gcParams = @{@"username": username,
-                                                                            @"score": score,
-                                                                            @"facebook_user":facebook,
-                                                                            @"privacy":privacy,
-                                                                            @"super_user":super_user,
-                                                                            @"timestamp":date};
-                                                 
-                                                 User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
-                                                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                 [defaults setValue:username forKey:@"username"];
-                                                 [defaults setBool:YES forKey:@"logged"];
-                                                 [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
-                                                 [defaults synchronize];
-                                                 
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         block(YES,context,user ,NO);
-                                                     });
-                                                 }
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    return [client POST:AwesomeAPIRegisterUrlString
+                          parameters:params
+                             success:^(NSURLSessionDataTask *task, id responseObject) {
+                                  [client stopNetworkActivity];
+                                  // things went well
+                                 if ([[responseObject valueForKey:@"code"] intValue] == 1){
+                                     // get params from response
+                                     NSString *username = [responseObject valueForKeyPath:@"username"];
+                                     NSNumber *score = [NSNumber numberWithInt:0];
+                                     NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
+                                     NSNumber *privacy = [NSNumber numberWithInt:0];
+                                     NSDate *date = [NSDate date];
+                                     NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
+                                     
+                                    // prepare to get or create a user
+                                     NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                                     NSDictionary *gcParams = @{@"username": username,
+                                                                @"score": score,
+                                                                @"facebook_user":facebook,
+                                                                @"privacy":privacy,
+                                                                @"super_user":super_user,
+                                                                @"timestamp":date};
+                                     
+                                     User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                     [defaults setValue:username forKey:@"username"];
+                                     [defaults setBool:YES forKey:@"logged"];
+                                     [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
+                                     [defaults synchronize];
+                                     
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             block(YES,context,user ,NO);
+                                         });
+                                     }
 
-                                                 
-                                             }
-                                             
-                                             // things did not go well because of user
-                                             if ([[responseObject valueForKey:@"code"] intValue] == -1){
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                     
+                                 }
+                                 
+                                 // things did not go well because of user
+                                 if ([[responseObject valueForKey:@"code"] intValue] == -1){
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
 
-                                                         block(NO,responseObject, nil, NO);
-                                                     });
-                                                 }
-                                             }
-                                             
-                                             // things did not go well because of me
-                                             if ([[responseObject valueForKey:@"code"] intValue] == -10){
-                                                 if (block){
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         block(NO,responseObject, nil, NO);
-                                                     });
-                                                 }
-                                             }
-                                         }
-                                         failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                             // something very unexpected happened
-                                             if (block){
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     block(NO,error, nil, YES);
-                                                 });
-                                             }
+                                             block(NO,responseObject, nil, NO);
+                                         });
+                                     }
+                                 }
+                                 
+                                 // things did not go well because of me
+                                 if ([[responseObject valueForKey:@"code"] intValue] == -10){
+                                     if (block){
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             block(NO,responseObject, nil, NO);
+                                         });
+                                     }
+                                 }
+                             }
+                             failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                  [client stopNetworkActivity];
+                                 // something very unexpected happened
+                                 if (block){
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         block(NO,error, nil, YES);
+                                     });
+                                 }
 
-                                         }];
+                             }];
 }
 
 + (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
                                             callback:(AwesomeAPICompleteBlock)block;
 {
-    return [[AwesomeAPICLient sharedClient] POST:AwesomeAPIFacebookUrlString
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    return [client POST:AwesomeAPIFacebookUrlString
                                       parameters:params
                                          success:^(NSURLSessionDataTask *task, id responseObject) {
+                                              [client stopNetworkActivity];
                                              NSLog(@"%@",responseObject);
                                              // things went well
                                              if ([[responseObject valueForKey:@"code"] intValue] == 1){
@@ -299,6 +309,7 @@
                                              
                                          }
                                          failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                              [client stopNetworkActivity];
                                              // something very unexpected happened
                                              if (block){
                                                  dispatch_async(dispatch_get_main_queue(), ^{

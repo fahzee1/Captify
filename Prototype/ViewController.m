@@ -11,6 +11,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "User+Utils.h"
 #import "HomeViewController.h"
+#import "AwesomeAPICLient.h"
 
 @interface ViewController ()
 
@@ -21,6 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -72,8 +74,7 @@
                                                                           @"first_name":fbookFirstName,
                                                                           @"last_name":fbookLastName,
                                                                           @"fbook_user":[NSNumber numberWithBool:YES]};
-                                                  
-                                                  // show homescreen call back handled in delegate
+                                                      // show homescreen call back handled in delegate
                                                   [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                       if (wasSuccessful){
                                                           AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -84,8 +85,8 @@
                                                           [self dismissViewControllerAnimated:YES completion:nil];
                                                       }
                                                   }];
-                                              }
-                                          }];
+                                                }
+                                            }];
                                       }];
     }
     
