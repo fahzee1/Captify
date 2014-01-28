@@ -268,7 +268,9 @@
     if (uri){
         NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        vc.myUser = user;
+        if ([vc respondsToSelector:@selector(setMyUser:)]){
+            vc.myUser = user;
+        }
     }
     
     return;
@@ -283,7 +285,10 @@
     if (uri){
         NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        vc.myUser = user;
+        if ([vc respondsToSelector:@selector(setMyUser:)]){
+            vc.myUser = user;
+        }
+
     }
     
 

@@ -11,12 +11,14 @@
 #import "User+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface HomeViewController ()
+@interface HomeViewController ()<UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *score;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-
+@property BOOL fullScreen;
+@property CGRect firstFrame;
+@property UITapGestureRecognizer *tap;
 @end
 
 @implementation HomeViewController
@@ -33,9 +35,52 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.fullScreen = NO;
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(makeFullScreen)];
+    self.tap.delegate = self;
+    [self.tap setNumberOfTapsRequired:1];
+    [self.profileImage addGestureRecognizer:self.tap];
+    self.profileImage.userInteractionEnabled =YES;
 	// Do any additional setup after loading the view.
 }
 
+- (void)makeFullScreen
+{
+    if (!self.fullScreen){
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options:0
+                         animations:^{
+                             self.firstFrame = self.profileImage.frame;
+                             [self.profileImage setFrame:[[UIScreen mainScreen] bounds]];
+                            
+                         } completion:^(BOOL finished) {
+                             self.fullScreen = YES;
+                         }];
+        return;
+    }
+    else{
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options:0
+                         animations:^{
+                             [self.profileImage setFrame:self.firstFrame];
+                         } completion:^(BOOL finished) {
+                             self.fullScreen = NO;
+                         }];
+        return;
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    BOOL should = YES;
+    if (gestureRecognizer == self.tap){
+        should = (touch.view == self.profileImage);
+        
+    }
+    return should;
+}
 -(void)viewDidAppear:(BOOL)animated
 {
     //if user not logged in segue to login screen

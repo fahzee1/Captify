@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5Kl-kf-Iw9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="O1r-Tl-QQ2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -244,7 +244,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gAN-XE-KlU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2720" y="791"/>
+            <point key="canvasLocation" x="3246" y="791"/>
         </scene>
         <!--View Controller - chooseFriends-->
         <scene sceneID="d8c-6S-azC">
@@ -262,7 +262,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGy-Ob-Xtq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3184" y="774"/>
+            <point key="canvasLocation" x="3710" y="774"/>
         </scene>
         <!--Table View Controller - userSettings-->
         <scene sceneID="Ml3-eI-v1C">
@@ -478,10 +478,10 @@
             </objects>
             <point key="canvasLocation" x="-1091" y="-64"/>
         </scene>
-        <!--View Controller - showChallengeScreen-->
+        <!--Challenge View Controller - showChallengeScreen-->
         <scene sceneID="NVp-if-iSc">
             <objects>
-                <viewController title="showChallengeScreen" id="z0A-Gc-Syz" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="showChallenge" title="showChallengeScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="z0A-Gc-Syz" customClass="ChallengeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="isL-UK-nse"/>
                         <viewControllerLayoutGuide type="bottom" id="uwQ-7q-f8Z"/>
@@ -489,12 +489,36 @@
                     <view key="view" contentMode="scaleToFill" id="fYi-kD-ZHx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="cF4-sx-F6I">
+                                <rect key="frame" x="67" y="98" width="186" height="170"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0h-xh-MWM">
+                                <rect key="frame" x="41" y="455" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Here" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DU7-ex-Gm9">
+                                <rect key="frame" x="119" y="324" width="37" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Guess What Im Thinking" id="cUP-EQ-Z18"/>
+                    <connections>
+                        <outlet property="dragMe" destination="C0h-xh-MWM" id="BUe-0B-Tte"/>
+                        <outlet property="dropHere" destination="DU7-ex-Gm9" id="x5s-uV-hTP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJA-Je-2QG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="870" y="807"/>
+            <point key="canvasLocation" x="-1183" y="625"/>
         </scene>
         <!--View Controller - resultsScreen-->
         <scene sceneID="nwn-ZU-FtF">
@@ -512,7 +536,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kIF-hL-dpG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1828" y="807"/>
+            <point key="canvasLocation" x="1806" y="731"/>
         </scene>
         <!--View Controller - phoneNumberScreen-->
         <scene sceneID="498-8G-izu">
@@ -530,7 +554,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JaP-Yi-Bz5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2233" y="791"/>
+            <point key="canvasLocation" x="2143" y="687"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cyB-lO-Vfh">
@@ -567,6 +591,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KjU-1J-Dd6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1007" y="-796"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0yi-Gg-B4L">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="O1r-Tl-QQ2" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5ZQ-jx-5ih">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="z0A-Gc-Syz" kind="relationship" relationship="rootViewController" id="GBk-z1-MzO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hby-wx-5Sw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1637" y="625"/>
         </scene>
     </scenes>
     <resources>

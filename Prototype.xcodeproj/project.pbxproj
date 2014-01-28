@@ -50,6 +50,8 @@
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1C81894777C0082F35F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B1C71894777C0082F35F /* FacebookSDK.framework */; };
 		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
+		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
+		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +139,10 @@
 		1186B1C71894777C0082F35F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1186B1C91895C39B0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		1186B1CA1895C39B0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
+		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
+		1186B1D31897594E0082F35F /* TilesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilesView.h; sourceTree = "<group>"; };
+		1186B1D41897594E0082F35F /* TilesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TilesView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +214,7 @@
 				11073105187664100065D77F /* Main_iPad.storyboard */,
 				1107310B187664100065D77F /* Images.xcassets */,
 				1107316E188641470065D77F /* API */,
+				1186B1CD189749660082F35F /* Challenges */,
 				1107312F18863A510065D77F /* User */,
 				110730F71876640F0065D77F /* Supporting Files */,
 				1107313318863AC20065D77F /* 3rd Party */,
@@ -358,6 +365,41 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		1186B1CC189748D00082F35F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1186B1D31897594E0082F35F /* TilesView.h */,
+				1186B1D41897594E0082F35F /* TilesView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		1186B1CD189749660082F35F /* Challenges */ = {
+			isa = PBXGroup;
+			children = (
+				1186B1CF1897497D0082F35F /* Models */,
+				1186B1CE189749700082F35F /* Controllers */,
+				1186B1CC189748D00082F35F /* Views */,
+			);
+			name = Challenges;
+			sourceTree = "<group>";
+		};
+		1186B1CE189749700082F35F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1186B1D0189749BB0082F35F /* ChallengeViewController.h */,
+				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		1186B1CF1897497D0082F35F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -464,6 +506,7 @@
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
+				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
 				1186B1CB1895C39B0082F35F /* User.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
@@ -475,6 +518,7 @@
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
+				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
