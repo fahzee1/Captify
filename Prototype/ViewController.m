@@ -80,7 +80,9 @@
                                                           AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
                                                           HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
                                                           if (user){
+                                                              if ([vc respondsToSelector:@selector(setMyUser:)]){
                                                               vc.myUser = user;
+                                                              }
                                                           }
                                                           [self dismissViewControllerAnimated:YES completion:nil];
                                                       }

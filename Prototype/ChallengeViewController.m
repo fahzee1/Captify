@@ -49,7 +49,7 @@ const int kTileMargin = 20;
     self.gameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [screenWidth doubleValue], [screenHeight doubleValue])];
     
     [self.view addSubview:self.gameView];
-    self.answer = @"happyy";
+    self.answer = @"ogbuehi";
     [self dealChallengeTiles];
 	// Do any additional setup after loading the view.
 }
@@ -70,18 +70,31 @@ const int kTileMargin = 20;
     double ninetyScreen = ([screenWidth doubleValue]*0.9 / [answerLength doubleValue]) - kTileMargin;
     double xOffset = ([screenWidth doubleValue] - [answerLength doubleValue] * (ninetyScreen + kTileMargin))/2;
     xOffset += ninetyScreen/2;
+    
+    // create tiles list and add tiles
     self.tiles = [NSMutableArray arrayWithCapacity:[self.answer length]];
     for (NSUInteger i=0; i < [self.answer length]; i++){
         NSString *letter = [self.answer  substringWithRange:NSMakeRange(i, 1)];
         if (![letter isEqualToString:@" "]){
             TilesView *tile = [[TilesView alloc] initWithLetter:letter andSideLength:ninetyScreen];
-            tile.center = CGPointMake(xOffset + i*(ninetyScreen + kTileMargin), [screenHeight doubleValue]/4*3.6);
-            [tile randomize];
             [self.tiles addObject:tile];
-            [self.gameView addSubview:[self.tiles objectAtIndex:i]];
-            
             
         }
+    }
+    
+    // shuffle list
+    for (int x = 0; x < [self.tiles count]; x++){
+        int rand =  (arc4random() % ([self.tiles count] - x)) + x;
+        [self.tiles exchangeObjectAtIndex:x withObjectAtIndex:rand];
+    }
+    
+    // add tiles to game view
+    int x = 0;
+    for (TilesView *tile in self.tiles){
+        tile.center = CGPointMake(xOffset + x*(ninetyScreen + kTileMargin), [screenHeight doubleValue]/4*3.6);
+        [tile randomize];
+        [self.gameView addSubview:tile];
+        x++;
     }
     
 }

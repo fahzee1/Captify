@@ -39,16 +39,18 @@
 		1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */; };
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
+		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
+		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
+		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
+		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
-		1186B156188B39290082F35F /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B155188B39290082F35F /* SSKeychain.m */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
 		1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B15B188C6F850082F35F /* SignUpViewController.m */; };
 		1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B169188E2D0D0082F35F /* CoreData.framework */; };
 		1186B1BD188E38920082F35F /* User+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BC188E38920082F35F /* User+Utils.m */; };
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
-		1186B1C81894777C0082F35F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B1C71894777C0082F35F /* FacebookSDK.framework */; };
 		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
 		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
@@ -121,11 +123,15 @@
 		1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
+		112153AD18983B7000EADE97 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		112153B118983DB100EADE97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSKeychain.strings; sourceTree = "<group>"; };
+		112153B218983DB100EADE97 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
+		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
+		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		1186B154188B39290082F35F /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = "../../../Downloads/sskeychain-master/SSKeychain.h"; sourceTree = "<group>"; };
-		1186B155188B39290082F35F /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = "../../../Downloads/sskeychain-master/SSKeychain.m"; sourceTree = "<group>"; };
 		1186B157188B45D10082F35F /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1186B158188B45D10082F35F /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		1186B15A188C6F850082F35F /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -136,7 +142,6 @@
 		1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
 		1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
-		1186B1C71894777C0082F35F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1186B1C91895C39B0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		1186B1CA1895C39B0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
@@ -155,7 +160,7 @@
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
 				110730F11876640F0065D77F /* Foundation.framework in Frameworks */,
-				1186B1C81894777C0082F35F /* FacebookSDK.framework in Frameworks */,
+				112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +199,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1186B1C71894777C0082F35F /* FacebookSDK.framework */,
+				112153AD18983B7000EADE97 /* FacebookSDK.framework */,
 				1186B169188E2D0D0082F35F /* CoreData.framework */,
 				1186B152188B38DC0082F35F /* Security.framework */,
 				110730F01876640E0065D77F /* Foundation.framework */,
@@ -276,10 +281,9 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				112153AF18983DB100EADE97 /* SSKeychain */,
 				1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */,
 				1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */,
-				1186B154188B39290082F35F /* SSKeychain.h */,
-				1186B155188B39290082F35F /* SSKeychain.m */,
 				1107315118863B2E0065D77F /* UIKit+AFNetworking */,
 				1107313418863B1E0065D77F /* AFNetworking */,
 			);
@@ -363,6 +367,18 @@
 			children = (
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		112153AF18983DB100EADE97 /* SSKeychain */ = {
+			isa = PBXGroup;
+			children = (
+				112153B018983DB100EADE97 /* SSKeychain.strings */,
+				112153B218983DB100EADE97 /* SSKeychain.h */,
+				112153B318983DB100EADE97 /* SSKeychain.m */,
+				112153B418983DB100EADE97 /* SSKeychainQuery.h */,
+				112153B518983DB100EADE97 /* SSKeychainQuery.m */,
+			);
+			path = SSKeychain;
 			sourceTree = "<group>";
 		};
 		1186B1CC189748D00082F35F /* Views */ = {
@@ -476,6 +492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
@@ -504,6 +521,7 @@
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
+				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
@@ -517,6 +535,7 @@
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
+				112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
@@ -524,7 +543,6 @@
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
-				1186B156188B39290082F35F /* SSKeychain.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
@@ -580,6 +598,14 @@
 				1107311C187664100065D77F /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		112153B018983DB100EADE97 /* SSKeychain.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				112153B118983DB100EADE97 /* en */,
+			);
+			name = SSKeychain.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -667,6 +693,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Documents/FacebookSDK,
+					/Users/cjogbuehi/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
@@ -685,6 +712,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Documents/FacebookSDK,
+					/Users/cjogbuehi/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";

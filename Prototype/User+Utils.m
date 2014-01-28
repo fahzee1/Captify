@@ -257,7 +257,7 @@
                                                  NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
                                                  NSNumber *privacy = [NSNumber numberWithInt:0];
                                                  NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
-                                                 NSNumber *facebook_id = [responseObject valueForKey:@"facebook_id"];
+                                                 NSNumber *facebook_id = [NSNumber numberWithInt:[[responseObject valueForKey:@"facebook_id"] intValue]];
                                                  // prepare to get or create a user
                                                  NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
                                                  NSDictionary *gcParams = @{@"username": username,
@@ -289,6 +289,7 @@
                                              
                                              // things did not go well because of user
                                              if ([[responseObject valueForKey:@"code"] intValue] == -1){
+                                                  NSLog(@" not success");
                                                  if (block){
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          block(NO,responseObject, nil, NO);
@@ -298,6 +299,7 @@
                                              }
                                              // things did not go well because of me
                                              if ([[responseObject valueForKey:@"code"] intValue] == -10){
+                                                  NSLog(@"not me success");
                                                  if (block){
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          block(NO,responseObject, nil, NO);
