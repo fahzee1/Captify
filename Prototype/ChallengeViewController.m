@@ -17,6 +17,7 @@ const int kTileMargin = 20;
 @property (strong, nonatomic) UIView *gameView;
 @property (strong, nonatomic) NSMutableArray *tiles;
 @property (strong, nonatomic) NSMutableArray *targets;
+@property (strong, nonatomic) NSMutableArray *tileRects;
 @property CGPoint originalCenter;
 @property NSString *answer;
 @property (weak, nonatomic) IBOutlet UITextField *demoTextField;
@@ -42,27 +43,10 @@ const int kTileMargin = 20;
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"ogbuehi";
+    self.answer = @"ogbuehimynameismyname";
     [self.demoTextField becomeFirstResponder];
     
-    UIView *keyboard = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
-    CGRect keyboardRect = keyboard.frame;
-    
-    for (int i = 0; i < [self.answer length]; i++){
-        NSString *string = [NSString stringWithFormat:@"%c",[self.answer characterAtIndex:i]];
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [button setTitle:string forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
-        keyboardRect.size = CGSizeMake(keyboardRect.size.width, keyboardRect.size.height);
-        CGPoint random = [self randomPointInRect:keyboardRect];
-        button.frame = CGRectMake(random.x,random.y, 35, 35);
-        [button addTarget:self action:@selector(showText:) forControlEvents:UIControlEventTouchUpInside];
-        [keyboard addSubview:button];
-
-    }
-  
-    self.demoTextField.inputView = keyboard;
-
+    [self showKeyboardWithTiles];
     
     
     
@@ -78,14 +62,73 @@ const int kTileMargin = 20;
 	// Do any additional setup after loading the view.
 }
 
-- (CGPoint)randomPointInRect:(CGRect)r
+
+
+-(void)showKeyboardWithTiles
 {
-    CGPoint p = r.origin;
+    UIView *keyboard = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
     
-    p.x += arc4random() % (int)r.size.width;
-    p.y += arc4random() % (int)r.size.height;
+    // get borders of keyboard
+    CGRect keyboardRect = keyboard.frame;
+    CGFloat keyboardWidth = CGRectGetWidth(keyboardRect);
+    CGFloat keyboardHeight = CGRectGetHeight(keyboardRect);
+    CGFloat rightBorder = CGRectGetMaxX(keyboardRect);
+    CGFloat leftBorder = CGRectGetMinX(keyboardRect);
     
-    return p;
+    NSLog(@"width is %f",keyboardWidth);
+    NSLog(@"height is %f",keyboardHeight);
+    NSLog(@"right border is %f",rightBorder);
+    NSLog(@"left border is %f",leftBorder);
+    
+    // start with tile positioned 10 pixels to the right and
+    // 30 pixels down
+    CGPoint p = keyboardRect.origin;
+    p.x += 10;
+    p.y += 30;
+    for (int i = 0; i < [self.answer length]; i++){
+        // loop through answer and create button for each letter
+        NSString *string = [NSString stringWithFormat:@"%c",[self.answer characterAtIndex:i]];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
+        
+        // animate display buttons are 35x35
+        [UIView animateWithDuration:.9
+                         animations:^{
+                            button.frame = CGRectMake(p.x,p.y, 35, 35);
+                         }
+                         completion:^(BOOL finished) {
+                             [UIView animateWithDuration:.5
+                                              animations:^{
+                                                  [button setTitle:string forState:UIControlStateNormal];
+                                              }];
+                         }];
+        
+        // if button reached the end of keyboard start new row
+        // by pushing 50 pixels down from current position and
+        // restarting at 10 from the right
+        if (button.frame.origin.x + 20 >= rightBorder){
+            p.y += 50;
+            p.x = 10;
+            button.frame = CGRectMake(p.x,p.y, 35, 35);
+            
+            
+            
+        }
+        
+        [button addTarget:self action:@selector(showText:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // add button to keyboard
+        [keyboard addSubview:button];
+        p.x += 50;
+        
+    }
+    
+    self.demoTextField.inputView = keyboard;
+    
+    
+    
+    
+
 }
 
 - (void)showText:(UIButton *)sender
