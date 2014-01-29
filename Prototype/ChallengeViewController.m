@@ -11,7 +11,7 @@
 
 const int kTileMargin = 20;
 
-@interface ChallengeViewController ()<UIGestureRecognizerDelegate>
+@interface ChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
 @property (weak, nonatomic) IBOutlet UILabel *dragMe;
 @property (strong, nonatomic) UIView *gameView;
@@ -19,6 +19,7 @@ const int kTileMargin = 20;
 @property (strong, nonatomic) NSMutableArray *targets;
 @property CGPoint originalCenter;
 @property NSString *answer;
+@property (weak, nonatomic) IBOutlet UITextField *demoTextField;
 
 
 @end
@@ -41,17 +42,60 @@ const int kTileMargin = 20;
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    
-    
-    NSNumber *screenWidth = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.width];
-    NSNumber *screenHeight = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.height];
-    
-    self.gameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [screenWidth doubleValue], [screenHeight doubleValue])];
-    
-    [self.view addSubview:self.gameView];
     self.answer = @"ogbuehi";
-    [self dealChallengeTiles];
+    [self.demoTextField becomeFirstResponder];
+    
+    UIView *keyboard = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
+    CGRect keyboardRect = keyboard.frame;
+    
+    for (int i = 0; i < [self.answer length]; i++){
+        NSString *string = [NSString stringWithFormat:@"%c",[self.answer characterAtIndex:i]];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setTitle:string forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
+        keyboardRect.size = CGSizeMake(keyboardRect.size.width, keyboardRect.size.height);
+        CGPoint random = [self randomPointInRect:keyboardRect];
+        button.frame = CGRectMake(random.x,random.y, 35, 35);
+        [button addTarget:self action:@selector(showText:) forControlEvents:UIControlEventTouchUpInside];
+        [keyboard addSubview:button];
+
+    }
+  
+    self.demoTextField.inputView = keyboard;
+
+    
+    
+    
+    
+    
+    //NSNumber *screenWidth = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.width];
+    //NSNumber *screenHeight = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.height];
+    //self.gameView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [screenWidth doubleValue], [screenHeight doubleValue])];
+    //[self.view addSubview:self.gameView];
+    
+    //self.answer = @"ogbuehi";
+    //[self dealChallengeTiles];
 	// Do any additional setup after loading the view.
+}
+
+- (CGPoint)randomPointInRect:(CGRect)r
+{
+    CGPoint p = r.origin;
+    
+    p.x += arc4random() % (int)r.size.width;
+    p.y += arc4random() % (int)r.size.height;
+    
+    return p;
+}
+
+- (void)showText:(UIButton *)sender
+{
+    if ([self.demoTextField.text length] == 0){
+        self.demoTextField.text = sender.titleLabel.text;
+    }
+    else{
+        self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
+    }
 }
 
 - (void)didReceiveMemoryWarning

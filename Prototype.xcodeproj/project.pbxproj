@@ -43,6 +43,8 @@
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
+		11299C731899727A00D69000 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11299C721899727A00D69000 /* Keyboard.xib */; };
+		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
@@ -129,6 +131,9 @@
 		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		11299C721899727A00D69000 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
+		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
+		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -384,6 +389,7 @@
 		1186B1CC189748D00082F35F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11299C721899727A00D69000 /* Keyboard.xib */,
 				1186B1D31897594E0082F35F /* TilesView.h */,
 				1186B1D41897594E0082F35F /* TilesView.m */,
 			);
@@ -405,6 +411,8 @@
 			children = (
 				1186B1D0189749BB0082F35F /* ChallengeViewController.h */,
 				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
+				11299C741899772E00D69000 /* KeyboardViewController.h */,
+				11299C751899772E00D69000 /* KeyboardViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -492,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11299C731899727A00D69000 /* Keyboard.xib in Resources */,
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
@@ -518,6 +527,7 @@
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
 				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
+				11299C761899772E00D69000 /* KeyboardViewController.m in Sources */,
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,

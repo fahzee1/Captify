@@ -20,7 +20,8 @@
     [super awakeFromInsert];
     // called only once in this objects life time, at creation
     // put defaults here
-    [self setValue:[NSDate date] forKey:@"timestamp"];
+
+    self.timestamp = [NSDate date];
     
 }
 
@@ -62,13 +63,14 @@
     
     // else create a user, save, and return user (register)
     User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-    [user setValue:[params valueForKey:@"username"] forKey:@"username"];
-    [user setValue:[params valueForKey:@"facebook_user"] forKey:@"facebook_user"];
-    [user setValue:[params valueForKey:@"privacy"] forKey:@"private"];
-    [user setValue:[NSNumber numberWithBool:YES] forKey:@"super_user"];
-    [user setValue:[params valueForKey:@"fbook_id"] forKey:@"facebook_id"];
-    //[user setValue:[params valueForKey:@"timestamp"] forKey:@"timestamp"];
-    if (![context save:&error]){
+    user.username = [params valueForKey:@"username"];
+    user.facebook_user = [params valueForKey:@"facebook_user"];
+    user.private = [params valueForKey:@"privacy"];
+    user.super_user = [NSNumber numberWithBool:YES];
+    user.facebook_id = [params valueForKey:@"fbook_id"];
+    user.timestamp = [params valueForKey:@"timestamp"];
+    
+       if (![user.managedObjectContext save:&error]){
         NSLog(@"error saving");
     }
     return user;
@@ -83,6 +85,7 @@
     return [results firstObject];
     
 }
+
 
 + (NSInteger)checkIfUserWithFetch:(NSFetchRequest *)fetch
                           context:(NSManagedObjectContext *)context

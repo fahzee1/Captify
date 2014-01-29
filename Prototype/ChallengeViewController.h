@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChallengeViewController : UIViewController
+@interface ChallengeViewController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 
 @end
