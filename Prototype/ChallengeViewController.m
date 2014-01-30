@@ -8,6 +8,7 @@
 
 #import "ChallengeViewController.h"
 #import "TilesView.h"
+#import "keyboardView.h"
 
 #define kTileMargin 20
 
@@ -166,6 +167,7 @@
 
 - (void)textFieldButtonCliked:(UIButton *)sender
 {
+    [[UIDevice currentDevice] playInputClick];
     // delete button
     if (sender.tag == -1){
         if ([self.demoTextField.text length] > 0){
@@ -178,17 +180,21 @@
 
     }
     
-    if ([self.demoTextField.text length] == 0){
-        self.demoTextField.text = sender.titleLabel.text;
-        return;
-    }
-    else if ([self.demoTextField.text length] >= [self.answer length]){
-        // dont do anything
-        return;
-    }
-    else{
-        self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
-        return;
+    
+    if (sender.tag != -1){
+    
+        if ([self.demoTextField.text length] == 0){
+            self.demoTextField.text = sender.titleLabel.text;
+            return;
+        }
+        else if ([self.demoTextField.text length] >= [self.answer length]){
+            // dont do anything
+            return;
+        }
+        else{
+            self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
+            return;
+        }
     }
 }
 

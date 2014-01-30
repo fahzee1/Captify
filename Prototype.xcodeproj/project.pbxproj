@@ -56,6 +56,7 @@
 		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
 		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
+		11F7F223189B11CB0094E4E8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F7F222189B11CB0094E4E8 /* keyboardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,8 @@
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
 		1186B1D31897594E0082F35F /* TilesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilesView.h; sourceTree = "<group>"; };
 		1186B1D41897594E0082F35F /* TilesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TilesView.m; sourceTree = "<group>"; };
+		11F7F221189B11CB0094E4E8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
+		11F7F222189B11CB0094E4E8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +395,8 @@
 				11299C721899727A00D69000 /* Keyboard.xib */,
 				1186B1D31897594E0082F35F /* TilesView.h */,
 				1186B1D41897594E0082F35F /* TilesView.m */,
+				11F7F221189B11CB0094E4E8 /* keyboardView.h */,
+				11F7F222189B11CB0094E4E8 /* keyboardView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -532,6 +537,7 @@
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
+				11F7F223189B11CB0094E4E8 /* keyboardView.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
