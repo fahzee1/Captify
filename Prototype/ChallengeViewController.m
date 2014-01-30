@@ -9,7 +9,8 @@
 #import "ChallengeViewController.h"
 #import "TilesView.h"
 
-const int kTileMargin = 20;
+#define kTileMargin 20
+
 
 @interface ChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
@@ -20,6 +21,7 @@ const int kTileMargin = 20;
 @property (strong, nonatomic) NSMutableArray *tileRects;
 @property CGPoint originalCenter;
 @property NSString *answer;
+@property NSInteger level;
 @property (weak, nonatomic) IBOutlet UITextField *demoTextField;
 
 
@@ -43,7 +45,9 @@ const int kTileMargin = 20;
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"ogbuehimynameismyname";
+    self.answer = @"cjogbuehiamakakaka";
+    self.level = 2;
+    self.demoTextField.delegate = self;
     [self.demoTextField becomeFirstResponder];
     
     [self showKeyboardWithTiles];
@@ -67,42 +71,72 @@ const int kTileMargin = 20;
 -(void)showKeyboardWithTiles
 {
     UIView *keyboard = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
-    
-    // get borders of keyboard
     CGRect keyboardRect = keyboard.frame;
-    CGFloat keyboardWidth = CGRectGetWidth(keyboardRect);
-    CGFloat keyboardHeight = CGRectGetHeight(keyboardRect);
-    CGFloat rightBorder = CGRectGetMaxX(keyboardRect);
-    CGFloat leftBorder = CGRectGetMinX(keyboardRect);
+    
+    // slice up bottom half of keyboard
+    CGRect slice, remainder;
+    CGRectDivide(keyboardRect, &slice, &remainder, 45.0, CGRectMaxYEdge);
+    CGFloat keyboardWidth = CGRectGetWidth(remainder);
+    CGFloat keyboardHeight = CGRectGetHeight(remainder);
+    CGFloat rightBorder = CGRectGetMaxX(remainder);
+    CGFloat leftBorder = CGRectGetMinX(remainder);
     
     NSLog(@"width is %f",keyboardWidth);
     NSLog(@"height is %f",keyboardHeight);
     NSLog(@"right border is %f",rightBorder);
     NSLog(@"left border is %f",leftBorder);
     
-    // start with tile positioned 10 pixels to the right and
-    // 30 pixels down
-    CGPoint p = keyboardRect.origin;
-    p.x += 10;
-    p.y += 30;
+    // add backspace button to bottom slice
+     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+    [deleteButton setTag:-1];
+    [deleteButton addTarget:self action:@selector(textFieldButtonCliked:) forControlEvents:UIControlEventTouchUpInside];
+    deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-80, slice.origin.y, 50, 35);
+    [keyboard addSubview:deleteButton];
+    
+    // loop through the answer and add to list to be shuffled
+    self.tiles = [NSMutableArray arrayWithCapacity:[self.answer length]];
     for (int i = 0; i < [self.answer length]; i++){
         // loop through answer and create button for each letter
         NSString *string = [NSString stringWithFormat:@"%c",[self.answer characterAtIndex:i]];
+        if (![string isEqualToString:@" "]){
+            [self.tiles addObject:string];
+        }
+    }
+    
+    // shuffle list
+    for (int x = 0; x < [self.tiles count]; x++){
+        int rand =  (arc4random() % ([self.tiles count] - x)) + x;
+        [self.tiles exchangeObjectAtIndex:x withObjectAtIndex:rand];
+    }
+
+    // start with tile positioned 10 pixels to the right and
+    // 30 pixels down
+    CGPoint p = remainder.origin;
+    p.x += 10;
+    p.y += 30;
+    
+    for (NSString *string in self.tiles){
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
-        
+     
         // animate display buttons are 35x35
-        [UIView animateWithDuration:.9
+        [UIView animateWithDuration:1.5
+                              delay:0
+             usingSpringWithDamping:.5
+              initialSpringVelocity:1
+                            options:0
                          animations:^{
-                            button.frame = CGRectMake(p.x,p.y, 35, 35);
+                              button.frame = CGRectMake(p.x,p.y, 35, 35);
                          }
                          completion:^(BOOL finished) {
-                             [UIView animateWithDuration:.5
+                             [UIView animateWithDuration:.4
                                               animations:^{
                                                   [button setTitle:string forState:UIControlStateNormal];
                                               }];
+
                          }];
-        
+
         // if button reached the end of keyboard start new row
         // by pushing 50 pixels down from current position and
         // restarting at 10 from the right
@@ -115,36 +149,58 @@ const int kTileMargin = 20;
             
         }
         
-        [button addTarget:self action:@selector(showText:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(textFieldButtonCliked:) forControlEvents:UIControlEventTouchUpInside];
         
         // add button to keyboard
         [keyboard addSubview:button];
         p.x += 50;
         
+
     }
-    
+
     self.demoTextField.inputView = keyboard;
-    
-    
-    
-    
+
 
 }
 
-- (void)showText:(UIButton *)sender
+
+- (void)textFieldButtonCliked:(UIButton *)sender
 {
+    // delete button
+    if (sender.tag == -1){
+        if ([self.demoTextField.text length] > 0){
+            NSString *text = self.demoTextField.text;
+            NSUInteger length = text.length;
+            text = [text substringToIndex:length -1];
+            self.demoTextField.text = text;
+            return;
+        }
+
+    }
+    
     if ([self.demoTextField.text length] == 0){
         self.demoTextField.text = sender.titleLabel.text;
+        return;
+    }
+    else if ([self.demoTextField.text length] >= [self.answer length]){
+        // dont do anything
+        return;
     }
     else{
         self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
+        return;
     }
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    self.tiles = nil;
+    self.tileRects = nil;
 }
 
 
@@ -228,5 +284,7 @@ const int kTileMargin = 20;
     }
     
 }
+
+
 
 @end
