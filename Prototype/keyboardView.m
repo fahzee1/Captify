@@ -10,6 +10,14 @@
 
 @implementation keyboardView
 
+- (instancetype)init
+{
+    self = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
+    if (self){
+        // custom;
+    }
+    return self;
+}
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

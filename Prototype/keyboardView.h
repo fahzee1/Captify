@@ -10,4 +10,6 @@
 
 @interface keyboardView : UIView <UIInputViewAudioFeedback>
 
+- (instancetype)init;
+
 @end

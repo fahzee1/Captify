@@ -71,7 +71,7 @@
 
 -(void)showKeyboardWithTiles
 {
-    UIView *keyboard = [[[NSBundle mainBundle] loadNibNamed:@"Keyboard" owner:self options:nil] lastObject];
+    UIView *keyboard = [[keyboardView alloc] init];
     CGRect keyboardRect = keyboard.frame;
     
     // slice up bottom half of keyboard
