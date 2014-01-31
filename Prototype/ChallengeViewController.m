@@ -8,7 +8,8 @@
 
 #import "ChallengeViewController.h"
 #import "TilesView.h"
-#import "keyboardView.h"
+#import "KeyboardView.h"
+#import "AnswerFieldView.h"
 
 #define kTileMargin 20
 
@@ -19,11 +20,8 @@
 @property (strong, nonatomic) UIView *gameView;
 @property (strong, nonatomic) NSMutableArray *tiles;
 @property (strong, nonatomic) NSMutableArray *targets;
-@property (strong, nonatomic) NSMutableArray *tileRects;
+@property (strong, nonatomic) NSMutableArray *answerRects;
 @property CGPoint originalCenter;
-@property NSString *answer;
-@property NSInteger level;
-@property (weak, nonatomic) IBOutlet UITextField *demoTextField;
 
 
 @end
@@ -46,11 +44,8 @@
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"cjogbuehiamakakaka";
-    self.level = 2;
-    self.demoTextField.delegate = self;
-    [self.demoTextField becomeFirstResponder];
-    
+    self.answer = @"awesome makes awesom";
+    self.level = 3;
     [self showKeyboardWithTiles];
     
     
@@ -71,7 +66,7 @@
 
 -(void)showKeyboardWithTiles
 {
-    UIView *keyboard = [[keyboardView alloc] init];
+    UIView *keyboard = [[KeyboardView alloc] init];
     CGRect keyboardRect = keyboard.frame;
     
     // slice up bottom half of keyboard
@@ -158,45 +153,97 @@
         
 
     }
-
-    self.demoTextField.inputView = keyboard;
-
-
+    
+    [self layAnswerFieldsWithKeyboard:keyboard];
 }
 
 
-- (void)textFieldButtonCliked:(UIButton *)sender
+
+- (void)layAnswerFieldsWithKeyboard:(UIView *)keyboard
 {
-    [[UIDevice currentDevice] playInputClick];
-    // delete button
-    if (sender.tag == -1){
-        if ([self.demoTextField.text length] > 0){
-            NSString *text = self.demoTextField.text;
-            NSUInteger length = text.length;
-            text = [text substringToIndex:length -1];
-            self.demoTextField.text = text;
-            return;
+    // answer textfields
+    NSArray *splitAnswer = [self.answer componentsSeparatedByString:@" "];
+    CGFloat screenRightBorder = CGRectGetMaxY(self.view.frame);
+    NSLog(@"%f",screenRightBorder);
+    NSAssert(self.level == [splitAnswer count], @"answer length should be same as level");
+    
+    CGFloat startX = self.view.center.x;
+    CGFloat startY = self.view.center.y +30;
+    if (self.level == 2){
+        startX -= 70;
+    }
+    if (self.level == 3){
+        startX -= 90;
+    }
+    
+    BOOL showResponder = YES;
+    BOOL shiftFirstField = YES;
+    BOOL shortFirstField = NO;
+    int i = 0;
+    for (NSString *word in splitAnswer){
+        NSUInteger wordLength = [word length];
+        if (i == 0 && wordLength < 5){
+            shortFirstField = YES;
         }
 
+        if (wordLength > 5 && shiftFirstField && !shortFirstField){
+            startX -= 20;
+            shiftFirstField = NO;
+        }
+        
+        
+        int answerWidth = 32 * wordLength/2;
+        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX,startY,answerWidth, 35)];
+        
+        if (self.level ==1){
+            answer.center = CGPointMake(self.view.center.x, startY);
+        }
+        answer.inputView = keyboard;
+        if (showResponder){
+            [answer becomeFirstResponder];
+        }
+        [self.view addSubview:answer];
+        startX += answerWidth +10;
+        showResponder = NO;
+        i ++;
     }
-    
-    
-    if (sender.tag != -1){
-    
-        if ([self.demoTextField.text length] == 0){
-            self.demoTextField.text = sender.titleLabel.text;
-            return;
-        }
-        else if ([self.demoTextField.text length] >= [self.answer length]){
-            // dont do anything
-            return;
-        }
-        else{
-            self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
-            return;
-        }
-    }
+
 }
+
+/*
+ - (void)textFieldButtonCliked:(UIButton *)sender
+ {
+ [[UIDevice currentDevice] playInputClick];
+ // delete button
+ if (sender.tag == -1){
+ if ([self.demoTextField.text length] > 0){
+ NSString *text = self.demoTextField.text;
+ NSUInteger length = text.length;
+ text = [text substringToIndex:length -1];
+ self.demoTextField.text = text;
+ return;
+ }
+ 
+ }
+ 
+ 
+ if (sender.tag != -1){
+ 
+ if ([self.demoTextField.text length] == 0){
+ self.demoTextField.text = sender.titleLabel.text;
+ return;
+ }
+ else if ([self.demoTextField.text length] >= [self.answer length]){
+ // dont do anything
+ return;
+ }
+ else{
+ self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
+ return;
+ }
+ }
+ }
+ */
 
 
 
@@ -206,7 +253,6 @@
     // Dispose of any resources that can be recreated.
     
     self.tiles = nil;
-    self.tileRects = nil;
 }
 
 

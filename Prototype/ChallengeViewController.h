@@ -10,5 +10,6 @@
 
 @interface ChallengeViewController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
-
+@property NSString *answer;
+@property NSInteger level;
 @end

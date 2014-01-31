@@ -45,6 +45,8 @@
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C731899727A00D69000 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11299C721899727A00D69000 /* Keyboard.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
+		116F0C5D189BFC7F00C1C430 /* KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5C189BFC7F00C1C430 /* KeyboardView.m */; };
+		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
@@ -56,7 +58,6 @@
 		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
 		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
-		11F7F223189B11CB0094E4E8 /* keyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F7F222189B11CB0094E4E8 /* keyboardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +136,10 @@
 		11299C721899727A00D69000 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
+		116F0C5B189BFC7F00C1C430 /* KeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardView.h; sourceTree = "<group>"; };
+		116F0C5C189BFC7F00C1C430 /* KeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardView.m; sourceTree = "<group>"; };
+		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
+		116F0C5F189C03E300C1C430 /* AnswerFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerFieldView.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -154,8 +159,6 @@
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
 		1186B1D31897594E0082F35F /* TilesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilesView.h; sourceTree = "<group>"; };
 		1186B1D41897594E0082F35F /* TilesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TilesView.m; sourceTree = "<group>"; };
-		11F7F221189B11CB0094E4E8 /* keyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboardView.h; sourceTree = "<group>"; };
-		11F7F222189B11CB0094E4E8 /* keyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = keyboardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,8 +398,10 @@
 				11299C721899727A00D69000 /* Keyboard.xib */,
 				1186B1D31897594E0082F35F /* TilesView.h */,
 				1186B1D41897594E0082F35F /* TilesView.m */,
-				11F7F221189B11CB0094E4E8 /* keyboardView.h */,
-				11F7F222189B11CB0094E4E8 /* keyboardView.m */,
+				116F0C5B189BFC7F00C1C430 /* KeyboardView.h */,
+				116F0C5C189BFC7F00C1C430 /* KeyboardView.m */,
+				116F0C5E189C03E300C1C430 /* AnswerFieldView.h */,
+				116F0C5F189C03E300C1C430 /* AnswerFieldView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -535,9 +540,9 @@
 				11299C761899772E00D69000 /* KeyboardViewController.m in Sources */,
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
+				116F0C5D189BFC7F00C1C430 /* KeyboardView.m in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
-				11F7F223189B11CB0094E4E8 /* keyboardView.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
@@ -552,6 +557,7 @@
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
 				112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */,
+				116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,

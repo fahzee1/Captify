@@ -1,5 +1,5 @@
 //
-//  KeyboardView.h
+//  AnswerFieldView.h
 //  Prototype
 //
 //  Created by CJ Ogbuehi on 1/31/14.
@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KeyboardView : UIView <UIInputViewAudioFeedback>
+@interface AnswerFieldView : UITextField
 
-- (instancetype)init;
 @end
