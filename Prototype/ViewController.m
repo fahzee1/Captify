@@ -12,6 +12,7 @@
 #import "User+Utils.h"
 #import "HomeViewController.h"
 #import "AwesomeAPICLient.h"
+#import "UIAlertView+AFNetworking.h"
 
 @interface ViewController ()
 
@@ -75,7 +76,7 @@
                                                                           @"last_name":fbookLastName,
                                                                           @"fbook_user":[NSNumber numberWithBool:YES]};
                                                       // show homescreen call back handled in delegate
-                                                  [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                  NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                       if (wasSuccessful){
                                                           AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
                                                           HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
@@ -87,6 +88,8 @@
                                                           [self dismissViewControllerAnimated:YES completion:nil];
                                                       }
                                                   }];
+                                                // If FAILURE, show alert
+                                                [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
                                                 }
                                             }];
                                       }];

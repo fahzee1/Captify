@@ -13,6 +13,13 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
+    NSAssert(NO, @"use initwithframe and placeholder");
+        return nil;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+                  placeholder:(NSString *)holder
+{
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -20,7 +27,7 @@
         
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.font = [UIFont systemFontOfSize:15];
-        self.placeholder = @"Answer here";
+        self.placeholder = holder;
         self.autocorrectionType = UITextAutocorrectionTypeNo;
         self.clearButtonMode = UITextFieldViewModeWhileEditing;
         self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -28,6 +35,7 @@
         
     }
     return self;
+
 }
 
 /*

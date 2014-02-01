@@ -10,4 +10,7 @@
 
 @interface AnswerFieldView : UITextField
 
+
+- (instancetype)initWithFrame:(CGRect)frame
+                  placeholder:(NSString *)string;
 @end

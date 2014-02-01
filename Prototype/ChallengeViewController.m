@@ -13,7 +13,6 @@
 
 #define kTileMargin 20
 
-
 @interface ChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
 @property (weak, nonatomic) IBOutlet UILabel *dragMe;
@@ -22,6 +21,7 @@
 @property (strong, nonatomic) NSMutableArray *targets;
 @property (strong, nonatomic) NSMutableArray *answerRects;
 @property CGPoint originalCenter;
+@property (strong, nonatomic) KeyboardView *keyboard;
 
 
 @end
@@ -44,7 +44,7 @@
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"awesome makes awesom";
+    self.answer = @"i am shit";
     self.level = 3;
     [self showKeyboardWithTiles];
     
@@ -66,8 +66,9 @@
 
 -(void)showKeyboardWithTiles
 {
-    UIView *keyboard = [[KeyboardView alloc] init];
+    KeyboardView *keyboard = [[KeyboardView alloc] init];
     CGRect keyboardRect = keyboard.frame;
+    self.keyboard = keyboard;
     
     // slice up bottom half of keyboard
     CGRect slice, remainder;
@@ -86,7 +87,7 @@
      UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
     [deleteButton setTag:-1];
-    [deleteButton addTarget:self action:@selector(textFieldButtonCliked:) forControlEvents:UIControlEventTouchUpInside];
+    [deleteButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-80, slice.origin.y, 50, 35);
     [keyboard addSubview:deleteButton];
     
@@ -145,7 +146,7 @@
             
         }
         
-        [button addTarget:self action:@selector(textFieldButtonCliked:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         // add button to keyboard
         [keyboard addSubview:button];
@@ -163,37 +164,34 @@
 {
     // answer textfields
     NSArray *splitAnswer = [self.answer componentsSeparatedByString:@" "];
-    CGFloat screenRightBorder = CGRectGetMaxY(self.view.frame);
-    NSLog(@"%f",screenRightBorder);
     NSAssert(self.level == [splitAnswer count], @"answer length should be same as level");
     
     CGFloat startX = self.view.center.x;
     CGFloat startY = self.view.center.y +30;
+    CGFloat startWidth = 90;
     if (self.level == 2){
-        startX -= 70;
+        startX -= 95;
     }
     if (self.level == 3){
-        startX -= 90;
+        startX -= 144;
     }
     
     BOOL showResponder = YES;
-    BOOL shiftFirstField = YES;
-    BOOL shortFirstField = NO;
     int i = 0;
     for (NSString *word in splitAnswer){
         NSUInteger wordLength = [word length];
-        if (i == 0 && wordLength < 5){
-            shortFirstField = YES;
+        NSString *holderString;
+        if (wordLength < 2){
+            holderString = [NSString stringWithFormat:@"%lu letter",(unsigned long)wordLength];
         }
-
-        if (wordLength > 5 && shiftFirstField && !shortFirstField){
-            startX -= 20;
-            shiftFirstField = NO;
+        else{
+            holderString = [NSString stringWithFormat:@"%lu letters",(unsigned long)wordLength];
         }
+        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX, startY, startWidth, 35) placeholder:holderString];
+        answer.delegate = self;
         
-        
-        int answerWidth = 32 * wordLength/2;
-        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX,startY,answerWidth, 35)];
+        // tags will be 10, 20, 30
+        answer.tag = i + 1 *10;
         
         if (self.level ==1){
             answer.center = CGPointMake(self.view.center.x, startY);
@@ -203,48 +201,45 @@
             [answer becomeFirstResponder];
         }
         [self.view addSubview:answer];
-        startX += answerWidth +10;
+        startX += startWidth +10;
         showResponder = NO;
         i ++;
     }
 
 }
 
-/*
- - (void)textFieldButtonCliked:(UIButton *)sender
- {
- [[UIDevice currentDevice] playInputClick];
- // delete button
- if (sender.tag == -1){
- if ([self.demoTextField.text length] > 0){
- NSString *text = self.demoTextField.text;
- NSUInteger length = text.length;
- text = [text substringToIndex:length -1];
- self.demoTextField.text = text;
- return;
- }
- 
- }
- 
- 
- if (sender.tag != -1){
- 
- if ([self.demoTextField.text length] == 0){
- self.demoTextField.text = sender.titleLabel.text;
- return;
- }
- else if ([self.demoTextField.text length] >= [self.answer length]){
- // dont do anything
- return;
- }
- else{
- self.demoTextField.text = [self.demoTextField.text stringByAppendingString:sender.titleLabel.text];
- return;
- }
- }
- }
- */
-
+- (void)buttonTapped:(UIButton *)sender
+{
+    [[UIDevice currentDevice] playInputClick];
+    if ([self.keyboard.target isKindOfClass:[UITextField class]]){
+        UITextField *field = self.keyboard.target;
+        int answerLength = [[field.placeholder substringToIndex:1] intValue];
+        //delete button
+        if (sender.tag == -1){
+            if ([field.text length] > 0){
+                NSString *text = field.text;
+                NSUInteger length = text.length;
+                text = [text substringToIndex:length -1];
+                field.text = text;
+                return;
+            }
+            
+        }
+        
+        if (sender.tag != -1){
+            if ([field.text length] == 0){
+                field.text = sender.titleLabel.text;
+                return;
+            }
+            else if ([field.text length] >= answerLength){
+                return;
+            }
+            else{
+                field.text = [field.text stringByAppendingString:sender.titleLabel.text];
+            }
+        }
+    }
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -255,44 +250,6 @@
     self.tiles = nil;
 }
 
-
-- (void)dealChallengeTiles
-{
-    NSNumber *screenWidth = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.width];
-    NSNumber *screenHeight = [NSNumber numberWithFloat:[UIScreen mainScreen].bounds.size.height];
-    NSNumber *answerLength = [NSNumber numberWithUnsignedInteger:[self.answer length]];
-
-    double ninetyScreen = ([screenWidth doubleValue]*0.9 / [answerLength doubleValue]) - kTileMargin;
-    double xOffset = ([screenWidth doubleValue] - [answerLength doubleValue] * (ninetyScreen + kTileMargin))/2;
-    xOffset += ninetyScreen/2;
-    
-    // create tiles list and add tiles
-    self.tiles = [NSMutableArray arrayWithCapacity:[self.answer length]];
-    for (NSUInteger i=0; i < [self.answer length]; i++){
-        NSString *letter = [self.answer  substringWithRange:NSMakeRange(i, 1)];
-        if (![letter isEqualToString:@" "]){
-            TilesView *tile = [[TilesView alloc] initWithLetter:letter andSideLength:ninetyScreen];
-            [self.tiles addObject:tile];
-            
-        }
-    }
-    
-    // shuffle list
-    for (int x = 0; x < [self.tiles count]; x++){
-        int rand =  (arc4random() % ([self.tiles count] - x)) + x;
-        [self.tiles exchangeObjectAtIndex:x withObjectAtIndex:rand];
-    }
-    
-    // add tiles to game view
-    int x = 0;
-    for (TilesView *tile in self.tiles){
-        tile.center = CGPointMake(xOffset + x*(ninetyScreen + kTileMargin), [screenHeight doubleValue]/4*3.6);
-        [tile randomize];
-        [self.gameView addSubview:tile];
-        x++;
-    }
-    
-}
 
 - (void)startDragging:(UILongPressGestureRecognizer *)gesture
 {
@@ -337,6 +294,21 @@
     
 }
 
+
+#pragma -mark UITextField Delegate
+ - (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if ([textField.inputView isKindOfClass:[KeyboardView class]]){
+        ((KeyboardView *)textField.inputView).target = textField;
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if ([textField.inputView isKindOfClass:[KeyboardView class]]){
+        ((KeyboardView *)textField.inputView).target = nil;
+    }
+}
 
 
 @end
