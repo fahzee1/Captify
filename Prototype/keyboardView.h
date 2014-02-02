@@ -11,4 +11,6 @@
 @interface KeyboardView : UIView <UIInputViewAudioFeedback>
 
 - (instancetype)init;
+@property(nonatomic, assign) UITextField* target;
+@property(nonatomic, assign)int my;
 @end

@@ -44,7 +44,7 @@
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"i am shit";
+    self.answer = @"lsssdd sggdd todddd";
     self.level = 3;
     [self showKeyboardWithTiles];
     
@@ -67,6 +67,15 @@
 -(void)showKeyboardWithTiles
 {
     KeyboardView *keyboard = [[KeyboardView alloc] init];
+    
+    //resize keyboard based on # of letters
+    NSUInteger totalLetters = [self.answer length] - (self.level - 1);
+    if (totalLetters <= 6){
+        keyboard.frame = CGRectMake(keyboard.frame.origin.x, keyboard.frame.origin.y, keyboard.frame.size.width, keyboard.frame.size.height - 100);
+    }
+    if (totalLetters > 6 && totalLetters < 13){
+        keyboard.frame = CGRectMake(keyboard.frame.origin.x, keyboard.frame.origin.y, keyboard.frame.size.width, keyboard.frame.size.height - 50);
+    }
     CGRect keyboardRect = keyboard.frame;
     self.keyboard = keyboard;
     
@@ -88,7 +97,14 @@
     [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
     [deleteButton setTag:-1];
     [deleteButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-80, slice.origin.y, 50, 35);
+    deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-120, slice.origin.y, 50, 35);
+    
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
+    [nextButton setTag:-2];
+    [nextButton addTarget:self action:@selector(toggleFirstResponder:) forControlEvents:UIControlEventTouchUpInside];
+    nextButton.frame = CGRectMake(CGRectGetMaxX(slice)-70, slice.origin.y, 50, 35);
+    [keyboard addSubview:nextButton];
     [keyboard addSubview:deleteButton];
     
     // loop through the answer and add to list to be shuffled
@@ -124,10 +140,10 @@
               initialSpringVelocity:1
                             options:0
                          animations:^{
-                              button.frame = CGRectMake(p.x,p.y, 35, 35);
+                              button.frame = CGRectMake(p.x,p.y, 30, 35);
                          }
                          completion:^(BOOL finished) {
-                             [UIView animateWithDuration:.4
+                             [UIView animateWithDuration:.2
                                               animations:^{
                                                   [button setTitle:string forState:UIControlStateNormal];
                                               }];
@@ -140,7 +156,7 @@
         if (button.frame.origin.x + 20 >= rightBorder){
             p.y += 50;
             p.x = 10;
-            button.frame = CGRectMake(p.x,p.y, 35, 35);
+            button.frame = CGRectMake(p.x,p.y, 30, 35);
             
             
             
@@ -208,6 +224,39 @@
 
 }
 
+- (void)toggleFirstResponder:(UIButton *)sender
+{
+    int i = 0;
+    NSMutableArray *textfields = [NSMutableArray arrayWithCapacity:3];
+    for (id view in [self.view subviews]){
+        if ([view isKindOfClass:[UITextField class]]){
+            [textfields addObject:view];
+        }
+    }
+    
+    NSUInteger count = [textfields count];
+    for (id view in [self.view subviews]){
+        if ([view isKindOfClass:[UITextField class]]){
+            i++;
+            
+            if (count == i){
+                UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+                [doneButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                doneButton.frame = sender.frame;
+                sender.hidden = YES;
+                [self.keyboard addSubview:doneButton];
+                
+            }
+            if (![view isFirstResponder] && i > 1){
+                [view becomeFirstResponder];
+                return;
+            }
+        }
+    }
+
+}
+
 - (void)buttonTapped:(UIButton *)sender
 {
     [[UIDevice currentDevice] playInputClick];
@@ -223,6 +272,7 @@
                 field.text = text;
                 return;
             }
+
             
         }
         
