@@ -10,6 +10,8 @@
 #import "TilesView.h"
 #import "KeyboardView.h"
 #import "AnswerFieldView.h"
+#import "HomeViewController.h"
+#import "AppDelegate.h"
 
 #define kTileMargin 20
 
@@ -45,6 +47,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // only while testing
+    User *user = nil;
+    NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+    if (uri){
+        NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+        NSError *error;
+        user = (id) [context existingObjectWithID:superuserID error:&error];
+        self.myUser = user;
+    }
+
+    // end while testing
     UILongPressGestureRecognizer *drag = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startDragging:)];
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
@@ -67,8 +81,8 @@
     
     
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"cj ogbuehi ss7";
-    self.level = 3;
+    self.answer = @"cj";
+    self.level =1;
     self.attempts = 0;
     [self showKeyboardWithTiles];
     
@@ -107,15 +121,15 @@
     // slice up bottom half of keyboard
     CGRect slice, remainder;
     CGRectDivide(keyboardRect, &slice, &remainder, 45.0, CGRectMaxYEdge);
-    CGFloat keyboardWidth = CGRectGetWidth(remainder);
-    CGFloat keyboardHeight = CGRectGetHeight(remainder);
+    //CGFloat keyboardWidth = CGRectGetWidth(remainder);
+    //CGFloat keyboardHeight = CGRectGetHeight(remainder);
     CGFloat rightBorder = CGRectGetMaxX(remainder);
-    CGFloat leftBorder = CGRectGetMinX(remainder);
+    //CGFloat leftBorder = CGRectGetMinX(remainder);
     
-    NSLog(@"width is %f",keyboardWidth);
-    NSLog(@"height is %f",keyboardHeight);
-    NSLog(@"right border is %f",rightBorder);
-    NSLog(@"left border is %f",leftBorder);
+    //NSLog(@"width is %f",keyboardWidth);
+    //NSLog(@"height is %f",keyboardHeight);
+    //NSLog(@"right border is %f",rightBorder);
+    //NSLog(@"left border is %f",leftBorder);
     
     // add backspace button to bottom slice
     self.deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-120, slice.origin.y, 50, 35);
@@ -201,6 +215,8 @@
 
 - (void)layAnswerFieldsWithKeyboard:(UIView *)keyboard
 {
+    NSParameterAssert(keyboard);
+    
     // answer textfields
     NSArray *splitAnswer = [self.answer componentsSeparatedByString:@" "];
     NSAssert(self.level == [splitAnswer count], @"answer length should be same as level");
@@ -257,6 +273,7 @@
 
 - (void)toggleFirstResponder:(UIButton *)sender
 {
+    NSParameterAssert(sender);
     
     UIView *firstField = [self.view viewWithTag:100];
     UIView *secondField = nil;
@@ -299,6 +316,8 @@
 
 - (void)buttonTapped:(UIButton *)sender
 {
+    NSParameterAssert(sender);
+    
     [[UIDevice currentDevice] playInputClick];
     if ([self.keyboard.target isKindOfClass:[UITextField class]]){
         UITextField *field = self.keyboard.target;
@@ -404,7 +423,10 @@
     
 }
 
-
+- (void)prepareResultsScreen
+{
+    
+}
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
 {

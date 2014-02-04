@@ -13,5 +13,5 @@
 
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
-
+@property (nonatomic, assign)BOOL showResults;
 @end

@@ -44,6 +44,32 @@
 	// Do any additional setup after loading the view.
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    //if user not logged in segue to login screen
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
+        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+        return;
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
+        self.username.text = self.myUser.username;
+        self.score.text = [self.myUser.score stringValue];
+        [User getFacebookPicWithUser:self.myUser
+                           imageview:self.profileImage];
+    }
+    
+    if (self.showResults){
+        if ([self isKindOfClass:[UINavigationController class]]){
+            [self performSegueWithIdentifier:@"segueToResults" sender:self];
+        }
+        else{
+            NSLog(@"not a navigation controller");
+        }
+    }
+}
+
+
 - (void)makeFullScreen
 {
     if (!self.fullScreen){
@@ -80,19 +106,6 @@
         
     }
     return should;
-}
--(void)viewDidAppear:(BOOL)animated
-{
-    //if user not logged in segue to login screen
-       if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
-        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-       }else{
-           self.username.text = self.myUser.username;
-           self.score.text = [self.myUser.score stringValue];
-           [User getFacebookPicWithUser:self.myUser
-                              imageview:self.profileImage];
-    
-       }
 }
 
 - (void)didReceiveMemoryWarning

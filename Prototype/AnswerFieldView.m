@@ -25,6 +25,7 @@
         // Initialization code
         // cgrectmake (10,200,300,40) is default textfield size
         
+        NSParameterAssert(holder);
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.font = [UIFont systemFontOfSize:15];
         self.placeholder = holder;

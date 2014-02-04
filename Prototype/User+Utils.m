@@ -41,10 +41,41 @@
     return self.private ? YES:NO;
 }
 
++ (BOOL)validPhoneNumber:(NSString *)number
+{
+    if (number == nil || [number length] < 2){
+        return NO;
+    }
+    
+    NSError *error = NULL;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypePhoneNumber error:&error];
+    NSRange inputRange = NSMakeRange(0, [number length]);
+    NSArray *matches = [detector matchesInString:number options:0 range:inputRange];
+    
+    //if no matches
+    if ([matches count] == 0){
+        return NO;
+    }
+    
+    // found match but need to check if it matched whole string
+    NSTextCheckingResult *result = (NSTextCheckingResult *)[matches objectAtIndex:0];
+    if ([result resultType] == NSTextCheckingTypePhoneNumber && result.range.location == inputRange.location && result.range.length == inputRange.length){
+        // matched whole string
+        return YES;
+    }
+    else{
+        // it only matched partial string
+        return NO;
+    }
+}
+
 
 + (User *)CreateOrGetUserWithParams:(NSDictionary *)params
   inManagedObjectContext:(NSManagedObjectContext *)context;
 {
+    NSParameterAssert(context);
+    NSAssert([params count] == 5, @"5 parameters not being passed. Dict passed was %@",params);
+
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) and (username = %@)",[params valueForKey:@"username"]];
@@ -73,6 +104,8 @@
        if (![user.managedObjectContext save:&error]){
         NSLog(@"error saving");
     }
+    
+    NSAssert([user isKindOfClass:[User class]], @"Didnt return a core data user");
     return user;
 }
 
@@ -81,6 +114,8 @@
                    context:(NSManagedObjectContext *)context
                      error:(NSError **)error
 {
+    NSParameterAssert(fetch);
+    NSParameterAssert(context);
     NSArray *results = [context executeFetchRequest:fetch error:error];
     return [results firstObject];
     
@@ -91,6 +126,8 @@
                           context:(NSManagedObjectContext *)context
                             error:(NSError **)error
 {
+    NSParameterAssert(fetch);
+    NSParameterAssert(context);
     NSInteger getUser = 0;
     getUser = [context countForFetchRequest:fetch error:error];
     return getUser;
@@ -100,6 +137,8 @@
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block
 {
+    NSAssert([params count] == 2, @"2 parameters not being passed. Dict passed was %@",params);
+    
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
     return [client POST:AwesomeAPILoginUrlString
@@ -171,6 +210,9 @@
 + (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                     callback:(AwesomeAPICompleteBlock)block;
 {
+    NSParameterAssert(params);
+    NSAssert([params count] == 4, @"4 parameters not being passed. Dict passed was %@",params);
+    
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
     return [client POST:AwesomeAPIRegisterUrlString
@@ -196,7 +238,11 @@
                                                                 @"super_user":super_user,
                                                                 @"timestamp":date};
                                      
-                                     User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                     User *user = nil;
+                                     if (context){
+                                         user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                     }
+
                                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                      [defaults setValue:username forKey:@"username"];
                                      [defaults setBool:YES forKey:@"logged"];
@@ -246,6 +292,8 @@
 + (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
                                             callback:(AwesomeAPICompleteBlock)block;
 {
+    NSAssert([params count] == 7, @"7 parameters not being passed. Dict sent was %@",params);
+    
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
     return [client POST:AwesomeAPIFacebookUrlString
@@ -269,9 +317,11 @@
                                                                             @"privacy":privacy,
                                                                             @"super_user":super_user,
                                                                             @"fbook_id":facebook_id};
-                                                 
-                                    
-                                                 User *user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                                 User *user = nil;
+                                                 if (context){
+                                                      user = [self CreateOrGetUserWithParams:gcParams inManagedObjectContext:context];
+                                                 }
+            
                                                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                                  [defaults setValue:username forKey:@"username"];
                                                  [defaults setBool:YES forKey:@"logged"];
@@ -328,6 +378,9 @@
 + (void)getFacebookPicWithUser:(User *)user
                      imageview:(UIImageView *)iv
 {
+    NSParameterAssert(user);
+    NSParameterAssert(iv);
+    
     // sizes are small, large, and
     NSString *picUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",user.facebook_id];
     NSURL *picURLData = [NSURL URLWithString:picUrlString];

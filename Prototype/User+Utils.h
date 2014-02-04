@@ -17,6 +17,8 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 - (BOOL)isFacebookUser;
 - (BOOL)isPrivate;
 
++ (BOOL)validPhoneNumber:(NSString *)number;
+
 + (User *)CreateOrGetUserWithParams:(NSDictionary *)params
         inManagedObjectContext:(NSManagedObjectContext *)context;
 
