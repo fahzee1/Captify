@@ -16,12 +16,17 @@
 @interface ChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
 @property (weak, nonatomic) IBOutlet UILabel *dragMe;
-@property (strong, nonatomic) UIView *gameView;
-@property (strong, nonatomic) NSMutableArray *tiles;
-@property (strong, nonatomic) NSMutableArray *targets;
-@property (strong, nonatomic) NSMutableArray *answerRects;
 @property CGPoint originalCenter;
-@property (strong, nonatomic) KeyboardView *keyboard;
+@property (strong, nonatomic) UIView *gameView;
+@property (strong, nonatomic) NSMutableArray *targets;
+
+@property (assign,nonatomic)NSInteger attempts; // used to track how many submissions user made; must be < 3
+@property (strong, nonatomic) NSMutableArray *tiles;   // list of buttons for answer (used to shuffle)
+@property (strong, nonatomic) KeyboardView *keyboard; // custom keyboard replaces system keyboard
+@property (strong, nonatomic) UIButton *doneButton;  // used when user is ready to submit answer
+@property (strong, nonatomic) UIButton *nextButton;  // used to move to next text field when more then 1 are available
+@property (strong, nonatomic) UIButton *deleteButton; // backspace button;
+@property CGRect doneButtonFrame; // used in textfield delegate to set done button in keyboard
 
 
 @end
@@ -43,10 +48,30 @@
     UILongPressGestureRecognizer *drag = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startDragging:)];
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
+    
+    // buttons
+    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+    [deleteButton setTag:-1];
+    [deleteButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton addTarget:self action:@selector(checkAnswer) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
+    [nextButton setTag:-2];
+    [nextButton addTarget:self action:@selector(toggleFirstResponder:) forControlEvents:UIControlEventTouchUpInside];
+    self.nextButton = nextButton;
+    self.doneButton = doneButton;
+    self.deleteButton = deleteButton;
+    
+    
     self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"lsssdd sggdd todddd";
+    self.answer = @"cj ogbuehi ss7";
     self.level = 3;
+    self.attempts = 0;
     [self showKeyboardWithTiles];
+    
     
     
     
@@ -93,19 +118,17 @@
     NSLog(@"left border is %f",leftBorder);
     
     // add backspace button to bottom slice
-     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
-    [deleteButton setTag:-1];
-    [deleteButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-120, slice.origin.y, 50, 35);
-    
-    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    [nextButton setTag:-2];
-    [nextButton addTarget:self action:@selector(toggleFirstResponder:) forControlEvents:UIControlEventTouchUpInside];
-    nextButton.frame = CGRectMake(CGRectGetMaxX(slice)-70, slice.origin.y, 50, 35);
-    [keyboard addSubview:nextButton];
-    [keyboard addSubview:deleteButton];
+    self.deleteButton.frame = CGRectMake(CGRectGetMaxX(slice)-120, slice.origin.y, 50, 35);
+    self.nextButton.frame = CGRectMake(CGRectGetMaxX(slice)-70, slice.origin.y, 50, 35);
+    self.doneButtonFrame = self.nextButton.frame;
+    if (self.level > 1){
+        [keyboard addSubview:self.nextButton];
+    }
+    else{
+        self.doneButton.frame = self.nextButton.frame;
+        [keyboard addSubview:self.doneButton];
+    }
+    [keyboard addSubview:self.deleteButton];
     
     // loop through the answer and add to list to be shuffled
     self.tiles = [NSMutableArray arrayWithCapacity:[self.answer length]];
@@ -195,19 +218,27 @@
     BOOL showResponder = YES;
     int i = 0;
     for (NSString *word in splitAnswer){
+        i ++;
         NSUInteger wordLength = [word length];
         NSString *holderString;
-        if (wordLength < 2){
+        if (wordLength < 2 && ![word intValue]){
             holderString = [NSString stringWithFormat:@"%lu letter",(unsigned long)wordLength];
         }
-        else{
+        if (wordLength < 2 && [word intValue]){
+            holderString = [NSString stringWithFormat:@"%lu number",(unsigned long)wordLength];
+        }
+        if (wordLength >= 2 && ![word intValue]){
             holderString = [NSString stringWithFormat:@"%lu letters",(unsigned long)wordLength];
+        }
+        if (wordLength >= 2 && [word intValue]){
+            // doesnt work if numbers not in front of strings
+            holderString = [NSString stringWithFormat:@"%lu letters/numbers",(unsigned long)wordLength];
         }
         UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX, startY, startWidth, 35) placeholder:holderString];
         answer.delegate = self;
         
         // tags will be 10, 20, 30
-        answer.tag = i + 1 *10;
+        answer.tag = i *100;
         
         if (self.level ==1){
             answer.center = CGPointMake(self.view.center.x, startY);
@@ -219,41 +250,50 @@
         [self.view addSubview:answer];
         startX += startWidth +10;
         showResponder = NO;
-        i ++;
+
     }
 
 }
 
 - (void)toggleFirstResponder:(UIButton *)sender
 {
-    int i = 0;
-    NSMutableArray *textfields = [NSMutableArray arrayWithCapacity:3];
-    for (id view in [self.view subviews]){
-        if ([view isKindOfClass:[UITextField class]]){
-            [textfields addObject:view];
+    
+    UIView *firstField = [self.view viewWithTag:100];
+    UIView *secondField = nil;
+    UIView *thirdField = nil;
+    if (self.level == 3){
+        secondField = [self.view viewWithTag:200];
+        thirdField = [self.view viewWithTag:300];
+    }
+    else{
+        secondField = [self.view viewWithTag:200];
+    }
+    
+    
+    if ([firstField isFirstResponder] && secondField){
+        [secondField becomeFirstResponder];
+        if (self.level == 2) {
+            self.doneButton.frame = sender.frame;
+            sender.hidden = YES;
+            [self.keyboard addSubview:self.doneButton];
+
+        }
+        return;
+    }
+    
+    if (secondField && [secondField isFirstResponder]){
+        if (thirdField){
+            [thirdField becomeFirstResponder];
+            if (self.level == 3){
+                self.doneButton.frame = sender.frame;
+                sender.hidden = YES;
+                [self.keyboard addSubview:self.doneButton];
+            }
+
+            return;
         }
     }
     
-    NSUInteger count = [textfields count];
-    for (id view in [self.view subviews]){
-        if ([view isKindOfClass:[UITextField class]]){
-            i++;
-            
-            if (count == i){
-                UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-                [doneButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                doneButton.frame = sender.frame;
-                sender.hidden = YES;
-                [self.keyboard addSubview:doneButton];
-                
-            }
-            if (![view isFirstResponder] && i > 1){
-                [view becomeFirstResponder];
-                return;
-            }
-        }
-    }
 
 }
 
@@ -289,6 +329,94 @@
             }
         }
     }
+}
+
+- (void)checkAnswer
+{
+    if (self.attempts >= 3){
+        //bail
+        return;
+    }
+    self.attempts += 1;
+    NSAssert(self.attempts < 4, @"User can only make three attempts. Look at self.attempts");
+    UITextField *firstField = ((UITextField *)[self.view viewWithTag:100]);
+    UITextField *secondField = nil;
+    UITextField *thirdField = nil;
+    
+    if (![firstField isKindOfClass:[UITextField class]]){
+        //bail
+        return;
+    }
+    
+    if (self.level == 3){
+        secondField = ((UITextField *)[self.view viewWithTag:200]);
+        thirdField = ((UITextField *)[self.view viewWithTag:300]);
+        
+        if (![secondField isKindOfClass:[UITextField class]] && ![thirdField isKindOfClass:[UITextField class]]){
+            return;
+        }
+
+        
+    }
+    if (self.level == 2){
+        secondField = ((UITextField *)[self.view viewWithTag:200]);
+        if (![secondField isKindOfClass:[UITextField class]]){
+            return;
+        }
+        
+
+    }
+    
+    NSString *tryAnswer;
+    if (self.level == 3){
+        NSAssert(thirdField, @"level 3 should have third field");
+        tryAnswer = [NSString stringWithFormat:@"%@ %@ %@",firstField.text,secondField.text,thirdField.text];
+
+    }
+    
+    if (self.level == 2){
+        NSAssert(secondField, @"level 2 should have second field");
+        tryAnswer = [NSString stringWithFormat:@"%@ %@",firstField.text,secondField.text];
+    }
+    
+    if (self.level == 1){
+        NSAssert(firstField, @"level 1 should have a field");
+        tryAnswer = firstField.text;
+    }
+    
+    
+    if ([tryAnswer isEqualToString:self.answer]){
+        // show success screen
+        [self showAlertWithTitle:nil message:@"Answer is correct!"];
+        return;
+    }
+    if (![tryAnswer isEqualToString:self.answer] && self.attempts == 3){
+        // show failure screen
+        [self showAlertWithTitle:nil message:@"Answer is incorrect and you have no more attempts!"];
+        return;
+    }
+    else{
+        // let user continue playing
+        [self showAlertWithTitle:nil message:@"Answer is incorrect. Try again"];
+        return;
+    }
+    
+    
+}
+
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+{
+    if (!title){
+        title = @"Results";
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 
@@ -350,6 +478,22 @@
 {
     if ([textField.inputView isKindOfClass:[KeyboardView class]]){
         ((KeyboardView *)textField.inputView).target = textField;
+    }
+    
+    if (self.level == 3 && textField.tag == 300){
+        UIButton *done = self.doneButton;
+        done.frame = self.doneButtonFrame;
+        self.nextButton.hidden = YES;
+        [self.keyboard addSubview:done];
+        
+    }
+    
+    if (self.level ==2 && textField.tag == 200){
+        UIButton *done = self.doneButton;
+        done.frame = self.doneButtonFrame;
+        self.nextButton.hidden = YES;
+        [self.keyboard addSubview:done];
+
     }
 }
 

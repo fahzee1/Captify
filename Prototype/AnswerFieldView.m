@@ -29,7 +29,7 @@
         self.font = [UIFont systemFontOfSize:15];
         self.placeholder = holder;
         self.autocorrectionType = UITextAutocorrectionTypeNo;
-        self.clearButtonMode = UITextFieldViewModeWhileEditing;
+        //self.clearButtonMode = UITextFieldViewModeWhileEditing;
         self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         
         
