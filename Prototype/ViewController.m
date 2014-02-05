@@ -79,13 +79,13 @@
                                                   NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                       if (wasSuccessful){
                                                           AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                          HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
+                                                          UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
                                                           if (user){
-                                                              if ([vc respondsToSelector:@selector(setMyUser:)]){
-                                                              vc.myUser = user;
+                                                              if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
+                                                              ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
                                                               }
                                                           }
-                                                          [self dismissViewControllerAnimated:YES completion:nil];
+                                                          [navVc popToRootViewControllerAnimated:YES];
                                                       }
                                                   }];
                                                 // If FAILURE, show alert

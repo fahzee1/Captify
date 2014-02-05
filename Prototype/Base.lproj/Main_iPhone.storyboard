@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="O1r-Tl-QQ2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -214,6 +214,16 @@
                                 <rect key="frame" x="111" y="129" width="64" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hom-6o-1t3">
+                                <rect key="frame" x="129" y="345" width="41" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Game">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="z0A-Gc-Syz" kind="push" id="fzh-xc-XOH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -228,7 +238,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3W-Vb-89c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-946" y="-784"/>
+            <point key="canvasLocation" x="-970" y="-818"/>
         </scene>
         <!--View Controller - challenge/pic screen-->
         <scene sceneID="qC3-62-5hV">
@@ -478,7 +488,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVi-GS-2t5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1091" y="-64"/>
+            <point key="canvasLocation" x="157" y="432"/>
         </scene>
         <!--Challenge View Controller - showChallengeScreen-->
         <scene sceneID="NVp-if-iSc">
@@ -503,12 +513,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJA-Je-2QG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1183" y="625"/>
+            <point key="canvasLocation" x="-985" y="1"/>
         </scene>
-        <!--View Controller - resultsScreen-->
+        <!--Results View Controller - resultsScreen-->
         <scene sceneID="nwn-ZU-FtF">
             <objects>
-                <viewController title="resultsScreen" id="Mxw-tI-Kbj" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="resultsScreen" title="resultsScreen" id="Mxw-tI-Kbj" customClass="ResultsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nSg-Rt-kdk"/>
                         <viewControllerLayoutGuide type="bottom" id="zKQ-vK-DEB"/>
@@ -516,13 +526,25 @@
                     <view key="view" contentMode="scaleToFill" id="6vA-o2-IV3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKm-hg-4uo">
+                                <rect key="frame" x="93" y="126" width="145" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Results" id="o6I-tm-9eI"/>
+                    <connections>
+                        <outlet property="resultsLabel" destination="eKm-hg-4uo" id="OUH-eh-mjc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kIF-hL-dpG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-546" y="-1536"/>
+            <point key="canvasLocation" x="-436" y="-1496"/>
         </scene>
         <!--View Controller - phoneNumberScreen-->
         <scene sceneID="498-8G-izu">
@@ -558,7 +580,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z5P-fJ-Yhu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1473" y="-54"/>
+            <point key="canvasLocation" x="-305" y="442"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0yi-Gg-B4L">
@@ -576,7 +598,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hby-wx-5Sw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1637" y="625"/>
+            <point key="canvasLocation" x="-1465" y="153"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pbH-vz-9XV">
@@ -594,7 +616,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mWv-js-gcD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1468" y="-772"/>
+            <point key="canvasLocation" x="-1460" y="-794"/>
         </scene>
     </scenes>
     <resources>
@@ -606,4 +628,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="fzh-xc-XOH"/>
+    </inferredMetricsTieBreakers>
 </document>

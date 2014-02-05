@@ -74,7 +74,7 @@
   inManagedObjectContext:(NSManagedObjectContext *)context;
 {
     NSParameterAssert(context);
-    NSAssert([params count] == 5, @"5 parameters not being passed. Dict passed was %@",params);
+    NSAssert([params objectForKey:@"username"], @"username required");
 
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
@@ -157,11 +157,13 @@
                                          user = (id) [context existingObjectWithID:superuserID error:&error];
                                      }
 
+                                     
                                      NSString *username = [responseObject valueForKeyPath:@"user.username"];
+                                     BOOL facebook_user = [[responseObject valueForKey:@"facebook_user"]boolValue];
                                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                      [defaults setValue:username forKey:@"username"];
                                      [defaults setBool:YES forKey:@"logged"];
-        
+                                     [defaults setBool:facebook_user forKey:@"facebook_user"];
                                      if ([user.username isEqualToString:username]){
                                            [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                      }else{
@@ -378,7 +380,7 @@
 + (void)getFacebookPicWithUser:(User *)user
                      imageview:(UIImageView *)iv
 {
-    NSParameterAssert(user);
+    //NSParameterAssert(user);
     NSParameterAssert(iv);
     
     // sizes are small, large, and

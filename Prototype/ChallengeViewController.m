@@ -29,7 +29,7 @@
 @property (strong, nonatomic) UIButton *nextButton;  // used to move to next text field when more then 1 are available
 @property (strong, nonatomic) UIButton *deleteButton; // backspace button;
 @property CGRect doneButtonFrame; // used in textfield delegate to set done button in keyboard
-
+@property (assign,nonatomic)NSInteger challengePoints;
 
 @end
 
@@ -48,6 +48,7 @@
 {
     [super viewDidLoad];
     // only while testing
+    /*
     User *user = nil;
     NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
     NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
@@ -57,11 +58,22 @@
         user = (id) [context existingObjectWithID:superuserID error:&error];
         self.myUser = user;
     }
+     */
 
     // end while testing
     UILongPressGestureRecognizer *drag = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startDragging:)];
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
+    
+    if (self.level == 1){
+        self.challengePoints = 5;
+    }
+    if (self.level == 2){
+        self.challengePoints = 15;
+    }
+    if (self.level == 3){
+        self.challengePoints = 25;
+    }
     
     // buttons
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -403,15 +415,31 @@
         tryAnswer = firstField.text;
     }
     
-    
+    UINavigationController *navVc = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
+    HomeViewController *home = navVc.viewControllers[0];
     if ([tryAnswer isEqualToString:self.answer]){
         // show success screen
-        [self showAlertWithTitle:nil message:@"Answer is correct!"];
+        //[self showAlertWithTitle:nil message:@"Answer is correct!"];
+        
+        NSNumber *previousScore = self.myUser.score;
+        NSNumber *newScore = [NSNumber numberWithInt:[previousScore intValue] + self.challengePoints];
+        self.myUser.score = newScore;
+        NSError *error;
+        if (![self.myUser.managedObjectContext save:&error]){
+            NSLog(@"error saving score %@",error);
+        }
+        home.showResults = YES;
+        home.success = YES;
+        [self.navigationController pushViewController:home animated:YES];
         return;
     }
     if (![tryAnswer isEqualToString:self.answer] && self.attempts == 3){
         // show failure screen
-        [self showAlertWithTitle:nil message:@"Answer is incorrect and you have no more attempts!"];
+        //[self showAlertWithTitle:nil message:@"Answer is incorrect and you have no more attempts!"];
+        
+        home.showResults = YES;
+        home.success = NO;
+        [self.navigationController pushViewController:home animated:YES];
         return;
     }
     else{
@@ -422,6 +450,7 @@
     
     
 }
+
 
 - (void)prepareResultsScreen
 {

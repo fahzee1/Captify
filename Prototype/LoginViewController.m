@@ -110,7 +110,6 @@
                                                                    if (wasSuccessful) {
                                                                        // data here will be the managed object context to pass to homeview controller
                                                                        // if needed
-                                                                       
                                                                        // save password in keychain
                                                                        [SSKeychain setPassword:self.passwordField.text
                                                                                     forService:@"login"
@@ -119,14 +118,15 @@
                                                                        
                                                                        // show home screen
                                                                        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                                       HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
+                                                                       UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
                                                                        if (user){
-                                                                           if ([vc respondsToSelector:@selector(setMyUser:)]){
-                                                                               vc.myUser = user;
+                                                                           if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
+                                                                               ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
                                                                            }
                                                                 
                                                                        }
-                                                                       [self dismissViewControllerAnimated:YES completion:nil];
+                                                                       [self.navigationController setNavigationBarHidden:YES animated:YES];
+                                                                       [navVc popToRootViewControllerAnimated:YES];
                                                                        
                                                                        
                                                                        

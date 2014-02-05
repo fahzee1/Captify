@@ -117,14 +117,15 @@
                                                              
                                                              // show home screen
                                                              AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                             HomeViewController *vc = (HomeViewController *)delegate.window.rootViewController;
+                                                             UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
                                                              if (user){
-                                                                 if ([vc respondsToSelector:@selector(setMyUser:)]){
-                                                                     vc.myUser = user;
+                                                                 if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
+                                                                     ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
                                                                  }
                                                                  
                                                              }
-                                                             [self dismissViewControllerAnimated:YES completion:nil];
+                                                            [self.navigationController setNavigationBarHidden:YES animated:YES];
+                                                            [navVc popToRootViewControllerAnimated:YES];
 
                                                          }
                                                          else if (!wasSuccessful && !failure){

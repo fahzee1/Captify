@@ -10,6 +10,9 @@
 #import "LoginViewController.h"
 #import "User+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "GoHomeTransition.h"
+#import "ResultsViewController.h"
+#import "AppDelegate.h"
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate>
 
@@ -22,6 +25,21 @@
 @end
 
 @implementation HomeViewController
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+
+    }
+    return _myUser;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +64,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+     self.navigationController.delegate = self;
+    
     //if user not logged in segue to login screen
     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
@@ -60,12 +80,14 @@
     }
     
     if (self.showResults){
-        if ([self isKindOfClass:[UINavigationController class]]){
-            [self performSegueWithIdentifier:@"segueToResults" sender:self];
+        self.showResults = NO;
+        ResultsViewController *results = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsScreen"];
+        if (self.success){
+            results.success = self.success;
         }
-        else{
-            NSLog(@"not a navigation controller");
-        }
+        [self.navigationController pushViewController:results animated:YES];
+        
+        
     }
 }
 
@@ -114,6 +136,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.navigationController.delegate == self){
+        self.navigationController.delegate = nil;
+    }
+}
+
 
 - (IBAction)logout:(UIButton *)sender {
     self.myUser = nil;
@@ -133,4 +163,15 @@
 {    
 }
 
+#pragma -mark UINavigationController delegate
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
+        return [GoHomeTransition new];
+    }
+    return nil;
+}
 @end

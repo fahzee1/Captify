@@ -22,8 +22,8 @@
 {
     // Override point for customization after application launch.
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
-
-    if ([defaults valueForKey:@"facebook_user"]){
+    if ([[defaults valueForKey:@"facebook_user"]boolValue]){
+        NSLog(@"hit %@",[defaults valueForKey:@"facebook_user"]);
         NSLog(@"facebook user");
         //Whenever a person opens the app, check for cached sesssion
         if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded){
@@ -36,15 +36,24 @@
                                               [self sessionStateChanged:session state:status error:error];
                                           }];
         }
+        else{
+            [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                               allowLoginUI:YES
+                                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                              [self sessionStateChanged:session
+                                                                  state:status error:error];
+                
+                                          }];
+        }
 
     }
     
-    if (![defaults valueForKey:@"facebook_user"] && ![defaults valueForKey:@"logged"]){
+    if (![[defaults valueForKey:@"facebook_user"]boolValue] && ![[defaults valueForKey:@"logged"]boolValue]){
          NSLog(@" not facebook user and not logged in");
             // if not logged in show login screen
          [self showLoginScreen];
         }
-    if (![defaults valueForKey:@"facebook_user"] && [defaults valueForKey:@"logged"]){
+    if (![[defaults valueForKey:@"facebook_user"]boolValue] && [[defaults valueForKey:@"logged"]boolValue]){
         NSLog(@" not facebook user logged in");
          // open up to home screen and pass user
          [self showHomeScreen];
@@ -263,13 +272,14 @@
 - (void)showHomeScreenFromFacebook
 {
     NSError *error;
-    HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
+    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
     NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
     if (uri){
         NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        if ([vc respondsToSelector:@selector(setMyUser:)]){
-            vc.myUser = user;
+        
+        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)navVc.topViewController).myUser = user;
         }
     }
     
@@ -280,13 +290,13 @@
 - (void)showHomeScreen
 {
     NSError *error;
-    HomeViewController *vc = (HomeViewController *)self.window.rootViewController;
+    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
     NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
     if (uri){
         NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        if ([vc respondsToSelector:@selector(setMyUser:)]){
-            vc.myUser = user;
+        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)navVc.topViewController).myUser = user;
         }
 
     }

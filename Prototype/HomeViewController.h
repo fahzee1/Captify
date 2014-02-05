@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
-@interface HomeViewController : UIViewController
+@interface HomeViewController : UIViewController<UINavigationControllerDelegate>
 
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 @property (nonatomic, assign)BOOL showResults;
+@property (nonatomic,assign)BOOL success;
 @end
