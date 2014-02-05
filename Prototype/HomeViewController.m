@@ -13,6 +13,8 @@
 #import "GoHomeTransition.h"
 #import "ResultsViewController.h"
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import "ChallengeViewController.h"
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate>
 
@@ -59,26 +61,25 @@
     [self.tap setNumberOfTapsRequired:1];
     [self.profileImage addGestureRecognizer:self.tap];
     self.profileImage.userInteractionEnabled =YES;
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
      self.navigationController.delegate = self;
-    
     //if user not logged in segue to login screen
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
+    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"logged"] boolValue]){
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
         return;
     }
-    
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"logged"]){
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"logged"] boolValue]){
         self.username.text = self.myUser.username;
         self.score.text = [self.myUser.score stringValue];
         [User getFacebookPicWithUser:self.myUser
                            imageview:self.profileImage];
     }
     
+
     if (self.showResults){
         self.showResults = NO;
         ResultsViewController *results = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsScreen"];
@@ -155,6 +156,14 @@
     }
 
     [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"challengeScreen"]){
+        ChallengeViewController *vc = segue.destinationViewController;
+        vc.homeController = self;
+    }
 }
 
 

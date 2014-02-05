@@ -19,7 +19,7 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 
 + (BOOL)validPhoneNumber:(NSString *)number;
 
-+ (User *)CreateOrGetUserWithParams:(NSDictionary *)params
++ (User *)GetOrCreateUserWithParams:(NSDictionary *)params
         inManagedObjectContext:(NSManagedObjectContext *)context;
 
 

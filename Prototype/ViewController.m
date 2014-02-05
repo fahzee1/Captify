@@ -44,7 +44,9 @@
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
         //close the session and remove the access token from the cache.
         //the session state handler in the app delegate will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
+        //[FBSession.activeSession closeAndClearTokenInformation];
+        [self showHomeScreen:nil];
+        
         
         //if the session state is not any of the two "open" states when the button is clicked
     }else{
@@ -78,14 +80,7 @@
                                                       // show homescreen call back handled in delegate
                                                   NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                       if (wasSuccessful){
-                                                          AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                          UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
-                                                          if (user){
-                                                              if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
-                                                              ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
-                                                              }
-                                                          }
-                                                          [navVc popToRootViewControllerAnimated:YES];
+                                                          [self showHomeScreen:user];
                                                       }
                                                   }];
                                                 // If FAILURE, show alert
@@ -95,6 +90,18 @@
                                       }];
     }
     
+}
+
+- (void)showHomeScreen:(User *)user
+{
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
+    if (user){
+        if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
+        }
+    }
+    [navVc popToRootViewControllerAnimated:YES];
 }
 
 @end

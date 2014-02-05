@@ -12,6 +12,8 @@
 #import "AnswerFieldView.h"
 #import "HomeViewController.h"
 #import "AppDelegate.h"
+#import "Challenge+Utils.h"
+#import "AwesomeAPICLient.h"
 
 #define kTileMargin 20
 
@@ -30,7 +32,6 @@
 @property (strong, nonatomic) UIButton *deleteButton; // backspace button;
 @property CGRect doneButtonFrame; // used in textfield delegate to set done button in keyboard
 @property (assign,nonatomic)NSInteger challengePoints;
-
 @end
 
 @implementation ChallengeViewController
@@ -47,33 +48,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // only while testing
-    /*
-    User *user = nil;
-    NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-    if (uri){
-        NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-        NSError *error;
-        user = (id) [context existingObjectWithID:superuserID error:&error];
-        self.myUser = user;
-    }
-     */
-
-    // end while testing
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     UILongPressGestureRecognizer *drag = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startDragging:)];
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
-    
-    if (self.level == 1){
-        self.challengePoints = 5;
-    }
-    if (self.level == 2){
-        self.challengePoints = 15;
-    }
-    if (self.level == 3){
-        self.challengePoints = 25;
-    }
     
     // buttons
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -94,8 +72,10 @@
     
     self.dragMe.userInteractionEnabled = YES;
     self.answer = @"cj";
-    self.level =1;
+    self.hint = @"cj";
+    self.level = 1;
     self.attempts = 0;
+    self.challenge_id = @"0001";
     [self showKeyboardWithTiles];
     
     
@@ -113,6 +93,20 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    if (self.level == 1){
+        self.challengePoints = 5;
+    }
+    if (self.level == 2){
+        self.challengePoints = 15;
+    }
+    if (self.level == 3){
+        self.challengePoints = 25;
+    }
+
+}
 
 
 -(void)showKeyboardWithTiles
@@ -417,6 +411,7 @@
     
     UINavigationController *navVc = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
     HomeViewController *home = navVc.viewControllers[0];
+    
     if ([tryAnswer isEqualToString:self.answer]){
         // show success screen
         //[self showAlertWithTitle:nil message:@"Answer is correct!"];
@@ -424,13 +419,22 @@
         NSNumber *previousScore = self.myUser.score;
         NSNumber *newScore = [NSNumber numberWithInt:[previousScore intValue] + self.challengePoints];
         self.myUser.score = newScore;
+        self.myChallenge.success = [NSNumber numberWithBool:YES];
+        
         NSError *error;
-        if (![self.myUser.managedObjectContext save:&error]){
-            NSLog(@"error saving score %@",error);
+        if ([self.myUser.managedObjectContext hasChanges]){
+            if (![self.myUser.managedObjectContext save:&error]){
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
         }
-        home.showResults = YES;
-        home.success = YES;
-        [self.navigationController pushViewController:home animated:YES];
+        NSAssert(self.myUser.score != previousScore, @"Score wasnt updated from %@ to %@",previousScore,newScore);
+        NSAssert(self.myChallenge.success, @"Challege success should be 1 but it is %@",self.myChallenge.success);
+        
+        self.homeController.showResults = YES;
+        self.homeController.success = YES;
+        [self sendChallengeResults:[self.myChallenge.success boolValue]];
+        [self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
     if (![tryAnswer isEqualToString:self.answer] && self.attempts == 3){
@@ -439,10 +443,10 @@
         
         home.showResults = YES;
         home.success = NO;
-        [self.navigationController pushViewController:home animated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
-    else{
+    if (![tryAnswer isEqualToString:self.answer] && self.attempts != 3){
         // let user continue playing
         [self showAlertWithTitle:nil message:@"Answer is incorrect. Try again"];
         return;
@@ -452,10 +456,28 @@
 }
 
 
-- (void)prepareResultsScreen
+- (void)sendChallengeResults:(BOOL)success
 {
+    NSDictionary *params = @{@"username": [[NSUserDefaults standardUserDefaults]valueForKey:@"username"],
+                             @"challenge_id": self.myChallenge.challenge_id,
+                             @"success": [NSNumber numberWithBool:success],
+                             @"score": self.myUser.score};
+    if ([[AwesomeAPICLient sharedClient] connected]){
+            [Challenge sendChallengeResults:params
+                              challenge:self.myChallenge];
+    }
+    else{
+        NSError *error;
+        self.myChallenge.active = [NSNumber numberWithBool:YES];
+        if (![self.myChallenge.managedObjectContext save:&error]){
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+    
     
 }
+
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
 {
@@ -521,6 +543,40 @@
             break;
     }
     
+}
+
+#pragma -mark Lazy Instantiation
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+
+- (Challenge *)myChallenge
+{
+    if (!_myChallenge){
+        NSDictionary *params = @{@"username": [[NSUserDefaults standardUserDefaults]valueForKey:@"username"],
+                                 @"challenge_id":self.challenge_id,
+                                 @"type":[NSNumber numberWithInt:self.level],
+                                 @"answer":self.answer,
+                                 @"hint":self.hint,
+                                 @"theUser":self.myUser,
+                                 @"level":[NSNumber numberWithInt:self.level]
+                                 };
+        _myChallenge = [Challenge GetOrCreateChallengeWithParams:params
+                                              inManagedObjectContext:self.myUser.managedObjectContext];
+    }
+    return _myChallenge;
 }
 
 

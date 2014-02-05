@@ -19,7 +19,9 @@
         client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
-        [client.requestSerializer setValue:@"ApiKey square:9c20d19987ecd0c396d06fc58981588ba88f91bc"
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",[defaults valueForKey:@"username"],[defaults valueForKey:@"api_key"]];
+        [client.requestSerializer setValue:apiString
                         forHTTPHeaderField:@"Authorization"];
         
         

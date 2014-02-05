@@ -49,6 +49,10 @@
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
 		117594E718A20E3F0078EFA2 /* ResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E618A20E3F0078EFA2 /* ResultsViewController.m */; };
+		11827BA718A2B85D00DAF07C /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BA618A2B85D00DAF07C /* User.m */; };
+		11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAC18A2B85D00DAF07C /* ChallengeSend.m */; };
+		11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */; };
+		11827BB918A2CA9C00DAF07C /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BB818A2CA9C00DAF07C /* Challenge.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
@@ -57,7 +61,6 @@
 		1186B1BD188E38920082F35F /* User+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BC188E38920082F35F /* User+Utils.m */; };
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
-		1186B1CB1895C39B0082F35F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1CA1895C39B0082F35F /* User.m */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
 		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
 /* End PBXBuildFile section */
@@ -146,6 +149,14 @@
 		117594E218A1FF670078EFA2 /* GoHomeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoHomeTransition.m; sourceTree = "<group>"; };
 		117594E518A20E3F0078EFA2 /* ResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsViewController.h; sourceTree = "<group>"; };
 		117594E618A20E3F0078EFA2 /* ResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsViewController.m; sourceTree = "<group>"; };
+		11827BA518A2B85D00DAF07C /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		11827BA618A2B85D00DAF07C /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		11827BAB18A2B85D00DAF07C /* ChallengeSend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeSend.h; sourceTree = "<group>"; };
+		11827BAC18A2B85D00DAF07C /* ChallengeSend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeSend.m; sourceTree = "<group>"; };
+		11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Challenge+Utils.h"; sourceTree = "<group>"; };
+		11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Challenge+Utils.m"; sourceTree = "<group>"; };
+		11827BB718A2CA9C00DAF07C /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		11827BB818A2CA9C00DAF07C /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -159,8 +170,6 @@
 		1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
 		1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
-		1186B1C91895C39B0082F35F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		1186B1CA1895C39B0082F35F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
 		1186B1D31897594E0082F35F /* TilesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilesView.h; sourceTree = "<group>"; };
@@ -278,10 +287,16 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				1186B1C91895C39B0082F35F /* User.h */,
-				1186B1CA1895C39B0082F35F /* User.m */,
+				11827BB718A2CA9C00DAF07C /* Challenge.h */,
+				11827BB818A2CA9C00DAF07C /* Challenge.m */,
+				11827BA518A2B85D00DAF07C /* User.h */,
+				11827BA618A2B85D00DAF07C /* User.m */,
+				11827BAB18A2B85D00DAF07C /* ChallengeSend.h */,
+				11827BAC18A2B85D00DAF07C /* ChallengeSend.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
+				11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */,
+				11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -564,7 +579,6 @@
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
-				1186B1CB1895C39B0082F35F /* User.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
 				117594E718A20E3F0078EFA2 /* ResultsViewController.m in Sources */,
@@ -574,6 +588,7 @@
 				1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
+				11827BB918A2CA9C00DAF07C /* Challenge.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
 				112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */,
 				116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */,
@@ -581,10 +596,13 @@
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
+				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
+				11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */,
+				11827BA718A2B85D00DAF07C /* User.m in Sources */,
 				117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,

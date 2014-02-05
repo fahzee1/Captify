@@ -244,11 +244,19 @@
 #pragma mark - convience methods
 - (void)showLoginScreen
 {
-    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-    ViewController *homevc = (ViewController *)[mainStoryBoard instantiateViewControllerWithIdentifier:@"startScreen"];
-    UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:homevc];
-    [self.window makeKeyAndVisible];
-    [self.window.rootViewController presentViewController:navC animated:NO completion:nil];
+    NSError *error;
+    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
+    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+    if (uri){
+        NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+        User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+        
+        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)navVc.topViewController).myUser = user;
+        }
+    }
+    
+
     return;
     
     
