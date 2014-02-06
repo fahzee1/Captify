@@ -43,6 +43,9 @@
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
+		1125C95518A3F1F200CFB0FB /* ResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95418A3F1F200CFB0FB /* ResultsTransition.m */; };
+		1125C95818A3F74F00CFB0FB /* ResultsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95718A3F74F00CFB0FB /* ResultsSegue.m */; };
+		1125C95E18A4174C00CFB0FB /* RecentActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */; };
 		11299C731899727A00D69000 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11299C721899727A00D69000 /* Keyboard.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		116F0C5D189BFC7F00C1C430 /* KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5C189BFC7F00C1C430 /* KeyboardView.m */; };
@@ -138,6 +141,12 @@
 		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		1125C95318A3F1F200CFB0FB /* ResultsTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsTransition.h; sourceTree = "<group>"; };
+		1125C95418A3F1F200CFB0FB /* ResultsTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsTransition.m; sourceTree = "<group>"; };
+		1125C95618A3F74F00CFB0FB /* ResultsSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsSegue.h; sourceTree = "<group>"; };
+		1125C95718A3F74F00CFB0FB /* ResultsSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsSegue.m; sourceTree = "<group>"; };
+		1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentActivityViewController.h; sourceTree = "<group>"; };
+		1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentActivityViewController.m; sourceTree = "<group>"; };
 		11299C721899727A00D69000 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
@@ -419,6 +428,10 @@
 			children = (
 				117594E118A1FF670078EFA2 /* GoHomeTransition.h */,
 				117594E218A1FF670078EFA2 /* GoHomeTransition.m */,
+				1125C95318A3F1F200CFB0FB /* ResultsTransition.h */,
+				1125C95418A3F1F200CFB0FB /* ResultsTransition.m */,
+				1125C95618A3F74F00CFB0FB /* ResultsSegue.h */,
+				1125C95718A3F74F00CFB0FB /* ResultsSegue.m */,
 			);
 			name = Transitions;
 			sourceTree = "<group>";
@@ -454,6 +467,8 @@
 				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
 				11299C741899772E00D69000 /* KeyboardViewController.h */,
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
+				1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */,
+				1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */,
 				117594E518A20E3F0078EFA2 /* ResultsViewController.h */,
 				117594E618A20E3F0078EFA2 /* ResultsViewController.m */,
 			);
@@ -577,6 +592,7 @@
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
+				1125C95818A3F74F00CFB0FB /* ResultsSegue.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1186B1D51897594E0082F35F /* TilesView.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
@@ -586,6 +602,7 @@
 				1107316218863B2E0065D77F /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */,
 				1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */,
+				1125C95518A3F1F200CFB0FB /* ResultsTransition.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				11827BB918A2CA9C00DAF07C /* Challenge.m in Sources */,
@@ -605,6 +622,7 @@
 				11827BA718A2B85D00DAF07C /* User.m in Sources */,
 				117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
+				1125C95E18A4174C00CFB0FB /* RecentActivityViewController.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

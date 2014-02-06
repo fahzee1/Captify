@@ -39,7 +39,7 @@
     
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
-    request.predicate = [NSPredicate predicateWithFormat:@"(challenge_id = %@) and (sender.username = %@)",[params valueForKey:@"challenge_id"],[params valueForKey:@"username"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"challenge_id = %@",[params valueForKey:@"challenge_id"]];
     
     // check to see if we have the challenge already
     NSInteger gotChallenge = [self checkIfChallengeWithFetch:request
@@ -88,6 +88,16 @@
     NSArray *results = [context executeFetchRequest:fetch error:error];
     return [results firstObject];
     
+}
+
++ (NSArray *)getAllSentChallengesWithUsername:(NSString *)username
+                                      context:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    request.predicate = [NSPredicate predicateWithFormat:@"sender.username = %@",username];
+    return [context executeFetchRequest:request error:&error];
+
 }
 
 

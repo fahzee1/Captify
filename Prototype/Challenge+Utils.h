@@ -15,5 +15,6 @@
 
 + (void)sendChallengeResults:(NSDictionary *)params
                                      challenge:(Challenge *)challenge;
-
++ (NSArray *)getAllSentChallengesWithUsername:(NSString *)username
+                                      context:(NSManagedObjectContext *)context;
 @end

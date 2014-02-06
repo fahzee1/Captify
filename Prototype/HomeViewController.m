@@ -11,6 +11,7 @@
 #import "User+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "GoHomeTransition.h"
+#import "ResultsTransition.h"
 #import "ResultsViewController.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
@@ -81,12 +82,15 @@
     
 
     if (self.showResults){
-        self.showResults = NO;
+        //self.showResults = NO;
+        /*
         ResultsViewController *results = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsScreen"];
         if (self.success){
             results.success = self.success;
         }
-        [self.navigationController pushViewController:results animated:YES];
+        */
+        [self performSegueWithIdentifier:@"segueToResults" sender:self];
+        self.showResults = NO;
         
         
     }
@@ -164,6 +168,12 @@
         ChallengeViewController *vc = segue.destinationViewController;
         vc.homeController = self;
     }
+    
+    if ([segue.identifier isEqualToString:@"segueToResults"]){
+        ResultsViewController *vc = segue.destinationViewController;
+        vc.success = self.success;
+    }
+
 }
 
 
@@ -172,15 +182,30 @@
 {    
 }
 
+
 #pragma -mark UINavigationController delegate
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
+     NSLog( @"hiot %@",toVC);
+    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[ChallengeViewController class]]){
+        ResultsTransition *RT = [ResultsTransition new];
+        RT.dismissing = YES;
+        return RT;
+    }
+
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
         return [GoHomeTransition new];
     }
+    
+    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[ResultsViewController class]]){
+        NSLog( @"hiot");
+    }
+
+    
+    
     return nil;
 }
 @end

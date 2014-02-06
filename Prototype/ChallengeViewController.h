@@ -14,6 +14,7 @@
 @interface ChallengeViewController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
+@property (nonatomic, retain)User *myFriend; 
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (strong, nonatomic)NSString *answer;
 @property (strong, nonatomic)NSString *hint;

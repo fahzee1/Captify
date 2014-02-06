@@ -358,6 +358,7 @@
 
 - (void)checkAnswer
 {
+   
     if (self.attempts >= 3){
         //bail
         return;
@@ -433,9 +434,11 @@
         
         self.homeController.showResults = YES;
         self.homeController.success = YES;
-        [self sendChallengeResults:[self.myChallenge.success boolValue]];
+        //[self sendChallengeResults:[self.myChallenge.success boolValue]];
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
-        return;
+        
+        
     }
     if (![tryAnswer isEqualToString:self.answer] && self.attempts == 3){
         // show failure screen
@@ -462,6 +465,7 @@
                              @"challenge_id": self.myChallenge.challenge_id,
                              @"success": [NSNumber numberWithBool:success],
                              @"score": self.myUser.score};
+    
     if ([[AwesomeAPICLient sharedClient] connected]){
             [Challenge sendChallengeResults:params
                               challenge:self.myChallenge];
@@ -570,7 +574,7 @@
                                  @"type":[NSNumber numberWithInt:self.level],
                                  @"answer":self.answer,
                                  @"hint":self.hint,
-                                 @"theUser":self.myUser,
+                                 @"theUser":self.myFriend,
                                  @"level":[NSNumber numberWithInt:self.level]
                                  };
         _myChallenge = [Challenge GetOrCreateChallengeWithParams:params

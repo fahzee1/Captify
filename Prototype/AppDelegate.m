@@ -23,7 +23,6 @@
     // Override point for customization after application launch.
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
-        NSLog(@"hit %@",[defaults valueForKey:@"facebook_user"]);
         NSLog(@"facebook user");
         //Whenever a person opens the app, check for cached sesssion
         if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded){
@@ -279,15 +278,17 @@
 
 - (void)showHomeScreenFromFacebook
 {
-    NSError *error;
-    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
-    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-    if (uri){
-        NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-        User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        
-        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
-            ((HomeViewController *)navVc.topViewController).myUser = user;
+    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+        NSError *error;
+        UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+            
+            if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
+                ((HomeViewController *)navVc.topViewController).myUser = user;
+            }
         }
     }
     
@@ -297,16 +298,18 @@
 
 - (void)showHomeScreen
 {
-    NSError *error;
-    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
-    NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-    if (uri){
-        NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-        User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
-        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
-            ((HomeViewController *)navVc.topViewController).myUser = user;
-        }
+    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+        NSError *error;
+        UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
+            if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
+                ((HomeViewController *)navVc.topViewController).myUser = user;
+            }
 
+        }
     }
     
 
