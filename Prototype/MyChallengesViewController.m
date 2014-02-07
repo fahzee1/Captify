@@ -51,35 +51,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-
-    // Return the number of rows in the section.
-    return [self.myChallenges count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    Challenge *challenge = [self.myChallenges objectAtIndex:indexPath.row];
-    cell.textLabel.text = challenge.sender.username;
-    // Configure the cell...
-    
-    return cell;
-}
-
-
-
 #pragma -mark Lazy Instantiation
 - (User *)myUser
 {
@@ -107,6 +78,47 @@
     }
     return _myChallenges;
 }
+
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+    // Return the number of rows in the section.
+    return [self.myChallenges count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    Challenge *challenge = [self.myChallenges objectAtIndex:indexPath.row];
+    cell.textLabel.text = challenge.sender.username;
+    // Configure the cell...
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    /*
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    Challenge *challenge = [self.myChallenges objectAtIndex:indexPath.row];
+    UIViewController *contoller = [[UIViewController alloc] init];
+    [self. navigationController pushViewController:contoller animated:YES];
+     */
+    NSLog(@"go to detail view");
+}
+
 
 /*
 // Override to support conditional editing of the table view.
