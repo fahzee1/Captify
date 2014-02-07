@@ -46,6 +46,9 @@
 		1125C95518A3F1F200CFB0FB /* ResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95418A3F1F200CFB0FB /* ResultsTransition.m */; };
 		1125C95818A3F74F00CFB0FB /* ResultsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95718A3F74F00CFB0FB /* ResultsSegue.m */; };
 		1125C95E18A4174C00CFB0FB /* RecentActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */; };
+		1128343F18A5561C003BA67F /* MyChallengesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128343E18A5561C003BA67F /* MyChallengesViewController.m */; };
+		1128344318A55651003BA67F /* FriendsChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128344118A55651003BA67F /* FriendsChallengeViewController.m */; };
+		1128344418A55651003BA67F /* FriendsChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128344218A55651003BA67F /* FriendsChallengeViewController.xib */; };
 		11299C731899727A00D69000 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11299C721899727A00D69000 /* Keyboard.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		116F0C5D189BFC7F00C1C430 /* KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5C189BFC7F00C1C430 /* KeyboardView.m */; };
@@ -147,6 +150,11 @@
 		1125C95718A3F74F00CFB0FB /* ResultsSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsSegue.m; sourceTree = "<group>"; };
 		1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentActivityViewController.h; sourceTree = "<group>"; };
 		1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentActivityViewController.m; sourceTree = "<group>"; };
+		1128343D18A5561C003BA67F /* MyChallengesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChallengesViewController.h; sourceTree = "<group>"; };
+		1128343E18A5561C003BA67F /* MyChallengesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChallengesViewController.m; sourceTree = "<group>"; };
+		1128344018A55651003BA67F /* FriendsChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsChallengeViewController.h; sourceTree = "<group>"; };
+		1128344118A55651003BA67F /* FriendsChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsChallengeViewController.m; sourceTree = "<group>"; };
+		1128344218A55651003BA67F /* FriendsChallengeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsChallengeViewController.xib; sourceTree = "<group>"; };
 		11299C721899727A00D69000 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
@@ -471,6 +479,11 @@
 				1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */,
 				117594E518A20E3F0078EFA2 /* ResultsViewController.h */,
 				117594E618A20E3F0078EFA2 /* ResultsViewController.m */,
+				1128343D18A5561C003BA67F /* MyChallengesViewController.h */,
+				1128343E18A5561C003BA67F /* MyChallengesViewController.m */,
+				1128344018A55651003BA67F /* FriendsChallengeViewController.h */,
+				1128344118A55651003BA67F /* FriendsChallengeViewController.m */,
+				1128344218A55651003BA67F /* FriendsChallengeViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -564,6 +577,7 @@
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
+				1128344418A55651003BA67F /* FriendsChallengeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +596,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1128344318A55651003BA67F /* FriendsChallengeViewController.m in Sources */,
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
 				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
@@ -609,6 +624,7 @@
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,
 				112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */,
 				116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */,
+				1128343F18A5561C003BA67F /* MyChallengesViewController.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,

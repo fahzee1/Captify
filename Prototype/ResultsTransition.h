@@ -12,5 +12,5 @@
 
 @property BOOL presenting;
 @property bool dismissing;
-
+@property BOOL showingResults;
 @end

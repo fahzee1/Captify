@@ -13,8 +13,15 @@
 @interface RecentActivityViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableBox;
-@property NSArray *myChallenges;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *whichTable;
+
+
+@property NSArray *myChallenges;
+@property UIViewController *friendsChallengeController;
+@property UIViewController *myChallengeController;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *whichController;
+
+
 
 @end
 
@@ -32,12 +39,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.whichTable addTarget:self action:@selector(choseTable) forControlEvents:UIControlEventValueChanged];
+    MyChallengesViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+    myVC.myUser = self.myUser;
+    [self displayCurrentController:myVC];
+    
+    [self.whichController addTarget:self action:@selector(choseController) forControlEvents:UIControlEventValueChanged];
     self.tableBox.delegate = self;
     self.tableBox.dataSource = self;
-    NSString *username = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
-    self.myChallenges = [Challenge getAllSentChallengesWithUsername:username
-                                                    context:self.myUser.managedObjectContext];
+
     
     /*self.myChallenges = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];*/
     
@@ -56,10 +65,95 @@
     // Dispose of any resources that can be recreated.
 }
 
-
--(void)choseTable
+- (CGRect)frameForCurrentController:(BOOL)transition
 {
-    [self.tableBox reloadData ];
+    CGRect frame = CGRectZero;
+    CGSize size = CGSizeMake(self.currentController.view.frame.size.width, self.currentController.view.frame.size.height);
+    CGPoint slide;
+    if (!transition){
+        slide = CGPointMake(self.currentController.view.frame.origin.x, self.whichController.frame.origin.y +50);
+    }
+    else
+    {
+         slide = CGPointMake(self.currentController.view.frame.origin.x, self.whichController.frame.origin.y +200);
+    }
+    frame = CGRectMake(slide.x, slide.y, size.width, size.height);
+    return frame;
+}
+
+
+
+
+- (void)displayCurrentController:(UIViewController *)controller
+{
+    self.currentController = controller;
+    [self addChildViewController:controller];
+    controller.view.frame = [self frameForCurrentController:NO];
+    [self.view addSubview:controller.view];
+    [controller didMoveToParentViewController:self];
+
+}
+
+- (void)hideViewController:(UIViewController *)controller
+{
+    [controller willMoveToParentViewController:nil];
+    [controller.view removeFromSuperview];
+    [controller removeFromParentViewController];
+}
+
+
+- (void) cycleFromViewController: (UIViewController *)oldVC
+                toViewController:(UIViewController *)newVc
+{
+    [oldVC willMoveToParentViewController:nil];
+    [self addChildViewController:newVc];
+    
+    newVc.view.frame = [self frameForCurrentController:YES];
+    CGRect endFrame = [self frameForCurrentController:YES];
+    
+    [self transitionFromViewController:oldVC
+                      toViewController:newVc
+                              duration:0.25
+                               options:0
+                            animations:^{
+                                newVc.view.frame = oldVC.view.frame;
+                                oldVC.view.frame = endFrame;
+                            }
+                            completion:^(BOOL finished) {
+                                self.currentController = newVc;
+                                [oldVC removeFromParentViewController];
+                                [newVc didMoveToParentViewController:self];
+                            }];
+}
+
+
+-(void)choseController
+{
+    switch (self.whichController.selectedSegmentIndex) {
+        case 0:
+        {
+            MyChallengesViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+            vc.myUser = self.myUser;
+            [self cycleFromViewController:self.currentController toViewController:vc];
+        }
+            break;
+            
+        case 1:
+        {
+            FriendsChallengeViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsChallenges"];
+            vc.myUser = self.myUser;
+            [self cycleFromViewController:self.currentController toViewController:vc];
+            
+            break;
+        }
+            
+        default:
+        {
+            
+        }
+            break;
+    }
+    
 }
 
 

@@ -5,6 +5,8 @@
 //  Created by CJ Ogbuehi on 1/18/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
+// Root controller. If not authenticated performs segue to login screen
+// else let user use app.
 
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"

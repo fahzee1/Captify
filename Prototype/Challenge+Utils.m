@@ -90,12 +90,25 @@
     
 }
 
-+ (NSArray *)getAllSentChallengesWithUsername:(NSString *)username
-                                      context:(NSManagedObjectContext *)context
++ (NSArray *)getChallengesWithUsername:(NSString *)username
+                           fromFriends:(BOOL)FF
+                                getAll:(BOOL)all
+                               context:(NSManagedObjectContext *)context
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
-    request.predicate = [NSPredicate predicateWithFormat:@"sender.username = %@",username];
+    if (all){
+        return [context executeFetchRequest:request error:&error];
+    }
+    
+    if (!all && FF){
+        request.predicate = [NSPredicate predicateWithFormat:@"(sender.username != %@) && (sender.is_friend = %@)",username,[NSNumber numberWithBool:YES]];
+    }
+    
+    if (!all && !FF){
+        request.predicate = [NSPredicate predicateWithFormat:@"sender.username = %@",username];
+    }
+    
     return [context executeFetchRequest:request error:&error];
 
 }

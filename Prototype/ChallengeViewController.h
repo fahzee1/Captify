@@ -5,6 +5,8 @@
 //  Created by CJ Ogbuehi on 1/27/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
+// Controller that encapsulates all game logic and displays
+// custom keyboard, buttons, and pic/video 
 
 #import <UIKit/UIKit.h>
 #import "User.h"

@@ -16,6 +16,12 @@
 #import "AwesomeAPICLient.h"
 
 #define kTileMargin 20
+#define DELETEBUTTON_TAG -1
+#define NEXTBUTTON_TAG -2
+#define FIRSTANSWERFIELD_TAG 100
+#define SECONDANSWERFIELD_TAG 200
+#define THIRDANSWERFIELD_TAG 300
+#define TEST 1
 
 @interface ChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
@@ -56,14 +62,14 @@
     // buttons
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
-    [deleteButton setTag:-1];
+    [deleteButton setTag:DELETEBUTTON_TAG];
     [deleteButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(checkAnswer) forControlEvents:UIControlEventTouchUpInside];
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    [nextButton setTag:-2];
+    [nextButton setTag:NEXTBUTTON_TAG];
     [nextButton addTarget:self action:@selector(toggleFirstResponder:) forControlEvents:UIControlEventTouchUpInside];
     self.nextButton = nextButton;
     self.doneButton = doneButton;
@@ -281,15 +287,15 @@
 {
     NSParameterAssert(sender);
     
-    UIView *firstField = [self.view viewWithTag:100];
+    UIView *firstField = [self.view viewWithTag:FIRSTANSWERFIELD_TAG];
     UIView *secondField = nil;
     UIView *thirdField = nil;
     if (self.level == 3){
-        secondField = [self.view viewWithTag:200];
-        thirdField = [self.view viewWithTag:300];
+        secondField = [self.view viewWithTag:SECONDANSWERFIELD_TAG];
+        thirdField = [self.view viewWithTag:THIRDANSWERFIELD_TAG];
     }
     else{
-        secondField = [self.view viewWithTag:200];
+        secondField = [self.view viewWithTag:SECONDANSWERFIELD_TAG];
     }
     
     
@@ -329,7 +335,7 @@
         UITextField *field = self.keyboard.target;
         int answerLength = [[field.placeholder substringToIndex:1] intValue];
         //delete button
-        if (sender.tag == -1){
+        if (sender.tag == DELETEBUTTON_TAG){
             if ([field.text length] > 0){
                 NSString *text = field.text;
                 NSUInteger length = text.length;
@@ -341,7 +347,7 @@
             
         }
         
-        if (sender.tag != -1){
+        if (sender.tag != DELETEBUTTON_TAG){
             if ([field.text length] == 0){
                 field.text = sender.titleLabel.text;
                 return;
@@ -365,7 +371,7 @@
     }
     self.attempts += 1;
     NSAssert(self.attempts < 4, @"User can only make three attempts. Look at self.attempts");
-    UITextField *firstField = ((UITextField *)[self.view viewWithTag:100]);
+    UITextField *firstField = ((UITextField *)[self.view viewWithTag:FIRSTANSWERFIELD_TAG]);
     UITextField *secondField = nil;
     UITextField *thirdField = nil;
     
@@ -375,8 +381,8 @@
     }
     
     if (self.level == 3){
-        secondField = ((UITextField *)[self.view viewWithTag:200]);
-        thirdField = ((UITextField *)[self.view viewWithTag:300]);
+        secondField = ((UITextField *)[self.view viewWithTag:SECONDANSWERFIELD_TAG]);
+        thirdField = ((UITextField *)[self.view viewWithTag:THIRDANSWERFIELD_TAG]);
         
         if (![secondField isKindOfClass:[UITextField class]] && ![thirdField isKindOfClass:[UITextField class]]){
             return;
@@ -385,7 +391,7 @@
         
     }
     if (self.level == 2){
-        secondField = ((UITextField *)[self.view viewWithTag:200]);
+        secondField = ((UITextField *)[self.view viewWithTag:SECONDANSWERFIELD_TAG]);
         if (![secondField isKindOfClass:[UITextField class]]){
             return;
         }
@@ -410,9 +416,6 @@
         tryAnswer = firstField.text;
     }
     
-    UINavigationController *navVc = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
-    HomeViewController *home = navVc.viewControllers[0];
-    
     if ([tryAnswer isEqualToString:self.answer]){
         // show success screen
         //[self showAlertWithTitle:nil message:@"Answer is correct!"];
@@ -434,7 +437,9 @@
         
         self.homeController.showResults = YES;
         self.homeController.success = YES;
-        //[self sendChallengeResults:[self.myChallenge.success boolValue]];
+        if (!TEST){
+            [self sendChallengeResults:[self.myChallenge.success boolValue]];
+        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
         
@@ -444,8 +449,12 @@
         // show failure screen
         //[self showAlertWithTitle:nil message:@"Answer is incorrect and you have no more attempts!"];
         
-        home.showResults = YES;
-        home.success = NO;
+        self.homeController.showResults = YES;
+        self.homeController.success = NO;
+        if (!TEST){
+            [self sendChallengeResults:NO];
+        }
+
         [self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
@@ -574,7 +583,8 @@
                                  @"type":[NSNumber numberWithInt:self.level],
                                  @"answer":self.answer,
                                  @"hint":self.hint,
-                                 @"theUser":self.myFriend,
+                                 //@"theUser":self.myFriend,
+                                 @"theUser":self.myUser,
                                  @"level":[NSNumber numberWithInt:self.level]
                                  };
         _myChallenge = [Challenge GetOrCreateChallengeWithParams:params
@@ -591,7 +601,7 @@
         ((KeyboardView *)textField.inputView).target = textField;
     }
     
-    if (self.level == 3 && textField.tag == 300){
+    if (self.level == 3 && textField.tag == THIRDANSWERFIELD_TAG){
         UIButton *done = self.doneButton;
         done.frame = self.doneButtonFrame;
         self.nextButton.hidden = YES;
@@ -599,7 +609,7 @@
         
     }
     
-    if (self.level ==2 && textField.tag == 200){
+    if (self.level ==2 && textField.tag == SECONDANSWERFIELD_TAG){
         UIButton *done = self.doneButton;
         done.frame = self.doneButtonFrame;
         self.nextButton.hidden = YES;

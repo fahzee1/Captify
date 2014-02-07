@@ -89,7 +89,9 @@
             results.success = self.success;
         }
         */
+          NSLog(@"hit2");
         [self performSegueWithIdentifier:@"segueToResults" sender:self];
+          NSLog(@"hit3");
         self.showResults = NO;
         
         
@@ -184,6 +186,7 @@
 
 
 #pragma -mark UINavigationController delegate
+
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
                                                fromViewController:(UIViewController *)fromVC
@@ -192,6 +195,9 @@
      NSLog( @"hiot %@",toVC);
     if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[ChallengeViewController class]]){
         ResultsTransition *RT = [ResultsTransition new];
+        if ([toVC isKindOfClass:[HomeViewController class]]){
+            RT.showingResults = self.showResults;
+        }
         RT.dismissing = YES;
         return RT;
     }
@@ -208,4 +214,5 @@
     
     return nil;
 }
+ 
 @end

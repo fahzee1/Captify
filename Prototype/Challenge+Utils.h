@@ -15,6 +15,10 @@
 
 + (void)sendChallengeResults:(NSDictionary *)params
                                      challenge:(Challenge *)challenge;
-+ (NSArray *)getAllSentChallengesWithUsername:(NSString *)username
-                                      context:(NSManagedObjectContext *)context;
+
++ (NSArray *)getChallengesWithUsername:(NSString *)username
+                           fromFriends:(BOOL)FF
+                                getAll:(BOOL)all
+                               context:(NSManagedObjectContext *)context;
+
 @end
