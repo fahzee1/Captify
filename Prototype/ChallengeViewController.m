@@ -38,6 +38,8 @@
 @property (strong, nonatomic) UIButton *deleteButton; // backspace button;
 @property CGRect doneButtonFrame; // used in textfield delegate to set done button in keyboard
 @property (assign,nonatomic)NSInteger challengePoints;
+@property (assign,nonatomic)NSInteger scoreChanged;
+
 @end
 
 @implementation ChallengeViewController
@@ -58,6 +60,7 @@
     UILongPressGestureRecognizer *drag = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startDragging:)];
     [self.dragMe addGestureRecognizer:drag];
     drag.delegate = self;
+    self.dragMe.userInteractionEnabled = YES;
     
     // buttons
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -76,12 +79,13 @@
     self.deleteButton = deleteButton;
     
     
-    self.dragMe.userInteractionEnabled = YES;
-    self.answer = @"cj";
-    self.hint = @"cj";
-    self.level = 1;
+
+    //self.answer = @"cj";
+    //self.hint = @"cj";
+    //self.level = 1;
+    //self.challenge_id = @"0001";
+    
     self.attempts = 0;
-    self.challenge_id = @"0001";
     [self showKeyboardWithTiles];
     
     
@@ -424,6 +428,7 @@
         NSNumber *newScore = [NSNumber numberWithInt:[previousScore intValue] + self.challengePoints];
         self.myUser.score = newScore;
         self.myChallenge.success = [NSNumber numberWithBool:YES];
+        self.scoreChanged = 1;
         
         NSError *error;
         if ([self.myUser.managedObjectContext hasChanges]){
@@ -471,9 +476,11 @@
 - (void)sendChallengeResults:(BOOL)success
 {
     NSDictionary *params = @{@"username": [[NSUserDefaults standardUserDefaults]valueForKey:@"username"],
-                             @"challenge_id": self.myChallenge.challenge_id,
-                             @"success": [NSNumber numberWithBool:success],
-                             @"score": self.myUser.score};
+                             @"challenge_id": self.challenge_id,
+                             @"success": [NSNumber numberWithBool:success]};
+    if (self.scoreChanged){
+        [params setValue:self.myUser.score forKey:@"score"];
+    }
     
     if ([[AwesomeAPICLient sharedClient] connected]){
             [Challenge sendChallengeResults:params
@@ -588,7 +595,8 @@
                                  @"level":[NSNumber numberWithInt:self.level]
                                  };
         _myChallenge = [Challenge GetOrCreateChallengeWithParams:params
-                                              inManagedObjectContext:self.myUser.managedObjectContext];
+                                              inManagedObjectContext:self.myUser.managedObjectContext
+                                                      skipCreate:NO];
     }
     return _myChallenge;
 }

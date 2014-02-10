@@ -71,7 +71,9 @@
 
 
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
-  inManagedObjectContext:(NSManagedObjectContext *)context;
+             inManagedObjectContext:(NSManagedObjectContext *)context
+                         skipCreate:(BOOL)skip
+
 {
     NSParameterAssert(context);
     NSAssert([params objectForKey:@"username"], @"username required");
@@ -92,22 +94,26 @@
                                 error:&error];
     }
     
-    // else create a user, save, and return user (register)
-    User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-    user.username = [params valueForKey:@"username"];
-    user.facebook_user = [params valueForKey:@"facebook_user"];
-    user.private = [params valueForKey:@"privacy"];
-    user.super_user = [NSNumber numberWithBool:YES];
-    user.facebook_id = [params valueForKey:@"fbook_id"];
-    user.timestamp = [params valueForKey:@"timestamp"];
-    
-       if (![user.managedObjectContext save:&error]){
-           NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-           abort();
+    User *user = nil;
+    if (!skip){
+        // else create a user, save, and return user (register)
+        user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
+        user.username = [params valueForKey:@"username"];
+        user.facebook_user = [params valueForKey:@"facebook_user"];
+        user.private = [params valueForKey:@"privacy"];
+        user.super_user = [NSNumber numberWithBool:YES];
+        user.facebook_id = [params valueForKey:@"fbook_id"];
+        user.is_friend = [NSNumber numberWithBool:NO];
+        //user.timestamp = [params valueForKey:@"timestamp"];
+        
+           if (![user.managedObjectContext save:&error]){
+               NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+               abort();
 
+        }
+        
+        NSAssert([user isKindOfClass:[User class]], @"Didnt return a core data user");
     }
-    
-    NSAssert([user isKindOfClass:[User class]], @"Didnt return a core data user");
     return user;
 }
 
@@ -133,6 +139,29 @@
     NSInteger getUser = 0;
     getUser = [context countForFetchRequest:fetch error:error];
     return getUser;
+}
+
++ (User *) createTestFriendWithName:(NSString *)name
+                            context:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    User *user = nil;
+    user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
+    user.username = name;
+    user.facebook_user = [NSNumber numberWithBool:YES];
+    user.private = [NSNumber numberWithBool:NO];
+    user.super_user = [NSNumber numberWithBool:NO];
+    user.facebook_id = [NSNumber numberWithInt:12345];
+    user.is_friend = [NSNumber numberWithBool:YES];
+    
+    if (![user.managedObjectContext save:&error]){
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+        
+    }
+
+    
+    return  user;
 }
 
 
@@ -171,7 +200,8 @@
                                            [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                      }else{
                                          user = [self GetOrCreateUserWithParams:@{@"username": username}
-                                                         inManagedObjectContext:context];
+                                                         inManagedObjectContext:context
+                                                                     skipCreate:YES];
                                          [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
 
                                      }
@@ -245,7 +275,9 @@
                                      
                                      User *user = nil;
                                      if (context){
-                                         user = [self GetOrCreateUserWithParams:gcParams inManagedObjectContext:context];
+                                         user = [self GetOrCreateUserWithParams:gcParams
+                                                         inManagedObjectContext:context
+                                                                     skipCreate:NO];
                                      }
 
                                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -325,7 +357,9 @@
                                                                             @"fbook_id":facebook_id};
                                                  User *user = nil;
                                                  if (context){
-                                                      user = [self GetOrCreateUserWithParams:gcParams inManagedObjectContext:context];
+                                                      user = [self GetOrCreateUserWithParams:gcParams
+                                                                      inManagedObjectContext:context
+                                                                                  skipCreate:NO];
                                                  }
             
                                                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -334,6 +368,8 @@
                                                  [defaults setBool:YES forKey:@"facebook_user"];
                                                  [defaults setValue:[responseObject valueForKey:@"api_key"] forKey:@"api_key"];
                                                  [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
+                                                 [defaults setBool:YES forKey:@"fbServerSuccess"];
+                                                 
                                                  if (facebook){
                                                      [defaults setBool:YES forKey:@"facebook_user"];
                                                  }

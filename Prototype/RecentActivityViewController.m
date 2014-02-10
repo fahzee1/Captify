@@ -17,8 +17,6 @@
 
 
 @property NSArray *myChallenges;
-@property UIViewController *friendsChallengeController;
-@property UIViewController *myChallengeController;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *whichController;
 
 
@@ -29,9 +27,20 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:nil bundle:nil];
     if (self){
         
+    }
+    return self;
+}
+
+- (instancetype)initWithMyViewController:(UIViewController *)myVC
+                    andFriendsController:(UIViewController *)friendVC
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self){
+        self.myChallengeController = myVC;
+        self.friendsChallengeController = friendVC;
     }
     return  self;
 }
@@ -39,9 +48,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    MyChallengesViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
-    myVC.myUser = self.myUser;
-    [self displayCurrentController:myVC];
+    //MyChallengesViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+
+    UIViewController *vc = self.myChallengeController;
+    if ([vc respondsToSelector:@selector(setMyUser:)]){
+        ((MyChallengesViewController *)vc).myUser = self.myUser;
+    }
+
+    [self displayCurrentController:self.friendsChallengeController];
     
     [self.whichController addTarget:self action:@selector(choseController) forControlEvents:UIControlEventValueChanged];
     
@@ -140,16 +154,22 @@
     switch (self.whichController.selectedSegmentIndex) {
         case 0:
         {
-            MyChallengesViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
-            vc.myUser = self.myUser;
+            
+            UIViewController *vc = self.friendsChallengeController;
+            if ([vc respondsToSelector:@selector(setMyUser:)]){
+                ((FriendsChallengeViewController *)vc).myUser = self.myUser;
+            }
             [self cycleFromViewController:self.currentController toViewController:vc];
         }
             break;
             
         case 1:
         {
-            FriendsChallengeViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsChallenges"];
-            vc.myUser = self.myUser;
+            UIViewController *vc = self.myChallengeController;
+            if ([vc respondsToSelector:@selector(setMyUser:)]){
+                ((MyChallengesViewController *)vc).myUser = self.myUser;
+            }
+
             [self cycleFromViewController:self.currentController toViewController:vc];
             
             break;

@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "ChallengeViewController.h"
+#import "RecentActivityViewController.h"
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate>
 
@@ -175,6 +176,20 @@
         ResultsViewController *vc = segue.destinationViewController;
         vc.success = self.success;
     }
+    
+    if ([segue.identifier isEqualToString:@"ss"]){
+        UIViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+        UIViewController *friendsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsChallenges"];
+        UIViewController *destinationVC = segue.destinationViewController;
+        if ([destinationVC isKindOfClass:[RecentActivityViewController class]]){
+            ((RecentActivityViewController *)destinationVC).myChallengeController = myVC;
+            ((RecentActivityViewController *)destinationVC).friendsChallengeController = friendsVC;
+        }
+        
+    }
+    
+    
+    
 
 }
 

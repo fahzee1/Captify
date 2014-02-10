@@ -11,7 +11,8 @@
 @interface Challenge (Utils)
 
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
-             inManagedObjectContext:(NSManagedObjectContext *)context;
+                       inManagedObjectContext:(NSManagedObjectContext *)context
+                                   skipCreate:(BOOL)skipCreate;
 
 + (void)sendChallengeResults:(NSDictionary *)params
                                      challenge:(Challenge *)challenge;
@@ -20,5 +21,7 @@
                            fromFriends:(BOOL)FF
                                 getAll:(BOOL)all
                                context:(NSManagedObjectContext *)context;
+
++ (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;
 
 @end

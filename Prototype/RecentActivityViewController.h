@@ -17,5 +17,10 @@
 
 @property (nonatomic, retain)User *myUser;
 @property (nonatomic, retain)UIViewController *currentController;
+@property UIViewController *friendsChallengeController;
+@property UIViewController *myChallengeController;
 
+
+- (instancetype)initWithMyViewController:(UIViewController *)myVC
+                    andFriendsController:(UIViewController *)friendVC;
 @end

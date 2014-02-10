@@ -8,10 +8,16 @@
 
 #import "FriendsChallengeViewController.h"
 #import "Challenge+Utils.h"
+#import "ChallengeViewController.h"
+#import "Challenge+Utils.h"
+#import "User+Utils.h"
+#import "AppDelegate.h"
 
 @interface FriendsChallengeViewController ()
 
 @property NSArray *friendsChallenges;
+@property (weak, nonatomic) IBOutlet UITableView *tableBox;
+
 @end
 
 @implementation FriendsChallengeViewController
@@ -28,8 +34,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //[User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     NSString *username = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
-    self.friendsChallenges = [Challenge getChallengesWithUsername:username
+    NSDictionary *params = @{@"username": username,
+                             @"challenge_id":@"0001"};
+    
+    [Challenge fetchChallengeWithUsernameAndID:params];
+    self.tableBox.delegate = self;
+    self.tableBox.dataSource = self;
+    self.friendsChallenges = [Challenge getChallengesWithUsername:@"test2"
                                                       fromFriends:YES
                                                            getAll:NO
                                                           context:self.myUser.managedObjectContext];
@@ -40,6 +54,14 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tableBox selectRowAtIndexPath:nil animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [super viewDidAppear:animated];
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -116,7 +138,7 @@
 }
 */
 
-/*
+
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
@@ -124,14 +146,38 @@
 {
     // Navigation logic may go here, for example:
     // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-
+    Challenge *challenge = [self.friendsChallenges objectAtIndex:indexPath.row];
+    ChallengeViewController *vc = [[ChallengeViewController alloc] initWithNibName:nil bundle:nil];
+    vc.answer = challenge.answer;
+    vc.hint = challenge.hint;
+    vc.challenge_id = challenge.challenge_id;
+    vc.level = [challenge.type intValue];
+    vc.title = challenge.name;
     // Pass the selected object to the new view controller.
     
     // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    if ([challenge.active boolValue]){
+        [vc.navigationItem setHidesBackButton:YES animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
- 
- */
+
+#pragma -mark Lazy Instantiation
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+
 
 @end

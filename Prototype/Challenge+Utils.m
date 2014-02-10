@@ -8,6 +8,8 @@
 
 #import "Challenge+Utils.h"
 #import "AwesomeAPICLient.h"
+#import "AppDelegate.h"
+#import "User+Utils.h"
 
 @implementation Challenge (Utils)
 
@@ -30,12 +32,14 @@
 }
 
 
+
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
-                       inManagedObjectContext:(NSManagedObjectContext *)context;
+                       inManagedObjectContext:(NSManagedObjectContext *)context
+                                   skipCreate:(BOOL)skip
 {
     NSParameterAssert(context);
     NSAssert([params objectForKey:@"challenge_id"], @"challenge id required");
-    NSAssert([params objectForKey:@"username"], @"username required");
+    NSAssert([params objectForKey:@"username"] || [params objectForKey:@"sender"], @"username required");
     
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
@@ -53,6 +57,7 @@
                                 error:&error];
     }
     
+    /*
     // get user
     User *user = nil;
     NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
@@ -60,22 +65,31 @@
         NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         user = (id) [context existingObjectWithID:superuserID error:&error];
     }
+     */
+    Challenge *challenge = nil;
     
-    // no challenge create one
-    Challenge *challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:context];
-    challenge.type = [params valueForKey:@"level"];
-    challenge.answer = [params valueForKey:@"answer"];
-    challenge.hint = [params valueForKey:@"hint"];
-    challenge.challenge_id = [params valueForKey:@"challenge_id"];
-    challenge.sender = [params valueForKey:@"theUser"];
-    if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    if (!skip){
+    
+        NSDictionary *smallParams = @{@"username": [params valueForKey:@"sender"]};
+        User *user = [User GetOrCreateUserWithParams:smallParams
+                              inManagedObjectContext:context
+                                          skipCreate:YES];
+        // no challenge create one
+        challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:context];
+        challenge.type = [params valueForKey:@"level"];
+        challenge.answer = [params valueForKey:@"answer"];
+        challenge.hint = [params valueForKey:@"hint"];
+        challenge.challenge_id = [params valueForKey:@"challenge_id"];
+        challenge.sender = user;
+        if (![challenge.managedObjectContext save:&error]){
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
 
+        }
     }
 
-    
     return  challenge;
+
 }
 
 
@@ -131,6 +145,7 @@
                                      challenge:(Challenge *)challenge
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    challenge.active = [NSNumber numberWithBool:NO];
     [client startNetworkActivity];
     [client POST:AwesomeAPIChallengeResultsString
              parameters:params
@@ -141,13 +156,13 @@
                     if (code == 1){
                         // we're good
                         NSLog(@"we're all good here");
-                        //challenge.active = [NSNumber numberWithBool:NO];
+                        challenge.sync_status = [NSNumber numberWithBool:NO];
                     }
                     
                     if (code == -10){
                         // 500 issue on our end
                         NSLog(@"we're not all good here");
-                        challenge.active = [NSNumber numberWithBool:YES];
+                        challenge.sync_status = [NSNumber numberWithBool:YES];
                     }
                     
                 }
@@ -156,7 +171,8 @@
                     // find ways to handle this. maybe set it for retry
                     [client stopNetworkActivity];
                     NSLog(@"definitely not all good here");
-                    challenge.active = [NSNumber numberWithBool:YES];
+                    challenge.sync_status = [NSNumber numberWithBool:YES];
+                    
 
                 }];
     
@@ -167,5 +183,38 @@
         }
     }
 }
+
++ (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    return [client POST:AwesomeAPIChallengeFetchString
+             parameters:params
+                success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [client stopNetworkActivity];
+                    int code = [[responseObject valueForKey:@"code"] intValue];
+                    if (code == 1){
+                         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                        NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
+                                                 @"answer": [responseObject valueForKey:@"answer"],
+                                                 @"hint": [responseObject valueForKey:@"hint"],
+                                                 @"challenge_id": [responseObject valueForKey:@"challenge_id"],
+                                                 @"sender": [responseObject valueForKeyPath:@"sender.username"]};
+                        
+                        Challenge *ch = [self GetOrCreateChallengeWithParams:params
+                                      inManagedObjectContext:context
+                                                  skipCreate:NO];
+                        if (ch){
+                            ch = nil;
+                        }
+                    }
+                }
+                failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    [client stopNetworkActivity];
+                    NSLog(@"failure fetching challenge");
+                }];
+}
+
+
 
 @end

@@ -20,7 +20,12 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 + (BOOL)validPhoneNumber:(NSString *)number;
 
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
-        inManagedObjectContext:(NSManagedObjectContext *)context;
+             inManagedObjectContext:(NSManagedObjectContext *)context
+                         skipCreate:(BOOL)skip;
+
++ (User *) createTestFriendWithName:(NSString *)name
+                            context:(NSManagedObjectContext *)context;
+
 
 
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params

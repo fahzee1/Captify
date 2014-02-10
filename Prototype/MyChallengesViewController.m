@@ -45,6 +45,12 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tableBox selectRowAtIndexPath:nil animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [super viewDidAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

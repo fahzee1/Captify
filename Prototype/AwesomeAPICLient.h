@@ -18,9 +18,10 @@ static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
 static NSString * const AwesomeAPIFacebookUrlString = @"api/v1/register/facebook";
 
 // challenge urls
-static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/results";
-static NSString * const AwesomeAPIChallengeSendString = @"api/v1/send";
+static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/challenge/results";
+static NSString * const AwesomeAPIChallengeSendString = @"api/v1/challenge/send";
 static NSString * const AwesomeAPIChallengeCreateString = @"api/v1/challenge";
+static NSString * const AwesomeAPIChallengeFetchString = @"api/v1/challenge/blob";
 
 @interface AwesomeAPICLient : AFHTTPSessionManager
 

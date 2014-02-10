@@ -44,8 +44,20 @@
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
         //close the session and remove the access token from the cache.
         //the session state handler in the app delegate will be called automatically
-        //[FBSession.activeSession closeAndClearTokenInformation];
-        [self showHomeScreen:nil];
+   
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([[defaults valueForKey:@"fbServerSuccess"]boolValue]){
+            [self showHomeScreen:nil];
+        }
+        else{
+            [FBSession.activeSession closeAndClearTokenInformation];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                            message:@"Can't connect to the server. Try again."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil];
+            [alert show];
+        }
         
         
         //if the session state is not any of the two "open" states when the button is clicked
