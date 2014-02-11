@@ -11,7 +11,6 @@
 #import "User+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "GoHomeTransition.h"
-#import "ResultsTransition.h"
 #import "ResultsViewController.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
@@ -207,24 +206,10 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
-     NSLog( @"hiot %@",toVC);
-    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[ChallengeViewController class]]){
-        ResultsTransition *RT = [ResultsTransition new];
-        if ([toVC isKindOfClass:[HomeViewController class]]){
-            RT.showingResults = self.showResults;
-        }
-        RT.dismissing = YES;
-        return RT;
-    }
-
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
         return [GoHomeTransition new];
     }
     
-    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[ResultsViewController class]]){
-        NSLog( @"hiot");
-    }
-
     
     
     return nil;

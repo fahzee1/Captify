@@ -14,6 +14,9 @@
 #import "AppDelegate.h"
 #import "Challenge+Utils.h"
 #import "AwesomeAPICLient.h"
+#import "CJPopup.h"
+#import "UIView+Screenshot.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 #define kTileMargin 20
 #define DELETEBUTTON_TAG -1
@@ -23,7 +26,8 @@
 #define THIRDANSWERFIELD_TAG 300
 #define TEST 1
 
-@interface ChallengeViewController ()
+@interface ChallengeViewController ()<CJPopupDelegate>
+
 @property (weak, nonatomic) IBOutlet UILabel *dropHere;
 @property (weak, nonatomic) IBOutlet UILabel *dragMe;
 @property CGPoint originalCenter;
@@ -39,7 +43,8 @@
 @property CGRect doneButtonFrame; // used in textfield delegate to set done button in keyboard
 @property (assign,nonatomic)NSInteger challengePoints;
 @property (assign,nonatomic)NSInteger scoreChanged;
-
+@property (strong, nonatomic)CJPopup *successPop;
+@property (strong, nonatomic)CJPopup *failPop;
 @end
 
 @implementation ChallengeViewController
@@ -62,6 +67,8 @@
     drag.delegate = self;
     self.dragMe.userInteractionEnabled = YES;
     
+    
+    
     // buttons
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
@@ -80,10 +87,10 @@
     
     
 
-    //self.answer = @"cj";
-    //self.hint = @"cj";
-    //self.level = 1;
-    //self.challenge_id = @"0001";
+    self.answer = @"cj";
+    self.hint = @"cj";
+    self.level = 1;
+    self.challenge_id = @"0001";
     
     self.attempts = 0;
     [self showKeyboardWithTiles];
@@ -424,6 +431,11 @@
         // show success screen
         //[self showAlertWithTitle:nil message:@"Answer is correct!"];
         
+        UIImage *image = [self.view.superview convertViewToImage];
+        self.successPop = [[CJPopup alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        self.successPop.delegate = self;
+        [self.successPop showSuccessBlurWithImage:image];
+        return;
         NSNumber *previousScore = self.myUser.score;
         NSNumber *newScore = [NSNumber numberWithInt:[previousScore intValue] + self.challengePoints];
         self.myUser.score = newScore;
@@ -446,13 +458,19 @@
             [self sendChallengeResults:[self.myChallenge.success boolValue]];
         }
         
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        //[self.navigationController popToRootViewControllerAnimated:YES];
         
         
     }
     if (![tryAnswer isEqualToString:self.answer] && self.attempts == 3){
         // show failure screen
         //[self showAlertWithTitle:nil message:@"Answer is incorrect and you have no more attempts!"];
+        [self vibrate];
+        UIImage *image = [self.view.superview convertViewToImage];
+        self.failPop = [[CJPopup alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        self.failPop.delegate = self;
+        [self.failPop showFailBlurWithImage:image];
+        return;
         
         self.homeController.showResults = YES;
         self.homeController.success = NO;
@@ -460,12 +478,15 @@
             [self sendChallengeResults:NO];
         }
 
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        //[self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
     if (![tryAnswer isEqualToString:self.answer] && self.attempts != 3){
         // let user continue playing
-        [self showAlertWithTitle:nil message:@"Answer is incorrect. Try again"];
+        [self vibrate];
+        CJPopup *pop = [[CJPopup alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [pop showErrorRed];
+        
         return;
     }
     
@@ -565,6 +586,11 @@
     
 }
 
+- (void)vibrate
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
 #pragma -mark Lazy Instantiation
 - (User *)myUser
 {
@@ -599,6 +625,31 @@
                                                       skipCreate:NO];
     }
     return _myChallenge;
+}
+
+
+#pragma -mark CJPopup Delegate
+- (void)userDidClickDoneButtonFromPopup:(UIView *)pop
+{
+    
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    [NSTimer scheduledTimerWithTimeInterval:1
+                                     target:self
+                                   selector:@selector(hidePop)
+                                   userInfo:nil
+                                    repeats:NO];
+}
+
+
+- (void)hidePop
+{
+    if (self.successPop){
+        [self.successPop hide];
+    }
+    
+    if (self.failPop){
+        [self.failPop hide];
+    }
 }
 
 

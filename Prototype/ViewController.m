@@ -51,12 +51,8 @@
         }
         else{
             [FBSession.activeSession closeAndClearTokenInformation];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
-                                                            message:@"Can't connect to the server. Try again."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Ok"
-                                                   otherButtonTitles:nil];
-            [alert show];
+            
+            [self alertErrorWithTitle:nil message:nil];
         }
         
         
@@ -94,6 +90,9 @@
                                                       if (wasSuccessful){
                                                           [self showHomeScreen:user];
                                                       }
+                                                      else{
+                                                          [self alertErrorWithTitle:nil message:nil];
+                                                      }
                                                   }];
                                                 // If FAILURE, show alert
                                                 [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
@@ -102,6 +101,26 @@
                                       }];
     }
     
+}
+
+- (void)alertErrorWithTitle:(NSString *)title
+                    message:(NSString *)message
+{
+    if (!title){
+        title = @"Oops!";
+    }
+    
+    if (!message){
+        message = @"Can't connect to the server. Try again.";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+
 }
 
 - (void)showHomeScreen:(User *)user
