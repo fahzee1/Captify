@@ -9,6 +9,7 @@
 #import "User.h"
 
 typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user, BOOL failure);
+typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 
 @interface User (Utils)
 
@@ -23,10 +24,6 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
              inManagedObjectContext:(NSManagedObjectContext *)context
                          skipCreate:(BOOL)skip;
 
-+ (User *) createTestFriendWithName:(NSString *)name
-                            context:(NSManagedObjectContext *)context;
-
-
 
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block;
@@ -39,4 +36,11 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 
 + (void)getFacebookPicWithUser:(User *)user
                      imageview:(UIImageView *)iv;
+
++ (User *)createTestFriendWithName:(NSString *)name
+                            context:(NSManagedObjectContext *)context;
+
++ (void)updateDeviceTokenWithParams:(NSDictionary *)params
+                           callback:(DeviceTokenSendBlock)block;
+
 @end

@@ -141,29 +141,6 @@
     return getUser;
 }
 
-+ (User *) createTestFriendWithName:(NSString *)name
-                            context:(NSManagedObjectContext *)context
-{
-    NSError *error;
-    User *user = nil;
-    user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-    user.username = name;
-    user.facebook_user = [NSNumber numberWithBool:YES];
-    user.private = [NSNumber numberWithBool:NO];
-    user.super_user = [NSNumber numberWithBool:NO];
-    user.facebook_id = [NSNumber numberWithInt:12345];
-    user.is_friend = [NSNumber numberWithBool:YES];
-    
-    if (![user.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-        
-    }
-
-    
-    return  user;
-}
-
 
 + (NSURLSessionDataTask *)loginWithUsernameAndPassword:(NSDictionary *)params
                                               callback:(AwesomeAPICompleteBlock)block
@@ -241,6 +218,7 @@
                                  
                              }];
 }
+
 
 + (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                     callback:(AwesomeAPICompleteBlock)block;
@@ -431,6 +409,63 @@
        placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
     
      
+}
+
++ (User *) createTestFriendWithName:(NSString *)name
+                            context:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    User *user = nil;
+    user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
+    user.username = name;
+    user.facebook_user = [NSNumber numberWithBool:NO];
+    user.private = [NSNumber numberWithBool:NO];
+    user.super_user = [NSNumber numberWithBool:NO];
+    user.facebook_id = [NSNumber numberWithInt:12345];
+    user.is_friend = [NSNumber numberWithBool:YES];
+    
+    if (![user.managedObjectContext save:&error]){
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+        
+    }
+    
+    
+    return  user;
+}
+
++ (void)updateDeviceTokenWithParams:(NSDictionary *)params
+                           callback:(DeviceTokenSendBlock)block
+{
+    NSAssert([params objectForKey:@"username"], @"need username to update device token");
+    NSAssert([params objectForKey:@"action"], @"need action to update device token");
+    NSAssert([params objectForKey:@"content"], @"need content to update device token");
+    
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPISettingsString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject){
+             [client stopNetworkActivity];
+             if ([[responseObject valueForKey:@"code"]intValue] == 1){
+                 if (block){
+                     block(YES);
+                 }
+             }
+             else{
+                 if (block){
+                     block(NO);
+                 }
+             }
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             if (block){
+                 block(NO);
+             }
+             
+         }
+       autoRetry:3];
+
 }
 
 @end

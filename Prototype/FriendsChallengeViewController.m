@@ -45,7 +45,7 @@
     self.tableBox.dataSource = self;
     self.friendsChallenges = [Challenge getChallengesWithUsername:@"test2"
                                                       fromFriends:YES
-                                                           getAll:NO
+                                                           getAll:YES
                                                           context:self.myUser.managedObjectContext];
 
     // Uncomment the following line to preserve selection between presentations.

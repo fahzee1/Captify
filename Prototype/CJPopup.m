@@ -8,6 +8,7 @@
 
 #import "CJPopup.h"
 #import "GPUImage.h"
+#import "UIColor+HexValue.h"
 
 @interface CJPopup()
 
@@ -18,12 +19,22 @@
 @property GPUImageiOSBlurFilter *blurFilter;
 
 @end
+/*
+ Fonts i like
+ 
+ label.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:35];
+ label.font = [UIFont fontWithName:@"MarkerFelt-Wide" size:35];
+ label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:35];
+ label.font = [UIFont fontWithName:@"ChalkboardSE-Bold" size:35];
+ 
+ */
 
 @implementation CJPopup
 
 
 - (void)showClear
 {
+    // Most basic pop over. Use to show UI element without background
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.windowLevel = UIWindowLevelAlert;
@@ -38,6 +49,9 @@
 
 - (void)showErrorRed
 {
+    // Error pop over used when user chooses incorrect answer.
+    // Shows full screen with random error text for 1 second then disappears
+    
     self.errorWords = [NSArray arrayWithObjects:@"Almost!",@"Wrong!",@"C'MON!",@"Nope!",@"Try Again!", nil];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.windowLevel = UIWindowLevelAlert;
@@ -46,6 +60,7 @@
     
     self.center = CGPointMake(CGRectGetMidX(self.window.bounds), CGRectGetMidY(self.window.bounds));
     
+    // dynamic positioning based on text length
     CGPoint labelLocation = CGPointZero;
     int random = arc4random() % [self.errorWords count];
     NSString *randomText = self.errorWords[random];
@@ -55,19 +70,21 @@
     if ([randomText length] <= 6){
         labelLocation = CGPointMake(100, 200);
     }
+    
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelLocation.x,labelLocation.y, 200, 100)];
     //label.center = self.center;
     label.text = randomText;
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
-    label.font = [UIFont boldSystemFontOfSize:35];
-
-    
-    
+    label.font = [UIFont fontWithName:@"ChalkboardSE-Bold" size:35];
     [self addSubview:label];
+    
+    
     [self.window addSubview:self];
     [self.window makeKeyAndVisible];
     
+    // wait 1 second to hide the window
     [NSTimer scheduledTimerWithTimeInterval:1.0
                                      target:self
                                    selector:@selector(hide)
@@ -79,25 +96,65 @@
 
 - (void) showSuccessBlurWithImage:(UIImage *)image
 {
-    self.successWords = [NSArray arrayWithObjects:@"You Got It!",@"Work Son!",@"Bang! Bang!",nil];
+    // Blurred image pop over that shows when user correctly answers challenge
+    // Shows random success text and adds button to click home
+    
+    self.successWords = [NSArray arrayWithObjects:@"You Got It!",@"Work Son!",@"Bang! Bang!", @"Ohh Kill Em!",@"Make It Rain!",nil];
     self.blurFilter = [GPUImageiOSBlurFilter new];
-    self.blurFilter.blurRadiusInPixels = 4.0f;
+    self.blurFilter.blurRadiusInPixels = 1.0f;
     UIImage *blurredImage = [self.blurFilter imageByFilteringImage:image];
     UIImageView *bIV = [[UIImageView alloc] initWithImage:blurredImage];
     bIV.frame = [UIScreen mainScreen].bounds;
     bIV.userInteractionEnabled = YES;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60,-100, 200, 100)];
+    // dynamic positioning based on text length and spaces
+    CGPoint labelLocation = CGPointZero;
+    int random = arc4random() % [self.successWords count];
+    NSString *randomText = self.successWords[random];
+    NSRange whiteSpace = [randomText rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]];
+
+    if ([randomText length] <= 7){
+        if (whiteSpace.location != NSNotFound) {
+            labelLocation = CGPointMake(75, -100);
+        }
+        else{
+            labelLocation = CGPointMake(70, -100);
+        }
+    }
+    
+    if ([randomText length] > 7 && [randomText length] < 10){
+        if (whiteSpace.location != NSNotFound) {
+            labelLocation = CGPointMake(65, -100);
+        }
+        else{
+            labelLocation = CGPointMake(85, -100);
+        }
+        
+    }
+    
+    if ([randomText length] >= 10){
+        if (whiteSpace.location != NSNotFound) {
+            labelLocation = CGPointMake(30, -100);
+        }
+        else{
+            labelLocation = CGPointMake(35, -100);
+        }
+        
+    }
+
+    // place label and homebutton offscreen
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelLocation.x,labelLocation.y, 500, 100)];
     UIButton *homeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     homeButton.frame = CGRectMake(60, [UIScreen mainScreen].bounds.size.height, 200, 200);
     
+    // animate the buttons onscreen with bounce
     [UIView animateWithDuration:1
                           delay:0
          usingSpringWithDamping:0.5
           initialSpringVelocity:0.5
                         options:0
                      animations:^{
-                          label.frame = CGRectMake(60, 100, 200, 100);
+                          label.frame = CGRectMake(labelLocation.x, 100, 500, 100);
         
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:1
@@ -115,13 +172,10 @@
     [homeButton setTitle:@"Go Home" forState:UIControlStateNormal];
     [homeButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-    
-    int random = arc4random() % [self.successWords count];
-    NSString *randomText = self.successWords[random];
     label.text = randomText;
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor yellowColor];
-    label.font = [UIFont boldSystemFontOfSize:35];
+    label.textColor = [UIColor colorWithHexString:@"#ecf0f1"];
+    label.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:35];
     [bIV addSubview:label];
     [bIV addSubview:homeButton];
     
@@ -143,7 +197,12 @@
 
 - (void)showFailBlurWithImage:(UIImage *)image
 {
-    self.failWords = [NSArray arrayWithObjects:@"Boo Hoo!",@"That Stunk!",@"Maybe Next Time!",@"So Close", nil];
+    // Blurred image pop over that shows when user failed to answer challenge
+    // and exhausted 3 attempts.
+    // Shows random fail text and adds button to click home
+
+    self.failWords = [NSArray arrayWithObjects:@"Boo Hoo!",@"That Stunk!",@"Bye Felicia!",@"So Close... Not!",@"Pitiful!",@"Or Nah!", @"How About No!", nil];
+
     self.blurFilter = [GPUImageiOSBlurFilter new];
     self.blurFilter.blurRadiusInPixels = 4.0f;
     UIImage *blurredImage = [self.blurFilter imageByFilteringImage:image];
@@ -151,18 +210,53 @@
     bIV.frame = [UIScreen mainScreen].bounds;
     bIV.userInteractionEnabled = YES;
     
+    // dynamic positioning based on text length and spaces
+    CGPoint labelLocation = CGPointZero;
+    int random = arc4random() % [self.failWords count];
+    NSString *randomText = self.failWords[random];
+    NSRange whiteSpace = [randomText rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ([randomText length] <= 7){
+        if (whiteSpace.location != NSNotFound) {
+              labelLocation = CGPointMake(75, -100);
+        }
+        else{
+             labelLocation = CGPointMake(70, -100);
+        }
+    }
+
+    if ([randomText length] > 7 && [randomText length] < 10){
+        if (whiteSpace.location != NSNotFound) {
+            labelLocation = CGPointMake(65, -100);
+        }
+        else{
+            labelLocation = CGPointMake(85, -100);
+        }
+
+    }
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60,-100, 300, 100)];
+    if ([randomText length] >= 10){
+        if (whiteSpace.location != NSNotFound) {
+            labelLocation = CGPointMake(30, -100);
+        }
+        else{
+            labelLocation = CGPointMake(35, -100);
+        }
+
+    }
+    
+    // place both buttons offscreen
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelLocation.x,labelLocation.y, 300, 100)];
     UIButton *homeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     homeButton.frame = CGRectMake(60, [UIScreen mainScreen].bounds.size.height, 200, 200);
     
+    // animate them on screen with bounce
     [UIView animateWithDuration:1
                           delay:0
          usingSpringWithDamping:0.5
           initialSpringVelocity:0.5
                         options:0
                      animations:^{
-                         label.frame = CGRectMake(60, 100, 300, 100);
+                         label.frame = CGRectMake(labelLocation.x, 100, 300, 100);
                          
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:1
@@ -179,14 +273,11 @@
     
     [homeButton setTitle:@"Go Home" forState:UIControlStateNormal];
     [homeButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    int random = arc4random() % [self.failWords count];
-    NSString *randomText = self.failWords[random];
+  
     label.text = randomText;
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor redColor];
-    label.font = [UIFont boldSystemFontOfSize:30];
+    label.textColor = [UIColor colorWithHexString:@"#e74c3c"];
+    label.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:35];
     [bIV addSubview:label];
     [bIV addSubview:homeButton];
     

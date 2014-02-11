@@ -7,6 +7,7 @@
 //
 
 #import "Challenge.h"
+#import "User.h"
 
 @interface Challenge (Utils)
 
@@ -23,5 +24,10 @@
                                context:(NSManagedObjectContext *)context;
 
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;
+
++ (Challenge *) createTestChallengeWithUser:(User *)user;
+
+
+
 
 @end

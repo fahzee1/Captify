@@ -85,17 +85,23 @@
                                                                           @"first_name":fbookFirstName,
                                                                           @"last_name":fbookLastName,
                                                                           @"fbook_user":[NSNumber numberWithBool:YES]};
-                                                      // show homescreen call back handled in delegate
-                                                  NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                      if (wasSuccessful){
-                                                          [self showHomeScreen:user];
-                                                      }
-                                                      else{
-                                                          [self alertErrorWithTitle:nil message:nil];
-                                                      }
-                                                  }];
+                                                  
+                                                  
+                                                // show homescreen call back handled in delegate
+                                                NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                          
+                                                          if (wasSuccessful){
+                                                              [self showHomeScreen:user];
+                                                          }
+                                                          else{
+                                                              [self alertErrorWithTitle:nil message:nil];
+                                                          }
+                                                          
+                                                      }];
+
                                                 // If FAILURE, show alert
                                                 [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+            
                                                 }
                                             }];
                                       }];

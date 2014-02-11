@@ -220,7 +220,6 @@
 		116F0C5D189BFC7F00C1C430 /* KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5C189BFC7F00C1C430 /* KeyboardView.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
-		117594E718A20E3F0078EFA2 /* ResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E618A20E3F0078EFA2 /* ResultsViewController.m */; };
 		11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAC18A2B85D00DAF07C /* ChallengeSend.m */; };
 		11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
@@ -235,6 +234,10 @@
 		1186B1D51897594E0082F35F /* TilesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D41897594E0082F35F /* TilesView.m */; };
 		11A40CB418A93FFA002A1CCA /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB318A93FFA002A1CCA /* Challenge.m */; };
 		11A40CB718A93FFA002A1CCA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB618A93FFA002A1CCA /* User.m */; };
+		11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */; };
+		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
+		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
+		11AB2E5118AAA61000B511E1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4D18AAA61000B511E1 /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -658,8 +661,6 @@
 		116F0C5F189C03E300C1C430 /* AnswerFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerFieldView.m; sourceTree = "<group>"; };
 		117594E118A1FF670078EFA2 /* GoHomeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoHomeTransition.h; sourceTree = "<group>"; };
 		117594E218A1FF670078EFA2 /* GoHomeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoHomeTransition.m; sourceTree = "<group>"; };
-		117594E518A20E3F0078EFA2 /* ResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsViewController.h; sourceTree = "<group>"; };
-		117594E618A20E3F0078EFA2 /* ResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsViewController.m; sourceTree = "<group>"; };
 		11827BAB18A2B85D00DAF07C /* ChallengeSend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeSend.h; sourceTree = "<group>"; };
 		11827BAC18A2B85D00DAF07C /* ChallengeSend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeSend.m; sourceTree = "<group>"; };
 		11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Challenge+Utils.h"; sourceTree = "<group>"; };
@@ -685,6 +686,12 @@
 		11A40CB318A93FFA002A1CCA /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11A40CB518A93FFA002A1CCA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		11A40CB618A93FFA002A1CCA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexValue.h"; sourceTree = "<group>"; };
+		11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexValue.m"; sourceTree = "<group>"; };
+		11AB2E4A18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+AutoRetry.h"; sourceTree = "<group>"; };
+		11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+AutoRetry.m"; sourceTree = "<group>"; };
+		11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AFNetworking+AutoRetry.podspec"; sourceTree = "<group>"; };
+		11AB2E4D18AAA61000B511E1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -837,6 +844,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */,
 				1153DFEB18A9DF2800AD950E /* GPUImage */,
 				112153AF18983DB100EADE97 /* SSKeychain */,
 				1186B1BE188F6A280082F35F /* CoreDataTableViewController.h */,
@@ -1306,6 +1314,8 @@
 				1153DFDF18A9CCB600AD950E /* CJPopup.m */,
 				1153E1E718A9E04600AD950E /* UIView+Screenshot.h */,
 				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
+				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
+				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1329,8 +1339,6 @@
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
 				1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */,
 				1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */,
-				117594E518A20E3F0078EFA2 /* ResultsViewController.h */,
-				117594E618A20E3F0078EFA2 /* ResultsViewController.m */,
 				1128343D18A5561C003BA67F /* MyChallengesViewController.h */,
 				1128343E18A5561C003BA67F /* MyChallengesViewController.m */,
 				1128344018A55651003BA67F /* FriendsChallengeViewController.h */,
@@ -1345,6 +1353,17 @@
 			children = (
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */ = {
+			isa = PBXGroup;
+			children = (
+				11AB2E4A18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.h */,
+				11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */,
+				11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */,
+				11AB2E4D18AAA61000B511E1 /* LICENSE */,
+			);
+			path = "AFNetworking-AutoRetry-master";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1426,8 +1445,10 @@
 				11299C731899727A00D69000 /* Keyboard.xib in Resources */,
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
+				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
+				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
 				1128344418A55651003BA67F /* FriendsChallengeViewController.xib in Resources */,
 			);
@@ -1536,7 +1557,6 @@
 				1153E1B018A9DF4800AD950E /* GPUImageRGBFilter.m in Sources */,
 				1153E1AA18A9DF4800AD950E /* GPUImagePrewittEdgeDetectionFilter.m in Sources */,
 				1153E16F18A9DF4800AD950E /* GPUImageGaussianBlurPositionFilter.m in Sources */,
-				117594E718A20E3F0078EFA2 /* ResultsViewController.m in Sources */,
 				1153E17918A9DF4800AD950E /* GPUImageHistogramFilter.m in Sources */,
 				1153E18318A9DF4800AD950E /* GPUImageLanczosResamplingFilter.m in Sources */,
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
@@ -1544,6 +1564,7 @@
 				1153E14718A9DF4800AD950E /* GPUImageAverageColor.m in Sources */,
 				1153E14C18A9DF4800AD950E /* GPUImageBuffer.m in Sources */,
 				1107316218863B2E0065D77F /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */,
 				1153E17C18A9DF4800AD950E /* GPUImageHSBFilter.m in Sources */,
 				1153E1B618A9DF4800AD950E /* GPUImageSharpenFilter.m in Sources */,
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
@@ -1580,6 +1601,7 @@
 				1153E17718A9DF4800AD950E /* GPUImageHighlightShadowFilter.m in Sources */,
 				1153E19318A9DF4800AD950E /* GPUImageMonochromeFilter.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
+				11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */,
 				1153E1B418A9DF4800AD950E /* GPUImageScreenBlendFilter.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1153E1B818A9DF4800AD950E /* GPUImageSingleComponentGaussianBlurFilter.m in Sources */,

@@ -123,7 +123,10 @@
         request.predicate = [NSPredicate predicateWithFormat:@"sender.username = %@",username];
     }
     
-    return [context executeFetchRequest:request error:&error];
+    NSArray *returnAll;
+    
+    NSLog(@"%@",returnAll);
+    return returnAll;
 
 }
 
@@ -174,7 +177,7 @@
                     challenge.sync_status = [NSNumber numberWithBool:YES];
                     
 
-                }];
+                } autoRetry:5];
     
     NSError *error;
     if ([challenge.managedObjectContext hasChanges]){
@@ -212,9 +215,31 @@
                 failure:^(NSURLSessionDataTask *task, NSError *error) {
                     [client stopNetworkActivity];
                     NSLog(@"failure fetching challenge");
-                }];
+                } autoRetry:5];
 }
 
+
+
+
++ (Challenge *) createTestChallengeWithUser:(User *)user
+{
+    NSError *error;
+    Challenge *challenge = nil;
+    challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
+    challenge.type = [NSNumber numberWithInt:1];
+    challenge.answer = @"cj";
+    challenge.hint = @"hint";
+    challenge.challenge_id = @"0001";
+    challenge.sender = user;
+    if (![challenge.managedObjectContext save:&error]){
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+        
+    }
+
+    
+    return challenge;
+}
 
 
 @end

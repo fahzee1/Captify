@@ -9,9 +9,9 @@
 #import "HomeViewController.h"
 #import "LoginViewController.h"
 #import "User+Utils.h"
+#import "Challenge+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "GoHomeTransition.h"
-#import "ResultsViewController.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "ChallengeViewController.h"
@@ -56,6 +56,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
+    //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
+    
     self.fullScreen = NO;
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(makeFullScreen)];
     self.tap.delegate = self;
@@ -169,11 +172,6 @@
     if ([segue.identifier isEqualToString:@"challengeScreen"]){
         ChallengeViewController *vc = segue.destinationViewController;
         vc.homeController = self;
-    }
-    
-    if ([segue.identifier isEqualToString:@"segueToResults"]){
-        ResultsViewController *vc = segue.destinationViewController;
-        vc.success = self.success;
     }
     
     if ([segue.identifier isEqualToString:@"ss"]){

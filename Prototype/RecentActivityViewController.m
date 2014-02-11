@@ -29,7 +29,7 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self){
-        
+       
     }
     return self;
 }
@@ -48,15 +48,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //MyChallengesViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+    self.myChallengeController = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
+    self.friendsChallengeController = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsChallenges"];
 
     UIViewController *vc = self.myChallengeController;
-    if ([vc respondsToSelector:@selector(setMyUser:)]){
-        ((MyChallengesViewController *)vc).myUser = self.myUser;
-    }
+    if (vc){
+        if ([vc respondsToSelector:@selector(setMyUser:)]){
+            
+            ((FriendsChallengeViewController *)vc).myUser = self.myUser;
+        }
 
-    [self displayCurrentController:self.friendsChallengeController];
-    
+        [self displayCurrentController:self.friendsChallengeController];
+    }
     [self.whichController addTarget:self action:@selector(choseController) forControlEvents:UIControlEventValueChanged];
     
     /*self.myChallenges = [NSArray arrayWithObjects:@"Egg Benedict", @"Mushroom Risotto", @"Full Breakfast", @"Hamburger", @"Ham and Egg Sandwich", @"Creme Brelee", @"White Chocolate Donut", @"Starbucks Coffee", @"Vegetable Curry", @"Instant Noodle with Egg", @"Noodle with BBQ Pork", @"Japanese Noodle with Pork", @"Green Tea", @"Thai Shrimp Cake", @"Angry Birds Cake", @"Ham and Cheese Panini", nil];*/

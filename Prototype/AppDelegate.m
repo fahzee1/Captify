@@ -21,6 +21,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound)];
+    
+    // both local and remote notifcations are called from here when app is
+    // is not in the foreground
+    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif){
+        // grab something from [localNotif.userInfo objectForKey:@"item to get"];
+        // and give it to what ever view controller needs
+        application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber -1;
+    }
+    
+    UILocalNotification *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif){
+        // grab something from [remoteNotif.userInfo objectForKey:@"item to get"];
+        // and give it to what ever view controller needs
+        // then start downloading data from server
+        application.applicationIconBadgeNumber = 0;
+
+    }
+    
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
@@ -184,6 +204,84 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    //const void *devTokenBytes = [deviceToken bytes];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:[self stringWithDeviceToken:deviceToken] forKey:@"deviceToken"];
+    
+    if ([defaults valueForKey:@"firstToken"]){
+        if (![[deviceToken valueForKey:@"deviceToken"] isEqualToString:[self stringWithDeviceToken:deviceToken]]){
+            NSLog(@"token changed.. sending to server");
+            [self sendServerDeviceToken:[self stringWithDeviceToken:deviceToken]];
+        }
+
+    }
+    else{
+        NSLog(@"first time getting token so send it to server");
+        [defaults setBool:YES forKey:@"firstToken"];
+        [self sendServerDeviceToken:[self stringWithDeviceToken:deviceToken]];
+    }
+}
+
+
+- (void)sendServerDeviceToken:(NSString *)token
+{
+    NSLog(@"sending token");
+    NSDictionary *parms = @{@"username": [[NSUserDefaults standardUserDefaults]valueForKey:@"username"],
+                            @"action":@"updateDeviceToken",
+                            @"content":token};
+    
+    [User updateDeviceTokenWithParams:parms
+                             callback:^(BOOL wasSuccessful) {
+                                 if (wasSuccessful){
+                                     NSLog(@"Updated device token");
+                                 }
+                             }];
+    
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deviceToken"];
+    NSLog(@"%@ error in getting push notifications",error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // get data from  [userInfo objectForKey:@"key of data"];
+    // give it to controller that needs it
+    UILocalNotification *localNotif = [userInfo objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    // download data then remove badge 
+    application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber -1;
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    
+}
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    
+}
+
+- (NSString*)stringWithDeviceToken:(NSData*)deviceToken {
+    const char* data = [deviceToken bytes];
+    NSMutableString* token = [NSMutableString string];
+    
+    for (int i = 0; i < [deviceToken length]; i++) {
+        [token appendFormat:@"%02.2hhX", data[i]];
+    }
+    
+    return token;
 }
 
 
