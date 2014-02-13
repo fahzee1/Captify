@@ -43,4 +43,6 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 + (void)updateDeviceTokenWithParams:(NSDictionary *)params
                            callback:(DeviceTokenSendBlock)block;
 
++ (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context;
+
 @end

@@ -215,6 +215,7 @@
 		1153E1DE18A9DF4800AD950E /* GPUImagePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12D18A9DF4800AD950E /* GPUImagePicture.m */; };
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
+		116A0E6D18AD22AF00CF1399 /* FriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
 		11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAC18A2B85D00DAF07C /* ChallengeSend.m */; };
@@ -650,6 +651,8 @@
 		1153E12F18A9DF4800AD950E /* GPUImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageView.m; sourceTree = "<group>"; };
 		1153E1E718A9E04600AD950E /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		116A0E6B18AD22AF00CF1399 /* FriendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendTableViewCell.h; sourceTree = "<group>"; };
+		116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendTableViewCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
 		116F0C5F189C03E300C1C430 /* AnswerFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerFieldView.m; sourceTree = "<group>"; };
 		117594E118A1FF670078EFA2 /* GoHomeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoHomeTransition.h; sourceTree = "<group>"; };
@@ -925,6 +928,8 @@
 		110731791888D2850065D77F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				116A0E6B18AD22AF00CF1399 /* FriendTableViewCell.h */,
+				116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1486,6 +1491,7 @@
 				1153E19518A9DF4800AD950E /* GPUImageMotionBlurFilter.m in Sources */,
 				1153E15F18A9DF4800AD950E /* GPUImageDilationFilter.m in Sources */,
 				1153E18218A9DF4800AD950E /* GPUImageKuwaharaRadius3Filter.m in Sources */,
+				116A0E6D18AD22AF00CF1399 /* FriendTableViewCell.m in Sources */,
 				1153E1A218A9DF4800AD950E /* GPUImagePerlinNoiseFilter.m in Sources */,
 				1153E18A18A9DF4800AD950E /* GPUImageLookupFilter.m in Sources */,
 				1153E1B518A9DF4800AD950E /* GPUImageSepiaFilter.m in Sources */,

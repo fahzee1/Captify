@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User+Utils.h"
 
 @interface FriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+
+
+
+@property (nonatomic, retain)User *myUser;
 
 @end
