@@ -229,6 +229,11 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
+		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
+		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
+		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
+		119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 119711DC18ADF8C9008AD895 /* Overlay.xib */; };
+		119711E018AE0203008AD895 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711DF18AE0203008AD895 /* OverlayView.m */; };
 		11A40CB418A93FFA002A1CCA /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB318A93FFA002A1CCA /* Challenge.m */; };
 		11A40CB718A93FFA002A1CCA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB618A93FFA002A1CCA /* User.m */; };
 		11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */; };
@@ -675,6 +680,15 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
+		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
+		119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTSideMenuViewController.m; sourceTree = "<group>"; };
+		119711D318ADE5EF008AD895 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		119711D418ADE5EF008AD895 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
+		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
 		11A40CB218A93FFA002A1CCA /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
 		11A40CB318A93FFA002A1CCA /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11A40CB518A93FFA002A1CCA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -837,6 +851,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				119711CC18ADABFF008AD895 /* TWTSideMenuViewController */,
 				11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */,
 				1153DFEB18A9DF2800AD950E /* GPUImage */,
 				112153AF18983DB100EADE97 /* SSKeychain */,
@@ -918,6 +933,8 @@
 				1186B15B188C6F850082F35F /* SignUpViewController.m */,
 				11866A1718AC956D002D0245 /* FriendsViewController.h */,
 				11866A1818AC956D002D0245 /* FriendsViewController.m */,
+				119711D318ADE5EF008AD895 /* SettingsViewController.h */,
+				119711D418ADE5EF008AD895 /* SettingsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1289,8 +1306,8 @@
 		117594E418A2000F0078EFA2 /* Transitions */ = {
 			isa = PBXGroup;
 			children = (
-				117594E118A1FF670078EFA2 /* GoHomeTransition.h */,
 				117594E218A1FF670078EFA2 /* GoHomeTransition.m */,
+				117594E118A1FF670078EFA2 /* GoHomeTransition.h */,
 			);
 			name = Transitions;
 			sourceTree = "<group>";
@@ -1306,6 +1323,9 @@
 				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
 				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
 				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
+				119711DC18ADF8C9008AD895 /* Overlay.xib */,
+				119711DE18AE0203008AD895 /* OverlayView.h */,
+				119711DF18AE0203008AD895 /* OverlayView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1333,6 +1353,8 @@
 				1128343E18A5561C003BA67F /* MyChallengesViewController.m */,
 				1128344018A55651003BA67F /* FriendsChallengeViewController.h */,
 				1128344118A55651003BA67F /* FriendsChallengeViewController.m */,
+				119711C918ADAAC3008AD895 /* MenuViewController.h */,
+				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1342,6 +1364,15 @@
 			children = (
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		119711CC18ADABFF008AD895 /* TWTSideMenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */,
+				119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */,
+			);
+			path = TWTSideMenuViewController;
 			sourceTree = "<group>";
 		};
 		11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */ = {
@@ -1444,6 +1475,7 @@
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
+				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1520,6 +1552,7 @@
 				1153E19018A9DF4800AD950E /* GPUImageMaskFilter.m in Sources */,
 				1153E18418A9DF4800AD950E /* GPUImageLaplacianFilter.m in Sources */,
 				1153E16518A9DF4800AD950E /* GPUImageErosionFilter.m in Sources */,
+				119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */,
 				1153E16418A9DF4800AD950E /* GPUImageEmbossFilter.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
 				1153E1D018A9DF4800AD950E /* GPUImageTwoInputFilter.m in Sources */,
@@ -1611,13 +1644,16 @@
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
+				119711E018AE0203008AD895 /* OverlayView.m in Sources */,
 				1153E16318A9DF4800AD950E /* GPUImageDivideBlendFilter.m in Sources */,
 				1153E15A18A9DF4800AD950E /* GPUImageCropFilter.m in Sources */,
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */,
 				1153E1BF18A9DF4800AD950E /* GPUImageSourceOverBlendFilter.m in Sources */,
 				1153E17418A9DF4800AD950E /* GPUImageHardLightBlendFilter.m in Sources */,
+				119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */,
 				1153E1B118A9DF4800AD950E /* GPUImageRGBOpeningFilter.m in Sources */,
+				119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
 				1153E17218A9DF4800AD950E /* GPUImageGrayscaleFilter.m in Sources */,
 				1153E16A18A9DF4800AD950E /* GPUImageFilter.m in Sources */,
