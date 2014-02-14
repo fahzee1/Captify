@@ -22,6 +22,17 @@
 
 @implementation FriendsChallengeViewController
 
+- (void)dealloc
+{
+    /*
+    if( self.tableBox.delegate == self){
+    self.tableBox.delegate = NULL;
+    }
+    if (self.tableBox.dataSource == self){
+        self.tableBox.dataSource = NULL;
+    }
+     */
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

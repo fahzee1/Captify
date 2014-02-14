@@ -16,8 +16,9 @@
 #import "ViewController.h"
 #import "ChallengeViewController.h"
 #import "RecentActivityViewController.h"
+#import "UIColor+HexValue.h"
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *score;
@@ -56,6 +57,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        // no camera
+        NSLog(@"no camera");
+    }
+    
+    if (![UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]){
+        NSLog(@"no front camera");
+    }
+    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
+        NSLog(@"no photo library");
+    }
+    
+    
+    
+    //[self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
     
@@ -101,7 +119,39 @@
     }
 }
 
+- (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
+{
+    UIImagePickerController *imgPicker = [[UIImagePickerController alloc] init];
+    imgPicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    imgPicker.sourceType = source;
+    imgPicker.delegate = self;
+    
+    if (source == UIImagePickerControllerSourceTypeCamera){
+        //camera so show overlay
+        imgPicker.showsCameraControls = NO;
+        imgPicker.allowsEditing = NO;
+        
+        CGAffineTransform transform = CGAffineTransformMakeScale(1.70, 1.70);
+        imgPicker.cameraViewTransform = transform;
+        //load overlay
+        OverlayView *overlay = [[OverlayView alloc] init];
+        overlay.delegate = self;
+        //UIView *button = [overlay viewWithTag:1];
+        //button.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+        imgPicker.cameraOverlayView = overlay;
+        [self presentViewController:imgPicker animated:NO completion:nil];
+        
+    }
+}
 
+
+- (void)showMenu
+{
+    /*
+    NSLog(@"hit");
+      [self.sideMenuViewController openMenuAnimated:YES completion:nil];
+     */
+}
 - (void)makeFullScreen
 {
     if (!self.fullScreen){
@@ -156,6 +206,8 @@
 
 
 - (IBAction)logout:(UIButton *)sender {
+    [self.sideMenuViewController openMenuAnimated:YES completion:nil];
+    /*
     self.myUser = nil;
     if (FBSession.activeSession.state == FBSessionStateOpen
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
@@ -165,6 +217,7 @@
     }
 
     [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+     */
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -191,10 +244,13 @@
 }
 
 
-#pragma -mark Segues
-- (IBAction)unwindToHomeController:(UIStoryboardSegue *)segue
-{    
+#pragma -mark Overlay delegate
+
+- (void)showMenuButtonClicked
+{
+    [self showMenu];
 }
+
 
 
 #pragma -mark UINavigationController delegate

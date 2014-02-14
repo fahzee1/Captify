@@ -11,7 +11,14 @@
 #import "ViewController.h"
 #import "HomeViewController.h"
 #import "User+Utils.h"
+#import "MenuViewController.h"
+#import "TWTSideMenuViewController.h"
 
+@interface AppDelegate()
+@property(strong,nonatomic)UIViewController *menuVC;
+@property(strong,nonatomic)UIViewController *mainVC;
+@property(strong,nonatomic)TWTSideMenuViewController *sideVC;
+@end
 @implementation AppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -21,6 +28,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+   
+    [self setupViewControllers];
+    
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound)];
     
     // both local and remote notifcations are called from here when app is
@@ -433,6 +443,19 @@
 }
 
 
+- (void)setupViewControllers
+{
+    UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
+    self.mainVC = self.window.rootViewController;
+    self.menuVC = menuVc;
+    self.sideVC = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuVC mainViewController:self.mainVC];
+    self.sideVC.shadowColor = [UIColor blackColor];
+    self.sideVC.edgeOffset = UIOffsetMake(18.0f, 0.0f);
+    self.sideVC.zoomScale = 0.6643f;//0.5643f;
+    self.window.rootViewController = self.sideVC;
+
+}
 
 
 @end
