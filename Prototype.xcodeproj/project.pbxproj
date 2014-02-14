@@ -43,10 +43,12 @@
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
-		1125C95E18A4174C00CFB0FB /* RecentActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */; };
-		1128343F18A5561C003BA67F /* MyChallengesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128343E18A5561C003BA67F /* MyChallengesViewController.m */; };
-		1128344318A55651003BA67F /* FriendsChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128344118A55651003BA67F /* FriendsChallengeViewController.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
+		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
+		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
+		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
+		1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
+		1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */; };
 		1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */; };
 		1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153DFDF18A9CCB600AD950E /* CJPopup.m */; };
 		1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFE118A9DEEE00AD950E /* CoreMedia.framework */; };
@@ -316,14 +318,18 @@
 		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
-		1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentActivityViewController.h; sourceTree = "<group>"; };
-		1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentActivityViewController.m; sourceTree = "<group>"; };
-		1128343D18A5561C003BA67F /* MyChallengesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChallengesViewController.h; sourceTree = "<group>"; };
-		1128343E18A5561C003BA67F /* MyChallengesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChallengesViewController.m; sourceTree = "<group>"; };
-		1128344018A55651003BA67F /* FriendsChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsChallengeViewController.h; sourceTree = "<group>"; };
-		1128344118A55651003BA67F /* FriendsChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsChallengeViewController.m; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
+		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
+		1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
+		1144914D18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
+		1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		1144914F18AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
+		1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingTableView.m; sourceTree = "<group>"; };
+		1144915118AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TPKeyboardAvoidingAdditions.h"; sourceTree = "<group>"; };
+		1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
+		1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverPreviewViewController.h; sourceTree = "<group>"; };
+		1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverPreviewViewController.m; sourceTree = "<group>"; };
 		1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1153DFDE18A9CCB600AD950E /* CJPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJPopup.h; sourceTree = "<group>"; };
 		1153DFDF18A9CCB600AD950E /* CJPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJPopup.m; sourceTree = "<group>"; };
@@ -854,6 +860,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				1144914A18AE8BEB009B47B6 /* TPKeyboardAvoiding */,
 				119711CC18ADABFF008AD895 /* TWTSideMenuViewController */,
 				11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */,
 				1153DFEB18A9DF2800AD950E /* GPUImage */,
@@ -961,6 +968,21 @@
 				112153B518983DB100EADE97 /* SSKeychainQuery.m */,
 			);
 			path = SSKeychain;
+			sourceTree = "<group>";
+		};
+		1144914A18AE8BEB009B47B6 /* TPKeyboardAvoiding */ = {
+			isa = PBXGroup;
+			children = (
+				1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */,
+				1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */,
+				1144914D18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.h */,
+				1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */,
+				1144914F18AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.h */,
+				1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */,
+				1144915118AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.h */,
+				1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */,
+			);
+			path = TPKeyboardAvoiding;
 			sourceTree = "<group>";
 		};
 		1153DFEB18A9DF2800AD950E /* GPUImage */ = {
@@ -1352,14 +1374,10 @@
 				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
 				11299C741899772E00D69000 /* KeyboardViewController.h */,
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
-				1125C95C18A4174C00CFB0FB /* RecentActivityViewController.h */,
-				1125C95D18A4174C00CFB0FB /* RecentActivityViewController.m */,
-				1128343D18A5561C003BA67F /* MyChallengesViewController.h */,
-				1128343E18A5561C003BA67F /* MyChallengesViewController.m */,
-				1128344018A55651003BA67F /* FriendsChallengeViewController.h */,
-				1128344118A55651003BA67F /* FriendsChallengeViewController.m */,
 				119711C918ADAAC3008AD895 /* MenuViewController.h */,
 				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
+				1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */,
+				1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1504,13 +1522,13 @@
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
 				1153E1CD18A9DF4800AD950E /* GPUImageToonFilter.m in Sources */,
-				1128344318A55651003BA67F /* FriendsChallengeViewController.m in Sources */,
 				1153E1AD18A9DF4800AD950E /* GPUImageRGBClosingFilter.m in Sources */,
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
 				1153E17318A9DF4800AD950E /* GPUImageHalftoneFilter.m in Sources */,
+				1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				1153E1A718A9DF4800AD950E /* GPUImagePolarPixellateFilter.m in Sources */,
 				1153E18F18A9DF4800AD950E /* GPUImageLuminosityBlendFilter.m in Sources */,
 				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
@@ -1607,6 +1625,7 @@
 				1153E1A018A9DF4800AD950E /* GPUImageOverlayBlendFilter.m in Sources */,
 				1153E19F18A9DF4800AD950E /* GPUImageOutput.m in Sources */,
 				1153E19818A9DF4800AD950E /* GPUImageMovieComposition.m in Sources */,
+				1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */,
 				1153E17618A9DF4800AD950E /* GPUImageHazeFilter.m in Sources */,
 				1153E17A18A9DF4800AD950E /* GPUImageHistogramGenerator.m in Sources */,
@@ -1646,7 +1665,6 @@
 				1153E1BC18A9DF4800AD950E /* GPUImageSoftEleganceFilter.m in Sources */,
 				1153E19C18A9DF4800AD950E /* GPUImageNormalBlendFilter.m in Sources */,
 				11A40CB718A93FFA002A1CCA /* User.m in Sources */,
-				1128343F18A5561C003BA67F /* MyChallengesViewController.m in Sources */,
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
@@ -1662,6 +1680,7 @@
 				119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */,
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
 				1153E17218A9DF4800AD950E /* GPUImageGrayscaleFilter.m in Sources */,
+				1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */,
 				1153E16A18A9DF4800AD950E /* GPUImageFilter.m in Sources */,
 				1153E1A918A9DF4800AD950E /* GPUImagePosterizeFilter.m in Sources */,
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
@@ -1670,6 +1689,7 @@
 				1153E14118A9DF4800AD950E /* GPUImage3x3ConvolutionFilter.m in Sources */,
 				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1153E16618A9DF4800AD950E /* GPUImageExclusionBlendFilter.m in Sources */,
+				1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				1153E15118A9DF4800AD950E /* GPUImageChromaKeyFilter.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1153E18118A9DF4800AD950E /* GPUImageKuwaharaFilter.m in Sources */,
@@ -1692,13 +1712,13 @@
 				1153E19A18A9DF4800AD950E /* GPUImageNobleCornerDetectionFilter.m in Sources */,
 				1153E15D18A9DF4800AD950E /* GPUImageDarkenBlendFilter.m in Sources */,
 				1153E17B18A9DF4800AD950E /* GPUImageHoughTransformLineDetector.m in Sources */,
-				1125C95E18A4174C00CFB0FB /* RecentActivityViewController.m in Sources */,
 				1153E1D218A9DF4800AD950E /* GPUImageTwoPassTextureSamplingFilter.m in Sources */,
 				1153E1D918A9DF4800AD950E /* GPUImageWhiteBalanceFilter.m in Sources */,
 				1153E14D18A9DF4800AD950E /* GPUImageBulgeDistortionFilter.m in Sources */,
 				1153E1C518A9DF4800AD950E /* GPUImageTextureInput.m in Sources */,
 				1153E15318A9DF4800AD950E /* GPUImageColorBlendFilter.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
+				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,

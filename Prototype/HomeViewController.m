@@ -15,7 +15,6 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "ChallengeViewController.h"
-#import "RecentActivityViewController.h"
 #import "UIColor+HexValue.h"
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
@@ -130,16 +129,21 @@
         //camera so show overlay
         imgPicker.showsCameraControls = NO;
         imgPicker.allowsEditing = NO;
+        imgPicker.navigationBarHidden = YES;
+        imgPicker.toolbarHidden = YES;
+        
         
         CGAffineTransform transform = CGAffineTransformMakeScale(1.70, 1.70);
         imgPicker.cameraViewTransform = transform;
         //load overlay
         OverlayView *overlay = [[OverlayView alloc] init];
         overlay.delegate = self;
+        [imgPicker.view addSubview:overlay];
         //UIView *button = [overlay viewWithTag:1];
         //button.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
         imgPicker.cameraOverlayView = overlay;
         [self presentViewController:imgPicker animated:NO completion:nil];
+        [self.view addSubview:imgPicker.view];
         
     }
 }
@@ -220,28 +224,6 @@
      */
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"challengeScreen"]){
-        ChallengeViewController *vc = segue.destinationViewController;
-        vc.homeController = self;
-    }
-    
-    if ([segue.identifier isEqualToString:@"ss"]){
-        UIViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"myChallenges"];
-        UIViewController *friendsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsChallenges"];
-        UIViewController *destinationVC = segue.destinationViewController;
-        if ([destinationVC isKindOfClass:[RecentActivityViewController class]]){
-            ((RecentActivityViewController *)destinationVC).myChallengeController = myVC;
-            ((RecentActivityViewController *)destinationVC).friendsChallengeController = friendsVC;
-        }
-        
-    }
-    
-    
-    
-
-}
 
 
 #pragma -mark Overlay delegate
