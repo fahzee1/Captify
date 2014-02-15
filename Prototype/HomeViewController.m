@@ -22,27 +22,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *score;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-@property BOOL fullScreen;
+
 @property CGRect firstFrame;
-@property UITapGestureRecognizer *tap;
+
 @end
 
 @implementation HomeViewController
 
-- (User *)myUser
-{
-    if (!_myUser){
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-        if (uri){
-            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-            NSError *error;
-            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
-        }
-
-    }
-    return _myUser;
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,11 +62,7 @@
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
     
-    self.fullScreen = NO;
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(makeFullScreen)];
-    self.tap.delegate = self;
-    [self.tap setNumberOfTapsRequired:1];
-    [self.profileImage addGestureRecognizer:self.tap];
+
     self.profileImage.userInteractionEnabled =YES;
     // Do any additional setup after loading the view.
 }
@@ -100,22 +82,6 @@
                            imageview:self.profileImage];
     }
     
-
-    if (self.showResults){
-        //self.showResults = NO;
-        /*
-        ResultsViewController *results = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsScreen"];
-        if (self.success){
-            results.success = self.success;
-        }
-        */
-          NSLog(@"hit2");
-        [self performSegueWithIdentifier:@"segueToResults" sender:self];
-          NSLog(@"hit3");
-        self.showResults = NO;
-        
-        
-    }
 }
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
@@ -143,7 +109,6 @@
         //button.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
         imgPicker.cameraOverlayView = overlay;
         [self presentViewController:imgPicker animated:NO completion:nil];
-        [self.view addSubview:imgPicker.view];
         
     }
 }
@@ -156,43 +121,7 @@
       [self.sideMenuViewController openMenuAnimated:YES completion:nil];
      */
 }
-- (void)makeFullScreen
-{
-    if (!self.fullScreen){
-        [UIView animateWithDuration:0.5
-                              delay:0
-                            options:0
-                         animations:^{
-                             self.firstFrame = self.profileImage.frame;
-                             [self.profileImage setFrame:[[UIScreen mainScreen] bounds]];
-                            
-                         } completion:^(BOOL finished) {
-                             self.fullScreen = YES;
-                         }];
-        return;
-    }
-    else{
-        [UIView animateWithDuration:0.5
-                              delay:0
-                            options:0
-                         animations:^{
-                             [self.profileImage setFrame:self.firstFrame];
-                         } completion:^(BOOL finished) {
-                             self.fullScreen = NO;
-                         }];
-        return;
-    }
-}
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    BOOL should = YES;
-    if (gestureRecognizer == self.tap){
-        should = (touch.view == self.profileImage);
-        
-    }
-    return should;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -250,5 +179,20 @@
     
     return nil;
 }
- 
+
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
 @end

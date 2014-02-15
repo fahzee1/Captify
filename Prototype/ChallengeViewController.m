@@ -14,6 +14,7 @@
 #import "CJPopup.h"
 #import "ReceiverPreviewViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "UIColor+HexValue.h"
 
 
 #define FIRSTANSWERFIELD_TAG 100
@@ -26,6 +27,8 @@
 @property (strong, nonatomic)CJPopup *successPop;
 @property (strong, nonatomic)CJPopup *failPop;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIButton *nonKeyboardDoneButton;
+@property (nonatomic)CGRect answerFieldRect;
 
 @end
 
@@ -43,16 +46,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
+    self.challengeNameLabel.textColor = [UIColor whiteColor];
+    self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     
-    self.scrollView.contentSize = CGSizeMake(320, 400);
+    self.nonKeyboardDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
+    [self.nonKeyboardDoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.nonKeyboardDoneButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
+    self.nonKeyboardDoneButton.alpha = 0;
+    
+    
+    self.scrollView.contentSize = CGSizeMake(320,450);
     self.scrollView.scrollEnabled = YES;
     self.scrollView.delegate = self;
     
     self.answer = @"cj ogbuehi";
-    self.name = @"test";
+    self.name = @"guess what im eating";
     self.numberOfFields = 2;
+    self.challengeNameLabel.text = self.name;
     
-    self.navigationItem.title = self.name;
     [self layAnswerFields];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
    
@@ -69,6 +81,20 @@
     
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    
+    
+}
+
+
+- (IBAction)nonKeyboardDoneButtonPressed:(UIButton *)sender {
+    if ([self returnChallengeChoiceString] != nil){
+        [self performSegueWithIdentifier:@"goToRecieverPreview" sender:self];
+    }
+}
 
 
 - (void)layAnswerFields
@@ -107,7 +133,7 @@
             // doesnt work if numbers not in front of strings
             holderString = [NSString stringWithFormat:@"%lu letters/numbers",(unsigned long)wordLength];
         }
-        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX, startY+100, startWidth, 35) placeholder:holderString];
+        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX, startY, startWidth, 35) placeholder:holderString];
         answer.delegate = self;
         
         // tags will be 10, 20, 30
@@ -121,11 +147,16 @@
         }
         
         if (self.numberOfFields ==1){
-            answer.center = CGPointMake(self.view.center.x, startY+100);
+            answer.center = CGPointMake(self.view.center.x, startY);
         }
    
         if (showResponder){
             //[answer becomeFirstResponder];
+        }
+        
+        if (CGRectIsEmpty(self.answerFieldRect)){
+            NSLog(@"hit");
+            self.answerFieldRect = answer.frame;
         }
         
         [self.scrollView addSubview:answer];
@@ -133,6 +164,14 @@
         showResponder = NO;
         
     }
+    
+    
+    UIView *answerBorder = [[UIView alloc] initWithFrame:CGRectMake(0, self.answerFieldRect.origin.y -15, [UIScreen mainScreen].bounds.size.width,self.answerFieldRect.size.height +30 )];
+    answerBorder.backgroundColor = [UIColor colorWithHexString:@"#2ecc71"];
+    answerBorder.layer.opacity = 0.2f;
+
+    [self.scrollView addSubview:answerBorder];
+    [self.scrollView sendSubviewToBack:answerBorder];
     
 }
 
@@ -198,6 +237,25 @@
         
     }
     
+    // all views are within in scroll view not self.view
+    BOOL didNotify = NO;
+    for (UIView *view in self.view.subviews){
+        if ([view isKindOfClass:[UIScrollView class]]){
+            for (id view2 in view.subviews){
+                if ([view2 isKindOfClass:[UITextField class]]){
+                    if ([((UITextField *)view2).text isEqualToString:@""]){
+                        if (!didNotify){
+                            NSLog(@"notify");
+                            didNotify = YES;
+                            [self showAlertWithTitle:@"Sheesh!" message:@"No field can be empty"];
+                            return choice;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     
     if (self.numberOfFields == 3){
         NSAssert(thirdField, @"level 3 should have third field");
@@ -216,9 +274,21 @@
     }
     
     
-    
+    choice = [NSString stringWithFormat:@" \"%@\" ",choice];
     
     return choice;
+}
+
+
+
+
+- (void)showDoneButtonAnimated
+{
+    [UIView animateWithDuration:.6
+                     animations:^{
+                         self.nonKeyboardDoneButton.alpha = 1;
+                     }];
+
 }
 
 - (void)showAlertWithTitle:(NSString *)title
@@ -233,15 +303,6 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    
-
 }
 
 
@@ -280,18 +341,45 @@
 {
     [self toggleFirstResponder];
     if (textField.returnKeyType == UIReturnKeyDone){
-        NSLog(@"send challenge pick sting is %@!",[self returnChallengeChoiceString]);
-        ReceiverPreviewViewController *previewScreen = [[ReceiverPreviewViewController alloc] init];
-        // set all previews properties to show screen
+        if ([self returnChallengeChoiceString] != nil){
+              [self performSegueWithIdentifier:@"goToRecieverPreview" sender:self];
+        }
         
-        [self.navigationController pushViewController:previewScreen animated:YES];
     }
     
 
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (self.numberOfFields == 1 && textField.tag == FIRSTANSWERFIELD_TAG){
+        [self showDoneButtonAnimated];
+    }
+    
+    if (self.numberOfFields == 2 && textField.tag == SECONDANSWERFIELD_TAG){
+        [self showDoneButtonAnimated];
+    }
+    
+    if (self.numberOfFields == 3 && textField.tag ==THIRDANSWERFIELD_TAG){
+        [self showDoneButtonAnimated];
+    }
+}
 
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier]isEqualToString:@"goToRecieverPreview"]){
+        UIViewController *destination = segue.destinationViewController;
+        if ([destination isKindOfClass:[ReceiverPreviewViewController class]]){
+            NSLog(@"%@",destination);
+            ReceiverPreviewViewController *preview = (ReceiverPreviewViewController *)destination;
+            preview.phrase = [self returnChallengeChoiceString];
+            preview.image = self.challengeImage.image;
+            preview.challengeName = self.name;
+            
+        }
+    }
+}
 
 @end

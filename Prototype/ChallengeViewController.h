@@ -23,5 +23,6 @@
 @property (strong, nonatomic)NSString *challengeId;
 @property (nonatomic, assign) NSInteger numberOfFields;
 @property (weak, nonatomic) IBOutlet UIImageView *challengeImage;
+@property (weak, nonatomic) IBOutlet UILabel *challengeNameLabel;
 
 @end
