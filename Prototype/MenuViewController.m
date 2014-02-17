@@ -38,6 +38,9 @@
         if ([view isKindOfClass:[UIButton class]]){
             UIButton *button = (UIButton *)view;
             button.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
+            button.layer.cornerRadius = 6.0f;
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         }
     }
 }
@@ -59,9 +62,24 @@
 }
 
 - (IBAction)showHistory:(UIButton *)sender {
+    UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"historyRoot"];
+    if ([self isAlreadyMainVC:history.childViewControllers[0]]){
+        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+    }
+    else{
+        [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
+    }
 }
 
 - (IBAction)showFriends:(UIButton *)sender {
+    UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsRoot"];
+    if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
+        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+    }
+    else{
+        [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
+    }
+
 }
 
 - (IBAction)showSettings:(id)sender {

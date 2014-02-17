@@ -25,6 +25,7 @@
                      state:(FBSessionState)status
                      error:(NSError *)error;
 
+- (void)showLoginOrHomeScreen;
 
 
 @end

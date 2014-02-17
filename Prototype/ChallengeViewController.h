@@ -13,10 +13,12 @@
 #import "Challenge.h"
 #import "HomeViewController.h"
 
+
 @interface ChallengeViewController : UIViewController 
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
-@property (nonatomic, retain)User *myFriend; 
+//@property (nonatomic, retain)User *myFriend;
+@property (strong, nonatomic)NSString *myFriend; //temp for testing
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (strong, nonatomic)NSString *answer;
 @property (strong, nonatomic)NSString *name;

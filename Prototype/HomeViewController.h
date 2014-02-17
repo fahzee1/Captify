@@ -13,11 +13,13 @@
 #import "TWTSideMenuViewController.h"
 #import "OverlayView.h"
 
+
 @interface HomeViewController : UIViewController
 
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 @property (nonatomic, assign)BOOL showResults;
 @property (nonatomic,assign)BOOL success;
+@property (nonatomic,assign)BOOL goToLogin;
 
 @end

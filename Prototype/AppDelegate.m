@@ -80,12 +80,12 @@
     if (![[defaults valueForKey:@"facebook_user"]boolValue] && ![[defaults valueForKey:@"logged"]boolValue]){
          NSLog(@" not facebook user and not logged in");
             // if not logged in show login screen
-         [self showLoginScreen];
+         [self showLoginOrHomeScreen];
         }
     if (![[defaults valueForKey:@"facebook_user"]boolValue] && [[defaults valueForKey:@"logged"]boolValue]){
         NSLog(@" not facebook user logged in");
          // open up to home screen and pass user
-         [self showHomeScreen];
+         [self showLoginOrHomeScreen];
         }
    
         return YES;
@@ -307,7 +307,7 @@
     if (!error && status == FBSessionStateOpen){
         NSLog(@"Session opened");
         //show user logged in UI
-        [self showHomeScreenFromFacebook];
+        [self showLoginOrHomeScreen];
         return;
         
     }
@@ -349,17 +349,24 @@
 
 
 #pragma mark - convience methods
-- (void)showLoginScreen
+- (void)showLoginOrHomeScreen
 {
     NSError *error;
-    UINavigationController *navVc = (UINavigationController *)self.window.rootViewController;
+    UIViewController *rootVc = self.window.rootViewController;
+    UIViewController *home;
+    if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
+        home = ((TWTSideMenuViewController *)rootVc).mainViewController;
+    }
+    else{
+        home = ((UINavigationController *)rootVc).topViewController;
+    }
     NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
     if (uri){
         NSManagedObjectID *superuserID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
         User *user = (id) [self.managedObjectContext existingObjectWithID:superuserID error:&error];
         
-        if ([(HomeViewController *)navVc.topViewController respondsToSelector:@selector(setMyUser:)]){
-            ((HomeViewController *)navVc.topViewController).myUser = user;
+        if ([(HomeViewController *)home respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)home).myUser = user;
         }
     }
     
@@ -384,6 +391,7 @@
     return;
 }
 
+/*
 - (void)showHomeScreenFromFacebook
 {
     if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
@@ -402,8 +410,9 @@
     
     return;
 }
+*/
 
-
+/*
 - (void)showHomeScreen
 {
     if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
@@ -423,6 +432,7 @@
 
     return;
 }
+*/
 
 -(UIViewController*) topMostController {
     UIViewController *topController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];

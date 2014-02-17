@@ -9,6 +9,7 @@
 #import "FriendsViewController.h"
 #import "FriendTableViewCell.h"
 #import "AppDelegate.h"
+#import "TWTSideMenuViewController.h"
 
 @interface FriendsViewController ()
 
@@ -35,8 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
+	
+    [self setupButtons];
+
     // check server for any new friends since last check
     // if any create them in core data and then refresh table
     self.myTable.delegate = self;
@@ -54,6 +56,32 @@
     [super didReceiveMemoryWarning];
  
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setupButtons
+{
+    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = menuButton;
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                               target:self
+                                                                               action:@selector(showAddFriendScreen)];
+    self.navigationItem.rightBarButtonItem = addButton;
+    
+
+    
+
+}
+- (void)showMenu
+{
+    [self.sideMenuViewController openMenuAnimated:YES completion:nil];
+}
+
+- (void)showAddFriendScreen
+{
+    [self performSegueWithIdentifier:@"addFriends" sender:self];
 }
 
 - (void)searchForText:(NSString *)searchText

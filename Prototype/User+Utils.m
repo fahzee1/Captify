@@ -179,6 +179,7 @@
                                          user = [self GetOrCreateUserWithParams:@{@"username": username}
                                                          inManagedObjectContext:context
                                                                      skipCreate:YES];
+                                         NSLog(@"%@",user.username);
                                          [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
 
                                      }

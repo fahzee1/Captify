@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 
 @property CGRect firstFrame;
+@property (strong, nonatomic)NSString *usernameString;
+@property (strong, nonatomic)NSString *scoreString;
 
 @end
 
@@ -43,6 +45,14 @@
 {
     [super viewDidLoad];
     
+    self.usernameString= self.myUser.username;
+    self.scoreString = [self.myUser.score stringValue];
+    
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = button;
+    self.navigationController.navigationBarHidden = NO;
+
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // no camera
         NSLog(@"no camera");
@@ -56,7 +66,15 @@
         NSLog(@"no photo library");
     }
     
-    
+    //if user not logged in segue to login screen
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"logged"]){
+        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+        return;
+    }
+    if (self.goToLogin){
+        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+        return;
+    }
     
     //[self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
@@ -69,20 +87,17 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-     self.navigationController.delegate = self;
-    //if user not logged in segue to login screen
-    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"logged"] boolValue]){
-        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-        return;
-    }
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"logged"] boolValue]){
-        self.username.text = self.myUser.username;
-        self.score.text = [self.myUser.score stringValue];
+
+    self.navigationController.delegate = self;
+    self.username.text = self.usernameString;
+    self.score.text = self.scoreString;
+    if (self.myUser.isFacebookUser){
         [User getFacebookPicWithUser:self.myUser
-                           imageview:self.profileImage];
+                       imageview:self.profileImage];
     }
-    
 }
+
+
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
 {
@@ -116,10 +131,9 @@
 
 - (void)showMenu
 {
-    /*
-    NSLog(@"hit");
+   
       [self.sideMenuViewController openMenuAnimated:YES completion:nil];
-     */
+    
 }
 
 
@@ -172,6 +186,13 @@
                                                  toViewController:(UIViewController *)toVC
 {
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
+        if ([fromVC isKindOfClass:[ChallengeViewController class]]){
+            UIView *remove = [self.navigationController.navigationBar viewWithTag:SENDERPICANDNAME_TAG];
+            if (remove){
+                [remove removeFromSuperview];
+            }
+
+        }
         return [GoHomeTransition new];
     }
     

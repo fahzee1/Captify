@@ -13,8 +13,11 @@
 #import "HomeViewController.h"
 #import "AwesomeAPICLient.h"
 #import "UIAlertView+AFNetworking.h"
+#import "UIColor+HexValue.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *registerButton;
 
 @end
 
@@ -23,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupButtonStyles];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view, typically from a nib.
 }
@@ -37,6 +41,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setupButtonStyles
+{
+    //self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    
+    self.loginButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] CGColor];
+    self.loginButton.layer.cornerRadius = 5;
+    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.registerButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#f1c40f"] CGColor];
+    self.registerButton.layer.cornerRadius = 5;
+    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    
+}
 
 - (IBAction)facebookLogin:(UIButton *)sender {
     // if the session state is any of the two "open" states when the button is clicked
@@ -91,6 +109,8 @@
                                                 NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                           
                                                           if (wasSuccessful){
+                                                              [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
+                                                              [[NSUserDefaults standardUserDefaults] synchronize];
                                                               [self showHomeScreen:user];
                                                           }
                                                           else{
@@ -132,13 +152,31 @@
 - (void)showHomeScreen:(User *)user
 {
     AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
+    UIViewController *rootVc = (UINavigationController *)delegate.window.rootViewController;
+    UIViewController *home;
+    
+    if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
+        home = ((TWTSideMenuViewController *)rootVc).mainViewController;
+        if ([home isKindOfClass:[UINavigationController class]]){
+            home = ((UINavigationController *)home).viewControllers[0];
+            }
+        
+    }
+    else{
+        home = ((UINavigationController *)rootVc).topViewController;
+    }
     if (user){
-        if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
-            ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
+        if ([home respondsToSelector:@selector(setMyUser:)]){
+            ((HomeViewController *)home).myUser = user;
+            ((HomeViewController *)home).goToLogin = NO;
         }
     }
-    [navVc popToRootViewControllerAnimated:YES];
+    if (self.navigationController){
+        [self.navigationController popToViewController:home animated:YES];
+    }
+    else{
+        NSLog(@"no navigation");
+    }
 }
 
 @end

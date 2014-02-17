@@ -8,9 +8,12 @@
 
 #import "SettingsViewController.h"
 #import "TWTSideMenuViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "HomeViewController.h"
 
 @interface SettingsViewController ()
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
+
 
 @end
 
@@ -52,6 +55,26 @@
 {
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
+
+- (IBAction)logoutButtonTapped:(UIButton *)sender {
+    
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
+        //close the session and remove the access token from the cache.
+        //the session state handler in the app delegate will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+    
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"logged"];
+    
+    HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
+    home.goToLogin = YES;
+    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
+    rootNav.navigationBarHidden = YES;
+    [self.sideMenuViewController setMainViewController:rootNav animated:YES closeMenu:YES];
+
+}
+
 
 #pragma mark - Table view data source
 /*

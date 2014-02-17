@@ -14,7 +14,7 @@
 #import "SSKeychain.h"
 #import "HomeViewController.h"
 #import "AppDelegate.h"
-
+#import "UIColor+HexValue.h"
 
 
 @interface SignUpViewController ()<UITextFieldDelegate>
@@ -40,9 +40,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupButtonAndFieldStyles];
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
     self.emailField.delegate = self;
+    [self.usernameField becomeFirstResponder];
     [self.navigationController setNavigationBarHidden:NO];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view.
@@ -53,6 +55,31 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (void)setupButtonAndFieldStyles
+{
+    self.usernameField.borderStyle = UITextBorderStyleNone;
+    self.usernameField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.usernameField.layer.opacity = 0.6f;
+    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Username" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.passwordField.borderStyle = UITextBorderStyleNone;
+    self.passwordField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.passwordField.layer.opacity = 0.6f;
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.emailField.borderStyle = UITextBorderStyleNone;
+    self.emailField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.emailField.layer.opacity = 0.6f;
+    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+
+    self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] CGColor];
+    self.myRegisterButton.layer.cornerRadius = 5;
+    [self.myRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+}
+
 
 - (IBAction)registerButton:(UIButton *)sender {
     // if both username and password are blank ask for username
@@ -117,15 +144,26 @@
                                                              
                                                              // show home screen
                                                              AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                             UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
-                                                             if (user){
-                                                                 if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
-                                                                     ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
+                                                             UIViewController *rootVc = delegate.window.rootViewController;
+                                                             UIViewController *home;
+                                                             if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
+                                                                 home = ((TWTSideMenuViewController *)rootVc).mainViewController;
+                                                                 if ([home isKindOfClass:[UINavigationController class]]){
+                                                                     home = ((UINavigationController *)home).viewControllers[0];
                                                                  }
-                                                                 
                                                              }
-                                                            [self.navigationController setNavigationBarHidden:YES animated:YES];
-                                                            [navVc popToRootViewControllerAnimated:YES];
+                                                             else{
+                                                                 home = ((UINavigationController *)rootVc).topViewController;
+                                                             }
+                                                             if(user){
+                                                                 if ([home respondsToSelector:@selector(setMyUser:)]){
+                                                                     ((HomeViewController *)home).myUser = user;
+                                                                 }
+                                                             }
+                                                             if ([home respondsToSelector:@selector(setGoToLogin:)]){
+                                                                 ((HomeViewController *)home).goToLogin = NO;
+                                                             }
+                                                             [self.navigationController popToViewController:home animated:YES];
 
                                                          }
                                                          else if (!wasSuccessful && !failure){

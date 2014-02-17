@@ -39,6 +39,7 @@
 		1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */; };
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
+		11101DD918B17073009D44BD /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewController.m */; };
 		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
@@ -312,6 +313,8 @@
 		1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
+		11101DD718B17073009D44BD /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		11101DD818B17073009D44BD /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
 		112153AD18983B7000EADE97 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		112153B118983DB100EADE97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSKeychain.strings; sourceTree = "<group>"; };
 		112153B218983DB100EADE97 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
@@ -790,6 +793,7 @@
 				110731021876640F0065D77F /* Main_iPhone.storyboard */,
 				11073105187664100065D77F /* Main_iPad.storyboard */,
 				1107310B187664100065D77F /* Images.xcassets */,
+				11101DD318B16ED1009D44BD /* Global */,
 				117594E418A2000F0078EFA2 /* Transitions */,
 				1107316E188641470065D77F /* API */,
 				1186B1CD189749660082F35F /* Challenges */,
@@ -943,8 +947,6 @@
 				1186B15B188C6F850082F35F /* SignUpViewController.m */,
 				11866A1718AC956D002D0245 /* FriendsViewController.h */,
 				11866A1818AC956D002D0245 /* FriendsViewController.m */,
-				119711D318ADE5EF008AD895 /* SettingsViewController.h */,
-				119711D418ADE5EF008AD895 /* SettingsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -954,6 +956,47 @@
 			children = (
 				116A0E6B18AD22AF00CF1399 /* FriendTableViewCell.h */,
 				116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		11101DD318B16ED1009D44BD /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				11101DD418B16EF5009D44BD /* Models */,
+				11101DD518B16EF9009D44BD /* Controllers */,
+				11101DD618B16EFC009D44BD /* Views */,
+			);
+			name = Global;
+			sourceTree = "<group>";
+		};
+		11101DD418B16EF5009D44BD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		11101DD518B16EF9009D44BD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				119711D318ADE5EF008AD895 /* SettingsViewController.h */,
+				119711D418ADE5EF008AD895 /* SettingsViewController.m */,
+				119711C918ADAAC3008AD895 /* MenuViewController.h */,
+				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
+				11101DD718B17073009D44BD /* HistoryViewController.h */,
+				11101DD818B17073009D44BD /* HistoryViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		11101DD618B16EFC009D44BD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1153E1E718A9E04600AD950E /* UIView+Screenshot.h */,
+				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
+				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
+				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1346,10 +1389,6 @@
 				116F0C5F189C03E300C1C430 /* AnswerFieldView.m */,
 				1153DFDE18A9CCB600AD950E /* CJPopup.h */,
 				1153DFDF18A9CCB600AD950E /* CJPopup.m */,
-				1153E1E718A9E04600AD950E /* UIView+Screenshot.h */,
-				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
-				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
-				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
 				119711DC18ADF8C9008AD895 /* Overlay.xib */,
 				119711DE18AE0203008AD895 /* OverlayView.h */,
 				119711DF18AE0203008AD895 /* OverlayView.m */,
@@ -1374,8 +1413,6 @@
 				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
 				11299C741899772E00D69000 /* KeyboardViewController.h */,
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
-				119711C918ADAAC3008AD895 /* MenuViewController.h */,
-				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
 				1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */,
 				1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */,
 			);
@@ -1617,6 +1654,7 @@
 				1153E17C18A9DF4800AD950E /* GPUImageHSBFilter.m in Sources */,
 				1153E1B618A9DF4800AD950E /* GPUImageSharpenFilter.m in Sources */,
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
+				11101DD918B17073009D44BD /* HistoryViewController.m in Sources */,
 				1153E14318A9DF4800AD950E /* GPUImageAdaptiveThresholdFilter.m in Sources */,
 				1153E1BB18A9DF4800AD950E /* GPUImageSobelEdgeDetectionFilter.m in Sources */,
 				1153E1A418A9DF4800AD950E /* GPUImagePixellateFilter.m in Sources */,
@@ -1881,6 +1919,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1901,6 +1940,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

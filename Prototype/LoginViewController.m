@@ -14,7 +14,7 @@
 #import "SSKeychain.h"
 #import "HomeViewController.h"
 #import "AppDelegate.h"
-
+#import "UIColor+HexValue.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *myLoginButton;
 
 @end
+
 
 @implementation LoginViewController
 
@@ -41,6 +42,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.navigationController setNavigationBarHidden:NO];
+    [self setupButtonAndFieldStyles];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
@@ -48,9 +50,11 @@
     NSString *password = [SSKeychain passwordForService:@"login" account:username];
     if (username){
         self.usernameField.text = username;
+        [self.passwordField becomeFirstResponder];
     }
     if (password){
         self.passwordField.text = password;
+        [self.passwordField becomeFirstResponder];
     }
     if (!username){
         [self.usernameField becomeFirstResponder];
@@ -62,6 +66,26 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)setupButtonAndFieldStyles
+{
+    self.usernameField.borderStyle = UITextBorderStyleNone;
+    self.usernameField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.usernameField.layer.opacity = 0.6f;
+    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Username" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.passwordField.borderStyle = UITextBorderStyleNone;
+    self.passwordField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.passwordField.layer.opacity = 0.6f;
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+
+    self.myLoginButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] CGColor];
+    self.myLoginButton.layer.cornerRadius = 5;
+    [self.myLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+}
+
+
 
 #pragma -mark Login Methods
 
@@ -118,16 +142,27 @@
                                                                        
                                                                        // show home screen
                                                                        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                                       UINavigationController *navVc = (UINavigationController *)delegate.window.rootViewController;
-                                                                       if (user){
-                                                                           if ([(HomeViewController *)navVc.viewControllers[0] respondsToSelector:@selector(setMyUser:)]){
-                                                                               ((HomeViewController *)navVc.viewControllers[0]).myUser = user;
+                                                                       UIViewController *rootVc = delegate.window.rootViewController;
+                                                                       UIViewController *home;
+                                                                       if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
+                                                                           home = ((TWTSideMenuViewController *)rootVc).mainViewController;
+                                                                           if ([home isKindOfClass:[UINavigationController class]]){
+                                                                               home = ((UINavigationController *)home).viewControllers[0];
                                                                            }
-                                                                
                                                                        }
-                                                                       [self.navigationController setNavigationBarHidden:YES animated:YES];
-                                                                       [navVc popToRootViewControllerAnimated:YES];
-                                                                       
+                                                                       else{
+                                                                           home = ((UINavigationController *)rootVc).topViewController;
+                                                                       }
+                                                                       if (user){
+                                                                           if ([home respondsToSelector:@selector(setMyUser:)]){
+                                                                               ((HomeViewController *)home).myUser = user;
+                                                                           }
+                                                                       }
+                                                                       if ([home respondsToSelector:@selector(setGoToLogin:)]){
+                                                                           ((HomeViewController *)home).goToLogin = NO;
+                                                                       }
+                                                                       [self.navigationController popToViewController:home animated:YES];
+
                                                                        
                                                                        
                                                                    }
@@ -199,14 +234,14 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([textField.placeholder isEqualToString:@"Username"]){
+    if ([textField.placeholder isEqualToString:@"Enter Username"]){
         [self.passwordField becomeFirstResponder];
     }
-    if ([textField.placeholder isEqualToString:@"Password"]){
+    if ([textField.placeholder isEqualToString:@"Enter Password"]){
         [textField resignFirstResponder];
         [self loginButton:self.myLoginButton];
     }
-    
+    NSLog(@"hit");
 
     
     return YES;
