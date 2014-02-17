@@ -26,5 +26,6 @@
 @property (nonatomic, assign) NSInteger numberOfFields;
 @property (weak, nonatomic) IBOutlet UIImageView *challengeImage;
 @property (weak, nonatomic) IBOutlet UILabel *challengeNameLabel;
-
+@property (strong, nonatomic)UIView *topLabel;
+- (void)setupTopLabel;
 @end

@@ -11,9 +11,12 @@
 #import "User+Utils.h"
 #import "Challenge+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "GoHomeTransition.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "ChallengeViewController.h"
+#import "UIColor+HexValue.h"
+#import "GoHomeTransition.h"
+#import "ReceiverPreviewViewController.h"
 #import "ChallengeViewController.h"
 #import "UIColor+HexValue.h"
 
@@ -22,10 +25,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *score;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIButton *previewButton;
 
 @property CGRect firstFrame;
-@property (strong, nonatomic)NSString *usernameString;
-@property (strong, nonatomic)NSString *scoreString;
 
 @end
 
@@ -44,13 +46,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.usernameString= self.myUser.username;
-    self.scoreString = [self.myUser.score stringValue];
-    
-
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    self.navigationItem.leftBarButtonItem = button;
+    self.navigationController.delegate = self;
+    [self setupStylesAndMore];
     self.navigationController.navigationBarHidden = NO;
 
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
@@ -89,15 +86,33 @@
 {
 
     self.navigationController.delegate = self;
-    self.username.text = self.usernameString;
-    self.score.text = self.scoreString;
+    self.username.text = self.myUser.username;
+    self.score.text = [self.myUser.score stringValue];
     if (self.myUser.isFacebookUser){
         [User getFacebookPicWithUser:self.myUser
                        imageview:self.profileImage];
     }
 }
 
+- (void)dealloc
+{
+    self.profileImage = nil;
+    self.username = nil;
+    self.score = nil;
+    
+}
 
+- (void)setupStylesAndMore
+{
+    self.previewButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.previewButton.layer.cornerRadius = 30.0f;
+    [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = button;
+
+}
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
 {
@@ -143,28 +158,12 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillDisappear:animated];
     if (self.navigationController.delegate == self){
         self.navigationController.delegate = nil;
     }
-}
-
-
-- (IBAction)logout:(UIButton *)sender {
-    [self.sideMenuViewController openMenuAnimated:YES completion:nil];
-    /*
-    self.myUser = nil;
-    if (FBSession.activeSession.state == FBSessionStateOpen
-        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
-        //close the session and remove the access token from the cache.
-        //the session state handler in the app delegate will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
-    }
-
-    [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-     */
 }
 
 
@@ -175,8 +174,6 @@
 {
     [self showMenu];
 }
-
-
 
 #pragma -mark UINavigationController delegate
 
@@ -191,15 +188,27 @@
             if (remove){
                 [remove removeFromSuperview];
             }
-
+            
         }
         return [GoHomeTransition new];
     }
     
+    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[ReceiverPreviewViewController class]]){
+        UIView *picAndName = ((ChallengeViewController *)fromVC).topLabel;
+        if (picAndName){
+            [picAndName removeFromSuperview];
+        }
+    }
     
+    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[ReceiverPreviewViewController class]]){
+        [((ChallengeViewController *)toVC) setupTopLabel];
+    }
+    
+
     
     return nil;
 }
+                                                             
 
 
 - (User *)myUser
@@ -216,4 +225,5 @@
     }
     return _myUser;
 }
+
 @end

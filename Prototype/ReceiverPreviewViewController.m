@@ -40,6 +40,12 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void)dealloc
+{
+    self.image = nil;
+    self.previewImage = nil;
+}
+
 - (void)setupOutlets
 {
     self.previewImage.image = self.image;

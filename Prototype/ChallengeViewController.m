@@ -22,13 +22,14 @@
 #define THIRDANSWERFIELD_TAG 300
 #define TEST 1
 
-@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate>
+@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic)CJPopup *successPop;
 @property (strong, nonatomic)CJPopup *failPop;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *nonKeyboardDoneButton;
 @property (nonatomic)CGRect answerFieldRect;
+
 
 @end
 
@@ -47,6 +48,26 @@
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self setupStylesAndMore];
+    
+
+    self.answer = @"cj ogbuehi";
+    self.name = @"guess what im eating";
+    self.numberOfFields = 2;
+    self.myFriend = @"dukesof229";
+    self.challengeNameLabel.text = self.name;
+    
+    
+    [self setupTopLabel];
+    
+    
+    [self layAnswerFields];
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+   
+}
+
+- (void)setupStylesAndMore
+{
     self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.challengeNameLabel.textColor = [UIColor whiteColor];
     self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
@@ -56,43 +77,41 @@
     self.nonKeyboardDoneButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
     self.nonKeyboardDoneButton.alpha = 0;
     
-    
     self.scrollView.contentSize = CGSizeMake(320,450);
     self.scrollView.scrollEnabled = YES;
     self.scrollView.delegate = self;
-    
-    self.answer = @"cj ogbuehi";
-    self.name = @"guess what im eating";
-    self.numberOfFields = 2;
-    self.myFriend = @"dukesof229";
-    self.challengeNameLabel.text = self.name;
-    
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    view.backgroundColor = [UIColor clearColor];
-    CGRect navFrameBase = CGRectMake(100, 8, 30, 30);
-    UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile-placeholder"]];
-    image.frame = navFrameBase;
-    UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-    friendName.text = self.myFriend;
-    image.layer.masksToBounds = YES;
-    image.layer.cornerRadius = 15.0f;
-    [view addSubview:image];
-    [view addSubview:friendName];
-    view.userInteractionEnabled = NO;
-    view.tag = SENDERPICANDNAME_TAG;
-    [self.navigationController.navigationBar addSubview:view];
-   
 
+
+}
+
+- (void)setupTopLabel
+{
+    if (!self.topLabel){
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        view.backgroundColor = [UIColor clearColor];
+        CGRect navFrameBase = CGRectMake(100, 8, 30, 30);
+        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile-placeholder"]];
+        image.frame = navFrameBase;
+        UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
+        friendName.text = self.myFriend;
+        image.layer.masksToBounds = YES;
+        image.layer.cornerRadius = 15.0f;
+        [view addSubview:image];
+        [view addSubview:friendName];
+        view.userInteractionEnabled = NO;
+        view.tag = SENDERPICANDNAME_TAG;
+        self.topLabel = view;
+    }
+    [self.navigationController.navigationBar addSubview:self.topLabel];
     
-    
-    
-    [self layAnswerFields];
-    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
-   
+
 }
 
 - (void)dealloc
 {
+    self.myUser = nil;
+    self.myFriend = nil;
+    self.myChallenge = nil;
    
 }
 
@@ -402,5 +421,8 @@
         }
     }
 }
+
+
+
 
 @end

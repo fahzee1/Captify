@@ -40,6 +40,7 @@
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 		11101DD918B17073009D44BD /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewController.m */; };
+		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
 		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
@@ -315,6 +316,8 @@
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 		11101DD718B17073009D44BD /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		11101DD818B17073009D44BD /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
+		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
+		111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderPreviewViewController.m; sourceTree = "<group>"; };
 		112153AD18983B7000EADE97 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		112153B118983DB100EADE97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSKeychain.strings; sourceTree = "<group>"; };
 		112153B218983DB100EADE97 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
@@ -1415,6 +1418,8 @@
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
 				1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */,
 				1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */,
+				111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */,
+				111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1764,6 +1769,7 @@
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 				1153E17018A9DF4800AD950E /* GPUImageGaussianSelectiveBlurFilter.m in Sources */,
 				1153E16C18A9DF4800AD950E /* GPUImageFilterPipeline.m in Sources */,
+				111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */,
 				1153E1B218A9DF4800AD950E /* GPUImageSaturationBlendFilter.m in Sources */,
 				1153E1CA18A9DF4800AD950E /* GPUImageThresholdSketchFilter.m in Sources */,
 				1153E14E18A9DF4800AD950E /* GPUImageCannyEdgeDetectionFilter.m in Sources */,
