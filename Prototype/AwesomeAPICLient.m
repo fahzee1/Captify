@@ -21,7 +21,6 @@
         client.requestSerializer = [AFJSONRequestSerializer serializer];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",[defaults valueForKey:@"username"],[defaults valueForKey:@"api_key"]];
-        NSLog(@"%@",apiString);
         [client.requestSerializer setValue:apiString
                         forHTTPHeaderField:@"Authorization"];
         

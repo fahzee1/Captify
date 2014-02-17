@@ -62,9 +62,10 @@
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
         //close the session and remove the access token from the cache.
         //the session state handler in the app delegate will be called automatically
-   
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        if ([[defaults valueForKey:@"fbServerSuccess"]boolValue]){
+        if ([defaults boolForKey:@"fbServerSuccess"]){
+            [defaults setBool:NO forKey:@"fbServerSuccess"];
             [self showHomeScreen:nil];
         }
         else{
@@ -109,6 +110,7 @@
                                                 NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                           
                                                           if (wasSuccessful){
+                                                              NSLog(@"hit22");
                                                               [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
                                                               [[NSUserDefaults standardUserDefaults] synchronize];
                                                               [self showHomeScreen:user];
@@ -158,6 +160,7 @@
     if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
         home = ((TWTSideMenuViewController *)rootVc).mainViewController;
         if ([home isKindOfClass:[UINavigationController class]]){
+            home.navigationController.navigationBarHidden = NO;
             home = ((UINavigationController *)home).viewControllers[0];
             }
         
@@ -172,6 +175,7 @@
         }
     }
     if (self.navigationController){
+        self.navigationController.navigationBarHidden = NO;
         [self.navigationController popToViewController:home animated:YES];
     }
     else{

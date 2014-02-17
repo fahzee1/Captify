@@ -309,6 +309,7 @@
         NSLog(@"Session opened");
         //show user logged in UI
         [self showLoginOrHomeScreen];
+        // handled in callback by vc
         return;
         
     }

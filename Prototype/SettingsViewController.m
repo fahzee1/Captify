@@ -11,7 +11,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "HomeViewController.h"
 
-@interface SettingsViewController ()
+@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
 
 
@@ -56,27 +56,64 @@
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
-- (IBAction)logoutButtonTapped:(UIButton *)sender {
-    
-    if (FBSession.activeSession.state == FBSessionStateOpen
-        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
-        //close the session and remove the access token from the cache.
-        //the session state handler in the app delegate will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
-    }
-    
-    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"logged"];
-    
-    HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
-    home.goToLogin = YES;
-    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
-    rootNav.navigationBarHidden = YES;
-    [self.sideMenuViewController setMainViewController:rootNav animated:YES closeMenu:YES];
 
-}
 
 
 #pragma mark - Table view data source
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"path %@",[indexPath description]);
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            // Profile section
+        }
+            break;
+        case 1:
+        {
+            // Support section
+        }
+            break;
+            
+        case 2:
+        {
+            // Actions
+            if (indexPath.row == 0){
+                NSLog(@"pressed clear something");
+            }
+            else if (indexPath.row == 1){
+               // logout
+                if (FBSession.activeSession.state == FBSessionStateOpen
+                    || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
+                    //close the session and remove the access token from the cache.
+                    //the session state handler in the app delegate will be called automatically
+                    [FBSession.activeSession closeAndClearTokenInformation];
+                }
+                
+                [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"logged"];
+                
+                HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
+                home.goToLogin = YES;
+                UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
+                rootNav.navigationBarHidden = YES;
+                [self.sideMenuViewController setMainViewController:rootNav animated:YES closeMenu:YES];
+
+            }
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    return 50.0;
+}
+
 /*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -92,6 +129,7 @@
     return 5;
 }
 
+ 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";

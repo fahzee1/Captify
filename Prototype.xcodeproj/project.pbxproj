@@ -219,6 +219,8 @@
 		1153E1DE18A9DF4800AD950E /* GPUImagePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12D18A9DF4800AD950E /* GPUImagePicture.m */; };
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
+		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
+		115D939318B28D1C006A1C02 /* UIImage+RoundedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
@@ -668,6 +670,10 @@
 		1153E12F18A9DF4800AD950E /* GPUImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageView.m; sourceTree = "<group>"; };
 		1153E1E718A9E04600AD950E /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		115D938E18B28312006A1C02 /* SenderFriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFriendsCell.h; sourceTree = "<group>"; };
+		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
+		115D939118B28D1C006A1C02 /* UIImage+RoundedCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorners.h"; sourceTree = "<group>"; };
+		115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorners.m"; sourceTree = "<group>"; };
 		116A0E6B18AD22AF00CF1399 /* FriendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendTableViewCell.h; sourceTree = "<group>"; };
 		116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendTableViewCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
@@ -1000,6 +1006,8 @@
 				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
 				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
 				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
+				115D939118B28D1C006A1C02 /* UIImage+RoundedCorners.h */,
+				115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1395,6 +1403,8 @@
 				119711DC18ADF8C9008AD895 /* Overlay.xib */,
 				119711DE18AE0203008AD895 /* OverlayView.h */,
 				119711DF18AE0203008AD895 /* OverlayView.m */,
+				115D938E18B28312006A1C02 /* SenderFriendsCell.h */,
+				115D938F18B28312006A1C02 /* SenderFriendsCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1580,6 +1590,7 @@
 				1153E14818A9DF4800AD950E /* GPUImageAverageLuminanceThresholdFilter.m in Sources */,
 				1153E18818A9DF4800AD950E /* GPUImageLineGenerator.m in Sources */,
 				11299C761899772E00D69000 /* KeyboardViewController.m in Sources */,
+				115D939318B28D1C006A1C02 /* UIImage+RoundedCorners.m in Sources */,
 				1153E19518A9DF4800AD950E /* GPUImageMotionBlurFilter.m in Sources */,
 				1153E15F18A9DF4800AD950E /* GPUImageDilationFilter.m in Sources */,
 				1153E18218A9DF4800AD950E /* GPUImageKuwaharaRadius3Filter.m in Sources */,
@@ -1762,6 +1773,7 @@
 				1153E15318A9DF4800AD950E /* GPUImageColorBlendFilter.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
 				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
+				115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */,
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
