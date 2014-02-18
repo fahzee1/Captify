@@ -24,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *toLabel;
 
 @property (weak, nonatomic) IBOutlet UITableView *friendsTable;
-@property (strong, nonatomic)NSMutableArray *selectedFriendsArray;
-@property (strong, nonatomic)NSMutableArray *selectedFriendsIndex;
+@property (strong, nonatomic)NSMutableDictionary *selectedFriends;
+@property (strong, nonatomic)NSMutableDictionary *selectedPositions;
 @property (strong, nonatomic) NSArray *friendsArray;
 @property (weak, nonatomic) IBOutlet UILabel *bottomLabel;
 @property (strong, nonatomic) UIButton *bottomSendButton;
@@ -54,7 +54,7 @@
     self.friendsTable.delegate = self;
     self.friendsTable.dataSource = self;
     self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width, self.selectedFriendsScroll.frame.size.height);
-    self.scrollStart = CGPointMake(self.toLabel.frame.origin.x + 20, 15);
+    self.scrollStart = CGPointMake(self.toLabel.frame.origin.x + 30, 15);
     
     [self setupStyles];
     
@@ -62,9 +62,11 @@
     self.phrase = @"Nothing stupid";
     self.phraseCountNumbers = [[NSArray alloc] initWithObjects:@"One Word",@"Two Words",@"Three Words" ,nil];
     self.friendsArray = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
-    self.selectedFriendsArray = [[NSMutableArray alloc] init];
-    self.selectedFriendsIndex = [[NSMutableArray alloc] init];
-    
+ 
+    self.selectedFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
+                                                                               [@[]mutableCopy],@"index_paths",
+                                                                               nil];
+    self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
     
 }
@@ -125,7 +127,7 @@
 
 - (void)sendButtonTapped:(UIButton *)sender
 {
-    NSLog(@"send challenge to %@",[self.selectedFriendsArray description]);
+    NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
 }
 
 
@@ -200,7 +202,7 @@
             ((SenderFriendsCell *)cell).myFriendPic.image = [UIImage imageWithRoundedCornersSize:30.0f usingImage: [UIImage imageNamed:@"profile-placeholder"]];
             
             // add this to list of cells that have checkmarks
-            if ([self.selectedFriendsIndex containsObject:indexPath]){
+            if ([self.selectedFriends[@"index_paths"] containsObject:indexPath]){
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else{
@@ -221,14 +223,46 @@
 {
     
     NSString *selection = [self.friendsArray objectAtIndex:indexPath.row];
-    if ([self.selectedFriendsArray containsObject:selection]){
+    if ([self.selectedFriends[@"friends"] containsObject:selection]){
         
           // remove user from list and and scroll view
-        [self.selectedFriendsArray removeObject:selection];
-        if (self.scrollStart.x > self.toLabel.frame.origin.x){
-            self.scrollStart = CGPointMake(self.scrollStart.x-35, self.scrollStart.y);
-            self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width -40, self.selectedFriendsScroll.frame.size.height);
+        
+        NSInteger index = [self.selectedFriends[@"friends"] indexOfObject:selection];
+        
+        // remove friends from list and their positions
+        [self.selectedFriends[@"friends"] removeObject:selection];
+        [self.selectedPositions removeObjectForKey:selection];
+        
+        // temp list of all users after the removed user to resize positions
+        NSMutableArray *temp = [[NSMutableArray alloc] init];
+        for (NSString *username in self.selectedFriends[@"friends"]){
+            NSInteger tempIndex = [self.selectedFriends[@"friends"] indexOfObject:username];
+            if ( tempIndex >= index){
+                [temp addObject:username];
+            }
         }
+        
+        // get remaining users tags to reposition view
+        for (NSString *username in temp){
+            int viewTag = [[self.selectedPositions objectForKey:username] intValue];
+            UIView *view = [self.selectedFriendsScroll viewWithTag:viewTag];
+            [UIView animateWithDuration:1.0f
+                             animations:^{
+                                 if (view.frame.origin.x >= self.toLabel.frame.origin.x +7){
+                                     view.frame = CGRectMake(view.frame.origin.x - 35, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
+                                 }
+
+                             }];
+
+        }
+        
+        if (self.scrollStart.x >= self.toLabel.frame.origin.x +45){
+            self.scrollStart = CGPointMake(self.scrollStart.x -35, self.scrollStart.y);
+        }
+       
+       
+        self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width -40, self.selectedFriendsScroll.frame.size.height);
+
         UIView *userPic = [self.selectedFriendsScroll viewWithTag:(indexPath.row + SCROLLPICADD_VALUE) * SCROLLPICMULTIPLY_VALUE];
         if (userPic){
             if ([userPic.subviews count] == 0 && [userPic isKindOfClass:[UIImageView class]]){
@@ -241,40 +275,59 @@
         
     }
     else{
+        // add user to selected list
+        
+        [self.selectedFriends[@"friends"] addObject:selection];
+        
+        
         
         // get users pic , testing for now, add it to scroll
         UIImageView *testView = [[UIImageView alloc] initWithImage:[UIImage imageWithRoundedCornersSize:30.0f usingImage:[UIImage imageNamed:@"profile-placeholder"]]];
-        testView.frame = CGRectMake(self.scrollStart.x, self.scrollStart.y, 30, 30);
+        
         testView.layer.masksToBounds = YES;
         
         // set tag to a very unique value so we dont risk getting a tag for another view
         testView.tag = (indexPath.row + SCROLLPICADD_VALUE) * SCROLLPICMULTIPLY_VALUE;
+        
+        // save views postion to slide into freed up space
+        // "positions" is a list of dictionaries with key being username
+        // and value being cgpoint
+        self.selectedPositions[selection] = [NSNumber numberWithInt:testView.tag];
+        
+        if ([self.selectedFriends[@"friends"] count] > 1){
+            //int tag = [[self.selectedPositions objectForKey:nameOfLast] intValue];
+            self.scrollStart = CGPointMake(self.scrollStart.x +45, self.scrollStart.y);
+            
+        }
+        
+     
+        testView.frame = CGRectMake(self.scrollStart.x, self.scrollStart.y, 35, 35);
+
+        
         [self.selectedFriendsScroll addSubview:testView];
         
-        // add horizontal space of 30 each image and 40 to scroll view
-        // so you can actually see all images easily
-        self.scrollStart = CGPointMake(self.scrollStart.x+35, self.scrollStart.y);
-        self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width +40, self.selectedFriendsScroll.frame.size.height);
         
-        // add user to selected list
-        [self.selectedFriendsArray addObject:selection];
+        self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width +48, self.selectedFriendsScroll.frame.size.height);
+        
+    
 
         
     
     }
     
     // add/remove indexpath of cells selected to add checkmarks
-    if (![self.selectedFriendsIndex containsObject:indexPath]){
-        [self.selectedFriendsIndex addObject:indexPath];
+    // this list is used in cellforrowindexpath of tableview
+    if (![self.selectedFriends[@"index_paths"] containsObject:indexPath]){
+        [self.selectedFriends[@"index_paths"] addObject:indexPath];
         
     }
     else{
-        [self.selectedFriendsIndex removeObject:indexPath];
+        [self.selectedFriends[@"index_paths"] removeObject:indexPath];
     }
 
     // if selected friend list is empty show "choose friends" label
     // else remove label and show send button
-    if (![self.selectedFriendsArray count] == 0){
+    if (![self.selectedFriends[@"friends"] count] == 0){
     
         self.bottomLabel.hidden = YES;
         [self.view addSubview:self.bottomSendButton];
@@ -287,6 +340,7 @@
     
     // reload to show checkmarks
     [tableView reloadData];
+   
 }
 
 

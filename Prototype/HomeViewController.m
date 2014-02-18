@@ -84,7 +84,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-
     self.navigationController.delegate = self;
     self.username.text = self.myUser.username;
     self.score.text = [self.myUser.score stringValue];
@@ -182,8 +181,10 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
+    NSLog(@"ddd");
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
         if ([fromVC isKindOfClass:[ChallengeViewController class]]){
+            NSLog(@"should remove top label");
             UIView *remove = [self.navigationController.navigationBar viewWithTag:SENDERPICANDNAME_TAG];
             if (remove){
                 [remove removeFromSuperview];
