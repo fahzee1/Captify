@@ -69,18 +69,24 @@
     Challenge *challenge = nil;
     
     if (!skip){
-    
+        NSAssert([params valueForKey:@"original_answer"], @"must supply 'original answer' when creating challenge");
+        NSAssert([params valueForKey:@"fields_count"], @"must supply 'fields count' when creating challenge");
+
+        
         NSDictionary *smallParams = @{@"username": [params valueForKey:@"sender"]};
         User *user = [User GetOrCreateUserWithParams:smallParams
                               inManagedObjectContext:context
                                           skipCreate:YES];
         // no challenge create one
         challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:context];
-        challenge.type = [params valueForKey:@"level"];
-        challenge.answer = [params valueForKey:@"answer"];
-        challenge.hint = [params valueForKey:@"hint"];
+
+        challenge.original_answer = [params valueForKey:@"original_answer"];
+        challenge.fields_count = [params valueForKey:@"fields_count"];
         challenge.challenge_id = [params valueForKey:@"challenge_id"];
         challenge.sender = user;
+        NSString *uuid = [[NSUUID UUID] UUIDString];
+        challenge.challenge_id = [NSString stringWithFormat:@"%@-%@",[params valueForKey:@"sender"],uuid];
+        challenge.active = [NSNumber numberWithBool:YES];
         if (![challenge.managedObjectContext save:&error]){
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
@@ -226,9 +232,8 @@
     NSError *error;
     Challenge *challenge = nil;
     challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
-    challenge.type = [NSNumber numberWithInt:1];
-    challenge.answer = @"cj";
-    challenge.hint = @"hint";
+    challenge.fields_count = [NSNumber numberWithInt:1];
+    challenge.selected_answer = @"cj";
     challenge.challenge_id = @"0001";
     challenge.sender = user;
     if (![challenge.managedObjectContext save:&error]){

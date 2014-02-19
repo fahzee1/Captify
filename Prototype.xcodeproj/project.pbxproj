@@ -242,12 +242,15 @@
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
 		119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 119711DC18ADF8C9008AD895 /* Overlay.xib */; };
 		119711E018AE0203008AD895 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711DF18AE0203008AD895 /* OverlayView.m */; };
-		11A40CB418A93FFA002A1CCA /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB318A93FFA002A1CCA /* Challenge.m */; };
 		11A40CB718A93FFA002A1CCA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB618A93FFA002A1CCA /* User.m */; };
 		11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */; };
 		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
 		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
 		11AB2E5118AAA61000B511E1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4D18AAA61000B511E1 /* LICENSE */; };
+		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
+		11C2D6F418B5226F00577A68 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F318B5226F00577A68 /* Challenge.m */; };
+		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
+		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -713,8 +716,6 @@
 		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
 		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
-		11A40CB218A93FFA002A1CCA /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		11A40CB318A93FFA002A1CCA /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11A40CB518A93FFA002A1CCA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		11A40CB618A93FFA002A1CCA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexValue.h"; sourceTree = "<group>"; };
@@ -723,6 +724,14 @@
 		11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+AutoRetry.m"; sourceTree = "<group>"; };
 		11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AFNetworking+AutoRetry.podspec"; sourceTree = "<group>"; };
 		11AB2E4D18AAA61000B511E1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		11C2D6EF18B5226F00577A68 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
+		11C2D6F018B5226F00577A68 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
+		11C2D6F218B5226F00577A68 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		11C2D6F318B5226F00577A68 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
+		11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsAddedMe.h; sourceTree = "<group>"; };
+		11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsAddedMe.m; sourceTree = "<group>"; };
+		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
+		11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsIAdded.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -849,10 +858,16 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				11A40CB218A93FFA002A1CCA /* Challenge.h */,
-				11A40CB318A93FFA002A1CCA /* Challenge.m */,
+				11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */,
+				11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */,
+				11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */,
+				11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */,
 				11A40CB518A93FFA002A1CCA /* User.h */,
 				11A40CB618A93FFA002A1CCA /* User.m */,
+				11C2D6F218B5226F00577A68 /* Challenge.h */,
+				11C2D6F318B5226F00577A68 /* Challenge.m */,
+				11C2D6EF18B5226F00577A68 /* ChallengePicks.h */,
+				11C2D6F018B5226F00577A68 /* ChallengePicks.m */,
 				11827BAB18A2B85D00DAF07C /* ChallengeSend.h */,
 				11827BAC18A2B85D00DAF07C /* ChallengeSend.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
@@ -1583,6 +1598,7 @@
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
+				11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
 				1153E17318A9DF4800AD950E /* GPUImageHalftoneFilter.m in Sources */,
 				1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
@@ -1629,6 +1645,7 @@
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1153E1C818A9DF4800AD950E /* GPUImageThresholdEdgeDetectionFilter.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
+				11C2D6F418B5226F00577A68 /* Challenge.m in Sources */,
 				1153E15C18A9DF4800AD950E /* GPUImageCrosshatchFilter.m in Sources */,
 				1153E1B318A9DF4800AD950E /* GPUImageSaturationFilter.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
@@ -1701,7 +1718,6 @@
 				1153E1D318A9DF4800AD950E /* GPUImageUIElement.m in Sources */,
 				1153E15718A9DF4800AD950E /* GPUImageColorMatrixFilter.m in Sources */,
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
-				11A40CB418A93FFA002A1CCA /* Challenge.m in Sources */,
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
@@ -1758,6 +1774,7 @@
 				1153E1B718A9DF4800AD950E /* GPUImageShiTomasiFeatureDetectionFilter.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,
+				11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */,
 				1153E15218A9DF4800AD950E /* GPUImageClosingFilter.m in Sources */,
 				11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */,
 				1153E16918A9DF4800AD950E /* GPUImageFASTCornerDetectionFilter.m in Sources */,
@@ -1783,6 +1800,7 @@
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
+				11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */,
 				1153E14B18A9DF4800AD950E /* GPUImageBrightnessFilter.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 				1153E17018A9DF4800AD950E /* GPUImageGaussianSelectiveBlurFilter.m in Sources */,

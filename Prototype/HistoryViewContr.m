@@ -9,6 +9,7 @@
 #import "HistoryViewController.h"
 #import "HistoryCollectionCell.h"
 #import "TWTSideMenuViewController.h"
+#import "UIColor+HexValue.h"
 
 @interface HistoryViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *myHistoryTable;
@@ -30,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.myHistoryTable.backgroundColor = [UIColor colorWithWhite:0.25f alpha:1.0f];
+    self.myHistoryTable.backgroundColor = [UIColor colorWithHexString:@"#ecf0f1"];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     self.navigationItem.leftBarButtonItem = button;
     self.myHistoryTable.delegate = self;
@@ -75,28 +76,25 @@
     
     return cell;
 }
-/*
+
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    
+    // spacing for entire collection view
+    return UIEdgeInsetsMake(5, 5, 5, 5);
 }
- */
+
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.list objectAtIndex:indexPath.row]isEqualToString:@"joe_bryant22"]){
-        return CGSizeMake(180.0, 180.0);
-    }
-    else{
-        return CGSizeMake(100.0, 100.0);
-    }
+    return CGSizeMake(90, 80);
 }
+
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     // space between items in row
-    
-    return 10.0f;
+    return 1;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -105,6 +103,7 @@
     
     return 10.0f;
 }
+
 
 
 @end

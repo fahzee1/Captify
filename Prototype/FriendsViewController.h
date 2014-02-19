@@ -14,5 +14,6 @@
 
 
 @property (nonatomic, retain)User *myUser;
+@property (strong, nonatomic)NSArray *myFriends;
 
 @end

@@ -11,6 +11,9 @@
 #import "AppDelegate.h"
 #import "TWTSideMenuViewController.h"
 
+
+#define test 1
+
 @interface FriendsViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
@@ -44,6 +47,7 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
+    
     self.data = [NSArray arrayWithObjects:@"apples",@"bannas",@"chips", @"dogs",@"apllsl",@"yolo",@"spagetti",@"finally",@"zappo",@"zebra",@"appspkksksksss", nil];
     
 }
@@ -97,21 +101,6 @@
     self.filteredList = [self.data filteredArrayUsingPredicate:predicate];
 }
 
-#pragma -mark Lazy inst
-- (User *)myUser
-{
-    if (!_myUser){
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-        if (uri){
-            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-            NSError *error;
-            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
-        }
-        
-    }
-    return _myUser;
-}
 
 -(NSFetchRequest *)searchFetchRequest
 {
@@ -134,6 +123,30 @@
     return _data;
 }
 */
+#pragma -mark Lazy inst
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+- (NSArray *)myFriends
+{
+    if (!_myFriends){
+        _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext];
+        
+    }
+    return _myFriends;
+}
 
 #pragma -mark UITABLEVIEW delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -179,7 +192,14 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.myTable){
-        NSArray *sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:section]]];
+        NSArray *sectionArray;
+        if (test){
+            sectionArray =  [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:section]]];
+        }
+        else{
+            sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:section]]];
+        }
+        
         return [sectionArray count];
     }
     else{
@@ -194,13 +214,30 @@
     if (tableView == self.myTable){
         
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        NSArray *sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
-        
-        ((FriendTableViewCell *)cell).myFriendScore.text = @"176";
-        ((FriendTableViewCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
-        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        NSArray *sectionArray;
+        if (test){
+                sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+            
+            ((FriendTableViewCell *)cell).myFriendScore.text = @"176";
+            ((FriendTableViewCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
+            ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        }
+        // not testing
+        else{
+            User *user = [self.myFriends objectAtIndex:indexPath.row];
+            
+            sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+            if ([user isKindOfClass:[User class]]){
+                ((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
+                ((FriendTableViewCell *)cell).myFriendUsername.text = user.username;
+                ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+            }
+
+
+        }
       
     }
+    // search table not main table
     else{
         
         cell = [self.myTable dequeueReusableCellWithIdentifier:cellIdentifier];

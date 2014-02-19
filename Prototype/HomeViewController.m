@@ -51,9 +51,21 @@
     [self setupStylesAndMore];
     self.navigationController.navigationBarHidden = YES;
 
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        // no camera
-        NSLog(@"no camera");
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        // got a camera
+        
+        //  start gpu camera
+        self.stillCamera = [[GPUImageStillCamera alloc] init];
+        self.stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+        self.filter = [[GPUImageGammaFilter alloc] init];
+        [self.stillCamera addTarget:self.filter];
+        
+        GPUImageView *filterView = (GPUImageView *)self.view;
+        filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+        [self.filter addTarget:filterView];
+        
+        [self.stillCamera startCameraCapture];
+
     }
     
     if (![UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]){
@@ -78,21 +90,7 @@
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
  
-    
-    // gpu camera
-    self.stillCamera = [[GPUImageStillCamera alloc] init];
-    self.stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-    self.filter = [[GPUImageGammaFilter alloc] init];
-    [self.stillCamera addTarget:self.filter];
-
-    GPUImageView *filterView = (GPUImageView *)self.view;
-    filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
-    [self.filter addTarget:filterView];
-    
-    [self.stillCamera startCameraCapture];
-
-    
-    // Do any additional setup after loading the view.
+   
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -193,6 +191,7 @@
 {
     NSLog(@"ddd");
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
+        self.navigationController.navigationBarHidden = YES;
         if ([fromVC isKindOfClass:[ChallengeViewController class]]){
             NSLog(@"should remove top label");
             UIView *remove = [self.navigationController.navigationBar viewWithTag:SENDERPICANDNAME_TAG];

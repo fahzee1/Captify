@@ -2,22 +2,36 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Challenge" representedClassName="Challenge" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="challenge_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hint" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fields_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="is_deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="original_answer" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="selected_answer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="success" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sync_status" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="picks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengePicks" inverseName="challenge" inverseEntity="ChallengePicks" syncable="YES"/>
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="challenges" inverseEntity="User" syncable="YES"/>
         <relationship name="sends" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengeSend" inverseName="challenge" inverseEntity="ChallengeSend" syncable="YES"/>
+    </entity>
+    <entity name="ChallengePicks" representedClassName="ChallengePicks" syncable="YES">
+        <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_chosen" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="picks" inverseEntity="Challenge" syncable="YES"/>
+        <relationship name="player" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="ChallengeSend" representedClassName="ChallengeSend" syncable="YES">
         <attribute name="retry" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="sends" inverseEntity="Challenge" syncable="YES"/>
         <relationship name="recipients" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="sends" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="FriendsAddedMe" representedClassName="FriendsAddedMe" syncable="YES">
+        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends_added_me" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="FriendsIAdded" representedClassName="FriendsIAdded" syncable="YES">
+        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends_i_added" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="facebook_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -33,11 +47,17 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="sender" inverseEntity="Challenge" syncable="YES"/>
+        <relationship name="friends_added_me" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FriendsAddedMe" inverseName="friend" inverseEntity="FriendsAddedMe" syncable="YES"/>
+        <relationship name="friends_i_added" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FriendsIAdded" inverseName="friend" inverseEntity="FriendsIAdded" syncable="YES"/>
+        <relationship name="picks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengePicks" inverseName="player" inverseEntity="ChallengePicks" syncable="YES"/>
         <relationship name="sends" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengeSend" inverseName="recipients" inverseEntity="ChallengeSend" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Challenge" positionX="196" positionY="-295" width="128" height="193"/>
-        <element name="ChallengeSend" positionX="187" positionY="-70" width="128" height="88"/>
-        <element name="User" positionX="-11" positionY="-235" width="128" height="208"/>
+        <element name="Challenge" positionX="261" positionY="-351" width="128" height="238"/>
+        <element name="ChallengeSend" positionX="133" positionY="-117" width="128" height="88"/>
+        <element name="User" positionX="448" positionY="-268" width="128" height="298"/>
+        <element name="ChallengePicks" positionX="475" positionY="-486" width="128" height="118"/>
+        <element name="FriendsIAdded" positionX="630" positionY="-247" width="128" height="58"/>
+        <element name="FriendsAddedMe" positionX="630" positionY="-90" width="128" height="58"/>
     </elements>
 </model>

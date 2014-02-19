@@ -472,10 +472,15 @@
 + (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context
 {
     NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 0) and (is_friend = 1)"];
+    NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (facebook_user = 0)";
     
-    return [context executeFetchRequest:request error:&error];
+    NSFetchRequest *firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+    firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
+    
+    
+
+    
+    return [context executeFetchRequest:firstRequest error:&error];
     
 }
 
