@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -177,30 +177,12 @@
         <scene sceneID="tyI-2a-6I3">
             <objects>
                 <viewController storyboardIdentifier="homeScreen" title="homeScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Kl-kf-Iw9" customClass="HomeViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TlN-Ob-sba">
+                    <view key="view" contentMode="scaleToFill" id="TlN-Ob-sba" customClass="GPUImageView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bm5-Jo-c8A">
-                                <rect key="frame" x="103" y="193" width="129" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hYw-gi-4Zq">
-                                <rect key="frame" x="130" y="222" width="45" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="GCZ-Yd-IBE">
-                                <rect key="frame" x="111" y="129" width="64" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hom-6o-1t3">
-                                <rect key="frame" x="129" y="345" width="41" height="30"/>
+                                <rect key="frame" x="268" y="517" width="41" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Game">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -210,7 +192,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3LS-Jf-251">
-                                <rect key="frame" x="121" y="455" width="60" height="60"/>
+                                <rect key="frame" x="122" y="502" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Snap">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -219,15 +201,24 @@
                                     <segue destination="CIB-k1-SZa" kind="push" identifier="goToSenderPreview" id="nDi-NM-xWJ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="VA2-eW-DHe">
+                                <rect key="frame" x="24" y="48" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Menu">
+                                    <color key="titleColor" red="0.35892837709999997" green="0.9025430485" blue="0.73244497249999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tappedMenuButton:" destination="5Kl-kf-Iw9" eventType="touchUpInside" id="Ylj-Bv-64J"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="4bM-yy-eZW"/>
                     <connections>
                         <outlet property="previewButton" destination="3LS-Jf-251" id="7oE-PP-JJJ"/>
-                        <outlet property="profileImage" destination="GCZ-Yd-IBE" id="Lh7-eF-Mcz"/>
-                        <outlet property="score" destination="hYw-gi-4Zq" id="R0I-Wa-HEV"/>
-                        <outlet property="username" destination="Bm5-Jo-c8A" id="Gwp-11-xjd"/>
+                        <outlet property="topMenuButton" destination="VA2-eW-DHe" id="0KS-uz-iNR"/>
                         <segue destination="vXZ-lx-hvc" kind="push" identifier="segueToLogin" id="P1O-JW-1nT"/>
                     </connections>
                 </viewController>

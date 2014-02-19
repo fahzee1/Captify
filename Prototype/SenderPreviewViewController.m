@@ -48,6 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = NO;
     self.phraseCountPicker.delegate = self;
     self.phraseCountPicker.dataSource = self;
     self.selectedFriendsScroll.delegate = self;

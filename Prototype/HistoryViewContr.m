@@ -30,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.myHistoryTable.backgroundColor = [UIColor colorWithWhite:0.25f alpha:1.0f];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     self.navigationItem.leftBarButtonItem = button;
     self.myHistoryTable.delegate = self;

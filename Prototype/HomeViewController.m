@@ -19,15 +19,16 @@
 #import "ReceiverPreviewViewController.h"
 #import "ChallengeViewController.h"
 #import "UIColor+HexValue.h"
+#import "GPUImage.h"
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *username;
-@property (weak, nonatomic) IBOutlet UILabel *score;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UIButton *previewButton;
-
+@property (strong, nonatomic) GPUImageStillCamera *stillCamera;
+@property (strong, nonatomic) GPUImageGammaFilter *filter;
 @property CGRect firstFrame;
+@property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
+
 
 @end
 
@@ -48,7 +49,7 @@
     [super viewDidLoad];
     self.navigationController.delegate = self;
     [self setupStylesAndMore];
-    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
 
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // no camera
@@ -76,29 +77,34 @@
     //[self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
+ 
     
+    // gpu camera
+    self.stillCamera = [[GPUImageStillCamera alloc] init];
+    self.stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    self.filter = [[GPUImageGammaFilter alloc] init];
+    [self.stillCamera addTarget:self.filter];
 
-    self.profileImage.userInteractionEnabled =YES;
+    GPUImageView *filterView = (GPUImageView *)self.view;
+    filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+    [self.filter addTarget:filterView];
+    
+    [self.stillCamera startCameraCapture];
+
+    
     // Do any additional setup after loading the view.
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     self.navigationController.delegate = self;
-    self.username.text = self.myUser.username;
-    self.score.text = [self.myUser.score stringValue];
-    if (self.myUser.isFacebookUser){
-        [User getFacebookPicWithUser:self.myUser
-                       imageview:self.profileImage];
-    }
+    
 }
 
 - (void)dealloc
 {
-    self.profileImage = nil;
-    self.username = nil;
-    self.score = nil;
-    
+    self.stillCamera = nil;
+    self.filter = nil;
 }
 
 - (void)setupStylesAndMore
@@ -108,10 +114,14 @@
     [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    self.navigationItem.leftBarButtonItem = button;
+
 
 }
+
+- (IBAction)tappedMenuButton:(UIButton *)sender {
+    [self showMenu];
+}
+
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
 {
