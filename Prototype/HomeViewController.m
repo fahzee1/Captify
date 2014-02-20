@@ -20,15 +20,18 @@
 #import "ChallengeViewController.h"
 #import "UIColor+HexValue.h"
 #import "GPUImage.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *previewButton;
-@property (strong, nonatomic) GPUImageStillCamera *stillCamera;
-@property (strong, nonatomic) GPUImageGammaFilter *filter;
 @property CGRect firstFrame;
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
-
+@property (strong,nonatomic)AVCaptureSession *session;
+@property (strong,nonatomic)AVCaptureDevice *cameraDevice;
+@property (strong,nonatomic)AVCaptureDeviceInput *cameraInput;
+@property (strong,nonatomic)AVCaptureVideoPreviewLayer *previewLayer;
+@property (strong,nonatomic)AVCaptureStillImageOutput *snapper;
 
 @end
 
@@ -54,18 +57,46 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // got a camera
         
-        //  start gpu camera
-        self.stillCamera = [[GPUImageStillCamera alloc] init];
-        self.stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-        self.filter = [[GPUImageGammaFilter alloc] init];
-        [self.stillCamera addTarget:self.filter];
+        //  start camera
         
-        GPUImageView *filterView = (GPUImageView *)self.view;
-        filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
-        [self.filter addTarget:filterView];
+        NSError *error;
         
-        [self.stillCamera startCameraCapture];
-
+        self.session = [AVCaptureSession new];
+        self.session.sessionPreset = AVCaptureSessionPresetPhoto;
+        
+        self.cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+        
+        self.snapper = [AVCaptureStillImageOutput new];
+        self.snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
+                                        AVVideoQualityKey:@0.6};
+        
+        if (self.cameraInput){
+            [self.session addInput:self.cameraInput];
+        }
+        if (self.snapper){
+            [self.session addOutput:self.snapper];
+        }
+        
+        if (self.cameraInput && self.snapper){
+        
+            self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+            self.previewLayer.frame = CGRectMake(10, 30, 300, 300);
+            [self.view.layer addSublayer:self.previewLayer];
+            [self.session startRunning];
+            
+            
+            [NSTimer scheduledTimerWithTimeInterval:10
+                                             target:self
+                                           selector:@selector(snapPhoto)
+                                           userInfo:nil
+                                            repeats:NO];
+            
+        }
+        else{
+            NSLog(@"error creating camera input or output");
+        }
+        
     }
     
     if (![UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]){
@@ -101,9 +132,7 @@
 
 - (void)dealloc
 {
-    self.stillCamera = nil;
-    self.filter = nil;
-}
+    }
 
 - (void)setupStylesAndMore
 {
@@ -150,6 +179,63 @@
     }
 }
 
+- (void)snapPhoto
+{
+    AVCaptureConnection *vc = [self.snapper connectionWithMediaType:AVMediaTypeVideo];
+    [self.snapper captureStillImageAsynchronouslyFromConnection:vc
+                                              completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+                                                  NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                                                  UIImage *im = [UIImage imageWithData:data];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 30, 300, 300)];
+                                                      iv.contentMode = UIViewContentModeScaleAspectFit;
+                                                      iv.image = im;
+                                                      [self.view addSubview:iv];
+                                                      [self.previewLayer removeFromSuperlayer];
+                                                      self.previewLayer = nil;
+                                                      [self.session stopRunning];
+                                                  });
+                                              }];
+}
+
+- (void)toggleFlash
+{
+    if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
+        NSError *error;
+        if (self.cameraDevice.flashActive){
+            // turn off
+             [self.cameraDevice lockForConfiguration:&error];
+             [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+             [self.cameraDevice unlockForConfiguration];
+        }
+        else{
+            // turn on
+            [self.cameraDevice lockForConfiguration:&error];
+            [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+            [self.cameraDevice unlockForConfiguration];
+        }
+    }
+    else{
+        NSLog(@"No flash available");
+        return;
+    }
+}
+
+- (void)focusAPoint:(CGPoint)point
+{
+    if ([self.cameraDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus] && [self.cameraDevice isFocusPointOfInterestSupported]){
+        NSError *error;
+        
+        if ([self.cameraDevice lockForConfiguration:&error]){
+            [self.cameraDevice setFocusPointOfInterest:point];
+            
+            [self.cameraDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+            
+            [self.cameraDevice unlockForConfiguration];
+        }
+    }
+}
+
 
 - (void)showMenu
 {
@@ -174,6 +260,16 @@
 }
 
 
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint touchLocation = [touch locationInView:self.view];
+    // focus camera where user touces
+    if (self.session.running){
+        [self focusAPoint:touchLocation];
+    }
+}
 
 #pragma -mark Overlay delegate
 

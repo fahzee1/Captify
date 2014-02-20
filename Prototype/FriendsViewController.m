@@ -40,7 +40,7 @@
 {
     [super viewDidLoad];
 	
-    [self setupButtons];
+
 
     // check server for any new friends since last check
     // if any create them in core data and then refresh table
@@ -62,22 +62,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setupButtons
-{
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(showMenu)];
-    self.navigationItem.leftBarButtonItem = menuButton;
-    
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                               target:self
-                                                                               action:@selector(showAddFriendScreen)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    
 
-    
-
-}
 - (void)showMenu
 {
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
@@ -88,18 +73,6 @@
     [self performSegueWithIdentifier:@"addFriends" sender:self];
 }
 
-- (void)searchForText:(NSString *)searchText
-{
-    //NSString *predicateFormat = @"%K BEGINSWITH[cd] %@";
-    //NSString *searchAttribute = @"username";
-    
-    //NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat,searchAttribute,searchText];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@",searchText];
-    self.searchFetchRequest.predicate = predicate;
-    //NSError *error;
-    //self.filteredList = [self.myUser.managedObjectContext executeFetchRequest:self.searchFetchRequest error:&error];
-    self.filteredList = [self.data filteredArrayUsingPredicate:predicate];
-}
 
 
 -(NSFetchRequest *)searchFetchRequest
@@ -251,15 +224,4 @@
     return cell;
 }
 
-#pragma -mark UISEARCH delegate
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-    [self searchForText:searchString];
-    return YES;
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
-{
-    tableView.rowHeight = 64;
-}
 @end

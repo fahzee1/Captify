@@ -237,6 +237,9 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
+		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
+		118D513718B6639E001AA7FC /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* AddFriendsViewController.m */; };
+		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -707,6 +710,12 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
+		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
+		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
+		118D513418B6639E001AA7FC /* AddFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendsViewController.h; sourceTree = "<group>"; };
+		118D513518B6639E001AA7FC /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsViewController.m; sourceTree = "<group>"; };
+		118D513918B66807001AA7FC /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
+		118D513A18B66807001AA7FC /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -974,6 +983,12 @@
 				1186B15B188C6F850082F35F /* SignUpViewController.m */,
 				11866A1718AC956D002D0245 /* FriendsViewController.h */,
 				11866A1818AC956D002D0245 /* FriendsViewController.m */,
+				118D513118B65947001AA7FC /* FriendsContainerController.h */,
+				118D513218B65947001AA7FC /* FriendsContainerController.m */,
+				118D513418B6639E001AA7FC /* AddFriendsViewController.h */,
+				118D513518B6639E001AA7FC /* AddFriendsViewController.m */,
+				118D513918B66807001AA7FC /* SearchFriendsViewController.h */,
+				118D513A18B66807001AA7FC /* SearchFriendsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1670,6 +1685,7 @@
 				1153E1CE18A9DF4800AD950E /* GPUImageTransformFilter.m in Sources */,
 				1107316518863B2E0065D77F /* UIImageView+AFNetworking.m in Sources */,
 				1153E15E18A9DF4800AD950E /* GPUImageDifferenceBlendFilter.m in Sources */,
+				118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */,
 				1153E19418A9DF4800AD950E /* GPUImageMosaicFilter.m in Sources */,
 				1153E17818A9DF4800AD950E /* GPUImageHighPassFilter.m in Sources */,
 				1153E1D418A9DF4800AD950E /* GPUImageUnsharpMaskFilter.m in Sources */,
@@ -1677,6 +1693,7 @@
 				1153E1C118A9DF4800AD950E /* GPUImageStillCamera.m in Sources */,
 				1153E19D18A9DF4800AD950E /* GPUImageOpacityFilter.m in Sources */,
 				1153E1A618A9DF4800AD950E /* GPUImagePoissonBlendFilter.m in Sources */,
+				118D513718B6639E001AA7FC /* AddFriendsViewController.m in Sources */,
 				1153E1AB18A9DF4800AD950E /* GPUImageRawDataInput.m in Sources */,
 				1153E1D618A9DF4800AD950E /* GPUImageVignetteFilter.m in Sources */,
 				1153E1B018A9DF4800AD950E /* GPUImageRGBFilter.m in Sources */,
@@ -1739,6 +1756,7 @@
 				1153E18618A9DF4800AD950E /* GPUImageLightenBlendFilter.m in Sources */,
 				1153E19618A9DF4800AD950E /* GPUImageMotionDetector.m in Sources */,
 				1153E1BC18A9DF4800AD950E /* GPUImageSoftEleganceFilter.m in Sources */,
+				118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */,
 				1153E19C18A9DF4800AD950E /* GPUImageNormalBlendFilter.m in Sources */,
 				11A40CB718A93FFA002A1CCA /* User.m in Sources */,
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,

@@ -72,7 +72,7 @@
 }
 
 - (IBAction)showFriends:(UIButton *)sender {
-    UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsRoot"];
+    UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
     if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
