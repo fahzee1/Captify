@@ -8,6 +8,7 @@
 
 #import "ReceiverPreviewViewController.h"
 #import "UIColor+HexValue.h"
+#import "TWTSideMenuViewController.h"
 
 @interface ReceiverPreviewViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *previewPhraseTitle;
@@ -35,6 +36,10 @@
 
     [self setupColors];
     [self setupOutlets];
+    
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = button;
+    
     
     
 	// Do any additional setup after loading the view.
@@ -79,6 +84,12 @@
     
 
 }
+
+- (void)showMenu
+{
+    [self.sideMenuViewController openMenuAnimated:YES completion:nil];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

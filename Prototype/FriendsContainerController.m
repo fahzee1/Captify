@@ -7,6 +7,7 @@
 //
 
 #import "FriendsContainerController.h"
+#import "TWTSideMenuViewController.h"
 
 @interface FriendsContainerController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
@@ -36,12 +37,20 @@
     vc.view.frame = self.myContainerView.bounds;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    self.navigationItem.leftBarButtonItem = button;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+-(void)showMenu
+{
+     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender {
