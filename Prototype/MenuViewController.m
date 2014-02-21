@@ -92,6 +92,20 @@
     }
 }
 
+
+- (IBAction)showChallenge:(UIButton *)sender {
+    UIViewController *game = [self.storyboard instantiateViewControllerWithIdentifier:@"rootChallenge"];
+    if([self isAlreadyMainVC:game.childViewControllers[0]]){
+        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+    }
+    else{
+        [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
+    }
+
+    
+}
+
+
 - (BOOL)isAlreadyMainVC:(UIViewController *)controller
 {
     NSArray *main = self.sideMenuViewController.mainViewController.childViewControllers[0];

@@ -254,6 +254,12 @@
 		11C2D6F418B5226F00577A68 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F318B5226F00577A68 /* Challenge.m */; };
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
 		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
+		11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6018B7090A00C129D6 /* cameraControls.xib */; };
+		11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */; };
+		11DC6B6A18B717AA00C129D6 /* FAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6518B717AA00C129D6 /* FAImageView.m */; };
+		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
+		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
+		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -741,6 +747,15 @@
 		11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsAddedMe.m; sourceTree = "<group>"; };
 		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
 		11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsIAdded.m; sourceTree = "<group>"; };
+		11DC6B6018B7090A00C129D6 /* cameraControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cameraControls.xib; sourceTree = "<group>"; };
+		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		11DC6B6418B717AA00C129D6 /* FAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAImageView.h; sourceTree = "<group>"; };
+		11DC6B6518B717AA00C129D6 /* FAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAImageView.m; sourceTree = "<group>"; };
+		11DC6B6618B717AA00C129D6 /* NSString+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FontAwesome.h"; sourceTree = "<group>"; };
+		11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FontAwesome.m"; sourceTree = "<group>"; };
+		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
+		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
+		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -900,6 +915,13 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11DC6B6418B717AA00C129D6 /* FAImageView.h */,
+				11DC6B6518B717AA00C129D6 /* FAImageView.m */,
+				11DC6B6618B717AA00C129D6 /* NSString+FontAwesome.h */,
+				11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */,
+				11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */,
+				11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */,
+				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				1144914A18AE8BEB009B47B6 /* TPKeyboardAvoiding */,
 				119711CC18ADABFF008AD895 /* TWTSideMenuViewController */,
 				11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */,
@@ -998,6 +1020,8 @@
 			children = (
 				116A0E6B18AD22AF00CF1399 /* FriendTableViewCell.h */,
 				116A0E6C18AD22AF00CF1399 /* FriendTableViewCell.m */,
+				11DC6B6018B7090A00C129D6 /* cameraControls.xib */,
+				11DC6B6D18B71ECE00C129D6 /* previewControls.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1583,8 +1607,11 @@
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
 				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
+				11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
+				11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */,
+				11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
 			);
@@ -1633,6 +1660,7 @@
 				116A0E6D18AD22AF00CF1399 /* FriendTableViewCell.m in Sources */,
 				1153E1A218A9DF4800AD950E /* GPUImagePerlinNoiseFilter.m in Sources */,
 				1153E18A18A9DF4800AD950E /* GPUImageLookupFilter.m in Sources */,
+				11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */,
 				1153E1B518A9DF4800AD950E /* GPUImageSepiaFilter.m in Sources */,
 				1153E1A818A9DF4800AD950E /* GPUImagePolkaDotFilter.m in Sources */,
 				1153E16218A9DF4800AD950E /* GPUImageDissolveBlendFilter.m in Sources */,
@@ -1704,6 +1732,7 @@
 				1107314818863B1E0065D77F /* AFHTTPRequestOperation.m in Sources */,
 				1153E15618A9DF4800AD950E /* GPUImageColorInvertFilter.m in Sources */,
 				1153E14718A9DF4800AD950E /* GPUImageAverageColor.m in Sources */,
+				11DC6B6A18B717AA00C129D6 /* FAImageView.m in Sources */,
 				1153E14C18A9DF4800AD950E /* GPUImageBuffer.m in Sources */,
 				1107316218863B2E0065D77F /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */,
@@ -1746,6 +1775,7 @@
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */,
 				1153E1B418A9DF4800AD950E /* GPUImageScreenBlendFilter.m in Sources */,
+				11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
 				1153E1B818A9DF4800AD950E /* GPUImageSingleComponentGaussianBlurFilter.m in Sources */,
 				1107314E18863B1E0065D77F /* AFURLRequestSerialization.m in Sources */,

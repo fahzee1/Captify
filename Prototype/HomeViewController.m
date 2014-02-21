@@ -20,18 +20,28 @@
 #import "ChallengeViewController.h"
 #import "UIColor+HexValue.h"
 #import "GPUImage.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
+#import "SenderPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *previewButton;
+@property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
 @property CGRect firstFrame;
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
+@property (weak, nonatomic) IBOutlet UIButton *flashButton;
+
 @property (strong,nonatomic)AVCaptureSession *session;
 @property (strong,nonatomic)AVCaptureDevice *cameraDevice;
 @property (strong,nonatomic)AVCaptureDeviceInput *cameraInput;
 @property (strong,nonatomic)AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong,nonatomic)AVCaptureStillImageOutput *snapper;
+@property (strong,nonatomic)UIImageView *previewSnap;
+@property (strong, nonatomic)UIView *previewControls;
+@property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
 
 @end
 
@@ -51,7 +61,6 @@
 {
     [super viewDidLoad];
     self.navigationController.delegate = self;
-    [self setupStylesAndMore];
     self.navigationController.navigationBarHidden = YES;
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
@@ -67,6 +76,12 @@
         self.cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
         
+        // set flash
+        [self.cameraDevice lockForConfiguration:&error];
+        [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+        [self.cameraDevice unlockForConfiguration];
+        
+        
         self.snapper = [AVCaptureStillImageOutput new];
         self.snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
                                         AVVideoQualityKey:@0.6};
@@ -81,16 +96,18 @@
         if (self.cameraInput && self.snapper){
         
             self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-            self.previewLayer.frame = CGRectMake(10, 30, 300, 300);
+            self.previewLayer.frame = self.view.frame;
+            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            
             [self.view.layer addSublayer:self.previewLayer];
+            
+            UIView *controlsView = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
+            [self.view addSubview:controlsView];
+            
+            
             [self.session startRunning];
             
             
-            [NSTimer scheduledTimerWithTimeInterval:10
-                                             target:self
-                                           selector:@selector(snapPhoto)
-                                           userInfo:nil
-                                            repeats:NO];
             
         }
         else{
@@ -121,7 +138,7 @@
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
  
-   
+     [self setupStylesAndMore];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -136,17 +153,74 @@
 
 - (void)setupStylesAndMore
 {
-    self.previewButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
-    self.previewButton.layer.cornerRadius = 30.0f;
-    [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.previewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+ 
+    
+    self.snapPicButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.snapPicButton.layer.opacity = 0.6f;
+    self.snapPicButton.layer.cornerRadius = 30.0f;
+    [self.snapPicButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.snapPicButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    
+    self.topMenuButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
+    self.topMenuButton.layer.opacity = 0.5f;
+    self.topMenuButton.layer.cornerRadius = 10.0f;
+    [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    
+    self.flashButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
+    self.flashButton.layer.opacity = 0.5f;
+    self.flashButton.layer.cornerRadius = 10.0f;
+    [self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+
     
 
 
 }
 
+- (void)setupPreviewStylesAndMore
+{
+    self.previewCancelButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
+    self.previewCancelButton.layer.opacity = 0.5f;
+    self.previewCancelButton.layer.cornerRadius = 10.0f;
+    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    
+    self.previewNextButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
+    self.previewNextButton.layer.opacity = 0.5f;
+    self.previewNextButton.layer.cornerRadius = 10.0f;
+    [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateHighlighted];
+
+    
+    
+}
+
 - (IBAction)tappedMenuButton:(UIButton *)sender {
     [self showMenu];
+}
+
+
+- (IBAction)tappedSnapPic:(UIButton *)sender {
+    [self snapPhoto];
+}
+
+- (IBAction)tappedFlashButton:(UIButton *)sender {
+    [self toggleFlash];
+}
+
+- (IBAction)tappedCancelPreview:(UIButton *)sender {
+    [self cancelPreviewImage];
+}
+
+- (IBAction)tappedNextPreview:(UIButton *)sender {
+    
+    //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
+    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
+    vc.image = self.previewSnap.image;
+    vc.name = @"This is a test";
+    vc.phrase = @"bull honky";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -187,16 +261,33 @@
                                                   NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                                                   UIImage *im = [UIImage imageWithData:data];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 30, 300, 300)];
-                                                      iv.contentMode = UIViewContentModeScaleAspectFit;
-                                                      iv.image = im;
-                                                      [self.view addSubview:iv];
-                                                      [self.previewLayer removeFromSuperlayer];
-                                                      self.previewLayer = nil;
-                                                      [self.session stopRunning];
+                                                      
+                                                      self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
+                                                      self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
+                                                      self.previewSnap.image = im;
+                                                      
+                                                      self.previewControls = [[[NSBundle mainBundle] loadNibNamed:@"previewControls" owner:self options:nil]lastObject];
+                                                      [self setupPreviewStylesAndMore];
+                                                
+                                                      [self.view addSubview:self.previewSnap];
+                                                      [self.view addSubview:self.previewControls];
+                                                      
+                                                      //[self.previewLayer removeFromSuperlayer];
+                                                      //self.previewLayer = nil;
+                                                      //[self.session stopRunning];
                                                   });
                                               }];
 }
+
+- (void)cancelPreviewImage
+{
+    [self.previewControls removeFromSuperview];
+    [self.previewSnap removeFromSuperview];
+    
+    self.previewControls = nil;
+    self.previewSnap = nil;
+}
+
 
 - (void)toggleFlash
 {
@@ -205,14 +296,18 @@
         if (self.cameraDevice.flashActive){
             // turn off
              [self.cameraDevice lockForConfiguration:&error];
-             [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+             [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
              [self.cameraDevice unlockForConfiguration];
+             [self.flashButton setTitle:@"FlashOff" forState:UIControlStateNormal];
+
         }
-        else{
+        else if (!self.cameraDevice.flashActive){
             // turn on
             [self.cameraDevice lockForConfiguration:&error];
             [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
             [self.cameraDevice unlockForConfiguration];
+            [self.flashButton setTitle:@"FlashOn" forState:UIControlStateNormal];
+        
         }
     }
     else{
@@ -315,8 +410,6 @@
     return nil;
 }
                                                              
-
-
 - (User *)myUser
 {
     if (!_myUser){

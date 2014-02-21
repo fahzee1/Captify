@@ -59,8 +59,9 @@
     
     [self setupStyles];
     
-    self.name = @"Guess what im eating";
-    self.phrase = @"Nothing stupid";
+    //self.name = @"Guess what im eating";
+    //self.phrase = @"Nothing stupid";
+    self.previewImage.image = self.image;
     self.phraseCountNumbers = [[NSArray alloc] initWithObjects:@"One Word",@"Two Words",@"Three Words" ,nil];
     self.friendsArray = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
  
