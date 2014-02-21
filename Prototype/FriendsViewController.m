@@ -10,6 +10,7 @@
 #import "FriendTableViewCell.h"
 #import "AppDelegate.h"
 #import "TWTSideMenuViewController.h"
+#import "FAImageView.h"
 
 
 #define test 1
@@ -193,7 +194,11 @@
             
             ((FriendTableViewCell *)cell).myFriendScore.text = @"176";
             ((FriendTableViewCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
-            ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+            ((FriendTableViewCell *)cell).myFriendPic.image = nil;
+            FAImageView *imageView = ((FAImageView *)((FriendTableViewCell *)cell).myFriendPic);
+            [imageView setDefaultIconIdentifier:@"fa-user"];
+        
+            
         }
         // not testing
         else{

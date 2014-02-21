@@ -40,13 +40,13 @@
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 		11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewContr.m */; };
+		11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
 		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
-		112B005418B40E4B008F3D25 /* HistoryCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 112B005318B40E4B008F3D25 /* HistoryCollectionCell.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
 		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
@@ -331,6 +331,8 @@
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 		11101DD718B17073009D44BD /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		11101DD818B17073009D44BD /* HistoryViewContr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewContr.m; sourceTree = "<group>"; };
+		11176DEB18B7F6E600FA69B7 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
+		11176DEC18B7F6E600FA69B7 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
 		111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderPreviewViewController.m; sourceTree = "<group>"; };
 		112153AD18983B7000EADE97 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
@@ -341,8 +343,6 @@
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
-		112B005218B40E4B008F3D25 /* HistoryCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCollectionCell.h; sourceTree = "<group>"; };
-		112B005318B40E4B008F3D25 /* HistoryCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCollectionCell.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		1144914D18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -852,6 +852,7 @@
 		110730F71876640F0065D77F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				110730F81876640F0065D77F /* Prototype-Info.plist */,
 				110730F91876640F0065D77F /* InfoPlist.strings */,
 				110730FC1876640F0065D77F /* main.m */,
@@ -921,7 +922,6 @@
 				11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */,
 				11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */,
 				11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */,
-				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				1144914A18AE8BEB009B47B6 /* TPKeyboardAvoiding */,
 				119711CC18ADABFF008AD895 /* TWTSideMenuViewController */,
 				11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */,
@@ -1065,8 +1065,8 @@
 				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
 				115D939118B28D1C006A1C02 /* UIImage+RoundedCorners.h */,
 				115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */,
-				112B005218B40E4B008F3D25 /* HistoryCollectionCell.h */,
-				112B005318B40E4B008F3D25 /* HistoryCollectionCell.m */,
+				11176DEB18B7F6E600FA69B7 /* HistoryCell.h */,
+				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1677,7 +1677,6 @@
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1153E18C18A9DF4800AD950E /* GPUImageLuminanceRangeFilter.m in Sources */,
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
-				112B005418B40E4B008F3D25 /* HistoryCollectionCell.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				1153E1D118A9DF4800AD950E /* GPUImageTwoPassFilter.m in Sources */,
@@ -1814,6 +1813,7 @@
 				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1153E16618A9DF4800AD950E /* GPUImageExclusionBlendFilter.m in Sources */,
 				1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */,
+				11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */,
 				1153E15118A9DF4800AD950E /* GPUImageChromaKeyFilter.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,
 				1153E18118A9DF4800AD950E /* GPUImageKuwaharaFilter.m in Sources */,

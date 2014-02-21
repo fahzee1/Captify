@@ -10,6 +10,7 @@
 #import "UIColor+HexValue.h"
 #import "UIImage+RoundedCorners.h"
 #import "SenderFriendsCell.h"
+#import "FAImageView.h"
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -71,6 +72,19 @@
     self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
     
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self isMovingFromParentViewController]){
+        if (self.delegate){
+            if ([self.delegate respondsToSelector:@selector(previewscreenDidMoveBack)]){
+                [self.delegate previewscreenDidMoveBack];
+            }
+        }
+    }
 }
 
 - (void)dealloc
@@ -201,7 +215,9 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         if (cell){
             ((SenderFriendsCell *)cell).myFriendUsername.text = [self.friendsArray objectAtIndex:indexPath.row];
-            ((SenderFriendsCell *)cell).myFriendPic.image = [UIImage imageWithRoundedCornersSize:30.0f usingImage: [UIImage imageNamed:@"profile-placeholder"]];
+            ((SenderFriendsCell *)cell).myFriendPic.image = nil;
+            FAImageView *imageView =  ((FAImageView *)((SenderFriendsCell *)cell).myFriendPic);
+            [imageView setDefaultIconIdentifier:@"fa-user"];
             
             // add this to list of cells that have checkmarks
             if ([self.selectedFriends[@"index_paths"] containsObject:indexPath]){

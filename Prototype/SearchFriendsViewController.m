@@ -11,10 +11,10 @@
 #import "FriendTableViewCell.h"
 
 @interface SearchFriendsViewController ()<UISearchDisplayDelegate,UISearchBarDelegate>
-@property (weak, nonatomic) IBOutlet UISearchBar *mySearchBar;
 @property (strong, nonatomic)NSArray *data;
 @property (strong, nonatomic) NSArray *filteredList;
 @property (strong, nonatomic) NSFetchRequest *searchFetchRequest;
+@property (weak, nonatomic) IBOutlet UISearchBar *mySearchBar;
 
 @end
 
@@ -32,8 +32,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    // uiviewcontroller come with searchDisplayControllers
+    
     self.mySearchBar.delegate = self;
+    [self.mySearchBar becomeFirstResponder];
+    
+    self.data = [NSArray arrayWithObjects:@"apple",@"bannana",@"cookies",@"donald",@"dogs", nil];
+
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -82,13 +88,13 @@
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self searchForText:searchString];
+    [self.tableView reloadData];
+    
     return YES;
 }
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
-{
-    tableView.rowHeight = 64;
-}
+
+
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
@@ -104,6 +110,16 @@
     NSLog(@"%@", NSStringFromClass([superView class]));
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    NSLog(@"cancel clicked");
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self searchForText:searchText];
+    [self.tableView reloadData];
+}
 
 #pragma mark - Table view data source
 
@@ -119,17 +135,37 @@
     
     return [self.filteredList count];
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64.0f;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"searchFriendsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    User *user = [self.filteredList objectAtIndex:indexPath.row];
-    
-    ((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
-    ((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
-    ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
-    
+
+    UITableViewCell *cell;
+   
+
+    if ([[self.filteredList objectAtIndex:indexPath.row] isKindOfClass:[User class]]){
+        static NSString *CellIdentifier = @"searchFriendsCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+
+        User *user = [self.filteredList objectAtIndex:indexPath.row];
+        
+        ((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
+        ((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
+        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+    }
+    else{
+        static NSString *CellIdentifier = @"friendCells";
+        cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        ((FriendTableViewCell*)cell).myFriendUsername.text  = [self.filteredList objectAtIndex:indexPath.row];
+        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+
+        
+        }
+       
     // Configure the cell...
     
     return cell;

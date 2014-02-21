@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SenderPreviewDelegate <NSObject>
+
+- (void)previewscreenDidMoveBack;
+
+@end
+
+
 @interface SenderPreviewViewController : UIViewController
 
 @property(nonatomic,strong)NSString *name;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSString *phrase;
-
+@property (weak) id <SenderPreviewDelegate> delegate;
 
 
 @end

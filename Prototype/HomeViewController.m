@@ -25,7 +25,8 @@
 #import "SenderPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate>
+
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
 @property CGRect firstFrame;
@@ -42,6 +43,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
+
+
+
 
 @end
 
@@ -65,55 +69,13 @@
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // got a camera
+        [self setupCamera];
         
-        //  start camera
+    }
+    else{
+        // using simulator with no camera so just add buttons
         
-        NSError *error;
-        
-        self.session = [AVCaptureSession new];
-        self.session.sessionPreset = AVCaptureSessionPresetPhoto;
-        
-        self.cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
-        
-        // set flash
-        [self.cameraDevice lockForConfiguration:&error];
-        [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
-        [self.cameraDevice unlockForConfiguration];
-        
-        
-        self.snapper = [AVCaptureStillImageOutput new];
-        self.snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
-                                        AVVideoQualityKey:@0.6};
-        
-        if (self.cameraInput){
-            [self.session addInput:self.cameraInput];
-        }
-        if (self.snapper){
-            [self.session addOutput:self.snapper];
-        }
-        
-        if (self.cameraInput && self.snapper){
-        
-            self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-            self.previewLayer.frame = self.view.frame;
-            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-            
-            [self.view.layer addSublayer:self.previewLayer];
-            
-            UIView *controlsView = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
-            [self.view addSubview:controlsView];
-            
-            
-            [self.session startRunning];
-            
-            
-            
-        }
-        else{
-            NSLog(@"error creating camera input or output");
-        }
-        
+        [self setupTestNoCamera];
     }
     
     if (![UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]){
@@ -141,15 +103,94 @@
      [self setupStylesAndMore];
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    self.navigationController.delegate = self;
-    
-}
+
 
 - (void)dealloc
 {
+    [self.previewLayer removeFromSuperlayer];
+    self.previewLayer = nil;
+    
+    [self.session stopRunning];
+    self.session = nil;
+    
+    self.cameraDevice = nil;
+    self.cameraInput = nil;
+    self.snapper = nil;
+    self.previewSnap = nil;
+    self.previewControls = nil;
+    
+
+    
+}
+
+
+- (void)setupCamera
+{
+    NSError *error;
+    
+    self.session = [AVCaptureSession new];
+    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
+    
+    self.cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+    
+    // set flash
+    [self.cameraDevice lockForConfiguration:&error];
+    [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+    [self.cameraDevice unlockForConfiguration];
+    
+    
+    self.snapper = [AVCaptureStillImageOutput new];
+    self.snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
+                                    AVVideoQualityKey:@0.6};
+    
+    if (self.cameraInput){
+        [self.session addInput:self.cameraInput];
     }
+    if (self.snapper){
+        [self.session addOutput:self.snapper];
+    }
+    
+    if (self.cameraInput && self.snapper){
+        
+        self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+        self.previewLayer.frame = self.view.frame;
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        
+        [self.view.layer addSublayer:self.previewLayer];
+        
+        UIView *controlsView = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
+        [self.view addSubview:controlsView];
+        
+        
+        [self.session startRunning];
+        
+        
+        
+    }
+    else{
+        NSLog(@"error creating camera input or output");
+    }
+    
+
+}
+
+- (void)setupTestNoCamera
+{
+    UIButton *menu = [UIButton buttonWithType:UIButtonTypeSystem];
+    [menu setTitle:@"Menu" forState:UIControlStateNormal];
+    [menu addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    menu.frame = CGRectMake(50, 100, 60, 60);
+    
+    UIButton *preview = [UIButton buttonWithType:UIButtonTypeSystem];
+    [preview setTitle:@"Preview" forState:UIControlStateNormal];
+    [preview addTarget:self action:@selector(tappedNextPreview:) forControlEvents:UIControlEventTouchUpInside];
+    preview.frame = CGRectMake(115, 100, 60, 60);
+    
+    
+    [self.view addSubview:preview];
+    [self.view addSubview:menu];
+}
 
 - (void)setupStylesAndMore
 {
@@ -167,11 +208,15 @@
     [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
     
-    self.flashButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
-    self.flashButton.layer.opacity = 0.5f;
-    self.flashButton.layer.cornerRadius = 10.0f;
-    [self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    //self.flashButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
+    //self.flashButton.layer.opacity = 0.5f;
+    //self.flashButton.layer.cornerRadius = 10.0f;
+    //[self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    //[self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    
+    self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    [self.flashButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"] forState:UIControlStateNormal];
+    
 
     
 
@@ -220,6 +265,7 @@
     vc.image = self.previewSnap.image;
     vc.name = @"This is a test";
     vc.phrase = @"bull honky";
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -373,6 +419,13 @@
     [self showMenu];
 }
 
+#pragma -mark SemderPreview delegate
+
+- (void)previewscreenDidMoveBack
+{
+    self.navigationController.navigationBarHidden = YES;
+}
+
 #pragma -mark UINavigationController delegate
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -380,11 +433,9 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
-    NSLog(@"ddd");
     if (operation == UINavigationControllerOperationPop && [toVC isKindOfClass:[HomeViewController class]]){
         self.navigationController.navigationBarHidden = YES;
         if ([fromVC isKindOfClass:[ChallengeViewController class]]){
-            NSLog(@"should remove top label");
             UIView *remove = [self.navigationController.navigationBar viewWithTag:SENDERPICANDNAME_TAG];
             if (remove){
                 [remove removeFromSuperview];
