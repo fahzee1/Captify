@@ -8,6 +8,8 @@
 
 #import "FriendsContainerController.h"
 #import "TWTSideMenuViewController.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 @interface FriendsContainerController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
@@ -37,7 +39,9 @@
     vc.view.frame = self.myContainerView.bounds;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+   
     self.navigationItem.leftBarButtonItem = button;
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "MenuViewController.h"
 #import "LoginViewController.h"
 #import "User+Utils.h"
 #import "Challenge+Utils.h"
@@ -26,12 +27,13 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
 @property CGRect firstFrame;
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
 @property (weak, nonatomic) IBOutlet UIButton *flashButton;
+@property (weak, nonatomic) IBOutlet UIButton *rotateButton;
 
 @property (strong,nonatomic)AVCaptureSession *session;
 @property (strong,nonatomic)AVCaptureDevice *cameraDevice;
@@ -44,6 +46,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
 
+@property (weak, nonatomic) IBOutlet UIView *cameraOptionsContainerView;
+@property (weak, nonatomic) IBOutlet UIButton *cameraOptionsButton;
 
 
 
@@ -66,10 +70,14 @@
     [super viewDidLoad];
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
+    MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
+    menu.delegate = self;
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // got a camera
-        [self setupCamera];
+        if (![self.session isRunning]){
+            [self setupCamera];
+        }
         
     }
     else{
@@ -105,24 +113,6 @@
 
 
 
-- (void)dealloc
-{
-    [self.previewLayer removeFromSuperlayer];
-    self.previewLayer = nil;
-    
-    [self.session stopRunning];
-    self.session = nil;
-    
-    self.cameraDevice = nil;
-    self.cameraInput = nil;
-    self.snapper = nil;
-    self.previewSnap = nil;
-    self.previewControls = nil;
-    
-
-    
-}
-
 
 - (void)setupCamera
 {
@@ -131,7 +121,7 @@
     self.session = [AVCaptureSession new];
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
     
-    self.cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    self.cameraDevice = [self backCamera];
     self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
     
     // set flash
@@ -196,28 +186,33 @@
 {
  
     
-    self.snapPicButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
-    self.snapPicButton.layer.opacity = 0.6f;
-    self.snapPicButton.layer.cornerRadius = 30.0f;
-    [self.snapPicButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.snapPicButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    self.snapPicButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
+    [self.snapPicButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"] forState:UIControlStateNormal];
+    [self.snapPicButton setTitleColor:[UIColor colorWithHexString:@"#e74c3c"] forState:UIControlStateNormal];
+
     
-    self.topMenuButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
-    self.topMenuButton.layer.opacity = 0.5f;
-    self.topMenuButton.layer.cornerRadius = 10.0f;
-    [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.topMenuButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    
-    //self.flashButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
-    //self.flashButton.layer.opacity = 0.5f;
-    //self.flashButton.layer.cornerRadius = 10.0f;
-    //[self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    //[self.flashButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    
-    self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
-    [self.flashButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"] forState:UIControlStateNormal];
+    self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+    [self.topMenuButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
     
 
+    
+    self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    [self.flashButton setTitle:[NSString stringWithFormat:@"%@ On",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+    [self.flashButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.rotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    [self.rotateButton setTitle:[NSString stringWithFormat:@"%@ %@",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"],[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"]] forState:UIControlStateNormal];
+    [self.rotateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.cameraOptionsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    [self.cameraOptionsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
+    [self.cameraOptionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.cameraOptionsContainerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.cameraOptionsContainerView.layer.cornerRadius = 10.0f;
+    self.cameraOptionsContainerView.hidden = YES;
     
 
 
@@ -225,18 +220,17 @@
 
 - (void)setupPreviewStylesAndMore
 {
-    self.previewCancelButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
-    self.previewCancelButton.layer.opacity = 0.5f;
-    self.previewCancelButton.layer.cornerRadius = 10.0f;
-    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
     
-    self.previewNextButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#ecf0f1"] CGColor];
-    self.previewNextButton.layer.opacity = 0.5f;
-    self.previewNextButton.layer.cornerRadius = 10.0f;
+    self.previewCancelButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    [self.previewCancelButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    
+    self.previewNextButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    [self.previewNextButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"] forState:UIControlStateNormal];
     [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-    [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateHighlighted];
+    
 
+   
     
     
 }
@@ -258,6 +252,23 @@
     [self cancelPreviewImage];
 }
 
+- (IBAction)tappedCameraOptions:(UIButton *)sender {
+    if (self.cameraOptionsContainerView.hidden){
+        self.cameraOptionsContainerView.hidden = NO;
+    }
+    else{
+        self.cameraOptionsContainerView.hidden = YES;
+    }
+
+}
+
+
+- (IBAction)tappedRotateCamera:(UIButton *)sender {
+    [self toggleCameraPosition];
+}
+
+
+
 - (IBAction)tappedNextPreview:(UIButton *)sender {
     
     //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
@@ -268,6 +279,8 @@
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+
 
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
@@ -344,22 +357,77 @@
              [self.cameraDevice lockForConfiguration:&error];
              [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
              [self.cameraDevice unlockForConfiguration];
-             [self.flashButton setTitle:@"FlashOff" forState:UIControlStateNormal];
+            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+
 
         }
-        else if (!self.cameraDevice.flashActive){
+        else{
             // turn on
             [self.cameraDevice lockForConfiguration:&error];
             [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
             [self.cameraDevice unlockForConfiguration];
-            [self.flashButton setTitle:@"FlashOn" forState:UIControlStateNormal];
+            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ On",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+
         
         }
     }
     else{
         NSLog(@"No flash available");
+        [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
         return;
     }
+}
+
+
+- (void)toggleCameraPosition
+{
+    [self.session beginConfiguration];
+    NSError *error;
+    [self.session removeInput:self.cameraInput];
+    if ([self.cameraDevice position] == AVCaptureDevicePositionBack){
+        // show front camera
+        self.cameraDevice = [self frontCamera];
+        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+        if (self.cameraInput){
+            [self.session addInput:self.cameraInput];
+            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+
+        }
+        
+
+    }
+    else{
+        // show back camera
+        self.cameraDevice = [self backCamera];
+        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+        if (self.cameraInput){
+            [self.session addInput:self.cameraInput];
+        }
+
+    }
+    
+    [self.session commitConfiguration];
+}
+
+- (AVCaptureDevice *)frontCamera {
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice *device in devices) {
+        if ([device position] == AVCaptureDevicePositionFront) {
+            return device;
+        }
+    }
+    return nil;
+}
+
+
+- (AVCaptureDevice *)backCamera {
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice *device in devices) {
+        if ([device position] == AVCaptureDevicePositionBack) {
+            return device;
+        }
+    }
+    return nil;
 }
 
 - (void)focusAPoint:(CGPoint)point
@@ -398,12 +466,22 @@
     if (self.navigationController.delegate == self){
         self.navigationController.delegate = nil;
     }
+    
+    MenuViewController *menu = (MenuViewController *) self.sideMenuViewController.menuViewController;
+    if (menu.delegate == self){
+        menu.delegate = nil;
+    }
 }
 
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.cameraOptionsContainerView.hidden)
+    {
+        self.cameraOptionsContainerView.hidden = YES;
+    }
+    
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:self.view];
     // focus camera where user touces
@@ -418,6 +496,37 @@
 {
     [self showMenu];
 }
+
+#pragma -mark Menu delegate
+
+- (void)menuShowingAnotherScreen
+{
+    // use this to dispose of resources instead of
+    // view did/will disappear so we dont mess up
+    // preview screen
+    
+    [self.previewLayer removeFromSuperlayer];
+    self.previewLayer = nil;
+    
+    [self.session stopRunning];
+    self.session = nil;
+    
+    self.cameraDevice = nil;
+    self.cameraInput = nil;
+    self.snapper = nil;
+    self.previewSnap = nil;
+    self.previewControls = nil;
+    self.snapPicButton = nil;
+    self.topMenuButton = nil;
+    self.flashButton = nil;
+    self.previewCancelButton = nil;
+    self.previewNextButton = nil;
+    self.cameraOptionsButton = nil;
+    self.cameraOptionsContainerView = nil;
+    
+
+}
+
 
 #pragma -mark SemderPreview delegate
 

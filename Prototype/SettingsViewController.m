@@ -10,6 +10,8 @@
 #import "TWTSideMenuViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "HomeViewController.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
@@ -40,7 +42,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
 }
 

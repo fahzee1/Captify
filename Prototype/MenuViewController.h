@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+
+@protocol MenuDelegate <NSObject>
+
+- (void)menuShowingAnotherScreen;
+
+@end
+
 @interface MenuViewController : UIViewController
+
+@property (weak)id <MenuDelegate>delegate;
 
 @end

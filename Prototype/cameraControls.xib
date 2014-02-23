@@ -6,7 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController">
             <connections>
+                <outlet property="cameraOptionsButton" destination="Qbp-N4-POA" id="WAn-jP-HUu"/>
+                <outlet property="cameraOptionsContainerView" destination="BGi-lM-cM6" id="Hi5-YM-Uc5"/>
                 <outlet property="flashButton" destination="O9U-Lk-TIO" id="GiU-jn-034"/>
+                <outlet property="rotateButton" destination="nwN-wY-RFL" id="lgs-M0-25a"/>
                 <outlet property="snapPicButton" destination="471-cl-1LO" id="4V0-0V-C0g"/>
                 <outlet property="topMenuButton" destination="ZqY-AN-cLc" id="fJ4-6S-Uqg"/>
             </connections>
@@ -36,14 +39,41 @@
                         <action selector="tappedMenuButton:" destination="-1" eventType="touchUpInside" id="3MQ-We-RdK"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9U-Lk-TIO">
-                    <rect key="frame" x="249" y="48" width="65" height="40"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BGi-lM-cM6">
+                    <rect key="frame" x="251" y="83" width="50" height="83"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="FlashOn">
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwN-wY-RFL">
+                            <rect key="frame" x="2" y="33" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Rotate">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tappedRotateCamera:" destination="-1" eventType="touchUpInside" id="aiH-7E-GEs"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9U-Lk-TIO">
+                            <rect key="frame" x="-7" y="0.0" width="65" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="FlashOn">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tappedFlashButton:" destination="-1" eventType="touchUpInside" id="IEs-gj-ZoP"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96119658799999996" green="0.37075457909999998" blue="0.40495955950000001" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qbp-N4-POA">
+                    <rect key="frame" x="249" y="53" width="54" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Options">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tappedFlashButton:" destination="-1" eventType="touchUpInside" id="IEs-gj-ZoP"/>
+                        <action selector="tappedCameraOptions:" destination="-1" eventType="touchUpInside" id="SQK-KA-Wn2"/>
                     </connections>
                 </button>
             </subviews>

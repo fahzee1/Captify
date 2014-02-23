@@ -9,6 +9,8 @@
 #import "HistoryViewController.h"
 #import "TWTSideMenuViewController.h"
 #import "UIColor+HexValue.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 @interface HistoryViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -30,7 +32,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+
     self.navigationItem.leftBarButtonItem = button;
    
     self.list = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];

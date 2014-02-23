@@ -10,12 +10,12 @@
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
 
+
 @interface MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *menuCamera;
 @property (weak, nonatomic) IBOutlet UIButton *menuHistory;
 @property (weak, nonatomic) IBOutlet UIButton *menuFriends;
 @property (weak, nonatomic) IBOutlet UIButton *menuSettings;
-
 @end
 
 @implementation MenuViewController
@@ -43,6 +43,7 @@
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         }
     }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,6 +58,10 @@
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
     else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
+
         [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:YES];
     }
 }
@@ -67,6 +72,9 @@
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
     else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
         [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
     }
 }
@@ -77,6 +85,10 @@
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
     else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
+
         [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
     }
 
@@ -88,6 +100,10 @@
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
     else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
+
         [self.sideMenuViewController setMainViewController:settings animated:YES closeMenu:YES];
     }
 }
@@ -99,6 +115,10 @@
         [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
     }
     else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
+
         [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
     }
 
@@ -116,5 +136,6 @@
         return NO;
     }
 }
+
 
 @end
