@@ -15,12 +15,10 @@
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIScrollViewDelegate,UITableViewDelegate, UITableViewDataSource>
+@interface SenderPreviewViewController ()<UIScrollViewDelegate,UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 
-@property (weak, nonatomic) IBOutlet UIPickerView *phraseCountPicker;
-@property (strong, nonatomic)NSArray *phraseCountNumbers;
 @property (weak, nonatomic) IBOutlet UIScrollView *selectedFriendsScroll;
 @property (weak, nonatomic) IBOutlet UILabel *toLabel;
 
@@ -31,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *bottomLabel;
 @property (strong, nonatomic) UIButton *bottomSendButton;
 @property CGPoint scrollStart;
-@property (nonatomic, assign) NSInteger numberOfFields;
+
 
 @end
 
@@ -50,8 +48,6 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    self.phraseCountPicker.delegate = self;
-    self.phraseCountPicker.dataSource = self;
     self.selectedFriendsScroll.delegate = self;
     self.friendsTable.delegate = self;
     self.friendsTable.dataSource = self;
@@ -63,7 +59,6 @@
     //self.name = @"Guess what im eating";
     //self.phrase = @"Nothing stupid";
     self.previewImage.image = self.image;
-    self.phraseCountNumbers = [[NSArray alloc] initWithObjects:@"One Word",@"Two Words",@"Three Words" ,nil];
     self.friendsArray = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
  
     self.selectedFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
@@ -89,12 +84,6 @@
 
 - (void)dealloc
 {
-    if (self.phraseCountPicker.delegate == self){
-        self.phraseCountPicker.delegate = nil;
-    }
-    if (self.phraseCountPicker.dataSource == self){
-        self.phraseCountPicker.dataSource = nil;
-    }
     if (self.selectedFriendsScroll.delegate == self){
         self.selectedFriendsScroll.delegate = nil;
     }
@@ -147,48 +136,6 @@
 }
 
 
-
-#pragma -mark UIpicker delegate
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 3;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [self.phraseCountNumbers objectAtIndex:row];
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    switch (row) {
-        case 0:
-        {
-            self.numberOfFields = 1;
-        }
-            break;
-            
-        case 1:
-        {
-            self.numberOfFields = 2;
-        }
-            break;
-        case 2:
-        {
-            self.numberOfFields = 3;
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
-}
 
 #pragma -mark UItableview delegate
 

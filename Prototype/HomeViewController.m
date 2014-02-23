@@ -27,7 +27,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
 @property CGRect firstFrame;
@@ -45,11 +45,16 @@
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
+@property (weak, nonatomic) IBOutlet UIButton *previewShowPickerButton;
+@property (weak, nonatomic) IBOutlet UIView *previewPickerContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *cameraOptionsContainerView;
 @property (weak, nonatomic) IBOutlet UIButton *cameraOptionsButton;
 
+@property (weak, nonatomic) IBOutlet UIPickerView *previewWordCountPicker;
 
+@property (nonatomic, assign) NSInteger numberOfFields;
+@property (strong, nonatomic)NSArray *phraseCountNumbers;
 
 @end
 
@@ -72,6 +77,9 @@
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
     menu.delegate = self;
+    
+    self.phraseCountNumbers = [[NSArray alloc] initWithObjects:@"One Word",@"Two Words",@"Three Words" ,nil];
+
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // got a camera
@@ -229,6 +237,20 @@
     [self.previewNextButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"] forState:UIControlStateNormal];
     [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     
+    self.previewShowPickerButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    [self.previewShowPickerButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square-o"] forState:UIControlStateNormal];
+    [self.previewShowPickerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    
+    
+    self.previewPickerContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.previewPickerContainer.layer.cornerRadius = 10.0f;
+    self.previewPickerContainer.hidden = YES;
+    self.previewPickerContainer.userInteractionEnabled = NO;
+    
+    
+    self.previewWordCountPicker.delegate = self;
+    self.previewWordCountPicker.dataSource = self;
 
    
     
@@ -280,6 +302,16 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)tappedPreviewWordCountButton:(id)sender {
+    if (self.previewPickerContainer.hidden){
+        self.previewPickerContainer.hidden = NO;
+        self.previewPickerContainer.userInteractionEnabled = YES;
+    }
+    else{
+        self.previewPickerContainer.hidden = YES;
+        self.previewPickerContainer.userInteractionEnabled = NO;
+    }
+}
 
 
 
@@ -471,6 +503,14 @@
     if (menu.delegate == self){
         menu.delegate = nil;
     }
+    
+    if (self.previewWordCountPicker.delegate == self){
+        self.previewWordCountPicker.delegate = nil;
+    }
+    if (self.previewWordCountPicker.dataSource == self){
+        self.previewWordCountPicker.dataSource = nil;
+    }
+
 }
 
 
@@ -481,6 +521,7 @@
     {
         self.cameraOptionsContainerView.hidden = YES;
     }
+    
     
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint touchLocation = [touch locationInView:self.view];
@@ -569,6 +610,59 @@
     
     return nil;
 }
+
+#pragma -mark UIpicker delegate
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 3;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self.phraseCountNumbers objectAtIndex:row];
+}
+
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+
+    NSAttributedString *attString = [[NSAttributedString alloc] initWithString:[self.phraseCountNumbers objectAtIndex:row] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
+    return attString;
+    
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    switch (row) {
+        case 0:
+        {
+            self.numberOfFields = 1;
+        }
+            break;
+            
+        case 1:
+        {
+            self.numberOfFields = 2;
+        }
+            break;
+        case 2:
+        {
+            self.numberOfFields = 3;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+
                                                              
 - (User *)myUser
 {
