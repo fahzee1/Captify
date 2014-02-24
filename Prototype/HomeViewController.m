@@ -25,6 +25,7 @@
 #import "UIFont+FontAwesome.h"
 #import "SenderPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "FacebookFriends.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -92,6 +93,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
+    /*
+    FacebookFriends *f = [[FacebookFriends alloc] init];
+    [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
+        // this code is unbelievably code must cache and store in core data
+        // after first time
+        NSLog(@"%@",data);
+    }];
+    
+    //NSLog(@"%@",[f allFriends]);
+     */
+
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
@@ -263,7 +276,7 @@
     // add pulsating effect to button
     CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     pulseAnimation.duration = .5;
-    pulseAnimation.toValue = [NSNumber numberWithFloat:1.1];
+    pulseAnimation.toValue = [NSNumber numberWithFloat:1.3];
     pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     pulseAnimation.autoreverses = YES;
     pulseAnimation.repeatCount = FLT_MAX;
@@ -354,15 +367,9 @@
 
 
 - (IBAction)tappedNextPreview:(UIButton *)sender {
-    
-    //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
-    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
-    vc.image = self.previewSnap.image;
-    vc.name = self.finalPhrase;
-    vc.phrase = self.finalPhrase;
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+    [self proceedToFinalPreview];
 }
+
 
 - (IBAction)tappedPreviewWordCountButton:(id)sender {
     [self.previewShowPickerButton.layer removeAllAnimations];
@@ -381,8 +388,30 @@
 
 - (void)proceedToFinalPreview
 {
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         //
+                         CGRect currentFrame = self.previewCurrentField.frame;
+                         self.previewCurrentField.frame = CGRectMake(currentFrame.origin.x, SCREENHEIGHT, currentFrame.size.width, currentFrame.size.height);
+                         self.previewCurrentField = nil;
+                         
+                     } completion:^(BOOL finished) {
+                         [self performSelector:@selector(pushFinalPreview) withObject:nil afterDelay:1.0];
+                     }];
 
-    [self tappedNextPreview:self.previewNextButton];
+}
+
+
+- (void)pushFinalPreview
+{
+    //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
+    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
+    vc.image = self.previewSnap.image;
+    vc.name = self.finalPhrase;
+    vc.phrase = self.finalPhrase;
+    vc.delegate = self;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
@@ -601,6 +630,8 @@
 }
 
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -657,6 +688,16 @@
     self.previewNextButton = nil;
     self.cameraOptionsButton = nil;
     self.cameraOptionsContainerView = nil;
+    self.previewOneFieldContainer = nil;
+    self.previewTwoFieldContainer = nil;
+    self.previewThreeFieldContainer = nil;
+    self.previewWordCountPicker = nil;
+    self.previewPickerContainer = nil;
+    self.phraseCountNumbers = nil;
+    self.previewCurrentField = nil;
+    self.finalPhrase = nil;
+    
+    
     
     if (self.navigationController.delegate == self){
         self.navigationController.delegate = nil;
@@ -695,6 +736,10 @@
     int total = 0;
     if ([string isEqualToString:@""]){
         return YES;
+    }
+    
+    if ([string isEqualToString:@" "]){
+        return NO;
     }
     
     switch (self.numberOfFields) {
@@ -823,16 +868,7 @@
     }
 
     
-    [UIView animateWithDuration:0.5f
-                     animations:^{
-                         //
-                         CGRect currentFrame = self.previewCurrentField.frame;
-                         self.previewCurrentField.frame = CGRectMake(currentFrame.origin.x, SCREENHEIGHT, currentFrame.size.width, currentFrame.size.height);
-                         self.previewCurrentField = nil;
-                         
-                     } completion:^(BOOL finished) {
-                         [self performSelector:@selector(proceedToFinalPreview) withObject:nil afterDelay:1.0];
-                        }];
+    [self proceedToFinalPreview];
     
     return YES;
 }

@@ -8,6 +8,7 @@
 
 #import "AddFriendsViewController.h"
 #import "User.h"
+#import "FacebookFriends.h"
 
 
 
@@ -15,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic)NSArray *contactsArray;
-
+@property (strong, nonatomic)NSArray *facebookFriendsArray;
 
 @end
 
@@ -35,6 +36,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
 }
@@ -45,6 +47,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (NSArray *)facebookFriendsArray
+{
+    if (!_facebookFriendsArray){
+        FacebookFriends *f = [[FacebookFriends alloc] init];
+        [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
+            _facebookFriendsArray = data;
+            [self.myTableView reloadData];
+        }];
+    }
+    return  _facebookFriendsArray;
+}
 
 #pragma mark - Table view data source
 
@@ -58,13 +72,14 @@
 {
     // Return the number of rows in the section.
     
-    return [self.contactsArray count];
+    return [self.facebookFriendsArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"searchFriendsCell";
+    static NSString *CellIdentifier = @"addFriendCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.textLabel.text = [self.facebookFriendsArray objectAtIndex:indexPath.row][@"name"];
     //User *user = [self.contactsArray objectAtIndex:indexPath.row];
     
     //((FriendTableViewCell*)cell).myFriendUsername.text = user.username;

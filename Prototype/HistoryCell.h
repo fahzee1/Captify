@@ -10,4 +10,8 @@
 
 @interface HistoryCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *historyTitleLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *historyImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *activeLabel;
 @end

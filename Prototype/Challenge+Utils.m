@@ -137,6 +137,18 @@
 }
 
 
++ (NSArray *)fetchUsersHistoryInContext:(NSManagedObjectContext *)context
+{
+
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    request.shouldRefreshRefetchedObjects = YES;
+    request.fetchLimit = 20;
+    request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.is_friend = 0)"];
+    NSError *error;
+    
+    return [context executeFetchRequest:request error:&error];
+}
+
 
 + (NSInteger)checkIfChallengeWithFetch:(NSFetchRequest *)fetch
                           context:(NSManagedObjectContext *)context
