@@ -728,18 +728,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="brilliant-grill" id="yio-gN-AAU">
-                                <rect key="frame" x="50" y="93" width="221" height="127"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YBL-3g-aEc">
-                                <rect key="frame" x="0.0" y="59" width="320" height="34"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="22" sectionFooterHeight="22" id="Vce-Z9-iQ4">
-                                <rect key="frame" x="0.0" y="274" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="299" width="320" height="215"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -770,11 +766,11 @@
                                 </prototypes>
                             </tableView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="dQn-Ma-bun">
-                                <rect key="frame" x="0.0" y="222" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="250" width="320" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uBn-AT-Rmz">
-                                        <rect key="frame" x="20" y="17" width="42" height="21"/>
+                                        <rect key="frame" x="20" y="20" width="42" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -788,6 +784,10 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yio-gN-AAU">
+                                <rect key="frame" x="103" y="89" width="115" height="170"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -803,7 +803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QiP-Ly-zjF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-418" y="-832"/>
+            <point key="canvasLocation" x="-14" y="-840"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="Ane-vh-B9m">
@@ -823,7 +823,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showCamera:" destination="q5D-ud-6mm" eventType="touchUpInside" id="xp8-0Q-232"/>
+                                    <action selector="tappedMenuButton:" destination="q5D-ud-6mm" eventType="touchUpInside" id="9YA-a0-ANi"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" id="K9Q-7H-Wyx">
@@ -836,7 +836,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showHistory:" destination="q5D-ud-6mm" eventType="touchUpInside" id="hEi-Tr-Nb8"/>
+                                    <action selector="tappedMenuButton:" destination="q5D-ud-6mm" eventType="touchUpInside" id="cRO-kU-rlS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" id="SUr-Yv-qxn">
@@ -849,7 +849,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showFriends:" destination="q5D-ud-6mm" eventType="touchUpInside" id="PjG-fV-0y2"/>
+                                    <action selector="tappedMenuButton:" destination="q5D-ud-6mm" eventType="touchUpInside" id="PKE-I7-mWX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5bt-MQ-bIC">
@@ -862,7 +862,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showSettings:" destination="q5D-ud-6mm" eventType="touchUpInside" id="tvw-4T-yn5"/>
+                                    <action selector="tappedMenuButton:" destination="q5D-ud-6mm" eventType="touchUpInside" id="knr-Hc-PWT"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cAr-pv-JJA">
@@ -874,17 +874,17 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="showChallenge:" destination="q5D-ud-6mm" eventType="touchUpInside" id="xmL-X3-R5w"/>
+                                    <action selector="tappedMenuButton:" destination="q5D-ud-6mm" eventType="touchUpInside" id="eyH-VB-j8N"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="menuCamera" destination="qVd-e9-sNg" id="qbd-km-h28"/>
-                        <outlet property="menuFriends" destination="SUr-Yv-qxn" id="Jj3-14-a8i"/>
-                        <outlet property="menuHistory" destination="K9Q-7H-Wyx" id="hS0-eB-g1e"/>
-                        <outlet property="menuSettings" destination="5bt-MQ-bIC" id="F0i-a2-5G1"/>
+                        <outlet property="menuCamera" destination="qVd-e9-sNg" id="yiZ-wF-LbN"/>
+                        <outlet property="menuFriends" destination="SUr-Yv-qxn" id="G2s-TU-6tO"/>
+                        <outlet property="menuHistory" destination="K9Q-7H-Wyx" id="UNU-Lu-zKq"/>
+                        <outlet property="menuSettings" destination="5bt-MQ-bIC" id="0Yf-Vs-pAY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GgS-pV-rTQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1060,6 +1060,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pMF-fX-Sx3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="135" y="-2303"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ng5-ag-zC9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rEa-HA-jOS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vVC-wW-Uzg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="CIB-k1-SZa" kind="relationship" relationship="rootViewController" id="Npy-4i-Sb1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4ld-2y-OWz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-418" y="-832"/>
         </scene>
     </scenes>
     <resources>

@@ -52,7 +52,8 @@
     self.friendsTable.delegate = self;
     self.friendsTable.dataSource = self;
     self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width, self.selectedFriendsScroll.frame.size.height);
-    self.scrollStart = CGPointMake(self.toLabel.frame.origin.x + 30, 15);
+    self.selectedFriendsScroll.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2f];
+    self.scrollStart = CGPointMake(self.toLabel.frame.origin.x + 30, 10);
     
     [self setupStyles];
     

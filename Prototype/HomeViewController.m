@@ -27,7 +27,17 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+#define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
+#define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
+#define ONEFIELD_TAG 1990
+#define TWOFIELDS_FIRST_TAG 1991
+#define TWOFIELDS_SECOND_TAG 1992
+#define THREEFIELDS_FIRST_TAG 1993
+#define THREEFIELDS_SECOND_TAG 1994
+#define THREEFIELDS_THIRD_TAG 1995
+#define PHRASE_LIMIT 18
+
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
 @property CGRect firstFrame;
@@ -53,8 +63,17 @@
 
 @property (weak, nonatomic) IBOutlet UIPickerView *previewWordCountPicker;
 
+@property (weak, nonatomic) IBOutlet UIView *previewOneFieldContainer;
+
+@property (weak, nonatomic) IBOutlet UIView *previewTwoFieldContainer;
+
+@property (weak, nonatomic) IBOutlet UIView *previewThreeFieldContainer;
+
+
 @property (nonatomic, assign) NSInteger numberOfFields;
 @property (strong, nonatomic)NSArray *phraseCountNumbers;
+@property (nonatomic, strong) UIView *previewCurrentField;
+@property (nonatomic, strong)NSString *finalPhrase;
 
 @end
 
@@ -196,7 +215,7 @@
     
     self.snapPicButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
     [self.snapPicButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"] forState:UIControlStateNormal];
-    [self.snapPicButton setTitleColor:[UIColor colorWithHexString:@"#e74c3c"] forState:UIControlStateNormal];
+    [self.snapPicButton setTitleColor:[UIColor colorWithHexString:@"#3498db"] forState:UIControlStateNormal];
 
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
@@ -240,14 +259,54 @@
     self.previewShowPickerButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
     [self.previewShowPickerButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square-o"] forState:UIControlStateNormal];
     [self.previewShowPickerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    // add pulsating effect to button
+    CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    pulseAnimation.duration = .5;
+    pulseAnimation.toValue = [NSNumber numberWithFloat:1.1];
+    pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    pulseAnimation.autoreverses = YES;
+    pulseAnimation.repeatCount = FLT_MAX;
+    [self.previewShowPickerButton.layer addAnimation:pulseAnimation forKey:nil];
+    
+    self.previewOneFieldContainer.layer.cornerRadius = 10.0f;
+    self.previewOneFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
+    CGRect firstRect = self.previewOneFieldContainer.frame;
+    self.previewOneFieldContainer.frame = CGRectMake(firstRect.origin.x, SCREENHEIGHT , firstRect.size.width, firstRect.size.height);
+    for (id textField in self.previewOneFieldContainer.subviews){
+        if ([textField isKindOfClass:[UITextField class]]){
+            ((UITextField *)textField).delegate = self;
+        }
+    }
+    
+    self.previewTwoFieldContainer.layer.cornerRadius = 10.0f;
+    self.previewTwoFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
+    CGRect secondRect = self.previewTwoFieldContainer.frame;
+    self.previewTwoFieldContainer.frame = CGRectMake(secondRect.origin.x, SCREENHEIGHT, secondRect.size.width, secondRect.size.height);
+    for (id textField in self.previewTwoFieldContainer.subviews){
+        if ([textField isKindOfClass:[UITextField class]]){
+            ((UITextField *)textField).delegate = self;
+        }
+    }
 
     
+    self.previewThreeFieldContainer.layer.cornerRadius = 10.0f;
+    self.previewThreeFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
+    CGRect thirdRect = self.previewThreeFieldContainer.frame;
+    self.previewThreeFieldContainer.frame = CGRectMake(thirdRect.origin.x, SCREENHEIGHT, thirdRect.size.width, thirdRect.size.height);
+    for (id textField in self.previewThreeFieldContainer.subviews){
+        if ([textField isKindOfClass:[UITextField class]]){
+            ((UITextField *)textField).delegate = self;
+        }
+    }
+
+
+
     
     self.previewPickerContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     self.previewPickerContainer.layer.cornerRadius = 10.0f;
     self.previewPickerContainer.hidden = YES;
     self.previewPickerContainer.userInteractionEnabled = NO;
-    
     
     self.previewWordCountPicker.delegate = self;
     self.previewWordCountPicker.dataSource = self;
@@ -277,9 +336,11 @@
 - (IBAction)tappedCameraOptions:(UIButton *)sender {
     if (self.cameraOptionsContainerView.hidden){
         self.cameraOptionsContainerView.hidden = NO;
+       [self.cameraOptionsButton setTitleColor:[UIColor colorWithHexString:@"#bdc3c7"] forState:UIControlStateNormal];
     }
     else{
         self.cameraOptionsContainerView.hidden = YES;
+        [self.cameraOptionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
 
 }
@@ -291,29 +352,38 @@
 
 
 
+
 - (IBAction)tappedNextPreview:(UIButton *)sender {
     
     //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
     vc.image = self.previewSnap.image;
-    vc.name = @"This is a test";
-    vc.phrase = @"bull honky";
+    vc.name = self.finalPhrase;
+    vc.phrase = self.finalPhrase;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)tappedPreviewWordCountButton:(id)sender {
+    [self.previewShowPickerButton.layer removeAllAnimations];
     if (self.previewPickerContainer.hidden){
         self.previewPickerContainer.hidden = NO;
         self.previewPickerContainer.userInteractionEnabled = YES;
+        
     }
     else{
         self.previewPickerContainer.hidden = YES;
         self.previewPickerContainer.userInteractionEnabled = NO;
+        
     }
 }
 
 
+- (void)proceedToFinalPreview
+{
+
+    [self tappedNextPreview:self.previewNextButton];
+}
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)source
 {
@@ -478,6 +548,51 @@
 }
 
 
+- (void)clearTextFieldsText
+{
+    switch (self.numberOfFields) {
+        case 1:
+        {
+            
+            UIView *field = [self.previewOneFieldContainer viewWithTag:ONEFIELD_TAG];
+            if ([field isKindOfClass:[UITextField class]]){
+                ((UITextField *)field).text = nil;
+            }
+
+        }
+            break;
+            
+        case 2:
+        {
+            
+            UIView *firstField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_SECOND_TAG];
+            if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]]){
+                ((UITextField *)firstField).text = nil;
+                ((UITextField *)secondField).text = nil;
+            }
+
+            
+        }
+            break;
+        case 3:
+        {
+            UIView *firstField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_SECOND_TAG];
+            UIView *thirdField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_THIRD_TAG];
+            if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]] && [thirdField isKindOfClass:[UITextField class]]){
+                ((UITextField *)firstField).text = nil;
+                ((UITextField *)secondField).text = nil;
+                ((UITextField *)thirdField).text = nil;
+            }
+
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 - (void)showMenu
 {
    
@@ -491,28 +606,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if (self.navigationController.delegate == self){
-        self.navigationController.delegate = nil;
-    }
-    
-    MenuViewController *menu = (MenuViewController *) self.sideMenuViewController.menuViewController;
-    if (menu.delegate == self){
-        menu.delegate = nil;
-    }
-    
-    if (self.previewWordCountPicker.delegate == self){
-        self.previewWordCountPicker.delegate = nil;
-    }
-    if (self.previewWordCountPicker.dataSource == self){
-        self.previewWordCountPicker.dataSource = nil;
-    }
-
-}
-
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -565,6 +658,24 @@
     self.cameraOptionsButton = nil;
     self.cameraOptionsContainerView = nil;
     
+    if (self.navigationController.delegate == self){
+        self.navigationController.delegate = nil;
+    }
+    
+    MenuViewController *menu = (MenuViewController *) self.sideMenuViewController.menuViewController;
+    if (menu.delegate == self){
+        menu.delegate = nil;
+    }
+    
+    if (self.previewWordCountPicker.delegate == self){
+        self.previewWordCountPicker.delegate = nil;
+    }
+    if (self.previewWordCountPicker.dataSource == self){
+        self.previewWordCountPicker.dataSource = nil;
+    }
+    
+
+    
 
 }
 
@@ -574,6 +685,196 @@
 - (void)previewscreenDidMoveBack
 {
     self.navigationController.navigationBarHidden = YES;
+}
+
+
+#pragma -mark UItextfield delegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    int total = 0;
+    if ([string isEqualToString:@""]){
+        return YES;
+    }
+    
+    switch (self.numberOfFields) {
+        case 1:
+        {
+            if ([textField.text length] <= PHRASE_LIMIT){
+                return YES;
+            }
+            else{
+                return NO;
+            }
+
+            break;
+        }
+            
+        case 2:
+        {
+            UIView *firstField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_SECOND_TAG];
+            if (firstField && secondField){
+                if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]]){
+                    total = [((UITextField *)firstField).text length] + [((UITextField *)secondField).text length];
+                    }
+                
+            }
+            break;
+        }
+        case 3:
+        {
+            
+            UIView *firstField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_SECOND_TAG];
+            UIView *thirdField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_THIRD_TAG];
+            
+            if (firstField && secondField && thirdField){
+                 if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]] && [thirdField isKindOfClass:[UITextField class]]){
+                      total = [((UITextField *)firstField).text length] + [((UITextField *)secondField).text length] + [((UITextField *)thirdField).text length];
+                 }
+                
+            }
+            
+            break;
+            
+        }
+            
+        default:
+            break;
+    }
+    
+    if (total <= PHRASE_LIMIT){
+        return YES;
+    }
+    else{
+        return NO;
+    }
+
+
+
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    switch (self.numberOfFields) {
+        case 1:
+        {
+            self.finalPhrase = textField.text;
+            break;
+        }
+            
+        case 2:
+        {
+            UIView *firstField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewTwoFieldContainer viewWithTag:TWOFIELDS_SECOND_TAG];
+            if (firstField && secondField){
+                if (textField.tag == firstField.tag){
+                    [secondField becomeFirstResponder];
+                    return YES;
+                }
+                else if (textField.tag == secondField.tag){
+                   if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]]){
+                        self.finalPhrase = [NSString stringWithFormat:@"%@ %@",((UITextField *)firstField).text,((UITextField *)secondField).text];
+    
+                    }
+
+                    
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            
+            UIView *firstField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_FIRST_TAG];
+            UIView *secondField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_SECOND_TAG];
+            UIView *thirdField = [self.previewThreeFieldContainer viewWithTag:THREEFIELDS_THIRD_TAG];
+
+
+            if (firstField && secondField && thirdField){
+                if (textField.tag == firstField.tag){
+                    [secondField becomeFirstResponder];
+                    return YES;
+                }
+                else if (textField.tag == secondField.tag){
+                    [thirdField becomeFirstResponder];
+                    return YES;
+                }
+                else if (textField.tag == thirdField.tag){
+                    if ([firstField isKindOfClass:[UITextField class]] && [secondField isKindOfClass:[UITextField class]] && [thirdField isKindOfClass:[UITextField class]]){
+                        self.finalPhrase = [NSString stringWithFormat:@"%@ %@ %@",((UITextField *)firstField).text,((UITextField *)secondField).text,((UITextField *)thirdField).text ];
+                       
+                    }
+
+                    
+                }
+
+            }
+
+            break;
+            
+        }
+            
+        default:
+            break;
+    }
+
+    
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         //
+                         CGRect currentFrame = self.previewCurrentField.frame;
+                         self.previewCurrentField.frame = CGRectMake(currentFrame.origin.x, SCREENHEIGHT, currentFrame.size.width, currentFrame.size.height);
+                         self.previewCurrentField = nil;
+                         
+                     } completion:^(BOOL finished) {
+                         [self performSelector:@selector(proceedToFinalPreview) withObject:nil afterDelay:1.0];
+                        }];
+    
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    switch (self.numberOfFields) {
+        case 1:
+        {
+            textField.returnKeyType = UIReturnKeyDone;
+             break;
+        }
+            
+        case 2:
+        {
+            if (textField.tag == TWOFIELDS_FIRST_TAG){
+                textField.returnKeyType = UIReturnKeyNext;
+            }
+            else{
+                textField.returnKeyType = UIReturnKeyDone;
+            }
+             break;
+        }
+        case 3:
+        {
+            if (textField.tag == THREEFIELDS_FIRST_TAG){
+                textField.returnKeyType = UIReturnKeyNext;
+            }
+            else if (textField.tag == THREEFIELDS_SECOND_TAG)
+            {
+                textField.returnKeyType = UIReturnKeyNext;
+            }
+            else{
+                textField.returnKeyType = UIReturnKeyDone;
+            }
+             break;
+ 
+        }
+            
+        default:
+            break;
+    }
 }
 
 #pragma -mark UINavigationController delegate
@@ -614,6 +915,7 @@
 #pragma -mark UIpicker delegate
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
+
     return 1;
 }
 
@@ -624,6 +926,7 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
+    NSLog(@"ht");
     return [self.phraseCountNumbers objectAtIndex:row];
 }
 
@@ -659,6 +962,94 @@
         default:
             break;
     }
+    
+    
+    if (!self.previewPickerContainer.hidden){
+        
+        [UIView animateWithDuration:0.5f
+                         animations:^{
+                             self.previewPickerContainer.alpha = 0;
+                         } completion:^(BOOL finished) {
+                             
+                            self.previewPickerContainer.hidden = YES;
+                             self.previewPickerContainer.alpha = 1;
+                             
+                             [UIView animateWithDuration:0.5f
+                                              animations:^{
+                                                  // if a field is on screen hide it
+                                                  // then reset this property
+                                                  if (self.previewCurrentField){
+                                                      CGRect currentFrame = self.previewCurrentField.frame;
+                                                      self.previewCurrentField.frame = CGRectMake(currentFrame.origin.x,
+                                                                                                  SCREENHEIGHT,
+                                                                                                  currentFrame.size.width,
+                                                                                                  currentFrame.size.height);
+                                                      self.previewCurrentField = nil;
+                                                  }
+                                                  
+                                              } completion:^(BOOL finished) {
+                                                  // bring up correct text field
+                                                  
+                                                  [UIView animateWithDuration:1.0f
+                                                                        delay:0
+                                                       usingSpringWithDamping:0.6f
+                                                        initialSpringVelocity:0
+                                                                      options:0
+                                                                   animations:^{
+                                                                       switch (self.numberOfFields) {
+                                                                           case 1:
+                                                                           {
+                                                                               
+                                                                               CGRect oneFrame = self.previewOneFieldContainer.frame;
+                                                                               self.previewOneFieldContainer.frame = CGRectMake(oneFrame.origin.x,
+                                                                                                                                SCREENHEIGHT - 350,
+                                                                                                                                oneFrame.size.width,
+                                                                                                                                oneFrame.size.height);
+                                                                               [self clearTextFieldsText];
+                                                                                self.previewCurrentField = self.previewOneFieldContainer;
+                                                                           }
+                                                                               break;
+                                                                           case 2:
+                                                                           {
+                                                                               CGRect twoFrame = self.previewTwoFieldContainer.frame;
+                                                                               self.previewTwoFieldContainer.frame = CGRectMake(twoFrame.origin.x,
+                                                                                                                                SCREENHEIGHT - 350,
+                                                                                                                                twoFrame.size.width,
+                                                                                                                                twoFrame.size.height);
+                                                                               
+                                                                            
+                                                                               [self clearTextFieldsText];
+                                                                               self.previewCurrentField = self.previewTwoFieldContainer;
+
+                                                                               
+                                                                           }
+                                                                               break;
+                                                                           case 3:
+                                                                           {
+                                                                               CGRect threeFrame = self.previewThreeFieldContainer.frame;
+                                                                               self.previewThreeFieldContainer.frame = CGRectMake(threeFrame.origin.x,
+                                                                                                                                SCREENHEIGHT - 350,
+                                                                                                                                threeFrame.size.width,
+                                                                                                                                threeFrame.size.height);
+                                                                               [self clearTextFieldsText];
+                                                                               self.previewCurrentField = self.previewThreeFieldContainer;
+
+                                                                               
+                                                                           }
+                                                                               break;
+                                                                           default:
+                                                                               break;
+                                                                       }
+                                                                       
+                                                                   }
+                                                                   completion:nil];
+                                                  
+                                            }];
+                                        }];
+        
+    }
+
+    
     
 }
 

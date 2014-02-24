@@ -10,6 +10,11 @@
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
 
+#define HomeTag 1000
+#define HistoryTag 1001
+#define FriendsTag 1002
+#define SettingsTag 1003
+#define GameTag 1004
 
 @interface MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *menuCamera;
@@ -33,7 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    int i = 1000;
     for (id view in self.view.subviews){
         if ([view isKindOfClass:[UIButton class]]){
             UIButton *button = (UIButton *)view;
@@ -41,6 +46,8 @@
             button.layer.cornerRadius = 6.0f;
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            button.tag = i;
+            i ++;
         }
     }
     
@@ -52,78 +59,93 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)showCamera:(UIButton *)sender {
-    UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
-    if ([self isAlreadyMainVC:camera.childViewControllers[0]]){
-        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-    }
-    else{
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-            [self.delegate menuShowingAnotherScreen];
-        }
+- (IBAction)tappedMenuButton:(UIButton *)sender {
+    switch (sender.tag) {
+        case HomeTag:
+        {
+            UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
+            if ([self isAlreadyMainVC:camera.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                
+                [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:YES];
+            }
 
-        [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:YES];
+            break;
+        }
+        case HistoryTag:
+        {
+            UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"historyRoot"];
+            if ([self isAlreadyMainVC:history.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
+            }
+            
+            break;
+        }
+            
+        case FriendsTag:
+        {
+            UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
+            if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                
+                [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
+            }
+            break;
+        }
+            
+        case SettingsTag:
+        {
+            UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsRoot"];
+            if([self isAlreadyMainVC:settings.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                
+                [self.sideMenuViewController setMainViewController:settings animated:YES closeMenu:YES];
+            }
+
+        }
+        case GameTag:
+        {
+            UIViewController *game = [self.storyboard instantiateViewControllerWithIdentifier:@"rootChallenge"];
+            if([self isAlreadyMainVC:game.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                
+                [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
+            }
+
+        }
+            
+        default:
+            break;
     }
 }
 
-- (IBAction)showHistory:(UIButton *)sender {
-    UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"historyRoot"];
-    if ([self isAlreadyMainVC:history.childViewControllers[0]]){
-        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-    }
-    else{
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-            [self.delegate menuShowingAnotherScreen];
-        }
-        [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
-    }
-}
-
-- (IBAction)showFriends:(UIButton *)sender {
-    UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
-    if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
-        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-    }
-    else{
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-            [self.delegate menuShowingAnotherScreen];
-        }
-
-        [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
-    }
-
-}
-
-- (IBAction)showSettings:(id)sender {
-    UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsRoot"];
-    if([self isAlreadyMainVC:settings.childViewControllers[0]]){
-        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-    }
-    else{
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-            [self.delegate menuShowingAnotherScreen];
-        }
-
-        [self.sideMenuViewController setMainViewController:settings animated:YES closeMenu:YES];
-    }
-}
-
-
-- (IBAction)showChallenge:(UIButton *)sender {
-    UIViewController *game = [self.storyboard instantiateViewControllerWithIdentifier:@"rootChallenge"];
-    if([self isAlreadyMainVC:game.childViewControllers[0]]){
-        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-    }
-    else{
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-            [self.delegate menuShowingAnotherScreen];
-        }
-
-        [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
-    }
-
-    
-}
 
 
 - (BOOL)isAlreadyMainVC:(UIViewController *)controller
