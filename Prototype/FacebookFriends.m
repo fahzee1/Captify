@@ -26,45 +26,47 @@
 - (void)allFriends:(FacebookFriendFetch)block;
 {
 
-    self.tempFriendList = [NSMutableArray array];
-    FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends"
-                                                    parameters:nil
-                                                    HTTPMethod:@"GET"];
-    
-    
-    [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error){
-            NSArray *friends = [result objectForKey:@"data"];
-            for (NSDictionary<FBGraphUser>* friend in friends) {
-                //NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
-                
-                // get friends picture
-                //NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",friend.id];
-                //NSURL *picData = [NSURL URLWithString:picURL];
-                //NSData *data = [NSData dataWithContentsOfURL:picData];
-                //UIImage *pic = [UIImage imageWithData:data];
-                NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-                
-                dict[@"name"] = friend.name;
-                dict[@"fbook_id"] = friend.id;
-                //dict[@"pic"] = pic;
-                [self.tempFriendList addObject:dict];
-            }
-
-            //NSLog(@"Found: %i friends", friends.count);
-            
-            if (block){
-                block(YES,self.tempFriendList);
-            }
-        }
-        else{
-            if (block){
-                block(NO, nil);
-            }
-        }
+        self.tempFriendList = [NSMutableArray array];
+        FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends"
+                                                        parameters:nil
+                                                        HTTPMethod:@"GET"];
         
-    }];
-  
+        
+        [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            NSLog(@"%@",error);
+            NSLog(@"%@",result);
+            if (!error){
+                NSArray *friends = [result objectForKey:@"data"];
+                for (NSDictionary<FBGraphUser>* friend in friends) {
+                    //NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
+                    
+                    // get friends picture
+                    //NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",friend.id];
+                    //NSURL *picData = [NSURL URLWithString:picURL];
+                    //NSData *data = [NSData dataWithContentsOfURL:picData];
+                    //UIImage *pic = [UIImage imageWithData:data];
+                    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+                    
+                    dict[@"name"] = friend.name;
+                    dict[@"fbook_id"] = friend.id;
+                    //dict[@"pic"] = pic;
+                    [self.tempFriendList addObject:dict];
+                }
+
+                //NSLog(@"Found: %i friends", friends.count);
+                
+                if (block){
+                    block(YES,self.tempFriendList);
+                }
+            }
+            else{
+                if (block){
+                    block(NO, nil);
+                }
+            }
+            
+        }];
+    
 }
 
 
@@ -98,6 +100,32 @@
             }
         }
     }];
+
+}
+
+
+- (void)inviteFriendWithID:(NSString *)userID
+                     title:(NSString *)title
+                   message:(NSString *)message
+                     block:(FacebookFriendInvite)block
+{
+    [FBWebDialogs
+     presentRequestsDialogModallyWithSession:nil
+     message:message
+     title:title
+     parameters:@{@"to":userID }
+     handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+         if (!error){
+             if (block){
+                 block(YES,result);
+             }
+         }
+         else{
+             if (block){
+                 block(NO,result);
+             }
+         }
+     }];
 
 }
 @end

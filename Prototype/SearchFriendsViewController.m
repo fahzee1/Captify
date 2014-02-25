@@ -8,7 +8,7 @@
 
 #import "SearchFriendsViewController.h"
 #import "User.h"
-#import "FriendTableViewCell.h"
+#import "FriendCell.h"
 
 @interface SearchFriendsViewController ()<UISearchDisplayDelegate,UISearchBarDelegate>
 @property (strong, nonatomic)NSArray *data;
@@ -153,15 +153,15 @@
 
         User *user = [self.filteredList objectAtIndex:indexPath.row];
         
-        ((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
-        ((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
-        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        ((FriendCell*)cell).myFriendUsername.text = user.username;
+        ((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
     }
     else{
         static NSString *CellIdentifier = @"friendCells";
         cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        ((FriendTableViewCell*)cell).myFriendUsername.text  = [self.filteredList objectAtIndex:indexPath.row];
-        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        ((FriendCell*)cell).myFriendUsername.text  = [self.filteredList objectAtIndex:indexPath.row];
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
 
         
         }

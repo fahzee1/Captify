@@ -11,7 +11,7 @@
 // incase of issue with table cells content views and i forget
 // drag a cell from ib instead of using default
 
-@interface FriendTableViewCell : UITableViewCell
+@interface FriendCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *myFriendUsername;
 @property (nonatomic, weak) IBOutlet UILabel *myFriendScore;

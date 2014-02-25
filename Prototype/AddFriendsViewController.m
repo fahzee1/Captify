@@ -9,6 +9,10 @@
 #import "AddFriendsViewController.h"
 #import "User.h"
 #import "FacebookFriends.h"
+#import "AddFriendCell.h"
+#import "FAImageView.h"
+#import "UIImageView+WebCache.h"
+#import "TMCache.h"
 
 
 
@@ -17,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic)NSArray *contactsArray;
 @property (strong, nonatomic)NSArray *facebookFriendsArray;
+@property (strong, nonatomic)NSArray *sections;
+@property (strong, nonatomic)FacebookFriends *friend;
 
 @end
 
@@ -27,6 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+
     }
     return self;
 }
@@ -39,6 +46,7 @@
 
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
+    self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,44 +59,108 @@
 - (NSArray *)facebookFriendsArray
 {
     if (!_facebookFriendsArray){
-        FacebookFriends *f = [[FacebookFriends alloc] init];
-        [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
-            _facebookFriendsArray = data;
-            [self.myTableView reloadData];
-        }];
+        NSArray *friends = [[TMCache sharedCache] objectForKey:@"facebookFriends"];
+        if (friends){
+            _facebookFriendsArray = friends;
+        }
+        else{
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"facebookFriendsFetch"];
+            [self.friend allFriends:^(BOOL wasSuccessful, NSArray *data) {
+                if (wasSuccessful){
+                    _facebookFriendsArray = data;
+                    [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
+                }
+            }];
+        }
+        
     }
     return  _facebookFriendsArray;
 }
 
+- (FacebookFriends *)friend
+{
+    if (!_friend){
+        _friend = [[FacebookFriends alloc] init];
+    }
+    return _friend;
+}
+
 #pragma mark - Table view data source
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return [self.sections count];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return index;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return  self.sections;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self.sections objectAtIndex:section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
+    NSArray *sectionArray;
+    sectionArray =  [self.facebookFriendsArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name beginswith[c] %@",[self.sections objectAtIndex:section]]];
     
-    return [self.facebookFriendsArray count];
+    return [sectionArray count];
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"addFriendCell";
+    static NSString *CellIdentifier = @"addFriendCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = [self.facebookFriendsArray objectAtIndex:indexPath.row][@"name"];
-    //User *user = [self.contactsArray objectAtIndex:indexPath.row];
     
-    //((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
-    //((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
-    //((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // sort alphabetically
+    NSArray *sectionArray;
+    sectionArray =  [self.facebookFriendsArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+    
+    NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",[sectionArray objectAtIndex:indexPath.row][@"fbook_id"]];
+    NSURL *url = [NSURL URLWithString:picURL];
+    [((AddFriendCell *)cell).addFriendPic setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+  
+    ((AddFriendCell *)cell).addFriendName.text = [sectionArray objectAtIndex:indexPath.row][@"name"];
+    
+    
     
     // Configure the cell...
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // params 'title', 'message', 'to'
+    
+    NSArray *sectionArray;
+    sectionArray =  [self.facebookFriendsArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+    
+    NSString *name = [sectionArray objectAtIndex:indexPath.row][@"name"];
+    NSString *fb_id = [sectionArray objectAtIndex:indexPath.row][@"fbook_id"];
+    
+    
+    [self.friend inviteFriendWithID:fb_id
+                              title:[NSString stringWithFormat:@"Invite %@",name]
+                            message:@"Come up with something catchy"
+                              block:^(BOOL wasSuccessful, FBWebDialogResult result) {
+                                  if (wasSuccessful){
+                                      NSLog(@"%u",result);
+                                  }
+                              }];
 }
 
 /*

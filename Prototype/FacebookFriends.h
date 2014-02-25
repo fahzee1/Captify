@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
+typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult result);
 
 @interface FacebookFriends : NSObject
 
@@ -18,4 +19,8 @@ typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
 
 - (void)allFriends:(FacebookFriendFetch)block;
 - (void)onlyFriendsUsingApp:(FacebookFriendFetch)block;
+- (void)inviteFriendWithID:(NSString *)userID
+                     title:(NSString *)title
+                   message:(NSString *)message
+                     block:(FacebookFriendInvite)block;
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "FriendsViewController.h"
-#import "FriendTableViewCell.h"
+#import "FriendCell.h"
 #import "AppDelegate.h"
 #import "TWTSideMenuViewController.h"
 #import "FAImageView.h"
@@ -192,10 +192,10 @@
         if (test){
                 sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
             
-            ((FriendTableViewCell *)cell).myFriendScore.text = @"176";
-            ((FriendTableViewCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
-            ((FriendTableViewCell *)cell).myFriendPic.image = nil;
-            FAImageView *imageView = ((FAImageView *)((FriendTableViewCell *)cell).myFriendPic);
+            ((FriendCell *)cell).myFriendScore.text = @"176";
+            ((FriendCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
+            ((FriendCell *)cell).myFriendPic.image = nil;
+            FAImageView *imageView = ((FAImageView *)((FriendCell *)cell).myFriendPic);
             [imageView setDefaultIconIdentifier:@"fa-user"];
         
             
@@ -206,9 +206,9 @@
             
             sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
             if ([user isKindOfClass:[User class]]){
-                ((FriendTableViewCell *)cell).myFriendScore.text = [user.score stringValue];
-                ((FriendTableViewCell *)cell).myFriendUsername.text = user.username;
-                ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+                ((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
+                ((FriendCell *)cell).myFriendUsername.text = user.username;
+                ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
             }
 
 
@@ -220,9 +220,9 @@
         
         cell = [self.myTable dequeueReusableCellWithIdentifier:cellIdentifier];
         //((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
-         ((FriendTableViewCell*)cell).myFriendUsername.text =[self.filteredList objectAtIndex:indexPath.row];
-        ((FriendTableViewCell *)cell).myFriendScore.text = @"176";
-        ((FriendTableViewCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+         ((FriendCell*)cell).myFriendUsername.text =[self.filteredList objectAtIndex:indexPath.row];
+        ((FriendCell *)cell).myFriendScore.text = @"176";
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
         
     }
    

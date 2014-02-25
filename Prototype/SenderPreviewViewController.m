@@ -26,9 +26,11 @@
 @property (strong, nonatomic)NSMutableDictionary *selectedFriends;
 @property (strong, nonatomic)NSMutableDictionary *selectedPositions;
 @property (strong, nonatomic) NSArray *friendsArray;
+@property (strong, nonatomic) NSArray *facebookFriendsArray;
 @property (weak, nonatomic) IBOutlet UILabel *bottomLabel;
 @property (strong, nonatomic) UIButton *bottomSendButton;
 @property CGPoint scrollStart;
+@property (strong, nonatomic)NSArray *sections;
 
 
 @end
@@ -60,13 +62,15 @@
     //self.name = @"Guess what im eating";
     //self.phrase = @"Nothing stupid";
     self.previewImage.image = self.image;
-    self.friendsArray = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
+    self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
+    self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
  
     self.selectedFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
                                                                                [@[]mutableCopy],@"index_paths",
                                                                                nil];
     self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
+    self.sections = @[@"Facebook Friends", @"Contact Friends"];
     
 }
 
@@ -133,6 +137,11 @@
 
 - (void)sendButtonTapped:(UIButton *)sender
 {
+    // create challenge in core data.
+    // send request to create challenge on backend.
+    // follow that with another request to create a challenge send
+    // so all receipients get notified
+    
     NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
 }
 
@@ -144,25 +153,78 @@
 {
     
     // Return the number of sections.
-    return 1;
+    return [self.sections count];;
 }
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return index;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return self.sections;
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    
+    return [self.sections objectAtIndex:section];
+}
+
+
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return [self.friendsArray count];
+     // Return the number of rows in the section.
+    
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"Facebook Friends"]){
+        
+        // get count of facebook friends
+        // return it
+            return [self.facebookFriendsArray count];
+    }
+    
+    else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contact Friends"]){
+        // get count of contact friends
+        // return it
+            return [self.friendsArray count];
+    }
+    
+    else{
+        
+        return [self.friendsArray count];
+    }
+
+
+
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
-    if (tableView == self.friendsTable){
+
         CellIdentifier = @"senderFriends";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         if (cell){
-            ((SenderFriendsCell *)cell).myFriendUsername.text = [self.friendsArray objectAtIndex:indexPath.row];
+            
+            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook Friends"]){
+                // retrurn cells for fbook friends
+                    ((SenderFriendsCell *)cell).myFriendUsername.text = [self.facebookFriendsArray objectAtIndex:indexPath.row];
+            }
+            else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contact Friends"]){
+                // return cells for contact friends
+                ((SenderFriendsCell *)cell).myFriendUsername.text = [self.friendsArray objectAtIndex:indexPath.row];
+                
+            }
+
+            
             ((SenderFriendsCell *)cell).myFriendPic.image = nil;
             FAImageView *imageView =  ((FAImageView *)((SenderFriendsCell *)cell).myFriendPic);
             [imageView setDefaultIconIdentifier:@"fa-user"];
@@ -177,7 +239,6 @@
 
     
         }
-    }
     
     
     // Configure the cell...

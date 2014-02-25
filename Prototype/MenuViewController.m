@@ -38,7 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    int i = 1000;
+
     for (id view in self.view.subviews){
         if ([view isKindOfClass:[UIButton class]]){
             UIButton *button = (UIButton *)view;
@@ -46,8 +46,6 @@
             button.layer.cornerRadius = 6.0f;
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-            button.tag = i;
-            i ++;
         }
     }
     
@@ -123,6 +121,7 @@
                 
                 [self.sideMenuViewController setMainViewController:settings animated:YES closeMenu:YES];
             }
+            break;
 
         }
         case GameTag:
@@ -138,6 +137,7 @@
                 
                 [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
             }
+            break;
 
         }
             

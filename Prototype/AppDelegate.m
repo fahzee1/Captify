@@ -14,6 +14,8 @@
 #import "MenuViewController.h"
 #import "TWTSideMenuViewController.h"
 #import "GoHomeTransition.h"
+#import "FacebookFriends.h"
+#import "TMCache.h"
 
 @interface AppDelegate()
 @property(strong,nonatomic)UIViewController *menuVC;
@@ -29,8 +31,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-   
+    NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     [self setupViewControllers];
+    
+    
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound)];
     
@@ -52,7 +56,8 @@
 
     }
     
-    NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
+  
+   
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
         //Whenever a person opens the app, check for cached sesssion
@@ -88,6 +93,18 @@
          // open up to home screen and pass user
          [self showLoginOrHomeScreen];
         }
+    
+    if (![defaults boolForKey:@"facebookFriendsFetch"]){
+        // fetch friends in the background if we dont have any
+        dispatch_queue_t fbookQue = dispatch_queue_create("facebookFetcherQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+       dispatch_async(fbookQue, ^{
+           [self fetchFacebookFriends];
+       });
+        
+    }
+    
+    
+
    
         return YES;
 }
@@ -469,6 +486,21 @@
     self.sideVC.zoomScale = 0.6643f;//0.5643f;
     self.window.rootViewController = self.sideVC;
 
+}
+
+- (void)fetchFacebookFriends
+{
+    NSLog(@"i was called");
+    FacebookFriends *f = [[FacebookFriends alloc] init];
+    [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
+        if (wasSuccessful){
+            [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"facebookFriendsFetch"];
+        }
+        else{
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"facebookFriendsFetch"];
+        }
+    }];
 }
 
 
