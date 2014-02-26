@@ -54,6 +54,9 @@
 		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
 		1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */; };
+		114626D918BE4E880058E821 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626D818BE4E880058E821 /* Challenge.m */; };
+		114626DC18BE4E890058E821 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626DB18BE4E890058E821 /* User.m */; };
+		114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */; };
 		1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */; };
 		1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153DFDF18A9CCB600AD950E /* CJPopup.m */; };
 		1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFE118A9DEEE00AD950E /* CoreMedia.framework */; };
@@ -266,13 +269,11 @@
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
 		119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 119711DC18ADF8C9008AD895 /* Overlay.xib */; };
 		119711E018AE0203008AD895 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711DF18AE0203008AD895 /* OverlayView.m */; };
-		11A40CB718A93FFA002A1CCA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A40CB618A93FFA002A1CCA /* User.m */; };
 		11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */; };
 		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
 		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
 		11AB2E5118AAA61000B511E1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4D18AAA61000B511E1 /* LICENSE */; };
 		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
-		11C2D6F418B5226F00577A68 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F318B5226F00577A68 /* Challenge.m */; };
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
 		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
 		11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6018B7090A00C129D6 /* cameraControls.xib */; };
@@ -378,6 +379,12 @@
 		1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
 		1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverPreviewViewController.h; sourceTree = "<group>"; };
 		1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverPreviewViewController.m; sourceTree = "<group>"; };
+		114626D718BE4E880058E821 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		114626D818BE4E880058E821 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
+		114626DA18BE4E890058E821 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		114626DB18BE4E890058E821 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+ReloadAnimation.h"; sourceTree = "<group>"; };
+		114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+ReloadAnimation.m"; sourceTree = "<group>"; };
 		1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1153DFDE18A9CCB600AD950E /* CJPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJPopup.h; sourceTree = "<group>"; };
 		1153DFDF18A9CCB600AD950E /* CJPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJPopup.m; sourceTree = "<group>"; };
@@ -795,8 +802,6 @@
 		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
 		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
-		11A40CB518A93FFA002A1CCA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		11A40CB618A93FFA002A1CCA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexValue.h"; sourceTree = "<group>"; };
 		11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexValue.m"; sourceTree = "<group>"; };
 		11AB2E4A18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+AutoRetry.h"; sourceTree = "<group>"; };
@@ -805,8 +810,6 @@
 		11AB2E4D18AAA61000B511E1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		11C2D6EF18B5226F00577A68 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
 		11C2D6F018B5226F00577A68 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
-		11C2D6F218B5226F00577A68 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		11C2D6F318B5226F00577A68 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsAddedMe.h; sourceTree = "<group>"; };
 		11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsAddedMe.m; sourceTree = "<group>"; };
 		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
@@ -947,14 +950,14 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
+				114626DA18BE4E890058E821 /* User.h */,
+				114626DB18BE4E890058E821 /* User.m */,
+				114626D718BE4E880058E821 /* Challenge.h */,
+				114626D818BE4E880058E821 /* Challenge.m */,
 				11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */,
 				11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */,
 				11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */,
 				11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */,
-				11A40CB518A93FFA002A1CCA /* User.h */,
-				11A40CB618A93FFA002A1CCA /* User.m */,
-				11C2D6F218B5226F00577A68 /* Challenge.h */,
-				11C2D6F318B5226F00577A68 /* Challenge.m */,
 				11C2D6EF18B5226F00577A68 /* ChallengePicks.h */,
 				11C2D6F018B5226F00577A68 /* ChallengePicks.m */,
 				11827BAB18A2B85D00DAF07C /* ChallengeSend.h */,
@@ -1141,6 +1144,8 @@
 				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
 				1184FE1718BD520C00FDEAE0 /* UIImage+AddText.h */,
 				1184FE1818BD520C00FDEAE0 /* UIImage+AddText.m */,
+				114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */,
+				114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1763,6 +1768,7 @@
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
+				114626DC18BE4E890058E821 /* User.m in Sources */,
 				11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */,
 				1184FE0A18BD03A000FDEAE0 /* UIImage+MultiFormat.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
@@ -1814,7 +1820,6 @@
 				1184FE0818BD03A000FDEAE0 /* UIButton+WebCache.m in Sources */,
 				1153E1C818A9DF4800AD950E /* GPUImageThresholdEdgeDetectionFilter.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
-				11C2D6F418B5226F00577A68 /* Challenge.m in Sources */,
 				1153E15C18A9DF4800AD950E /* GPUImageCrosshatchFilter.m in Sources */,
 				1153E1B318A9DF4800AD950E /* GPUImageSaturationFilter.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
@@ -1890,6 +1895,7 @@
 				1153E1AF18A9DF4800AD950E /* GPUImageRGBErosionFilter.m in Sources */,
 				1153E16018A9DF4800AD950E /* GPUImageDirectionalNonMaximumSuppressionFilter.m in Sources */,
 				1153E16E18A9DF4800AD950E /* GPUImageGaussianBlurFilter.m in Sources */,
+				114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */,
 				1153E17D18A9DF4800AD950E /* GPUImageHueBlendFilter.m in Sources */,
 				113EE17818BBD08E0095D876 /* FacebookFriends.m in Sources */,
 				1184FE0518BD03A000FDEAE0 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -1924,7 +1930,6 @@
 				1153E1BC18A9DF4800AD950E /* GPUImageSoftEleganceFilter.m in Sources */,
 				118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */,
 				1153E19C18A9DF4800AD950E /* GPUImageNormalBlendFilter.m in Sources */,
-				11A40CB718A93FFA002A1CCA /* User.m in Sources */,
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
@@ -1993,6 +1998,7 @@
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
 				1184FE1918BD520C00FDEAE0 /* UIImage+AddText.m in Sources */,
 				11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */,
+				114626D918BE4E880058E821 /* Challenge.m in Sources */,
 				1153E14B18A9DF4800AD950E /* GPUImageBrightnessFilter.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 				1153E17018A9DF4800AD950E /* GPUImageGaussianSelectiveBlurFilter.m in Sources */,

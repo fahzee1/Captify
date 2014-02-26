@@ -9,6 +9,9 @@
 #import "MenuViewController.h"
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
+#import "TMCache.h"
+#import "FacebookFriends.h"
+#import "FriendsContainerController.h"
 
 #define HomeTag 1000
 #define HistoryTag 1001
@@ -21,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *menuHistory;
 @property (weak, nonatomic) IBOutlet UIButton *menuFriends;
 @property (weak, nonatomic) IBOutlet UIButton *menuSettings;
+@property (strong, nonatomic)NSArray *facebookFriendsArray;
+
 @end
 
 @implementation MenuViewController
@@ -38,7 +43,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-
+    
     for (id view in self.view.subviews){
         if ([view isKindOfClass:[UIButton class]]){
             UIButton *button = (UIButton *)view;
@@ -103,6 +108,7 @@
                     [self.delegate menuShowingAnotherScreen];
                 }
                 
+                ((FriendsContainerController *)friends.childViewControllers[0]).facebookFriendsArray = self.facebookFriendsArray;
                 [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
             }
             break;
@@ -158,6 +164,8 @@
         return NO;
     }
 }
+
+
 
 
 @end

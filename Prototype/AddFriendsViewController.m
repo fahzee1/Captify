@@ -12,7 +12,7 @@
 #import "AddFriendCell.h"
 #import "FAImageView.h"
 #import "UIImageView+WebCache.h"
-#import "TMCache.h"
+
 
 
 
@@ -20,7 +20,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic)NSArray *contactsArray;
-@property (strong, nonatomic)NSArray *facebookFriendsArray;
 @property (strong, nonatomic)NSArray *sections;
 @property (strong, nonatomic)FacebookFriends *friend;
 
@@ -55,37 +54,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (NSArray *)facebookFriendsArray
-{
-    if (!_facebookFriendsArray){
-        NSLog(@"hit test");
-        dispatch_queue_t loadFriendsQueue = dispatch_queue_create("TMCacheFriendFetchQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
-        dispatch_async(loadFriendsQueue, ^{
-            [[TMCache sharedCache] objectForKey:@"facebookFriends"
-                                          block:^(TMCache *cache, NSString *key, id object) {
-    
-                                              if (object){
-                                                  //NSLog(@"check ");
-                                                  _facebookFriendsArray = object;
-                                              }
-                                              else{
-                                                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"facebookFriendsFetch"];
-                                                  [self.friend allFriends:^(BOOL wasSuccessful, NSArray *data) {
-                                                      if (wasSuccessful){
-                                                          _facebookFriendsArray = data;
-                                                          [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
-                                                      }
-                                                  }];
-                                                  
-                                              }
-                                          }];
-
-        });
-        
-    }
-    return  _facebookFriendsArray;
-}
 
 - (FacebookFriends *)friend
 {

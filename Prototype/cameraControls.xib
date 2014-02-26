@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -9,6 +9,7 @@
                 <outlet property="cameraOptionsButton" destination="Qbp-N4-POA" id="WAn-jP-HUu"/>
                 <outlet property="cameraOptionsContainerView" destination="BGi-lM-cM6" id="Hi5-YM-Uc5"/>
                 <outlet property="flashButton" destination="O9U-Lk-TIO" id="GiU-jn-034"/>
+                <outlet property="myTapGesture" destination="bsw-L5-ijg" id="uRg-Ki-MRJ"/>
                 <outlet property="rotateButton" destination="nwN-wY-RFL" id="lgs-M0-25a"/>
                 <outlet property="snapPicButton" destination="471-cl-1LO" id="4V0-0V-C0g"/>
                 <outlet property="topMenuButton" destination="ZqY-AN-cLc" id="fJ4-6S-Uqg"/>
@@ -22,11 +23,13 @@
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="471-cl-1LO">
                     <rect key="frame" x="130" y="488" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <gestureRecognizers/>
                     <state key="normal" title="Snap">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="tappedSnapPic:" destination="-1" eventType="touchUpInside" id="rzk-ty-xK8"/>
+                        <outletCollection property="gestureRecognizers" destination="bsw-L5-ijg" appends="YES" id="5Iw-pl-eTS"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-AN-cLc">
@@ -81,5 +84,6 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <tapGestureRecognizer id="bsw-L5-ijg"/>
     </objects>
 </document>

@@ -11,6 +11,8 @@
 #import "UIImage+RoundedCorners.h"
 #import "SenderFriendsCell.h"
 #import "FAImageView.h"
+#import "Challenge+Utils.h"
+#import "AppDelegate.h"
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -110,6 +112,9 @@
 
 - (void)setupStyles
 {
+    
+    self.previewImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
     self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.topLabel.textColor = [UIColor whiteColor];
     self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
@@ -141,6 +146,15 @@
     // send request to create challenge on backend.
     // follow that with another request to create a challenge send
     // so all receipients get notified
+
+
+    NSDictionary *params = @{@"sender":self.myUser.username,
+                             @"context":self.myUser.managedObjectContext,
+                             @"recipients":self.selectedFriends,
+                             @"original_phrase":self.phrase,
+                             @"challenge_name":self.name};
+    
+    [Challenge createChallengeWithParams:params];
     
     NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
 }
@@ -369,6 +383,22 @@
     [tableView reloadData];
    
 }
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
 
 
 @end

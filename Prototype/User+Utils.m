@@ -81,6 +81,7 @@
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) and (username = %@)",[params valueForKey:@"username"]];
+    request.fetchLimit = 1;
     
     // check to see if we have this user (login)
     NSInteger gotUser = [self checkIfUserWithFetch:request

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
 @protocol SenderPreviewDelegate <NSObject>
 
@@ -17,6 +18,7 @@
 
 @interface SenderPreviewViewController : UIViewController
 
+@property (nonatomic, retain)User *myUser;
 @property(nonatomic,strong)NSString *name;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSString *phrase;

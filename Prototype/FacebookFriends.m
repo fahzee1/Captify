@@ -25,46 +25,44 @@
 
 - (void)allFriends:(FacebookFriendFetch)block;
 {
-
-        self.tempFriendList = [NSMutableArray array];
-        FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends"
-                                                        parameters:nil
-                                                        HTTPMethod:@"GET"];
-        
-        
-        [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            if (!error){
-                NSArray *friends = [result objectForKey:@"data"];
-                for (NSDictionary<FBGraphUser>* friend in friends) {
-                    //NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
-                    
-                    // get friends picture
-                    //NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",friend.id];
-                    //NSURL *picData = [NSURL URLWithString:picURL];
-                    //NSData *data = [NSData dataWithContentsOfURL:picData];
-                    //UIImage *pic = [UIImage imageWithData:data];
-                    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-                    
-                    dict[@"name"] = friend.name;
-                    dict[@"fbook_id"] = friend.id;
-                    //dict[@"pic"] = pic;
-                    [self.tempFriendList addObject:dict];
-                }
-
-                //NSLog(@"Found: %i friends", friends.count);
+    self.tempFriendList = [NSMutableArray array];
+    FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends"
+                                                    parameters:nil
+                                                    HTTPMethod:@"GET"];
+    //NSLog(@"here %u", FBSession.activeSession.state);
+    [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error){
+            NSArray *friends = [result objectForKey:@"data"];
+            for (NSDictionary<FBGraphUser>* friend in friends) {
+                //NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
                 
-                if (block){
-                    block(YES,self.tempFriendList);
-                }
+                // get friends picture
+                //NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",friend.id];
+                //NSURL *picData = [NSURL URLWithString:picURL];
+                //NSData *data = [NSData dataWithContentsOfURL:picData];
+                //UIImage *pic = [UIImage imageWithData:data];
+                NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+                
+                dict[@"name"] = friend.name;
+                dict[@"fbook_id"] = friend.id;
+                //dict[@"pic"] = pic;
+                [self.tempFriendList addObject:dict];
             }
-            else{
-                if (block){
-                    block(NO, nil);
-                }
-            }
+
+            //NSLog(@"Found: %i friends", friends.count);
             
-        }];
-    
+            if (block){
+                block(YES,self.tempFriendList);
+            }
+        }
+        else{
+            if (block){
+                block(NO, nil);
+            }
+        }
+        
+    }];
+
 }
 
 

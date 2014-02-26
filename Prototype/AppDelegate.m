@@ -80,6 +80,16 @@
                 
                                           }];
         }
+        
+        if (![defaults boolForKey:@"facebookFriendsFetch"]){
+            // fetch friends in the background if we dont have any
+            dispatch_queue_t fbookQue = dispatch_queue_create("facebookFetcherQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+            dispatch_async(fbookQue, ^{
+                [self fetchFacebookFriends];
+            });
+            
+        }
+
 
     }
     
@@ -94,14 +104,6 @@
          [self showLoginOrHomeScreen];
         }
     
-    if (![defaults boolForKey:@"facebookFriendsFetch"]){
-        // fetch friends in the background if we dont have any
-        dispatch_queue_t fbookQue = dispatch_queue_create("facebookFetcherQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
-       dispatch_async(fbookQue, ^{
-           [self fetchFacebookFriends];
-       });
-        
-    }
     
     
 

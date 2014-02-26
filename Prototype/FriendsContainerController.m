@@ -10,11 +10,15 @@
 #import "TWTSideMenuViewController.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
+#import "AddFriendsViewController.h"
+#import "TMCache.h"
+#import "FacebookFriends.h"
 
 @interface FriendsContainerController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 @property (strong,nonatomic)UIViewController *currentController;
+
 
 @end
 
@@ -43,6 +47,8 @@
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
    
     self.navigationItem.leftBarButtonItem = button;
+    [self loadFriends];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,7 +70,7 @@
     [self transitionFromViewController:self.currentController
                       toViewController:vc
                               duration:0.5
-                               options:UIViewAnimationOptionTransitionFlipFromBottom
+                               options:UIViewAnimationOptionTransitionNone
                             animations:^{
                                 [self.currentController.view removeFromSuperview];
                                 vc.view.frame = self.myContainerView.bounds;
@@ -86,12 +92,40 @@
             break;
         case 1:
             vc = [self.storyboard instantiateViewControllerWithIdentifier:@"addFriends"];
+            if ([vc isKindOfClass:[AddFriendsViewController class]]){
+                ((AddFriendsViewController *)vc).facebookFriendsArray = self.facebookFriendsArray;
+            }
             break;
         case 2:
             vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
             break;
+            
+        case 3:
+            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"addFriends"];
+            break;
+            
+        default:
+            break;
     }
     return vc;
+}
+
+
+- (void)loadFriends
+{
+    NSArray *friends = [[TMCache sharedCache] objectForKey:@"facebookFriends"];
+    if (friends){
+        self.facebookFriendsArray = friends;
+    }
+    else{
+        FacebookFriends *f = [[FacebookFriends alloc] init];
+        [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
+            if (wasSuccessful){
+                self.facebookFriendsArray = data;
+            }
+        }];
+    }
+    
 }
 
 @end

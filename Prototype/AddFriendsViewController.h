@@ -10,4 +10,6 @@
 
 @interface AddFriendsViewController : UIViewController
 
+@property (strong, nonatomic)NSArray *facebookFriendsArray;
+
 @end

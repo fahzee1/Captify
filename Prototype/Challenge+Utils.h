@@ -27,7 +27,7 @@
 
 + (Challenge *) createTestChallengeWithUser:(User *)user;
 
-
++ (Challenge *)createChallengeWithParams:(NSDictionary *)params;
 
 
 @end

@@ -26,7 +26,6 @@
 #import "UIFont+FontAwesome.h"
 #import "SenderPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "FacebookFriends.h"
 
 
 
@@ -49,7 +48,8 @@
 @property (strong,nonatomic)AVCaptureVideoPreviewLayer *previewLayer;
 @property (strong,nonatomic)AVCaptureStillImageOutput *snapper;
 @property (strong,nonatomic)UIImageView *previewSnap;
-@property (strong,nonatomic)UIImage *previewSnapshot;
+@property (strong,nonatomic)UIImage *previewEditedSnapshot;
+@property (strong,nonatomic)UIImage *previewOriginalSnapshot;
 @property (strong, nonatomic)UIView *previewControls;
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
@@ -63,6 +63,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *previewFinalPhraseLabel;
 
 @property (nonatomic, strong)NSString *finalPhrase;
+@property CGPoint finalPhraseLabelPostion;
+
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *myTapGesture;
 
 @end
 
@@ -81,17 +84,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
-    /*
-    FacebookFriends *f = [[FacebookFriends alloc] init];
-    [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
-        // this code is unbelievably code must cache and store in core data
-        // after first time
-        NSLog(@"%@",data);
-    }];
-    
-    //NSLog(@"%@",[f allFriends]);
-     */
+
+
 
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
@@ -134,7 +128,7 @@
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
  
-     [self setupStylesAndMore];
+    [self setupStylesAndMore];
 }
 
 
@@ -143,6 +137,9 @@
 - (void)setupCamera
 {
     NSError *error;
+    
+    self.myTapGesture.numberOfTapsRequired = 2;
+    [self.myTapGesture addTarget:self action:@selector(doubleTappedCameraButton)];
     
     self.session = [AVCaptureSession new];
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -332,17 +329,36 @@
         return;
     }
     
-    // hide top buttons and take a snapshot
+    // if label is still hidden then we mimic action of clicking
+    // next button on keyboard
+    if (self.previewFinalPhraseLabel.hidden){
+        UITextField *textField;
+        for (id view in self.view.subviews){
+            if ([view isKindOfClass:[UITextField class]]){
+                textField = (UITextField *)view;
+            }
+        }
+        [self textFieldShouldReturn:textField];
+        return;
+    }
     
-    // dont forget to set it back when comming back
+    // hide top buttons and take a snapshot
     self.previewNextButton.hidden = YES;
     self.previewCancelButton.hidden = YES;
-    UIImage *snapshot = [self.view convertViewToImage];
-    self.previewSnapshot = snapshot;
+    
+    self.previewEditedSnapshot = [self.view convertViewToImage];
+    
+    // save position of label on image
+    self.finalPhraseLabelPostion = self.previewFinalPhraseLabel.frame.origin;
     
     [self pushFinalPreview];
 }
 
+
+- (void)doubleTappedCameraButton
+{
+    NSLog(@"double tapped");
+}
 
 
 
@@ -350,7 +366,7 @@
 {
     //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
-    vc.image = self.previewSnapshot;
+    vc.image = self.previewEditedSnapshot;
     vc.name = self.finalPhrase;
     vc.phrase = self.finalPhrase;
     vc.delegate = self;
@@ -396,7 +412,7 @@
                                                   NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                                                   UIImage *im = [UIImage imageWithData:data];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      
+                                                      self.previewOriginalSnapshot = im;
                                                       self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
                                                       self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
                                                       self.previewSnap.image = im;
@@ -590,13 +606,17 @@
                                               self.previewFinalPhraseLabel.alpha = 1;
                                           } completion:^(BOOL finished) {
                                               // add pulsating effect to next button arrow
-                                              CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-                                              pulseAnimation.duration = .5;
-                                              pulseAnimation.toValue = [NSNumber numberWithFloat:1.3];
-                                              pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                                              pulseAnimation.autoreverses = YES;
-                                              pulseAnimation.repeatCount = FLT_MAX;
-                                              [self.previewNextButton.layer addAnimation:pulseAnimation forKey:nil];
+                                              if  (![self.previewNextButton.layer animationForKey:@"previewNextButton"]){
+                                                  
+                                              
+                                                  CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+                                                  pulseAnimation.duration = .5;
+                                                  pulseAnimation.toValue = [NSNumber numberWithFloat:1.3];
+                                                  pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                                                  pulseAnimation.autoreverses = YES;
+                                                  pulseAnimation.repeatCount = FLT_MAX;
+                                                  [self.previewNextButton.layer addAnimation:pulseAnimation forKey:@"previewNextButton"];
+                                              }
 
                                           }];
 
