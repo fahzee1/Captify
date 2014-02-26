@@ -59,19 +59,29 @@
 - (NSArray *)facebookFriendsArray
 {
     if (!_facebookFriendsArray){
-        NSArray *friends = [[TMCache sharedCache] objectForKey:@"facebookFriends"];
-        if (friends){
-            _facebookFriendsArray = friends;
-        }
-        else{
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"facebookFriendsFetch"];
-            [self.friend allFriends:^(BOOL wasSuccessful, NSArray *data) {
-                if (wasSuccessful){
-                    _facebookFriendsArray = data;
-                    [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
-                }
-            }];
-        }
+        NSLog(@"hit test");
+        dispatch_queue_t loadFriendsQueue = dispatch_queue_create("TMCacheFriendFetchQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+        dispatch_async(loadFriendsQueue, ^{
+            [[TMCache sharedCache] objectForKey:@"facebookFriends"
+                                          block:^(TMCache *cache, NSString *key, id object) {
+    
+                                              if (object){
+                                                  //NSLog(@"check ");
+                                                  _facebookFriendsArray = object;
+                                              }
+                                              else{
+                                                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"facebookFriendsFetch"];
+                                                  [self.friend allFriends:^(BOOL wasSuccessful, NSArray *data) {
+                                                      if (wasSuccessful){
+                                                          _facebookFriendsArray = data;
+                                                          [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
+                                                      }
+                                                  }];
+                                                  
+                                              }
+                                          }];
+
+        });
         
     }
     return  _facebookFriendsArray;

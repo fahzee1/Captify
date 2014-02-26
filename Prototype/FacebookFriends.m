@@ -33,8 +33,6 @@
         
         
         [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            NSLog(@"%@",error);
-            NSLog(@"%@",result);
             if (!error){
                 NSArray *friends = [result objectForKey:@"data"];
                 for (NSDictionary<FBGraphUser>* friend in friends) {

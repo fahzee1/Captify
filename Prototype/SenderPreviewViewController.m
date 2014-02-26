@@ -70,7 +70,7 @@
                                                                                nil];
     self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
-    self.sections = @[@"Facebook Friends", @"Contact Friends"];
+    self.sections = @[@"Facebook", @"Contacts"];
     
 }
 

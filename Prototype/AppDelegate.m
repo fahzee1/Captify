@@ -490,7 +490,7 @@
 
 - (void)fetchFacebookFriends
 {
-    NSLog(@"i was called");
+ 
     FacebookFriends *f = [[FacebookFriends alloc] init];
     [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
         if (wasSuccessful){
