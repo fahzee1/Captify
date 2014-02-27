@@ -276,6 +276,7 @@
 		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
 		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
+		11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */; };
 		11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6018B7090A00C129D6 /* cameraControls.xib */; };
 		11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */; };
 		11DC6B6A18B717AA00C129D6 /* FAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6518B717AA00C129D6 /* FAImageView.m */; };
@@ -814,6 +815,7 @@
 		11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsAddedMe.m; sourceTree = "<group>"; };
 		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
 		11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsIAdded.m; sourceTree = "<group>"; };
+		11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		11DC6B6018B7090A00C129D6 /* cameraControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cameraControls.xib; sourceTree = "<group>"; };
 		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		11DC6B6418B717AA00C129D6 /* FAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAImageView.h; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				1153DFE818A9DF0400AD950E /* AVFoundation.framework in Frameworks */,
 				1153DFE618A9DEFA00AD950E /* OpenGLES.framework in Frameworks */,
@@ -880,6 +883,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */,
 				1153DFE918A9DF0F00AD950E /* QuartzCore.framework */,
 				1153DFE718A9DF0400AD950E /* AVFoundation.framework */,
 				1153DFE518A9DEFA00AD950E /* OpenGLES.framework */,

@@ -12,7 +12,6 @@
 #import "LoginViewController.h"
 #import "User+Utils.h"
 #import "Challenge+Utils.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "ChallengeViewController.h"
@@ -26,6 +25,8 @@
 #import "UIFont+FontAwesome.h"
 #import "SenderPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import <FacebookSDK/FacebookSDK.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 
 
@@ -36,7 +37,7 @@
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *snapPicButton;
+@property (weak, nonatomic) IBOutlet UILabel *snapPicButton;
 @property CGRect firstFrame;
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
 @property (weak, nonatomic) IBOutlet UIButton *flashButton;
@@ -53,6 +54,7 @@
 @property (strong, nonatomic)UIView *previewControls;
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
+@property (weak, nonatomic) IBOutlet UITextField *previewTextField;
 @property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
 
 @property (weak, nonatomic) IBOutlet UIView *cameraOptionsContainerView;
@@ -65,7 +67,6 @@
 @property (nonatomic, strong)NSString *finalPhrase;
 @property CGPoint finalPhraseLabelPostion;
 
-@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *myTapGesture;
 
 @end
 
@@ -110,9 +111,6 @@
         NSLog(@"no front camera");
     }
     
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
-        NSLog(@"no photo library");
-    }
     
     //if user not logged in segue to login screen
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"logged"]){
@@ -137,9 +135,6 @@
 - (void)setupCamera
 {
     NSError *error;
-    
-    self.myTapGesture.numberOfTapsRequired = 2;
-    [self.myTapGesture addTarget:self action:@selector(doubleTappedCameraButton)];
     
     self.session = [AVCaptureSession new];
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -208,11 +203,21 @@
 - (void)setupStylesAndMore
 {
  
+    UITapGestureRecognizer *snapTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedSnapPic:)];
+    snapTap.numberOfTapsRequired = 1;
     
-    self.snapPicButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
-    [self.snapPicButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"] forState:UIControlStateNormal];
-    [self.snapPicButton setTitleColor:[UIColor colorWithHexString:@"#3498db"] forState:UIControlStateNormal];
-
+    UITapGestureRecognizer *libraryTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTappedSnap:)];
+    libraryTap.numberOfTapsRequired = 2;
+    
+    [snapTap requireGestureRecognizerToFail:libraryTap];
+    
+    [self.snapPicButton addGestureRecognizer:libraryTap];
+    [self.snapPicButton addGestureRecognizer:snapTap];
+    self.snapPicButton.userInteractionEnabled = YES;
+    
+    self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
+    self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"];
+    self.snapPicButton.textColor =[UIColor colorWithHexString:@"#3498db"];
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
@@ -286,9 +291,12 @@
 }
 
 
-- (IBAction)tappedSnapPic:(UIButton *)sender {
-    [self snapPhoto];
+
+- (void)tappedSnapPic:(UITapGestureRecognizer *)sender {
+  
+       [self snapPhoto];
 }
+
 
 - (IBAction)tappedFlashButton:(UIButton *)sender {
     [self toggleFlash];
@@ -319,26 +327,20 @@
 
 
 - (IBAction)tappedNextPreview:(UIButton *)sender {
-    if (!self.finalPhrase){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                        message:@"Must enter phrase before continuing"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
+    if ([self.previewTextField.text length] == 0){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                            message:@"Must enter phrase before continuing"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
     }
     
     // if label is still hidden then we mimic action of clicking
     // next button on keyboard
     if (self.previewFinalPhraseLabel.hidden){
-        UITextField *textField;
-        for (id view in self.view.subviews){
-            if ([view isKindOfClass:[UITextField class]]){
-                textField = (UITextField *)view;
-            }
-        }
-        [self textFieldShouldReturn:textField];
+        [self textFieldShouldReturn:self.previewTextField];
         return;
     }
     
@@ -354,11 +356,20 @@
     [self pushFinalPreview];
 }
 
-
-- (void)doubleTappedCameraButton
-{
-    NSLog(@"double tapped");
+- (void)doubleTappedSnap:(UITapGestureRecognizer *)sender {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
+        NSLog(@"no photo library");
+        return;
+    }
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    picker.mediaTypes = @[(NSString *)kUTTypeImage];
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+    
 }
+
 
 
 
@@ -410,25 +421,37 @@
     [self.snapper captureStillImageAsynchronouslyFromConnection:vc
                                               completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                                                   NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                                                  UIImage *im = [UIImage imageWithData:data];
+                                                  self.previewOriginalSnapshot = [UIImage imageWithData:data];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      self.previewOriginalSnapshot = im;
-                                                      self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
-                                                      self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
-                                                      self.previewSnap.image = im;
                                                       
-                                                      self.previewControls = [[[NSBundle mainBundle] loadNibNamed:@"previewControls" owner:self options:nil]lastObject];
-                                                      [self setupPreviewStylesAndMore];
-                                                
-                                                      [self.view addSubview:self.previewSnap];
-                                                      [self.view addSubview:self.previewControls];
-                                                      [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
+                                                      
+                                                      [self setupImagePreviewScreen];
+                                                      
                                                       
                                                       //[self.previewLayer removeFromSuperlayer];
                                                       //self.previewLayer = nil;
                                                       //[self.session stopRunning];
                                                   });
                                               }];
+}
+
+
+- (void)setupImagePreviewScreen
+{
+    self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
+    self.previewSnap.image = self.previewOriginalSnapshot;
+    
+    self.previewControls = [[[NSBundle mainBundle] loadNibNamed:@"previewControls" owner:self options:nil]lastObject];
+    [self setupPreviewStylesAndMore];
+    
+    [self.view addSubview:self.previewSnap];
+    [self.view addSubview:self.previewControls];
+    [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
+
+    
+    
+
 }
 
 - (void)cancelPreviewImage
@@ -642,6 +665,8 @@
 }
 
 
+
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (!self.cameraOptionsContainerView.hidden)
@@ -693,6 +718,10 @@
     self.cameraOptionsContainerView = nil;
     self.previewOneFieldContainer = nil;
     self.finalPhrase = nil;
+    self.previewEditedSnapshot = nil;
+    self.previewOriginalSnapshot = nil;
+    
+    
     
     
     
@@ -755,6 +784,25 @@
 }
 
 
+#pragma -mark UIImagepickercontroller delegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
+        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
+        [self setupImagePreviewScreen];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma -mark UINavigationController delegate
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -767,6 +815,7 @@
             self.previewNextButton.hidden = NO;
             self.previewCancelButton.hidden = NO;
             self.previewFinalPhraseLabel.hidden = YES;
+            self.finalPhrase = nil;
             CGRect oneFrame = self.previewOneFieldContainer.frame;
             self.previewOneFieldContainer.frame = CGRectMake(oneFrame.origin.x,
                                                              SCREENHEIGHT - 290,

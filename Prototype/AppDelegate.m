@@ -496,6 +496,7 @@
     FacebookFriends *f = [[FacebookFriends alloc] init];
     [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
         if (wasSuccessful){
+            NSLog(@"called from bg and successful");
             [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"facebookFriendsFetch"];
         }

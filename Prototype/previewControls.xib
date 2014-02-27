@@ -10,6 +10,7 @@
                 <outlet property="previewFinalPhraseLabel" destination="OHE-6b-oc8" id="zAl-Po-nM1"/>
                 <outlet property="previewNextButton" destination="5tk-s0-4fz" id="xdy-ad-Rn8"/>
                 <outlet property="previewOneFieldContainer" destination="Q32-2n-umV" id="tjy-ri-TW5"/>
+                <outlet property="previewTextField" destination="WpJ-os-58j" id="e4D-mZ-iLg"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
