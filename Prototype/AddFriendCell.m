@@ -7,7 +7,7 @@
 //
 
 #import "AddFriendCell.h"
-#import "UIImage+RoundedCorners.h"
+#import "UIImage+Utils.h"
 
 @implementation AddFriendCell
 

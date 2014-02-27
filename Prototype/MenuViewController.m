@@ -54,6 +54,10 @@
         }
     }
     
+    [self.menuCamera setTitle:NSLocalizedString(@"Home", @"Home button in menu") forState:UIControlStateNormal];
+     [self.menuHistory setTitle:NSLocalizedString(@"History", @"History button in menu") forState:UIControlStateNormal];
+     [self.menuFriends setTitle:NSLocalizedString(@"Friends", @"Friends button in menu") forState:UIControlStateNormal];
+     [self.menuSettings setTitle:NSLocalizedString(@"Settings", @"Settings button in menu") forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning

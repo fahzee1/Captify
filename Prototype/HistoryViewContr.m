@@ -39,6 +39,7 @@
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
+    self.navigationItem.title = NSLocalizedString(@"History", nil);
     
     self.myTable.delegate = self;
     self.myTable.dataSource = self;

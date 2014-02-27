@@ -47,6 +47,13 @@
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
    
     self.navigationItem.leftBarButtonItem = button;
+    self.navigationItem.title = NSLocalizedString(@"Friends", nil);
+    
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Contacts", nil) forSegmentAtIndex:0];
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Facebook", nil) forSegmentAtIndex:1];
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Invite", nil) forSegmentAtIndex:2];
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Search", nil) forSegmentAtIndex:3];
+    
     [self loadFriends];
 
 }
@@ -97,11 +104,11 @@
             }
             break;
         case 2:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
+            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"addFriends"];
             break;
             
         case 3:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"addFriends"];
+            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
             break;
             
         default:

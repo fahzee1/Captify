@@ -226,7 +226,6 @@
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
-		115D939318B28D1C006A1C02 /* UIImage+RoundedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
@@ -250,7 +249,6 @@
 		1184FE1418BD053800FDEAE0 /* TMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE0F18BD053800FDEAE0 /* TMCache.m */; };
 		1184FE1518BD053800FDEAE0 /* TMDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE1118BD053800FDEAE0 /* TMDiskCache.m */; };
 		1184FE1618BD053800FDEAE0 /* TMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE1318BD053800FDEAE0 /* TMMemoryCache.m */; };
-		1184FE1918BD520C00FDEAE0 /* UIImage+AddText.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE1818BD520C00FDEAE0 /* UIImage+AddText.m */; };
 		11866A1918AC956D002D0245 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11866A1818AC956D002D0245 /* FriendsViewController.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
@@ -264,6 +262,8 @@
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
 		118D513718B6639E001AA7FC /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* AddFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
+		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
+		118F250218BFE4F10007797E /* InviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F250118BFE4F10007797E /* InviteFriendViewController.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -720,8 +720,6 @@
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
 		115D938E18B28312006A1C02 /* SenderFriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFriendsCell.h; sourceTree = "<group>"; };
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
-		115D939118B28D1C006A1C02 /* UIImage+RoundedCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorners.h"; sourceTree = "<group>"; };
-		115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorners.m"; sourceTree = "<group>"; };
 		116A0E6B18AD22AF00CF1399 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		116A0E6C18AD22AF00CF1399 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
@@ -769,8 +767,6 @@
 		1184FE1118BD053800FDEAE0 /* TMDiskCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDiskCache.m; sourceTree = "<group>"; };
 		1184FE1218BD053800FDEAE0 /* TMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMMemoryCache.h; sourceTree = "<group>"; };
 		1184FE1318BD053800FDEAE0 /* TMMemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMMemoryCache.m; sourceTree = "<group>"; };
-		1184FE1718BD520C00FDEAE0 /* UIImage+AddText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AddText.h"; sourceTree = "<group>"; };
-		1184FE1818BD520C00FDEAE0 /* UIImage+AddText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AddText.m"; sourceTree = "<group>"; };
 		11866A1718AC956D002D0245 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
 		11866A1818AC956D002D0245 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -794,6 +790,10 @@
 		118D513518B6639E001AA7FC /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsViewController.m; sourceTree = "<group>"; };
 		118D513918B66807001AA7FC /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
 		118D513A18B66807001AA7FC /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
+		118F24F618BFC2C90007797E /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
+		118F24F718BFC2C90007797E /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
+		118F250018BFE4F10007797E /* InviteFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteFriendViewController.h; sourceTree = "<group>"; };
+		118F250118BFE4F10007797E /* InviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteFriendViewController.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -1084,6 +1084,8 @@
 				118D513518B6639E001AA7FC /* AddFriendsViewController.m */,
 				118D513918B66807001AA7FC /* SearchFriendsViewController.h */,
 				118D513A18B66807001AA7FC /* SearchFriendsViewController.m */,
+				118F250018BFE4F10007797E /* InviteFriendViewController.h */,
+				118F250118BFE4F10007797E /* InviteFriendViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1142,14 +1144,12 @@
 				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
 				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
 				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
-				115D939118B28D1C006A1C02 /* UIImage+RoundedCorners.h */,
-				115D939218B28D1C006A1C02 /* UIImage+RoundedCorners.m */,
 				11176DEB18B7F6E600FA69B7 /* HistoryCell.h */,
 				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
-				1184FE1718BD520C00FDEAE0 /* UIImage+AddText.h */,
-				1184FE1818BD520C00FDEAE0 /* UIImage+AddText.m */,
 				114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */,
 				114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */,
+				118F24F618BFC2C90007797E /* UIImage+Utils.h */,
+				118F24F718BFC2C90007797E /* UIImage+Utils.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1767,6 +1767,7 @@
 				1153E16718A9DF4800AD950E /* GPUImageExposureFilter.m in Sources */,
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
+				118F250218BFE4F10007797E /* InviteFriendViewController.m in Sources */,
 				1153E1CD18A9DF4800AD950E /* GPUImageToonFilter.m in Sources */,
 				1153E1AD18A9DF4800AD950E /* GPUImageRGBClosingFilter.m in Sources */,
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
@@ -1788,7 +1789,6 @@
 				1153E14818A9DF4800AD950E /* GPUImageAverageLuminanceThresholdFilter.m in Sources */,
 				1153E18818A9DF4800AD950E /* GPUImageLineGenerator.m in Sources */,
 				11299C761899772E00D69000 /* KeyboardViewController.m in Sources */,
-				115D939318B28D1C006A1C02 /* UIImage+RoundedCorners.m in Sources */,
 				1153E19518A9DF4800AD950E /* GPUImageMotionBlurFilter.m in Sources */,
 				1153E15F18A9DF4800AD950E /* GPUImageDilationFilter.m in Sources */,
 				1153E18218A9DF4800AD950E /* GPUImageKuwaharaRadius3Filter.m in Sources */,
@@ -1955,6 +1955,7 @@
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
 				1153E1DC18A9DF4800AD950E /* GPUImageContext.m in Sources */,
 				1153E18918A9DF4800AD950E /* GPUImageLocalBinaryPatternFilter.m in Sources */,
+				118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */,
 				1153E14118A9DF4800AD950E /* GPUImage3x3ConvolutionFilter.m in Sources */,
 				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1153E16618A9DF4800AD950E /* GPUImageExclusionBlendFilter.m in Sources */,
@@ -2000,7 +2001,6 @@
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
-				1184FE1918BD520C00FDEAE0 /* UIImage+AddText.m in Sources */,
 				11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */,
 				114626D918BE4E880058E821 /* Challenge.m in Sources */,
 				1153E14B18A9DF4800AD950E /* GPUImageBrightnessFilter.m in Sources */,

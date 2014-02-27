@@ -8,7 +8,7 @@
 
 #import "SenderPreviewViewController.h"
 #import "UIColor+HexValue.h"
-#import "UIImage+RoundedCorners.h"
+#import "UIImage+Utils.h"
 #import "SenderFriendsCell.h"
 #import "FAImageView.h"
 #import "Challenge+Utils.h"
@@ -52,6 +52,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
+    self.navigationItem.title = NSLocalizedString(@"Preview", nil);
     self.selectedFriendsScroll.delegate = self;
     self.friendsTable.delegate = self;
     self.friendsTable.dataSource = self;
@@ -72,7 +73,7 @@
                                                                                nil];
     self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
-    self.sections = @[@"Facebook", @"Contacts"];
+    self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
     
 }
 
@@ -113,7 +114,7 @@
 - (void)setupStyles
 {
     
-    self.previewImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.toLabel.text = NSLocalizedString(@"To:", @"Recipient list to send challenge to");
     
     self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.topLabel.textColor = [UIColor whiteColor];
@@ -124,12 +125,12 @@
     self.bottomLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
     self.bottomLabel.textColor = [UIColor whiteColor];
     self.bottomLabel.layer.opacity = 0.6f;
+    self.bottomLabel.text = NSLocalizedString(@"Choose Friends", @"Choose a list of friends to send challenge to");
     
     // the bottom send button
     self.bottomSendButton = [[UIButton alloc] initWithFrame:self.bottomLabel.frame];
     self.bottomSendButton.titleLabel.textColor = [UIColor whiteColor];
-    [self.bottomSendButton setTitle:@"Send" forState:UIControlStateNormal];
-    [self.bottomSendButton setTitle:@"Send" forState:UIControlStateHighlighted];
+    [self.bottomSendButton setTitle:NSLocalizedString(@"Send", @"Send challenge to recipients") forState:UIControlStateNormal];
     self.bottomSendButton.titleLabel.font = self.bottomLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25
     ];
     self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
@@ -195,14 +196,14 @@
 {
      // Return the number of rows in the section.
     
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"Facebook Friends"]){
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"Facebook"]){
         
         // get count of facebook friends
         // return it
             return [self.facebookFriendsArray count];
     }
     
-    else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contact Friends"]){
+    else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contact"]){
         // get count of contact friends
         // return it
             return [self.friendsArray count];

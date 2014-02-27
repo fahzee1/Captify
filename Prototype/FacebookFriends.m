@@ -105,6 +105,7 @@
                    message:(NSString *)message
                      block:(FacebookFriendInvite)block
 {
+
     [FBWebDialogs
      presentRequestsDialogModallyWithSession:nil
      message:message
@@ -124,4 +125,65 @@
      }];
 
 }
+
+
+
+- (void)postStatusWithText:(NSString *)status
+                  andImage:(UIImage *)image
+                      from:(UIViewController *)controller
+                     block:(FacebookPostStatus)block
+{
+    if (!status){
+        status = NSLocalizedString(@"Cool app made this pic!", nil);
+    }
+    if ([FBDialogs canPresentOSIntegratedShareDialogWithSession:FBSession.activeSession])
+    {
+        [FBDialogs presentOSIntegratedShareDialogModallyFrom:controller
+                                                 initialText:status
+                                                       image:image
+                                                         url:nil
+                                                     handler:^(FBOSIntegratedShareDialogResult result, NSError *error) {
+                                                         NSLog(@"%u",result);
+                                                         
+                                                         if (error){
+                                                             if (block){
+                                                                 block(NO);
+                                                             }
+                                                             return;
+                                                         }
+                                                         
+                                                         switch (result) {
+                                                             case 0:
+                                                             {
+                                                                 /*! Indicates that the dialog action completed successfully. */
+                                                                 if (block){
+                                                                     block(YES);
+                                                                 }
+                                                             }
+                                                                 break;
+                                                                 
+                                                             case 1:
+                                                             {
+                                                                  /*! Indicates that the dialog action was cancelled (either by the user or the system). */
+                                                                 if (block){
+                                                                     block(NO);
+                                                                 }
+                                                             }
+                                                                 break;
+                                                             case 2:
+                                                             {
+                                                                /*! Indicates that the dialog could not be shown (because not on ios6 or ios6 auth was not used). */
+                                                                 if (block){
+                                                                     block(NO);
+                                                                 }
+                                                             }
+                                                                 break;
+                                                             default:
+                                                                 break;
+                                                         }
+                                                         
+                                                     }];
+    }
+}
+
 @end

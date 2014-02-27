@@ -27,6 +27,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "JVFloatLabeledTextField.h"
 
 
 
@@ -186,7 +187,7 @@
 - (void)setupTestNoCamera
 {
     UIButton *menu = [UIButton buttonWithType:UIButtonTypeSystem];
-    [menu setTitle:@"Menu" forState:UIControlStateNormal];
+    [menu setTitle:NSLocalizedString(@"Menu", nil) forState:UIControlStateNormal];
     [menu addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     menu.frame = CGRectMake(50, 100, 60, 60);
     
@@ -194,7 +195,7 @@
     [preview setTitle:@"Preview" forState:UIControlStateNormal];
     [preview addTarget:self action:@selector(tappedNextPreview:) forControlEvents:UIControlEventTouchUpInside];
     preview.frame = CGRectMake(115, 100, 60, 60);
-    
+
     
     [self.view addSubview:preview];
     [self.view addSubview:menu];
@@ -227,7 +228,7 @@
 
     
     self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-    [self.flashButton setTitle:[NSString stringWithFormat:@"%@ On",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+    [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
     [self.flashButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.rotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
@@ -271,7 +272,7 @@
     self.previewFinalPhraseLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
     self.previewFinalPhraseLabel.hidden = YES;
     
-    
+    self.previewTextField.placeholder = NSLocalizedString(@"Enter your phrase!", @"Textfield placeholder text");
     self.previewOneFieldContainer.layer.cornerRadius = 10.0f;
     self.previewOneFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
     CGRect firstRect = self.previewOneFieldContainer.frame;
@@ -328,10 +329,10 @@
 
 - (IBAction)tappedNextPreview:(UIButton *)sender {
     if ([self.previewTextField.text length] == 0){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                            message:@"Must enter phrase before continuing"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Alert error title")
+                                                            message:NSLocalizedString(@"Must enter phrase before continuing", @"Alert error message")
                                                            delegate:self
-                                                  cancelButtonTitle:@"Ok"
+                                                  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
                                                   otherButtonTitles:nil];
             [alert show];
             return;
@@ -511,7 +512,7 @@
              [self.cameraDevice lockForConfiguration:&error];
              [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
              [self.cameraDevice unlockForConfiguration];
-            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
 
 
         }
@@ -520,14 +521,14 @@
             [self.cameraDevice lockForConfiguration:&error];
             [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
             [self.cameraDevice unlockForConfiguration];
-            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ On",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
 
         
         }
     }
     else{
         NSLog(@"No flash available");
-        [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+        [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
         return;
     }
 }
@@ -544,7 +545,7 @@
         self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
         if (self.cameraInput){
             [self.session addInput:self.cameraInput];
-            [self.flashButton setTitle:[NSString stringWithFormat:@"%@ Off",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
 
         }
         

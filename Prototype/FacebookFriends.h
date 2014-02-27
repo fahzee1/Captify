@@ -11,6 +11,7 @@
 
 typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
 typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult result);
+typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
 
 @interface FacebookFriends : NSObject
 
@@ -18,9 +19,20 @@ typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult resu
 
 
 - (void)allFriends:(FacebookFriendFetch)block;
+
+
 - (void)onlyFriendsUsingApp:(FacebookFriendFetch)block;
+
+
 - (void)inviteFriendWithID:(NSString *)userID
                      title:(NSString *)title
                    message:(NSString *)message
                      block:(FacebookFriendInvite)block;
+
+
+- (void)postStatusWithText:(NSString *)status
+                  andImage:(UIImage *)image
+                      from:(UIViewController *)controller
+                     block:(FacebookPostStatus)block;
+
 @end

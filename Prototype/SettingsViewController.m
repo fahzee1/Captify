@@ -64,6 +64,26 @@
 
 #pragma mark - Table view data source
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 0){
+        return NSLocalizedString(@"Profile", nil);
+    }
+    
+    else if (section == 1){
+        return NSLocalizedString(@"Support", @"If a user needs help");
+    }
+    
+    else if (section == 2){
+        return  NSLocalizedString(@"Actions", nil);
+    }
+    
+    else{
+        return @"";
+    }
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"path %@",[indexPath description]);
@@ -110,6 +130,8 @@
             break;
     }
 }
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

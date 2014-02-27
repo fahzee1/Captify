@@ -379,7 +379,7 @@
                         <sections>
                             <tableViewSection headerTitle="Profile" id="2O7-7m-6oF">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Gq2-pr-IDS" detailTextLabel="ugq-mW-Fn7" style="IBUITableViewCellStyleValue1" id="rBl-3h-qXL">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="usernameCell" textLabel="Gq2-pr-IDS" detailTextLabel="ugq-mW-Fn7" style="IBUITableViewCellStyleValue1" id="rBl-3h-qXL">
                                         <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rBl-3h-qXL" id="hH5-Zp-Ge7">
@@ -403,7 +403,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="7Bl-Sw-KAU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photoCell" id="7Bl-Sw-KAU">
                                         <rect key="frame" x="0.0" y="163" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Bl-Sw-KAU" id="3lX-nu-GhE">
@@ -424,7 +424,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="C1d-6I-iBq" detailTextLabel="qmG-MT-all" style="IBUITableViewCellStyleValue1" id="OXa-Rp-YUO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="emailCell" textLabel="C1d-6I-iBq" detailTextLabel="qmG-MT-all" style="IBUITableViewCellStyleValue1" id="OXa-Rp-YUO">
                                         <rect key="frame" x="0.0" y="207" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OXa-Rp-YUO" id="Vbd-o0-Bav">
@@ -448,7 +448,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="sVb-Gu-6H4" detailTextLabel="5e5-lH-exW" style="IBUITableViewCellStyleValue1" id="kSa-OI-6zm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="phoneCell" textLabel="sVb-Gu-6H4" detailTextLabel="5e5-lH-exW" style="IBUITableViewCellStyleValue1" id="kSa-OI-6zm">
                                         <rect key="frame" x="0.0" y="251" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kSa-OI-6zm" id="sBX-4s-WIw">
@@ -472,7 +472,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BXK-L0-gnW">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="notificationCell" id="BXK-L0-gnW">
                                         <rect key="frame" x="0.0" y="295" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BXK-L0-gnW" id="udI-Am-9ra">
@@ -496,7 +496,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Support" id="WhJ-O7-fdy">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Lqe-wL-BOB" style="IBUITableViewCellStyleDefault" id="jjB-9G-56W">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tosCell" textLabel="Lqe-wL-BOB" style="IBUITableViewCellStyleDefault" id="jjB-9G-56W">
                                         <rect key="frame" x="0.0" y="387" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jjB-9G-56W" id="Ac6-Jx-qLs">
@@ -513,7 +513,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="pAe-OY-aNq" style="IBUITableViewCellStyleDefault" id="8ll-Vw-37W">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="contactCell" textLabel="pAe-OY-aNq" style="IBUITableViewCellStyleDefault" id="8ll-Vw-37W">
                                         <rect key="frame" x="0.0" y="431" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8ll-Vw-37W" id="JVQ-AZ-4XA">
@@ -534,7 +534,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Actions" id="iea-2H-PFP">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="NWg-Mz-ay6" style="IBUITableViewCellStyleDefault" id="88a-8h-Qx6">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clearCell" textLabel="NWg-Mz-ay6" style="IBUITableViewCellStyleDefault" id="88a-8h-Qx6">
                                         <rect key="frame" x="0.0" y="523" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="88a-8h-Qx6" id="7aE-Ra-bPO">
@@ -551,7 +551,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="0V4-0S-DLi" style="IBUITableViewCellStyleDefault" id="Ivu-d8-b05">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="logoutCell" textLabel="0V4-0S-DLi" style="IBUITableViewCellStyleDefault" id="Ivu-d8-b05">
                                         <rect key="frame" x="0.0" y="567" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ivu-d8-b05" id="tm4-l9-9n2">
@@ -990,8 +990,8 @@
                                 <segments>
                                     <segment title="Facebook"/>
                                     <segment title="Contacts"/>
-                                    <segment title="Search"/>
                                     <segment title="Invite"/>
+                                    <segment title="Search"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentChanged:" destination="Iqq-cg-sei" eventType="valueChanged" id="G9C-Xs-Jzu"/>
