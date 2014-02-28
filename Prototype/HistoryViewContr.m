@@ -13,6 +13,7 @@
 #import "UIFont+FontAwesome.h"
 #import "HistoryCell.h"
 #import "FAImageView.h"
+#import "HistoryDetailViewController.h"
 
 @interface HistoryViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -47,6 +48,10 @@
     self.data = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
 
 	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,16 +93,21 @@
         // if active show animating green filled circle, if not ahow circle outline
         [((HistoryCell *)cell).activeLabel setTextColor:[UIColor greenColor]];
         if (1){
-            CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
-            colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
-            colorPulse.toValue = [NSNumber numberWithFloat:0.1];
-            colorPulse.autoreverses = YES;
-            colorPulse.duration = 0.8;
-            colorPulse.repeatCount = FLT_MAX;
+            
             [((HistoryCell *)cell).activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
             [((HistoryCell *)cell).activeLabel setTextColor:[UIColor greenColor]];
-            [((HistoryCell *)cell).activeLabel.layer addAnimation:colorPulse forKey:nil];
+            if (![((HistoryCell *)cell).activeLabel.layer animationForKey:@"historyActive"]){
+                
+            
+                CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
+                colorPulse.toValue = [NSNumber numberWithFloat:0.1];
+                colorPulse.autoreverses = YES;
+                colorPulse.duration = 0.8;
+                colorPulse.repeatCount = FLT_MAX;
+                [((HistoryCell *)cell).activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
+            }
         }
         else{
              [((HistoryCell *)cell).activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
@@ -117,7 +127,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // go to detail screen
-    NSLog(@"selected cell");
+    
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+    if ([vc isKindOfClass:[HistoryDetailViewController class]]){
+        
+        // give vc all the data it needs
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

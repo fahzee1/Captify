@@ -12,6 +12,7 @@
 typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
 typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult result);
 typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
+typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
 
 @interface FacebookFriends : NSObject
 
@@ -34,5 +35,17 @@ typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
                   andImage:(UIImage *)image
                       from:(UIViewController *)controller
                      block:(FacebookPostStatus)block;
+
+
+- (void)createAlbumWithName:(NSString *)name
+                      block:(FacebookCreateAlbum)block;
+
+- (void)postImageToFeed:(UIImage *)image
+                message:(NSString *)message
+                caption:(NSString *)caption
+                   name:(NSString *)name
+                albumID:(NSString *)albumId
+                  feedBlock:(FacebookPostStatus)fblock
+             albumBlock:(FacebookPostStatus)ablock;
 
 @end

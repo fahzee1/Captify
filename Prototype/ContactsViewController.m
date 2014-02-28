@@ -45,7 +45,6 @@
 
     // check server for any new friends since last check
     // if any create them in core data and then refresh table
-    self.navigationController.toolbarHidden = NO;
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];

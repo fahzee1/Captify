@@ -226,6 +226,7 @@
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
+		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
@@ -263,7 +264,6 @@
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
-		118F250218BFE4F10007797E /* InviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F250118BFE4F10007797E /* InviteFriendViewController.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -720,6 +720,8 @@
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
 		115D938E18B28312006A1C02 /* SenderFriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFriendsCell.h; sourceTree = "<group>"; };
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
+		11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
+		11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
 		116A0E6B18AD22AF00CF1399 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		116A0E6C18AD22AF00CF1399 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
@@ -792,8 +794,6 @@
 		118D513A18B66807001AA7FC /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		118F24F618BFC2C90007797E /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		118F24F718BFC2C90007797E /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
-		118F250018BFE4F10007797E /* InviteFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteFriendViewController.h; sourceTree = "<group>"; };
-		118F250118BFE4F10007797E /* InviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteFriendViewController.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -1084,8 +1084,6 @@
 				118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */,
 				118D513918B66807001AA7FC /* SearchFriendsViewController.h */,
 				118D513A18B66807001AA7FC /* SearchFriendsViewController.m */,
-				118F250018BFE4F10007797E /* InviteFriendViewController.h */,
-				118F250118BFE4F10007797E /* InviteFriendViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1133,6 +1131,8 @@
 				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
 				11101DD718B17073009D44BD /* HistoryViewController.h */,
 				11101DD818B17073009D44BD /* HistoryViewContr.m */,
+				11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */,
+				11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1767,7 +1767,6 @@
 				1153E16718A9DF4800AD950E /* GPUImageExposureFilter.m in Sources */,
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
-				118F250218BFE4F10007797E /* InviteFriendViewController.m in Sources */,
 				1153E1CD18A9DF4800AD950E /* GPUImageToonFilter.m in Sources */,
 				1153E1AD18A9DF4800AD950E /* GPUImageRGBClosingFilter.m in Sources */,
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
@@ -1816,6 +1815,7 @@
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				1153E1D118A9DF4800AD950E /* GPUImageTwoPassFilter.m in Sources */,
 				1153E1C218A9DF4800AD950E /* GPUImageStretchDistortionFilter.m in Sources */,
+				11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */,
 				1153E18018A9DF4800AD950E /* GPUImageJFAVoronoiFilter.m in Sources */,
 				1153E1AE18A9DF4800AD950E /* GPUImageRGBDilationFilter.m in Sources */,
 				1153E1A518A9DF4800AD950E /* GPUImagePixellatePositionFilter.m in Sources */,

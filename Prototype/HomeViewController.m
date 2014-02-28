@@ -28,7 +28,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#import "FacebookFriends.h"
 
 
 
@@ -88,7 +88,7 @@
 {
     [super viewDidLoad];
 
-
+    
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;

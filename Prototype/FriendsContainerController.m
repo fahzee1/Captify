@@ -13,16 +13,19 @@
 #import "FacebookFriendsViewController.h"
 #import "TMCache.h"
 #import "FacebookFriends.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface FriendsContainerController ()<FBViewControllerDelegate>
+@interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 @property (strong,nonatomic)UIViewController *currentController;
 @property (strong, nonatomic) FBFriendPickerViewController *friendPickerController;
+@property (strong, nonatomic) FBFriendPickerViewController *appFriendPickerController;
 @property (strong, nonatomic) FacebookFriends *friend;
 @property (strong, nonatomic) FBCacheDescriptor *cacheDescriptor;
-
+@property (strong, nonatomic) FBCacheDescriptor *appCacheDescriptor;
 
 @end
 
@@ -41,8 +44,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-   
-    self.navigationController.toolbarHidden = NO;
     
     UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
@@ -51,20 +52,6 @@
     self.currentController = vc;
     
     
-    UIBarButtonItem *inviteButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] style:UIBarButtonItemStyleBordered target:self action:@selector(showFacebookInvite)];
-    
-    [inviteButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
-    
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                      target:nil action:nil];
-    
-    UIBarButtonItem *flexibleSpace2 = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                      target:nil action:nil];
-    
-    self.toolbarItems = @[flexibleSpace, inviteButton,flexibleSpace2];
-
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
     
@@ -74,10 +61,14 @@
     
     [self.mySegmentedControl setTitle:NSLocalizedString(@"Facebook", nil) forSegmentAtIndex:0];
     [self.mySegmentedControl setTitle:NSLocalizedString(@"Contacts", nil) forSegmentAtIndex:1];
-    [self.mySegmentedControl setTitle:NSLocalizedString(@"Search", nil) forSegmentAtIndex:2];
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Invite", nil) forSegmentAtIndex:2];
+    [self.mySegmentedControl setTitle:NSLocalizedString(@"Search", nil) forSegmentAtIndex:3];
     
     self.cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
     [self.cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+    
+    self.appCacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
+    [self.appCacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
    
     
     [self loadFriends];
@@ -102,7 +93,7 @@
     [self addChildViewController:vc];
     [self transitionFromViewController:self.currentController
                       toViewController:vc
-                              duration:0.5
+                              duration:0
                                options:UIViewAnimationOptionTransitionNone
                             animations:^{
                                 [self.currentController.view removeFromSuperview];
@@ -121,19 +112,34 @@
     UIViewController *vc;
     switch (index) {
         case 0:
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"facebookFriends"];
-            if ([vc isKindOfClass:[FacebookFriendsViewController class]]){
-                ((FacebookFriendsViewController *)vc).facebookFriendsArray = self.facebookFriendsArray;
-            }
+        {
+            vc = self.appFriendPickerController;
+            
+            [self.appFriendPickerController loadData];
+            [self.appFriendPickerController clearSelection];
+        }
 
             break;
         case 1:
+        {
             vc = [self.storyboard instantiateViewControllerWithIdentifier:@"contactFriends"];
+        }
             break;
         case 2:
-            vc =  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
+        {
+            vc = self.friendPickerController;
+            
+            [self.friendPickerController loadData];
+            [self.friendPickerController clearSelection];
+        }
             break;
             
+        case 3:
+        {
+    
+            vc =  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
+        }
+            break;
         default:
             break;
     }
@@ -150,14 +156,9 @@
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                           
                                           if (error){
-                                              UIAlertView *alert = [[UIAlertView alloc]
-                                                                    initWithTitle:@"Error"
-                                                                    message:error.localizedDescription
-                                                                    delegate:nil
-                                                                    cancelButtonTitle:@"Ok"
-                                                                    otherButtonTitles: nil];
-                                              [alert show];
-                                          }
+                                              [self alertErrorWithTitle:nil
+                                                             andMessage:error.localizedDescription];
+                                            }
                                           else if (session.isOpen){
                                               [self viewDidLoad];
                                           }
@@ -198,6 +199,61 @@
     
 }
 
+- (void)alertErrorWithTitle:(NSString *)title
+                 andMessage:(NSString *)message
+{
+    if (!title){
+        title = @"Error";
+    }
+    
+    if (!message){
+        message = @"There was an error with your connection";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+    
+}
+
+
+- (FBFriendPickerViewController *)friendPickerController
+{
+
+    if (!_friendPickerController){
+        _friendPickerController = [[FBFriendPickerViewController alloc] init];
+        _friendPickerController.title = @"Invite Friend";
+        _friendPickerController.delegate = self;
+        _friendPickerController.allowsMultipleSelection = NO;
+        [_friendPickerController configureUsingCachedDescriptor:self.cacheDescriptor];
+
+        
+    }
+    
+    return  _friendPickerController;
+}
+
+- (FBFriendPickerViewController *)appFriendPickerController{
+    if (!_appFriendPickerController){
+        NSSet *fields = [NSSet setWithObjects:@"installed", nil];
+        _appFriendPickerController = [[FBFriendPickerViewController alloc] init];
+        _appFriendPickerController.title = @"Facebook Friends";
+        _appFriendPickerController.delegate = self;
+        _appFriendPickerController.allowsMultipleSelection = NO;
+        _appFriendPickerController.fieldsForRequest = fields;
+        //[_appFriendPickerController configureUsingCachedDescriptor:self.appCacheDescriptor];
+        
+        
+    }
+    
+    return  _appFriendPickerController;
+}
+
 - (FacebookFriends *)friend
 {
     if (!_friend){
@@ -230,8 +286,81 @@
 
 
 - (void)facebookViewControllerCancelWasPressed:(id)sender{
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
+{
+    if (friendPicker == self.appFriendPickerController){
+        BOOL installed = [user objectForKey:@"installed"] != nil;
+        return installed;
+    }
+    else{
+        return YES;
+    }
+}
+
+- (void)friendPickerViewController:(FBFriendPickerViewController *)friendPicker handleError:(NSError *)error
+{
+    [self alertErrorWithTitle:nil andMessage:error.localizedDescription];
+    
+}
+
+- (void)friendPickerViewControllerDataDidChange:(FBFriendPickerViewController *)friendPicker
+{
+    // check to see if the rows in each section are empty
+    // to show correct message
+    BOOL empty = YES;
+    NSInteger sectionCount = [friendPicker.tableView numberOfSections];
+    for (NSInteger i = 0; i < sectionCount; i++){
+        if (![friendPicker.tableView numberOfRowsInSection:i] == 0){
+            empty = NO;
+        }
+    }
+    
+    if (empty){
+        // add subview with error message 
+        UILabel *faceLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 150, 150)];
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+        
+        faceLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:60];
+        faceLabel.textColor = [UIColor redColor];
+        faceLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"];
+        faceLabel.center = CGPointMake(200 , 100);
+        
+        textLabel.text = @"None of your facebook friends are using the app, you should invite them!";
+        textLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
+        textLabel.center = CGPointMake(170, 230);
+        textLabel.numberOfLines = 0;
+        [textLabel sizeToFit];
+        
+        [friendPicker.tableView addSubview:faceLabel];
+        [friendPicker.tableView addSubview:textLabel];
+        
+    }
+        
+    
+}
+
+- (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
+{
+    // send friend invite request when tapped
+    if (![friendPicker.selection count] == 0){
+        NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
+        NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
+       [self.friend inviteFriendWithID:friendID
+                                 title:@"Invite"
+                               message:[NSString stringWithFormat:@"Hey %@ you should try this app",name]
+                                 block:^(BOOL wasSuccessful, FBWebDialogResult result) {
+                                     if (wasSuccessful){
+                                         NSLog(@"success");
+                                     }
+                                 }];
+    }
+}
+
+
 
 
 

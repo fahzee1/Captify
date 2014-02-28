@@ -29,7 +29,7 @@
     FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends"
                                                     parameters:nil
                                                     HTTPMethod:@"GET"];
-    //NSLog(@"here %u", FBSession.activeSession.state);
+    
     [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error){
             NSArray *friends = [result objectForKey:@"data"];
@@ -75,9 +75,7 @@
     [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error){
             NSArray* friends = [result objectForKey:@"data"];
-            NSLog(@"Found: %i friends", friends.count);
             for (NSDictionary<FBGraphUser>* friend in friends) {
-                NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
                 NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
                 
                 dict[@"name"] = friend.name;
@@ -105,24 +103,31 @@
                    message:(NSString *)message
                      block:(FacebookFriendInvite)block
 {
+    if (FBSession.activeSession.isOpen){
 
-    [FBWebDialogs
-     presentRequestsDialogModallyWithSession:nil
-     message:message
-     title:title
-     parameters:@{@"to":userID }
-     handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-         if (!error){
-             if (block){
-                 block(YES,result);
+        [FBWebDialogs
+         presentRequestsDialogModallyWithSession:nil
+         message:message
+         title:title
+         parameters:@{@"to":userID }
+         handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+             if (!error){
+                 if (block){
+                     block(YES, result);
+                 }
              }
-         }
-         else{
-             if (block){
-                 block(NO,result);
+             else{
+                 if (block){
+                     block(NO,result);
+                 }
              }
-         }
-     }];
+         }];
+    }
+    else{
+        if (block){
+            block(NO,FBWebDialogResultDialogNotCompleted);
+        }
+    }
 
 }
 
@@ -133,9 +138,12 @@
                       from:(UIViewController *)controller
                      block:(FacebookPostStatus)block
 {
+
     if (!status){
         status = NSLocalizedString(@"Cool app made this pic!", nil);
     }
+    
+
     if ([FBDialogs canPresentOSIntegratedShareDialogWithSession:FBSession.activeSession])
     {
         [FBDialogs presentOSIntegratedShareDialogModallyFrom:controller
@@ -184,6 +192,143 @@
                                                          
                                                      }];
     }
+}
+
+
+
+- (void)createAlbumWithName:(NSString *)name
+                      block:(FacebookCreateAlbum)block
+{
+    if (!FBSession.activeSession.isOpen){
+        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"]
+                                           defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES
+                                         completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                             if (error){
+                                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                 message:error.localizedDescription
+                                                                                                delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                                                 
+                                                 [alert show];
+                                             }
+                                             else if (session.isOpen){
+                                                 [self createAlbumWithName:name
+                                                                     block:block];
+                                             }
+                                         }];
+        
+        return;
+    }
+   
+   FBRequest *request = [FBRequest requestWithGraphPath:@"me/albums"
+                         parameters:@{@"name": name}
+                         HTTPMethod:@"POST"];
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (error){
+            if (block){
+                block(NO,nil);
+            }
+            return ;
+        }
+        
+        if (block){
+            
+            block(YES,[result objectForKey:@"id"]);
+        }
+    }];
+
+    
+}
+
+
+- (void)postImageToFeed:(UIImage *)image
+                message:(NSString *)message
+                caption:(NSString *)caption
+                   name:(NSString *)name
+                albumID:(NSString *)albumId
+              feedBlock:(FacebookPostStatus)fblock
+             albumBlock:(FacebookPostStatus)ablock
+
+{
+    if (!FBSession.activeSession.isOpen){
+        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"]
+                                           defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES
+                                         completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                             if (error){
+                                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                 message:error.localizedDescription
+                                                                                                delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                                                 
+                                                 [alert show];
+                                             }
+                                             else if (session.isOpen){
+                                                 [self postImageToFeed:image
+                                                               message:message
+                                                               caption:caption
+                                                                  name:name
+                                                               albumID:albumId
+                                                                 feedBlock:fblock
+                                                            albumBlock:ablock];
+                                             }
+                                         }];
+        
+        return;
+    }
+    
+    
+    NSDictionary *params1 = @{@"image": image,
+                             @"message":message,
+                             @"caption":caption,
+                             @"name":name};
+    
+    NSDictionary *params2 = @{@"source": image};
+    
+   FBRequest *request = [FBRequest requestWithGraphPath:@"me/feed"
+                         parameters:params1
+                         HTTPMethod:@"POST"];
+    
+    NSString *albumPath = [NSString stringWithFormat:@"%@/photos",albumId];
+    FBRequest *albumRequest = [FBRequest requestWithGraphPath:albumPath
+                                                   parameters:params2
+                                                   HTTPMethod:@"POST"];
+
+    // first publish to feed
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (error){
+            if (fblock) {
+                fblock(YES);
+         
+            
+            }
+            return;
+        }
+        
+        if (fblock){
+            NSLog(@"feed result %@",result);
+            fblock(YES);
+        }
+        
+        
+    }];
+    
+    // second save to photo album
+    [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (error){
+            NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
+            if (ablock){
+                ablock(NO);
+            }
+            
+            return;
+        }
+        
+        if (ablock){
+            NSLog(@"album result %@",result);
+            ablock(YES);
+        }
+    }];
+
+    
+    
 }
 
 @end
