@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
-@interface FriendsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+@interface ContactsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 
 

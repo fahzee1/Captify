@@ -139,6 +139,11 @@
     [self saveContext];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [FBSession.activeSession handleOpenURL:url];
+}
+
 
 - (void)saveContext
 {
@@ -333,6 +338,9 @@
         
     }
     if (status == FBSessionStateClosed || status == FBSessionStateClosedLoginFailed){
+        NSLog(@"%u",status);
+         NSLog(@"%u",FBSessionStateClosed);
+         NSLog(@"%u",FBSessionStateClosedLoginFailed);
         //if the session is closed
         NSLog(@"Session closed");
         //show user logged out view
@@ -494,7 +502,7 @@
 {
  
     FacebookFriends *f = [[FacebookFriends alloc] init];
-    [f allFriends:^(BOOL wasSuccessful, NSArray *data) {
+    [f onlyFriendsUsingApp:^(BOOL wasSuccessful, NSArray *data) {
         if (wasSuccessful){
             NSLog(@"called from bg and successful");
             [[TMCache sharedCache] setObject:data forKey:@"facebookFriends"];

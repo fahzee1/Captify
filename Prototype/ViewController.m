@@ -77,6 +77,8 @@
         
         //if the session state is not any of the two "open" states when the button is clicked
     }else{
+        
+    
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"user_friends",@"user_photos"]
@@ -89,8 +91,9 @@
                                           
                                           //get username
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                    
                                               if (!error){
-                                                  NSLog(@"%@",result);
+                                                  //NSLog(@"%@",result);
                                                   NSNumber *fbookId = [result valueForKey:@"id"];
                                                   NSString *fbookName = [result valueForKey:@"username"];
                                                   NSString *fbookEmail = [result valueForKey:@"email"];
@@ -109,8 +112,7 @@
                                                 // show homescreen call back handled in delegate
                                                 NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                           
-                                                          if (wasSuccessful){
-                                                              NSLog(@"hit22");
+                                                    if (wasSuccessful){
                                                               [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
                                                               [[NSUserDefaults standardUserDefaults] synchronize];
                                                               [self showHomeScreen:user];
@@ -180,6 +182,27 @@
     }
     else{
         NSLog(@"no navigation");
+    }
+}
+
+
+-(void)fbResync
+{
+    ACAccountStore *accountStore;
+    ACAccountType *accountTypeFB;
+    if ((accountStore = [[ACAccountStore alloc] init]) && (accountTypeFB = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] ) ){
+        
+        NSArray *fbAccounts = [accountStore accountsWithAccountType:accountTypeFB];
+        id account;
+        if (fbAccounts && [fbAccounts count] > 0 && (account = [fbAccounts objectAtIndex:0])){
+            
+            [accountStore renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+                //we don't actually need to inspect renewResult or error.
+                if (error){
+                    
+                }
+            }];
+        }
     }
 }
 

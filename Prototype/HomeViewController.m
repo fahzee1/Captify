@@ -24,10 +24,11 @@
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "SenderPreviewViewController.h"
+#import "UIImage+Utils.h"
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "JVFloatLabeledTextField.h"
+
 
 
 
@@ -88,7 +89,6 @@
     [super viewDidLoad];
 
 
-
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
@@ -97,9 +97,7 @@
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         // got a camera
-        if (![self.session isRunning]){
             [self setupCamera];
-        }
         
     }
     else{
@@ -127,7 +125,6 @@
     //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
     //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
  
-    [self setupStylesAndMore];
 }
 
 
@@ -169,6 +166,8 @@
         [self.view.layer addSublayer:self.previewLayer];
         
         UIView *controlsView = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
+        [self setupStylesAndMore];
+        
         [self.view addSubview:controlsView];
         
         
@@ -378,10 +377,12 @@
 {
     //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
-    vc.image = self.previewEditedSnapshot;
+    
+    vc.image = self.previewOriginalSnapshot;
     vc.name = self.finalPhrase;
     vc.phrase = self.finalPhrase;
     vc.delegate = self;
+    
     
     [self.navigationController pushViewController:vc animated:YES];
 }

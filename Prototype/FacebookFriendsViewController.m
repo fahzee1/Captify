@@ -6,17 +6,19 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "AddFriendsViewController.h"
+#import "FacebookFriendsViewController.h"
 #import "User.h"
 #import "FacebookFriends.h"
 #import "AddFriendCell.h"
 #import "FAImageView.h"
 #import "UIImageView+WebCache.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 
 
 
-@interface AddFriendsViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface FacebookFriendsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic)NSArray *contactsArray;
@@ -25,7 +27,7 @@
 
 @end
 
-@implementation AddFriendsViewController
+@implementation FacebookFriendsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,6 +47,9 @@
 
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
+    self.navigationController.toolbarHidden = NO;
+
+    
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
 }
 
@@ -54,6 +59,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+
+- (void)setFacebookFriendsArray:(NSArray *)facebookFriendsArray
+{
+    _facebookFriendsArray = facebookFriendsArray;
+    [self.myTableView reloadData];
+}
 
 - (FacebookFriends *)friend
 {

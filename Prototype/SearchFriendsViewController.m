@@ -34,7 +34,7 @@
     [super viewDidLoad];
     
     // uiviewcontroller come with searchDisplayControllers
-    
+    self.navigationController.toolbarHidden = YES;
     self.mySearchBar.delegate = self;
     [self.mySearchBar becomeFirstResponder];
     

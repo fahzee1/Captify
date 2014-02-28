@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -110,7 +110,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d27-1a-rPZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zhd-FX-3fa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1552" y="-2123"/>
+            <point key="canvasLocation" x="1392" y="-1435"/>
         </scene>
         <!--Sign Up View Controller - signupScreen-->
         <scene sceneID="0eo-Rg-uzx">
@@ -171,7 +171,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Arr-Hg-eag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1182" y="-2118"/>
+            <point key="canvasLocation" x="1022" y="-1414"/>
         </scene>
         <!--Home View Controller - homeScreen-->
         <scene sceneID="tyI-2a-6I3">
@@ -191,10 +191,10 @@
             </objects>
             <point key="canvasLocation" x="-998" y="-910"/>
         </scene>
-        <!--Friends View Controller - friends-->
+        <!--Contacts View Controller - friends-->
         <scene sceneID="d8c-6S-azC">
             <objects>
-                <viewController storyboardIdentifier="friends" title="friends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RMy-6A-qIh" customClass="FriendsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="contactFriends" title="friends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RMy-6A-qIh" customClass="ContactsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ljB-wq-cIm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -251,10 +251,10 @@
             </objects>
             <point key="canvasLocation" x="-659" y="-2298"/>
         </scene>
-        <!--Add Friends View Controller - Add Friends-->
+        <!--Facebook Friends View Controller - Add Friends-->
         <scene sceneID="Zfq-rx-Lnp">
             <objects>
-                <viewController storyboardIdentifier="addFriends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KKi-Jp-8Gv" customClass="AddFriendsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="facebookFriends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KKi-Jp-8Gv" customClass="FacebookFriendsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OYd-po-FIo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -367,6 +367,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2d-2F-3Nu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="498" y="-2298"/>
+        </scene>
+        <!--Invite Friend View Controller-->
+        <scene sceneID="Wrf-ry-1UC">
+            <objects>
+                <viewController storyboardIdentifier="inviteFriends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fSj-Hj-bW7" customClass="InviteFriendViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dm9-5u-fud">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SPQ-W2-bKe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="901" y="-2298"/>
         </scene>
         <!--Settings View Controller - userSettings-->
         <scene sceneID="Ml3-eI-v1C">
@@ -647,7 +661,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JaP-Yi-Bz5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1907" y="-2123"/>
+            <point key="canvasLocation" x="1811" y="-1443"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cyB-lO-Vfh">
@@ -990,7 +1004,6 @@
                                 <segments>
                                     <segment title="Facebook"/>
                                     <segment title="Contacts"/>
-                                    <segment title="Invite"/>
                                     <segment title="Search"/>
                                 </segments>
                                 <connections>

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "FriendsViewController.h"
+#import "ContactsViewController.h"
 #import "FriendCell.h"
 #import "AppDelegate.h"
 #import "TWTSideMenuViewController.h"
@@ -15,7 +15,7 @@
 
 #define test 1
 
-@interface FriendsViewController ()
+@interface ContactsViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *mySearch;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation FriendsViewController
+@implementation ContactsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,6 +45,7 @@
 
     // check server for any new friends since last check
     // if any create them in core data and then refresh table
+    self.navigationController.toolbarHidden = NO;
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];

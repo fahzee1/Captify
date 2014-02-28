@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddFriendsViewController : UIViewController
+@interface FacebookFriendsViewController : UIViewController
 
 @property (strong, nonatomic)NSArray *facebookFriendsArray;
 

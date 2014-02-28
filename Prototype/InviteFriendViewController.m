@@ -63,7 +63,7 @@
     [self.friendPickerController loadData];
     [self.friendPickerController clearSelection];
     
-    [self presentViewController:self.friendPickerController animated:YES completion:nil];
+    [self presentViewController:self.friendPickerController animated:NO completion:nil];
     
     
 }
@@ -74,20 +74,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-#pragma -mark FBFRIENDS delegate
-
-
-- (void)facebookViewControllerDoneWasPressed:(id)sender
-{
-    for (id<FBGraphUser> user in self.friendPickerController.selection){
-        NSLog(@"%@",user.name);
-    }
-}
-
-
-- (void)facebookViewControllerCancelWasPressed:(id)sender{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 @end

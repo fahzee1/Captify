@@ -19,7 +19,6 @@
 
 @interface SenderPreviewViewController ()<UIScrollViewDelegate,UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *selectedFriendsScroll;
 @property (weak, nonatomic) IBOutlet UILabel *toLabel;

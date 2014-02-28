@@ -249,7 +249,7 @@
 		1184FE1418BD053800FDEAE0 /* TMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE0F18BD053800FDEAE0 /* TMCache.m */; };
 		1184FE1518BD053800FDEAE0 /* TMDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE1118BD053800FDEAE0 /* TMDiskCache.m */; };
 		1184FE1618BD053800FDEAE0 /* TMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE1318BD053800FDEAE0 /* TMMemoryCache.m */; };
-		11866A1918AC956D002D0245 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11866A1818AC956D002D0245 /* FriendsViewController.m */; };
+		11866A1918AC956D002D0245 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11866A1818AC956D002D0245 /* ContactsViewController.m */; };
 		1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1181888D7CE0082F35F /* LoginViewController.m */; };
 		1186B153188B38DC0082F35F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1186B152188B38DC0082F35F /* Security.framework */; };
 		1186B159188B45D10082F35F /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B158188B45D10082F35F /* HomeViewController.m */; };
@@ -260,7 +260,7 @@
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
-		118D513718B6639E001AA7FC /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* AddFriendsViewController.m */; };
+		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
 		118F250218BFE4F10007797E /* InviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F250118BFE4F10007797E /* InviteFriendViewController.m */; };
@@ -767,8 +767,8 @@
 		1184FE1118BD053800FDEAE0 /* TMDiskCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDiskCache.m; sourceTree = "<group>"; };
 		1184FE1218BD053800FDEAE0 /* TMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMMemoryCache.h; sourceTree = "<group>"; };
 		1184FE1318BD053800FDEAE0 /* TMMemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMMemoryCache.m; sourceTree = "<group>"; };
-		11866A1718AC956D002D0245 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
-		11866A1818AC956D002D0245 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		11866A1718AC956D002D0245 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
+		11866A1818AC956D002D0245 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		1186B1171888D7CE0082F35F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		1186B1181888D7CE0082F35F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1186B152188B38DC0082F35F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -786,8 +786,8 @@
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
 		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
 		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
-		118D513418B6639E001AA7FC /* AddFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendsViewController.h; sourceTree = "<group>"; };
-		118D513518B6639E001AA7FC /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsViewController.m; sourceTree = "<group>"; };
+		118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriendsViewController.h; sourceTree = "<group>"; };
+		118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookFriendsViewController.m; sourceTree = "<group>"; };
 		118D513918B66807001AA7FC /* SearchFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFriendsViewController.h; sourceTree = "<group>"; };
 		118D513A18B66807001AA7FC /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		118F24F618BFC2C90007797E /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
@@ -1076,12 +1076,12 @@
 				1186B158188B45D10082F35F /* HomeViewController.m */,
 				1186B15A188C6F850082F35F /* SignUpViewController.h */,
 				1186B15B188C6F850082F35F /* SignUpViewController.m */,
-				11866A1718AC956D002D0245 /* FriendsViewController.h */,
-				11866A1818AC956D002D0245 /* FriendsViewController.m */,
+				11866A1718AC956D002D0245 /* ContactsViewController.h */,
+				11866A1818AC956D002D0245 /* ContactsViewController.m */,
 				118D513118B65947001AA7FC /* FriendsContainerController.h */,
 				118D513218B65947001AA7FC /* FriendsContainerController.m */,
-				118D513418B6639E001AA7FC /* AddFriendsViewController.h */,
-				118D513518B6639E001AA7FC /* AddFriendsViewController.m */,
+				118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */,
+				118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */,
 				118D513918B66807001AA7FC /* SearchFriendsViewController.h */,
 				118D513A18B66807001AA7FC /* SearchFriendsViewController.m */,
 				118F250018BFE4F10007797E /* InviteFriendViewController.h */,
@@ -1859,7 +1859,7 @@
 				1153E1C118A9DF4800AD950E /* GPUImageStillCamera.m in Sources */,
 				1153E19D18A9DF4800AD950E /* GPUImageOpacityFilter.m in Sources */,
 				1153E1A618A9DF4800AD950E /* GPUImagePoissonBlendFilter.m in Sources */,
-				118D513718B6639E001AA7FC /* AddFriendsViewController.m in Sources */,
+				118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */,
 				1153E1AB18A9DF4800AD950E /* GPUImageRawDataInput.m in Sources */,
 				1153E1D618A9DF4800AD950E /* GPUImageVignetteFilter.m in Sources */,
 				1153E1B018A9DF4800AD950E /* GPUImageRGBFilter.m in Sources */,
@@ -1981,7 +1981,7 @@
 				1184FE1618BD053800FDEAE0 /* TMMemoryCache.m in Sources */,
 				1153E14218A9DF4800AD950E /* GPUImage3x3TextureSamplingFilter.m in Sources */,
 				1153E15818A9DF4800AD950E /* GPUImageColorPackingFilter.m in Sources */,
-				11866A1918AC956D002D0245 /* FriendsViewController.m in Sources */,
+				11866A1918AC956D002D0245 /* ContactsViewController.m in Sources */,
 				1153E1C018A9DF4800AD950E /* GPUImageSphereRefractionFilter.m in Sources */,
 				1153E16B18A9DF4800AD950E /* GPUImageFilterGroup.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
