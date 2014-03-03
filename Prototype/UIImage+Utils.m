@@ -11,7 +11,7 @@
 @implementation UIImage (Utils)
 
 
-- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
++ (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
     UIGraphicsBeginImageContext(size);
     // or UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
     [image drawInRect:CGRectMake(0, 0, size.width, size.height)];

@@ -14,6 +14,7 @@
 #import "HistoryCell.h"
 #import "FAImageView.h"
 #import "HistoryDetailViewController.h"
+#import "NSDate+TimeAgo.h"
 
 @interface HistoryViewController ()<UITableViewDataSource,UITableViewDelegate>
 

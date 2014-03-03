@@ -40,7 +40,7 @@
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
 		11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewContr.m */; };
-		1114293A18BDBAFD00D36F0D /* DraggablePhraseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggablePhraseView.m */; };
+		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
 		11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
 		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
@@ -278,6 +278,8 @@
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
 		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
 		11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */; };
+		11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */; };
+		11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */; };
 		11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6018B7090A00C129D6 /* cameraControls.xib */; };
 		11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */; };
 		11DC6B6A18B717AA00C129D6 /* FAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6518B717AA00C129D6 /* FAImageView.m */; };
@@ -355,8 +357,8 @@
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
 		11101DD718B17073009D44BD /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		11101DD818B17073009D44BD /* HistoryViewContr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewContr.m; sourceTree = "<group>"; };
-		1114293818BDBAFD00D36F0D /* DraggablePhraseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggablePhraseView.h; sourceTree = "<group>"; };
-		1114293918BDBAFD00D36F0D /* DraggablePhraseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggablePhraseView.m; sourceTree = "<group>"; };
+		1114293818BDBAFD00D36F0D /* DraggableCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableCaption.h; sourceTree = "<group>"; };
+		1114293918BDBAFD00D36F0D /* DraggableCaption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableCaption.m; sourceTree = "<group>"; };
 		11176DEB18B7F6E600FA69B7 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
 		11176DEC18B7F6E600FA69B7 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
@@ -819,6 +821,9 @@
 		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
 		11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsIAdded.m; sourceTree = "<group>"; };
 		11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		11C994C218C51BA300A01F31 /* NSDate+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+TimeAgo.h"; sourceTree = "<group>"; };
+		11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+TimeAgo.m"; sourceTree = "<group>"; };
+		11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NSDateTimeAgo.bundle; sourceTree = "<group>"; };
 		11DC6B6018B7090A00C129D6 /* cameraControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cameraControls.xib; sourceTree = "<group>"; };
 		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		11DC6B6418B717AA00C129D6 /* FAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAImageView.h; sourceTree = "<group>"; };
@@ -990,6 +995,9 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */,
+				11C994C218C51BA300A01F31 /* NSDate+TimeAgo.h */,
+				11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */,
 				1184FE0D18BD053800FDEAE0 /* TMCache */,
 				1184FDE118BD03A000FDEAE0 /* SDWebImage */,
 				11DC6B6418B717AA00C129D6 /* FAImageView.h */,
@@ -1100,8 +1108,8 @@
 				1184FDDC18BCFB3700FDEAE0 /* AddFriendCell.m */,
 				11DC6B6018B7090A00C129D6 /* cameraControls.xib */,
 				11DC6B6D18B71ECE00C129D6 /* previewControls.xib */,
-				1114293818BDBAFD00D36F0D /* DraggablePhraseView.h */,
-				1114293918BDBAFD00D36F0D /* DraggablePhraseView.m */,
+				1114293818BDBAFD00D36F0D /* DraggableCaption.h */,
+				1114293918BDBAFD00D36F0D /* DraggableCaption.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1749,6 +1757,7 @@
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
 				11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */,
 				11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */,
+				11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
 			);
@@ -1816,6 +1825,7 @@
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1153E18C18A9DF4800AD950E /* GPUImageLuminanceRangeFilter.m in Sources */,
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
+				11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				1153E1D118A9DF4800AD950E /* GPUImageTwoPassFilter.m in Sources */,
@@ -1882,7 +1892,7 @@
 				1184FE0618BD03A000FDEAE0 /* SDWebImageManager.m in Sources */,
 				1153E17C18A9DF4800AD950E /* GPUImageHSBFilter.m in Sources */,
 				1153E1B618A9DF4800AD950E /* GPUImageSharpenFilter.m in Sources */,
-				1114293A18BDBAFD00D36F0D /* DraggablePhraseView.m in Sources */,
+				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
 				11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */,
 				1153E14318A9DF4800AD950E /* GPUImageAdaptiveThresholdFilter.m in Sources */,

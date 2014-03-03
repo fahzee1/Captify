@@ -28,9 +28,9 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     [self setupViewControllers];
     
@@ -53,11 +53,11 @@
         // and give it to what ever view controller needs
         // then start downloading data from server
         application.applicationIconBadgeNumber = 0;
-
+        
     }
     
-  
-   
+    
+    
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
         //Whenever a person opens the app, check for cached sesssion
@@ -77,7 +77,7 @@
                                           completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                               [self sessionStateChanged:session
                                                                   state:status error:error];
-                
+                                              
                                           }];
         }
         
@@ -89,25 +89,33 @@
             });
             
         }
-
-
+        
+        
     }
     
     if (![[defaults valueForKey:@"facebook_user"]boolValue] && ![[defaults valueForKey:@"logged"]boolValue]){
-         NSLog(@" not facebook user and not logged in");
-            // if not logged in show login screen
-         [self showLoginOrHomeScreen];
-        }
+        NSLog(@" not facebook user and not logged in");
+        // if not logged in show login screen
+        [self showLoginOrHomeScreen];
+    }
     if (![[defaults valueForKey:@"facebook_user"]boolValue] && [[defaults valueForKey:@"logged"]boolValue]){
         NSLog(@" not facebook user logged in");
-         // open up to home screen and pass user
-         [self showLoginOrHomeScreen];
-        }
+        // open up to home screen and pass user
+        [self showLoginOrHomeScreen];
+    }
+    
     
     
     
 
-   
+    return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+     
         return YES;
 }
 
@@ -144,6 +152,16 @@
     return [FBSession.activeSession handleOpenURL:url];
 }
 
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
+    return YES;
+}
 
 - (void)saveContext
 {
@@ -240,6 +258,34 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+
+- (BOOL)saveFileToDocuments:(NSString *)name
+                         withFile:(NSData *)file
+{
+    NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *path = [documentsPath stringByAppendingPathComponent:name];
+    
+    return  [[NSFileManager defaultManager] createFileAtPath:path contents:file attributes:nil];
+    
+}
+
+- (NSData *)retrieveFileAtPath:(NSString *)path
+{
+    return [[NSFileManager defaultManager] contentsAtPath:path];
+}
+
+- (BOOL)deleteFileAtPath:(NSString *)path
+{
+    NSError *error;
+    BOOL ok = [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+    if (error){
+        NSLog(@"%@",error.localizedDescription);
+    }
+    return ok;
+}
+
+
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {

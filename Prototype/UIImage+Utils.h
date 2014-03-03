@@ -10,7 +10,7 @@
 
 @interface UIImage (Utils)
 
-- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
++ (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
 
 +(UIImage *) drawText:(NSString*) text
              inImage:(UIImage*)  image

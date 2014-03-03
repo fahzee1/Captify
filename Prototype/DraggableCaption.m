@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "DraggablePhraseView.h"
+#import "DraggableCaption.h"
 
-@implementation DraggablePhraseView
+@implementation DraggableCaption
 
 - (id)initWithFrame:(CGRect)frame
 {

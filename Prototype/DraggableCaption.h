@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DraggablePhraseView : UILabel
+@interface DraggableCaption : UILabel
 
 @end
