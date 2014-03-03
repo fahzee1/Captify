@@ -273,6 +273,7 @@
 		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
 		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
 		11AB2E5118AAA61000B511E1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4D18AAA61000B511E1 /* LICENSE */; };
+		11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC442618C46A7B0052D98F /* HistoryDetailCell.m */; };
 		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
 		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
@@ -809,6 +810,8 @@
 		11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+AutoRetry.m"; sourceTree = "<group>"; };
 		11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AFNetworking+AutoRetry.podspec"; sourceTree = "<group>"; };
 		11AB2E4D18AAA61000B511E1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		11BC442518C46A7B0052D98F /* HistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailCell.h; sourceTree = "<group>"; };
+		11BC442618C46A7B0052D98F /* HistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailCell.m; sourceTree = "<group>"; };
 		11C2D6EF18B5226F00577A68 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
 		11C2D6F018B5226F00577A68 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
 		11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsAddedMe.h; sourceTree = "<group>"; };
@@ -1144,12 +1147,14 @@
 				1153E1E818A9E04600AD950E /* UIView+Screenshot.m */,
 				11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */,
 				11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */,
-				11176DEB18B7F6E600FA69B7 /* HistoryCell.h */,
-				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
 				114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */,
 				114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */,
 				118F24F618BFC2C90007797E /* UIImage+Utils.h */,
 				118F24F718BFC2C90007797E /* UIImage+Utils.m */,
+				11176DEB18B7F6E600FA69B7 /* HistoryCell.h */,
+				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
+				11BC442518C46A7B0052D98F /* HistoryDetailCell.h */,
+				11BC442618C46A7B0052D98F /* HistoryDetailCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1951,6 +1956,7 @@
 				1153E17218A9DF4800AD950E /* GPUImageGrayscaleFilter.m in Sources */,
 				1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */,
 				1153E16A18A9DF4800AD950E /* GPUImageFilter.m in Sources */,
+				11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */,
 				1153E1A918A9DF4800AD950E /* GPUImagePosterizeFilter.m in Sources */,
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
 				1153E1DC18A9DF4800AD950E /* GPUImageContext.m in Sources */,

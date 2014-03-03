@@ -14,4 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *historyImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *activeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+
 @end

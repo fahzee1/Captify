@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryDetailViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *topLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *myImageView;
+@property (weak, nonatomic) IBOutlet UITableView *myTable;
 
 @end

@@ -68,27 +68,33 @@
 
 - (void)onlyFriendsUsingApp:(FacebookFriendFetch)block
 {
-    self.tempAppUserList = [NSMutableArray array];
     FBRequest *friendRequest = [FBRequest requestWithGraphPath:@"me/friends?fields=installed"
                                                     parameters:nil
                                                     HTTPMethod:@"GET"];
     [friendRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error){
+            self.tempAppUserList = [NSMutableArray array];
             NSArray* friends = [result objectForKey:@"data"];
-            for (NSDictionary<FBGraphUser>* friend in friends) {
-                NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+            if ([friends count] > 0){
+                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+                for (NSDictionary<FBGraphUser>* friend in friends) {
+                    dict[@"name"] = friend.name;
+                    dict[@"fbook_id"] = friend.id;
+                    [self.tempAppUserList addObject:dict];
+                    
+                }
                 
-                dict[@"name"] = friend.name;
-                dict[@"fbook_id"] = friend.id;
-                [self.tempAppUserList addObject:dict];
                 
+                if (block){
+                    block(YES, self.tempAppUserList);
+                }
             }
-            
-            if (block){
-                block(YES, self.tempAppUserList);
+            else{
+                friends = nil;
             }
         }
         else{
+            self.tempAppUserList = nil;
             if (block){
                 block(NO, nil);
             }

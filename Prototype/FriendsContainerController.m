@@ -70,8 +70,6 @@
     self.appCacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
     [self.appCacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
    
-    
-    [self loadFriends];
 
 }
 
@@ -182,7 +180,7 @@
 
 }
 
-
+/*
 - (void)loadFriends
 {
     NSArray *friends = [[TMCache sharedCache] objectForKey:@"facebookFriends"];
@@ -198,6 +196,8 @@
     }
     
 }
+ */
+
 
 - (void)alertErrorWithTitle:(NSString *)title
                  andMessage:(NSString *)message
@@ -311,35 +311,38 @@
 {
     // check to see if the rows in each section are empty
     // to show correct message
-    BOOL empty = YES;
-    NSInteger sectionCount = [friendPicker.tableView numberOfSections];
-    for (NSInteger i = 0; i < sectionCount; i++){
-        if (![friendPicker.tableView numberOfRowsInSection:i] == 0){
-            empty = NO;
+    
+    if (friendPicker == self.appFriendPickerController){
+        BOOL empty = YES;
+        NSInteger sectionCount = [friendPicker.tableView numberOfSections];
+        for (NSInteger i = 0; i < sectionCount; i++){
+            if (![friendPicker.tableView numberOfRowsInSection:i] == 0){
+                empty = NO;
+            }
+        }
+        
+        if (empty){
+            // add subview with error message 
+            UILabel *faceLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 150, 150)];
+            UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+            
+            faceLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:60];
+            faceLabel.textColor = [UIColor redColor];
+            faceLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"];
+            faceLabel.center = CGPointMake(200 , 100);
+            
+            textLabel.text = @"None of your facebook friends are using the app, you should invite them!";
+            textLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
+            textLabel.center = CGPointMake(170, 230);
+            textLabel.numberOfLines = 0;
+            [textLabel sizeToFit];
+            
+            [friendPicker.tableView addSubview:faceLabel];
+            [friendPicker.tableView addSubview:textLabel];
+            
         }
     }
     
-    if (empty){
-        // add subview with error message 
-        UILabel *faceLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 150, 150)];
-        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
-        
-        faceLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:60];
-        faceLabel.textColor = [UIColor redColor];
-        faceLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"];
-        faceLabel.center = CGPointMake(200 , 100);
-        
-        textLabel.text = @"None of your facebook friends are using the app, you should invite them!";
-        textLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
-        textLabel.center = CGPointMake(170, 230);
-        textLabel.numberOfLines = 0;
-        [textLabel sizeToFit];
-        
-        [friendPicker.tableView addSubview:faceLabel];
-        [friendPicker.tableView addSubview:textLabel];
-        
-    }
-        
     
 }
 
