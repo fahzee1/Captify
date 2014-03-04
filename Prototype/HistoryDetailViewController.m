@@ -16,23 +16,23 @@
 #import "FacebookFriends.h"
 #import "UIImage+Utils.h"
 #import "UIColor+HexValue.h"
-#import "DraggableCaption.h"
+#import "ShareViewController.h"
 
 
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, DraggableCaptionDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 
 @property NSArray *data;
 @property BOOL hideSelectButtons;
 @property BOOL shareToFacebook;
 @property BOOL shareContainerOnScreen;
+@property CGPoint priorPoint;
 @property NSString *selectedCaption;
+@property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
 @property UIImageView *finalContainerScreen;
 @property UIImage *finalImage;
-@property (strong,nonatomic)UIView *containerView;
 @property (strong, nonatomic)UIView *shareControls;
-@property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
-
+@property (strong, nonatomic)UIBarButtonItem *nextButton;
 @property (weak, nonatomic) IBOutlet UIView *finalShareContainer;
 @property (weak, nonatomic) IBOutlet UILabel *shareFacebookLabel;
 
@@ -56,16 +56,20 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //self.navigationItem.rightBarButtonItem = nextButton;
+    
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
-    
+    self.finalCaptionLabel.hidden = YES;
+    [self.myImageView addSubview:self.finalCaptionLabel];
+    self.myImageView.clipsToBounds = YES;
     self.data = @[@"This is one long example of a caption that could be used",@"Buggy woggy its late right now",@"Wait a minute dont you hear me",@"She wanna have what you have",@"Yolo son!",@"Her ass cant handle it",@"Its alright, its Ok!"];
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
     }
     
-    
+
     
     
     
@@ -78,6 +82,7 @@
 }
 
 
+/*
 - (void)configureFinalScreen
 {
     self.finalContainerScreen = [[UIImageView alloc] initWithFrame:self.view.frame];
@@ -111,25 +116,86 @@
                         }];
  
 }
+*/
 
+
+- (void)configureFinalScreen
+{
+    [self.myImageView addSubview:self.shareControls];
+    [self setupFinalLabel];
+    [self setupShareStyles];
+    
+    [UIView animateWithDuration:1.0
+                     animations:^{
+                         self.finalCaptionLabel.alpha = 1;
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:1.0
+                                               delay:0
+                              usingSpringWithDamping:0.7
+                               initialSpringVelocity:0
+                                             options:0
+                                          animations:^{
+                                              self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+                                              self.shareContainerOnScreen = YES;
+                                          } completion:nil];
+                        
+                     }];
+
+
+
+}
+
+
+- (void)showShareScreen
+{
+    UIViewController *shareVc = [self.storyboard instantiateViewControllerWithIdentifier:@"shareController"];
+    if ([shareVc isKindOfClass:[ShareViewController class]]){
+        ((ShareViewController *)shareVc).myImageView.image = self.myImageView.image;
+        [self.navigationController pushViewController:shareVc animated:YES];
+        
+    }
+}
 
 - (void)setupFinalLabel
 {
-    //self.finalCaptionLabel.frame = CGRectMake(self.finalCaptionLabel.frame.origin.x, self.finalCaptionLabel.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.finalCaptionLabel.frame.size.height);
+
+    UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
+    press.minimumPressDuration = 0.1;
+    
+    
     self.finalCaptionLabel.text = self.selectedCaption;
     self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
     if ([self.finalCaptionLabel.text length] > 15){
-        NSLog(@"hit");
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
     }
     self.finalCaptionLabel.textAlignment = NSTextAlignmentCenter;
-    self.finalCaptionLabel.userInteractionEnabled = YES;
     self.finalCaptionLabel.alpha = 0;
-    if ([self.finalCaptionLabel isKindOfClass:[DraggableCaption class]]){
-        ((DraggableCaption *) self.finalCaptionLabel).delegate = self;
+    [self.finalCaptionLabel addGestureRecognizer:press];
+    self.finalCaptionLabel.hidden = NO;
+    [UIView animateWithDuration:1.0
+                     animations:^{
+                         self.finalCaptionLabel.alpha = 1;
+                     } completion:^(BOOL finished) {
+                         // do something
+                        self.finalCaptionLabel.userInteractionEnabled = YES;
+                         self.myImageView.userInteractionEnabled = YES;
+                         [self toggleNextButton];
+                     }];
+}
+
+
+
+- (void)toggleNextButton
+{
+    if (!self.navigationItem.rightBarButtonItem){
+        self.navigationItem.rightBarButtonItem = self.nextButton;
+        }
+    else{
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
+
 
 - (void)setupShareStyles
 {
@@ -163,8 +229,6 @@
 
 - (IBAction)tappedShareButton:(UIButton *)sender {
     
-    [self.containerView removeFromSuperview];
-    self.containerView = nil;
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
@@ -183,6 +247,36 @@
     }
     
     
+}
+
+- (void)startedLabelDrag:(UILongPressGestureRecognizer *)gesture
+{
+    UIView *view = gesture.view;
+    CGPoint point = [gesture locationInView:view.superview];
+    
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            [self captionStartedDragging];
+        }
+            
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            //CGPoint center = view.center;
+            view.center = point;
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+        {
+            [self captionStoppedDragging];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 
@@ -207,9 +301,7 @@
 
 
 
-#pragma -mark DraggableCaption delegate
-
-- (void)CaptionStartedDragging{
+- (void)captionStartedDragging{
     if (!self.shareContainerOnScreen){
         return;
     }
@@ -221,7 +313,7 @@
     self.shareContainerOnScreen = NO;
 }
 
-- (void)CaptionStoppedDragging
+- (void)captionStoppedDragging
 {
     [UIView animateWithDuration:1.0
                           delay:0
@@ -249,7 +341,7 @@
     else if (buttonIndex == 1){
         self.hideSelectButtons = YES;
         [self.myTable reloadData];
-        [self configureFinalScreen];
+        [self setupFinalLabel];
     }
 }
 
@@ -268,11 +360,12 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (self.hideSelectButtons){
-        return @"Your Friends said";
+        return [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
     }
     else{
-        return @"Choose a caption!";
+        return [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
     }
+   
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -290,7 +383,7 @@
         FAImageView *imageView = ((FAImageView *)((HistoryDetailCell *)cell).myImageVew);
         [imageView setDefaultIconIdentifier:@"fa-user"];
         
-        ((HistoryDetailCell *)cell).myCaptionLabel.text = [self.data objectAtIndex:indexPath.row];
+        captionLabel.text = [self.data objectAtIndex:indexPath.row];
     
         // set width and height so "sizeToFit" uses those constraints
       
@@ -322,16 +415,18 @@
 }
 
 
-- (UIView *)containerView
+
+- (UIBarButtonItem *)nextButton
 {
-    if (!_containerView){
-        _containerView = [[UIView alloc] initWithFrame:self.view.frame];
-        [self.view addSubview:_containerView];
+    if (!_nextButton){
+       _nextButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-right"] style:UIBarButtonItemStylePlain target:self action:@selector(showShareScreen)];
+        [_nextButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+        [_nextButton setTintColor:[UIColor greenColor]];
 
     }
-
-    return _containerView;
+    return  _nextButton;
 }
+
 
 - (UIView *)shareControls
 {

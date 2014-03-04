@@ -81,6 +81,7 @@
                 }
                 
                 [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:YES];
+               
             }
 
             break;

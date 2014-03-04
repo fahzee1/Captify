@@ -46,7 +46,7 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
    
-    self.data = [[NSArray alloc] initWithObjects:@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM", nil];
+    self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
 
 	// Do any additional setup after loading the view.
 }
@@ -86,18 +86,30 @@
      static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell && [cell isKindOfClass:[HistoryCell class]]){
-        ((HistoryCell *)cell).historyTitleLabel = [self.data objectAtIndex:indexPath.row];
-        ((HistoryCell *)cell).historyImageView.image = nil;
-        ((HistoryCell *)cell).activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    
+        UILabel *titleLabel = ((HistoryCell *)cell).historyTitleLabel;
+        UILabel *activeLabel = ((HistoryCell *)cell).activeLabel;
+        UIImageView *KimageView =  ((HistoryCell *)cell).historyImageView;
+        titleLabel.text = [self.data objectAtIndex:indexPath.row];
+        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.numberOfLines = 0;
+        [titleLabel sizeToFit];
+        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
+
+      
+        
+        KimageView.image = nil;
+        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         
         // check if challenge is active or not
         // if active show animating green filled circle, if not ahow circle outline
-        [((HistoryCell *)cell).activeLabel setTextColor:[UIColor greenColor]];
+        [activeLabel setTextColor:[UIColor greenColor]];
         if (1){
             
-            [((HistoryCell *)cell).activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
-            [((HistoryCell *)cell).activeLabel setTextColor:[UIColor greenColor]];
-            if (![((HistoryCell *)cell).activeLabel.layer animationForKey:@"historyActive"]){
+            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
+            [activeLabel setTextColor:[UIColor greenColor]];
+            if (![activeLabel.layer animationForKey:@"historyActive"]){
                 
             
                 CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
@@ -107,15 +119,15 @@
                 colorPulse.autoreverses = YES;
                 colorPulse.duration = 0.8;
                 colorPulse.repeatCount = FLT_MAX;
-                [((HistoryCell *)cell).activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
+                [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
         }
         else{
-             [((HistoryCell *)cell).activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
     
         }
         
-        FAImageView *imageView = ((FAImageView *)((HistoryCell *)cell).historyImageView);
+        FAImageView *imageView = ((FAImageView *)KimageView);
         [imageView setDefaultIconIdentifier:@"fa-user"];
         
     }

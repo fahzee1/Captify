@@ -13,4 +13,7 @@
 
 -(UIImage *)convertViewToImage;
 
+
+-(UIImage *)snapshotView:(UIView *)view;
+
 @end

@@ -20,4 +20,16 @@
     
     return image;
 }
+
+-(UIImage *)snapshotView:(UIView *)view
+{
+    
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self.layer renderInContext:context];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return snapshot;
+}
 @end

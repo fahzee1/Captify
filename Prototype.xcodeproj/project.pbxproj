@@ -287,6 +287,7 @@
 		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
 		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
 		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
+		11FAA7FE18C6763900147E75 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA7FD18C6763900147E75 /* ShareViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -835,6 +836,8 @@
 		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
 		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
+		11FAA7FC18C6763900147E75 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		11FAA7FD18C6763900147E75 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1146,6 +1149,8 @@
 				11101DD818B17073009D44BD /* HistoryViewContr.m */,
 				11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */,
 				11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */,
+				11FAA7FC18C6763900147E75 /* ShareViewController.h */,
+				11FAA7FD18C6763900147E75 /* ShareViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1800,6 +1805,7 @@
 				1153E18F18A9DF4800AD950E /* GPUImageLuminosityBlendFilter.m in Sources */,
 				1184FE0418BD03A000FDEAE0 /* SDWebImageDownloader.m in Sources */,
 				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
+				11FAA7FE18C6763900147E75 /* ShareViewController.m in Sources */,
 				1153E1BD18A9DF4800AD950E /* GPUImageSoftLightBlendFilter.m in Sources */,
 				1153E15B18A9DF4800AD950E /* GPUImageCrosshairGenerator.m in Sources */,
 				1153E14A18A9DF4800AD950E /* GPUImageBoxBlurFilter.m in Sources */,
