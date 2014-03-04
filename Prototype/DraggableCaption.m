@@ -29,11 +29,26 @@
 */
 
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (self.delegate){
+        if ([self.delegate respondsToSelector:@selector(CaptionStartedDragging)]){
+            [self.delegate CaptionStartedDragging];
+        }
+    }
+    
     UITouch *aTouch = [touches anyObject];
     CGPoint location = [aTouch locationInView:self.superview];
     [UIView beginAnimations:@"Dragging A DraggableView" context:nil];
     self.center = location;
     [UIView commitAnimations];
+}
+
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.delegate){
+        if ([self.delegate respondsToSelector:@selector(CaptionStoppedDragging)]){
+            [self.delegate CaptionStoppedDragging];
+        }
+    }
 }
 
 @end

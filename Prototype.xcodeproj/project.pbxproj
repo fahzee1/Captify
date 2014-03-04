@@ -43,6 +43,7 @@
 		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
 		11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
+		1121284718C5A8AF0033E026 /* shareControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1121284618C5A8AF0033E026 /* shareControls.xib */; };
 		112153AE18983B7000EADE97 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112153AD18983B7000EADE97 /* FacebookSDK.framework */; };
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
@@ -363,6 +364,7 @@
 		11176DEC18B7F6E600FA69B7 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
 		111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderPreviewViewController.m; sourceTree = "<group>"; };
+		1121284618C5A8AF0033E026 /* shareControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = shareControls.xib; sourceTree = "<group>"; };
 		112153AD18983B7000EADE97 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		112153B118983DB100EADE97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSKeychain.strings; sourceTree = "<group>"; };
 		112153B218983DB100EADE97 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
 				11BC442518C46A7B0052D98F /* HistoryDetailCell.h */,
 				11BC442618C46A7B0052D98F /* HistoryDetailCell.m */,
+				1121284618C5A8AF0033E026 /* shareControls.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1757,6 +1760,7 @@
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
 				11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */,
 				11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */,
+				1121284718C5A8AF0033E026 /* shareControls.xib in Resources */,
 				11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,

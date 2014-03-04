@@ -115,8 +115,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-     
-        return YES;
+    
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -162,6 +162,18 @@
 {
     return YES;
 }
+
+
+- (void)application:(UIApplication *)application willEncodeRestorableStateWithCoder:(NSCoder *)coder
+{
+}
+
+- (void)application:(UIApplication *)application didDecodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    
+}
+ 
+
 
 - (void)saveContext
 {

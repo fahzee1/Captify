@@ -32,31 +32,6 @@
 @implementation FriendsContainerController
 
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:self.mySegmentedControl forKey:@"mySegementedControl"];
-    [coder encodeObject:self.myContainerView forKey:@"myContainerView"];
-    [coder encodeObject:self.currentController forKey:@"currentController"];
-    [coder encodeObject:self.friendPickerController forKey:@"friendPickerController"];
-    [coder encodeObject:self.appFriendPickerController forKey:@"appFriendPickerController"];
-    [coder encodeObject:self.friend forKey:@"friend"];
-    [coder encodeObject:self.cacheDescriptor forKey:@"cacheDescriptor"];
-
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    self.mySegmentedControl = [coder decodeObjectForKey:@"mySegementedControl"];
-    self.myContainerView = [coder decodeObjectForKey:@"myContainerView"];
-    self.currentController = [coder decodeObjectForKey:@"currentController"];
-    self.friendPickerController = [coder decodeObjectForKey:@"friendPickerController"];
-    self.appFriendPickerController = [coder decodeObjectForKey:@"appFriendPickerController"];
-    self.friend = [coder decodeObjectForKey:@"friend"];
-    self.cacheDescriptor = [coder decodeObjectForKey:@"cacheDescriptor"];
-    
-    [super decodeRestorableStateWithCoder:coder];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,6 +45,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"friends loaded");
 	// Do any additional setup after loading the view.
     
     UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentedControl.selectedSegmentIndex];

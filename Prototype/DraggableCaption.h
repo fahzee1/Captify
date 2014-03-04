@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol DraggableCaptionDelegate <NSObject>
+
+- (void)CaptionStartedDragging;
+- (void)CaptionStoppedDragging;
+
+@end
+
 @interface DraggableCaption : UILabel
+
+
+@property (weak)id<DraggableCaptionDelegate>delegate;
 
 @end

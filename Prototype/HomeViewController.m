@@ -29,6 +29,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "FacebookFriends.h"
+#import "UIImage+Utils.h"
 
 
 
@@ -54,6 +55,7 @@
 @property (strong,nonatomic)UIImage *previewEditedSnapshot;
 @property (strong,nonatomic)UIImage *previewOriginalSnapshot;
 @property (strong, nonatomic)UIView *previewControls;
+@property (strong, nonatomic)UIView *mainControls;
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
 @property (weak, nonatomic) IBOutlet UITextField *previewTextField;
@@ -75,6 +77,8 @@
 @implementation HomeViewController
 
 
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -88,7 +92,6 @@
 {
     [super viewDidLoad];
 
-    
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
@@ -106,9 +109,6 @@
         [self setupTestNoCamera];
     }
     
-    if (![UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]){
-        NSLog(@"no front camera");
-    }
     
     
     //if user not logged in segue to login screen
@@ -116,40 +116,36 @@
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
         return;
     }
+    // used from settings to logout
     if (self.goToLogin){
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
         return;
     }
     
-    //[self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
-    //User *friend = [User createTestFriendWithName:@"test2" context:self.myUser.managedObjectContext];
-    //Challenge *ch = [Challenge createTestChallengeWithUser:friend];
- 
 }
 
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+
+    
+}
 
 
 - (void)setupCamera
 {
+    // everything here is being lazy loaded because of memory issues
+    
     NSError *error;
-    
-    self.session = [AVCaptureSession new];
-    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
-    
-    self.cameraDevice = [self backCamera];
-    self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
     
     // set flash
     [self.cameraDevice lockForConfiguration:&error];
     [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
     [self.cameraDevice unlockForConfiguration];
     
-    
-    self.snapper = [AVCaptureStillImageOutput new];
-    self.snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
-                                    AVVideoQualityKey:@0.6};
-    
+
     if (self.cameraInput){
         [self.session addInput:self.cameraInput];
     }
@@ -159,16 +155,9 @@
     
     if (self.cameraInput && self.snapper){
         
-        self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-        self.previewLayer.frame = self.view.frame;
-        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        
         [self.view.layer addSublayer:self.previewLayer];
-        
-        UIView *controlsView = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
+        [self.view addSubview:self.mainControls];
         [self setupStylesAndMore];
-        
-        [self.view addSubview:controlsView];
         
         
         [self.session startRunning];
@@ -443,12 +432,12 @@
     self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
     self.previewSnap.image = self.previewOriginalSnapshot;
-    
-    self.previewControls = [[[NSBundle mainBundle] loadNibNamed:@"previewControls" owner:self options:nil]lastObject];
-    [self setupPreviewStylesAndMore];
+
     
     [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
+    
+    [self setupPreviewStylesAndMore];
     [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
 
     
@@ -660,15 +649,6 @@
 
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if (!self.cameraOptionsContainerView.hidden)
@@ -854,6 +834,74 @@
     return nil;
 }
 
+
+- (AVCaptureVideoPreviewLayer *)previewLayer
+{
+
+    if (!_previewLayer){
+        _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+        _previewLayer.frame = self.view.frame;
+        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
+    return _previewLayer;
+}
+
+- (AVCaptureStillImageOutput *)snapper
+{
+    if (!_snapper){
+        _snapper = [AVCaptureStillImageOutput new];
+        _snapper.outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
+                                    AVVideoQualityKey:@0.6};
+
+    }
+    return _snapper;
+}
+
+- (AVCaptureDeviceInput *)cameraInput
+{
+    NSError *error;
+    if (!_cameraInput){
+        _cameraInput =  [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+    }
+    
+    
+    return _cameraInput;
+}
+- (AVCaptureDevice *)cameraDevice
+{
+    if (!_cameraDevice){
+        _cameraDevice = [self backCamera];
+    }
+    return _cameraDevice;
+}
+
+- (AVCaptureSession *)session
+{
+    if (!_session){
+
+        _session = [AVCaptureSession new];
+        _session.sessionPreset = AVCaptureSessionPresetPhoto;
+    }
+    return  _session;
+}
+
+- (UIView *)mainControls
+{
+    if (!_mainControls){
+        _mainControls = [[[NSBundle mainBundle] loadNibNamed:@"cameraControls" owner:self options:nil]lastObject];
+    }
+    return  _mainControls;
+}
+
+- (UIView *)previewControls
+{
+    if (!_previewControls){
+        _previewControls = [[[NSBundle mainBundle] loadNibNamed:@"previewControls" owner:self options:nil]lastObject];
+
+    }
+    
+    return _previewControls;
+}
 
 
 - (User *)myUser

@@ -15,16 +15,28 @@
 #import "UIView+Screenshot.h"
 #import "FacebookFriends.h"
 #import "UIImage+Utils.h"
+#import "UIColor+HexValue.h"
+#import "DraggableCaption.h"
 
 
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, DraggableCaptionDelegate>
 
 @property NSArray *data;
 @property BOOL hideSelectButtons;
+@property BOOL shareToFacebook;
+@property BOOL shareContainerOnScreen;
 @property NSString *selectedCaption;
 @property UIImageView *finalContainerScreen;
 @property UIImage *finalImage;
+@property (strong,nonatomic)UIView *containerView;
+@property (strong, nonatomic)UIView *shareControls;
+@property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *finalShareContainer;
+@property (weak, nonatomic) IBOutlet UILabel *shareFacebookLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *shareImageButton;
 
 @end
 
@@ -72,15 +84,71 @@
     self.finalContainerScreen.contentMode = UIViewContentModeScaleAspectFill;
     self.finalContainerScreen.image = self.myImageView.image;
     self.finalContainerScreen.alpha = 0;
-    [self.view addSubview:self.finalContainerScreen];
+    [self.containerView addSubview:self.finalContainerScreen];
     [UIView animateWithDuration:0.5
                      animations:^{
                          self.finalContainerScreen.alpha = 1;
                           self.navigationController.navigationBarHidden = YES;
                      } completion:^(BOOL finished) {
-                         // do something
-                     }];
+                         [self.containerView addSubview:self.shareControls];
+                         [self setupFinalLabel];
+                         [self setupShareStyles];
+                         [UIView animateWithDuration:1.0
+                                          animations:^{
+                                              self.finalCaptionLabel.alpha = 1;
+                                          } completion:^(BOOL finished) {
+                                              [UIView animateWithDuration:1.0
+                                                                    delay:0
+                                                   usingSpringWithDamping:0.7
+                                                    initialSpringVelocity:0
+                                                                  options:0
+                                                               animations:^{
+                                                                   self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+                                                                   self.shareContainerOnScreen = YES;
+                                                               } completion:nil];
+
+                                          }];
+                        }];
  
+}
+
+
+- (void)setupFinalLabel
+{
+    //self.finalCaptionLabel.frame = CGRectMake(self.finalCaptionLabel.frame.origin.x, self.finalCaptionLabel.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.finalCaptionLabel.frame.size.height);
+    self.finalCaptionLabel.text = self.selectedCaption;
+    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
+    if ([self.finalCaptionLabel.text length] > 15){
+        NSLog(@"hit");
+        self.finalCaptionLabel.numberOfLines = 0;
+        [self.finalCaptionLabel sizeToFit];
+    }
+    self.finalCaptionLabel.textAlignment = NSTextAlignmentCenter;
+    self.finalCaptionLabel.userInteractionEnabled = YES;
+    self.finalCaptionLabel.alpha = 0;
+    if ([self.finalCaptionLabel isKindOfClass:[DraggableCaption class]]){
+        ((DraggableCaption *) self.finalCaptionLabel).delegate = self;
+    }
+}
+
+- (void)setupShareStyles
+{
+    self.finalShareContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y + self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFacebookLabel:)];
+    tap.numberOfTapsRequired = 1;
+    
+    self.shareFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    self.shareFacebookLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
+    self.shareFacebookLabel.textColor = [UIColor whiteColor];
+    self.shareFacebookLabel.userInteractionEnabled = YES;
+    [self.shareFacebookLabel addGestureRecognizer:tap];
+    
+    
+    self.shareImageButton.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] colorWithAlphaComponent:0.5f];
+    self.shareImageButton.layer.cornerRadius = 10.0f;
+    
 }
 
 - (void)captureFinalImage
@@ -91,6 +159,32 @@
     UIImageWriteToSavedPhotosAlbum(self.finalImage, nil, nil, nil);
     
 }
+
+
+- (IBAction)tappedShareButton:(UIButton *)sender {
+    
+    [self.containerView removeFromSuperview];
+    self.containerView = nil;
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+- (void)tappedFacebookLabel:(UITapGestureRecognizer *)sender {
+    self.shareToFacebook = !self.shareToFacebook;
+    if (self.shareToFacebook){
+
+        self.shareFacebookLabel.textColor = [UIColor colorWithHexString:@"#3498db"];
+
+    }
+    else if (!self.shareToFacebook){
+        self.shareFacebookLabel.textColor = [UIColor whiteColor];
+
+    }
+    
+    
+}
+
 
 
 - (void)selectedCaption:(UIButton *)sender
@@ -109,6 +203,38 @@
                             otherButtonTitles:@"I'm sure", nil];
     [confirm show];
     
+}
+
+
+
+#pragma -mark DraggableCaption delegate
+
+- (void)CaptionStartedDragging{
+    if (!self.shareContainerOnScreen){
+        return;
+    }
+    
+    [UIView animateWithDuration:1.0
+                     animations:^{
+                         self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y + self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+                     }];
+    self.shareContainerOnScreen = NO;
+}
+
+- (void)CaptionStoppedDragging
+{
+    [UIView animateWithDuration:1.0
+                          delay:0
+         usingSpringWithDamping:0.7
+          initialSpringVelocity:0
+                        options:0
+                     animations:^{
+                         self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+                     } completion:nil];
+    
+    self.shareContainerOnScreen = YES;
+    
+
 }
 
 
@@ -141,7 +267,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Your friends say";
+    if (self.hideSelectButtons){
+        return @"Your Friends said";
+    }
+    else{
+        return @"Choose a caption!";
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -191,6 +322,24 @@
 }
 
 
+- (UIView *)containerView
+{
+    if (!_containerView){
+        _containerView = [[UIView alloc] initWithFrame:self.view.frame];
+        [self.view addSubview:_containerView];
+
+    }
+
+    return _containerView;
+}
+
+- (UIView *)shareControls
+{
+    if (!_shareControls){
+        _shareControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
+    }
+    return _shareControls;
+}
 
 
 

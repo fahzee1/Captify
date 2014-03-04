@@ -34,6 +34,9 @@
 @property (strong, nonatomic)NSArray *sections;
 
 
+
+
+
 @end
 
 @implementation SenderPreviewViewController
@@ -63,7 +66,7 @@
     
     //self.name = @"Guess what im eating";
     //self.phrase = @"Nothing stupid";
-    self.previewImage.image = self.image;
+    self.previewImage.image = [UIImage imageWithImage:self.image convertToSize:self.previewImage.frame.size];
     self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
     self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
  
