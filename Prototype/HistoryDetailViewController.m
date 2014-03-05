@@ -17,10 +17,13 @@
 #import "UIImage+Utils.h"
 #import "UIColor+HexValue.h"
 #import "ShareViewController.h"
+#import "UIView+Glow.h"
+#import "NEOColorPickerViewController.h"
+#import "CMPopTipView.h"
 
 
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate>
 
 @property NSArray *data;
 @property BOOL hideSelectButtons;
@@ -31,12 +34,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
 @property UIImageView *finalContainerScreen;
 @property UIImage *finalImage;
-@property (strong, nonatomic)UIView *shareControls;
+@property (strong, nonatomic)UIView *imageControls;
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
-@property (weak, nonatomic) IBOutlet UIView *finalShareContainer;
-@property (weak, nonatomic) IBOutlet UILabel *shareFacebookLabel;
-
-@property (weak, nonatomic) IBOutlet UIButton *shareImageButton;
+@property (weak, nonatomic) IBOutlet UILabel *captionFontValue;
+@property (weak, nonatomic) IBOutlet UIButton *captionColor;
+@property (weak, nonatomic) IBOutlet UIStepper *captionFontStepper;
+@property (weak, nonatomic) IBOutlet UIButton *captionDoneButton;
+@property (strong,nonatomic)CMPopTipView *toolTip;
 
 @end
 
@@ -64,6 +68,17 @@
     [self.myImageView addSubview:self.finalCaptionLabel];
     self.myImageView.clipsToBounds = YES;
     self.data = @[@"This is one long example of a caption that could be used",@"Buggy woggy its late right now",@"Wait a minute dont you hear me",@"She wanna have what you have",@"Yolo son!",@"Her ass cant handle it",@"Its alright, its Ok!"];
+    self.imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
+    self.imageControls.frame = self.myImageView.frame;
+    self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    [self setupImageControlsStyle];
+    self.imageControls.hidden = YES;
+    [self.view addSubview:self.imageControls];
+    
+    self.captionFontStepper.value = 25;
+    self.captionFontStepper.minimumValue = 8;
+    self.captionFontStepper.maximumValue = 45;
+   
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
@@ -82,68 +97,8 @@
 }
 
 
-/*
-- (void)configureFinalScreen
-{
-    self.finalContainerScreen = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.finalContainerScreen.contentMode = UIViewContentModeScaleAspectFill;
-    self.finalContainerScreen.image = self.myImageView.image;
-    self.finalContainerScreen.alpha = 0;
-    [self.containerView addSubview:self.finalContainerScreen];
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         self.finalContainerScreen.alpha = 1;
-                          self.navigationController.navigationBarHidden = YES;
-                     } completion:^(BOOL finished) {
-                         [self.containerView addSubview:self.shareControls];
-                         [self setupFinalLabel];
-                         [self setupShareStyles];
-                         [UIView animateWithDuration:1.0
-                                          animations:^{
-                                              self.finalCaptionLabel.alpha = 1;
-                                          } completion:^(BOOL finished) {
-                                              [UIView animateWithDuration:1.0
-                                                                    delay:0
-                                                   usingSpringWithDamping:0.7
-                                                    initialSpringVelocity:0
-                                                                  options:0
-                                                               animations:^{
-                                                                   self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
-                                                                   self.shareContainerOnScreen = YES;
-                                                               } completion:nil];
-
-                                          }];
-                        }];
- 
-}
-*/
 
 
-- (void)configureFinalScreen
-{
-    [self.myImageView addSubview:self.shareControls];
-    [self setupFinalLabel];
-    [self setupShareStyles];
-    
-    [UIView animateWithDuration:1.0
-                     animations:^{
-                         self.finalCaptionLabel.alpha = 1;
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:1.0
-                                               delay:0
-                              usingSpringWithDamping:0.7
-                               initialSpringVelocity:0
-                                             options:0
-                                          animations:^{
-                                              self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
-                                              self.shareContainerOnScreen = YES;
-                                          } completion:nil];
-                        
-                     }];
-
-
-
-}
 
 
 - (void)showShareScreen
@@ -156,11 +111,20 @@
     }
 }
 
+
+
+
 - (void)setupFinalLabel
 {
 
+    
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
     press.minimumPressDuration = 0.1;
+    
+    UILongPressGestureRecognizer *controls = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCaption:)];
+    controls.minimumPressDuration = 0.7;
+    
+    [press requireGestureRecognizerToFail:controls];
     
     
     self.finalCaptionLabel.text = self.selectedCaption;
@@ -172,19 +136,61 @@
     self.finalCaptionLabel.textAlignment = NSTextAlignmentCenter;
     self.finalCaptionLabel.alpha = 0;
     [self.finalCaptionLabel addGestureRecognizer:press];
+    [self.finalCaptionLabel addGestureRecognizer:controls];
     self.finalCaptionLabel.hidden = NO;
+    
     [UIView animateWithDuration:1.0
                      animations:^{
                          self.finalCaptionLabel.alpha = 1;
+                         [self.finalCaptionLabel startGlowingWithColor:[UIColor whiteColor] intensity:0.9];
                      } completion:^(BOOL finished) {
-                         // do something
                         self.finalCaptionLabel.userInteractionEnabled = YES;
                          self.myImageView.userInteractionEnabled = YES;
                          [self toggleNextButton];
+                         
+                         self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Press and hold for edit options or drag caption"];
+                         self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+                         self.toolTip.textColor = [UIColor whiteColor];
+                         self.toolTip.hasGradientBackground = NO;
+                         self.toolTip.preferredPointDirection = PointDirectionDown;
+                         self.toolTip.hasShadow = NO;
+                         self.toolTip.has3DStyle = NO;
+                         self.toolTip.borderWidth = 1.0;
+                         [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
+                         [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:3.0];
+                         
+                         
                      }];
+    
 }
 
 
+- (void)dismissToolTip
+{
+    [self.toolTip dismissAnimated:YES];
+    self.toolTip = nil;
+}
+
+- (void)setupImageControlsStyle
+{
+    self.captionDoneButton.titleLabel.font =[UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.captionDoneButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+    [self.captionDoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.captionColor.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.captionColor setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil"] forState:UIControlStateNormal];
+    [self.captionColor setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.captionFontStepper.tintColor = [UIColor whiteColor];
+    self.captionFontValue .textColor = [UIColor whiteColor];
+    [self.captionColor setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.captionFontStepper.value = 25;
+    [self.captionFontStepper addTarget:self action:@selector(captionFontChanged) forControlEvents:UIControlEventValueChanged];
+    
+    
+    
+}
 
 - (void)toggleNextButton
 {
@@ -197,55 +203,59 @@
 }
 
 
-- (void)setupShareStyles
-{
-    self.finalShareContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-    self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y + self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFacebookLabel:)];
-    tap.numberOfTapsRequired = 1;
-    
-    self.shareFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
-    self.shareFacebookLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
-    self.shareFacebookLabel.textColor = [UIColor whiteColor];
-    self.shareFacebookLabel.userInteractionEnabled = YES;
-    [self.shareFacebookLabel addGestureRecognizer:tap];
-    
-    
-    self.shareImageButton.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] colorWithAlphaComponent:0.5f];
-    self.shareImageButton.layer.cornerRadius = 10.0f;
-    
-}
-
 - (void)captureFinalImage
 {
     // hide controls
     
     self.finalImage = [self.view convertViewToImage];
-    UIImageWriteToSavedPhotosAlbum(self.finalImage, nil, nil, nil);
+    //UIImageWriteToSavedPhotosAlbum(self.finalImage, nil, nil, nil);
     
 }
 
 
-- (IBAction)tappedShareButton:(UIButton *)sender {
-    
-    self.navigationController.navigationBarHidden = NO;
-    [self.navigationController popToRootViewControllerAnimated:YES];
+- (IBAction)tappedDone:(id)sender {
+    if (!self.imageControls.hidden){
+         self.imageControls.hidden = YES;
+    }
 }
 
 
-- (void)tappedFacebookLabel:(UITapGestureRecognizer *)sender {
-    self.shareToFacebook = !self.shareToFacebook;
-    if (self.shareToFacebook){
+- (IBAction)pickColor:(UIButton *)sender {
+    NEOColorPickerViewController *colorPicker = [[NEOColorPickerViewController alloc] init];
+    colorPicker.delegate = self;
+    colorPicker.selectedColor = [UIColor blackColor];
+    colorPicker.title = @"Caption color";
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:colorPicker];
+    [self presentViewController:navVC animated:YES completion:nil];
+}
 
-        self.shareFacebookLabel.textColor = [UIColor colorWithHexString:@"#3498db"];
+- (void)tappedCaption:(UITapGestureRecognizer *)gesture
+{
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            if (self.imageControls.hidden){
+                self.imageControls.hidden = NO;
+            }
 
+        }
+            
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+          
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
     }
-    else if (!self.shareToFacebook){
-        self.shareFacebookLabel.textColor = [UIColor whiteColor];
-
-    }
-    
     
 }
 
@@ -257,20 +267,20 @@
     switch (gesture.state) {
         case UIGestureRecognizerStateBegan:
         {
-            [self captionStartedDragging];
+            //[self captionStartedDragging];
+             [self.finalCaptionLabel stopGlowing];
         }
             
             break;
         case UIGestureRecognizerStateChanged:
         {
-            //CGPoint center = view.center;
             view.center = point;
             
         }
             break;
         case UIGestureRecognizerStateEnded:
         {
-            [self captionStoppedDragging];
+            //[self captionStoppedDragging];
         }
             break;
             
@@ -299,18 +309,43 @@
     
 }
 
-
-
-- (void)captionStartedDragging{
-    if (!self.shareContainerOnScreen){
-        return;
-    }
+- (void)captionFontChanged
+{
+    [self.finalCaptionLabel stopGlowing];
+    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionFontStepper.value];
+    self.captionFontValue.text = [NSString stringWithFormat:@"%d", (int)self.captionFontStepper.value];
     
+
+}
+
+/*
+- (void)setupShareStyles
+{
+    self.finalShareContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y + self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFacebookLabel:)];
+    tap.numberOfTapsRequired = 1;
+    
+    self.shareFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    self.shareFacebookLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
+    self.shareFacebookLabel.textColor = [UIColor whiteColor];
+    self.shareFacebookLabel.userInteractionEnabled = YES;
+    [self.shareFacebookLabel addGestureRecognizer:tap];
+    
+    
+    self.shareImageButton.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] colorWithAlphaComponent:0.5f];
+    self.shareImageButton.layer.cornerRadius = 10.0f;
+    
+}
+
+
+- (void)captionStartedDragging
+{
     [UIView animateWithDuration:1.0
                      animations:^{
                          self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y + self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
                      }];
-    self.shareContainerOnScreen = NO;
 }
 
 - (void)captionStoppedDragging
@@ -324,16 +359,31 @@
                          self.finalShareContainer.frame = CGRectMake(self.finalShareContainer.frame.origin.x, self.finalShareContainer.frame.origin.y - self.finalShareContainer.frame.size.height, self.finalShareContainer.frame.size.width , self.finalShareContainer.frame.size.height);
                      } completion:nil];
     
-    self.shareContainerOnScreen = YES;
-    
 
 }
+ */
 
+
+# pragma -mark Color picker delegate
+
+- (void)colorPickerViewController:(NEOColorPickerBaseViewController *)controller didSelectColor:(UIColor *)color
+{
+    self.finalCaptionLabel.textColor = color;
+    self.imageControls.hidden = YES;
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)colorPickerViewControllerDidCancel:(NEOColorPickerBaseViewController *)controller{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma -mark Uialertview delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    // if user chooses caption. Hide caption select buttons
+    // and add caption to the image
+    
     if (buttonIndex == 0){
         self.selectedCaption = nil;
     }
@@ -428,12 +478,14 @@
 }
 
 
-- (UIView *)shareControls
+
+- (UIView *)imageControls
 {
-    if (!_shareControls){
-        _shareControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
+    if (!_imageControls){
+        _imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
+        [self setupImageControlsStyle];
     }
-    return _shareControls;
+    return _imageControls;
 }
 
 

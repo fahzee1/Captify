@@ -274,6 +274,20 @@
 		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
 		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
 		11AB2E5118AAA61000B511E1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4D18AAA61000B511E1 /* LICENSE */; };
+		11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC8918C7870600639A20 /* UIView+Glow.m */; };
+		11ABFCA318C7D28300639A20 /* colorPicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11ABFC9018C7D28300639A20 /* colorPicker.bundle */; };
+		11ABFCA418C7D28300639A20 /* NEOColorPickerBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9218C7D28300639A20 /* NEOColorPickerBaseViewController.m */; };
+		11ABFCA518C7D28300639A20 /* NEOColorPickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9418C7D28300639A20 /* NEOColorPickerFavoritesViewController.m */; };
+		11ABFCA618C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11ABFC9518C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib */; };
+		11ABFCA718C7D28300639A20 /* NEOColorPickerGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9718C7D28300639A20 /* NEOColorPickerGradientView.m */; };
+		11ABFCA818C7D28300639A20 /* NEOColorPickerHSLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9918C7D28300639A20 /* NEOColorPickerHSLViewController.m */; };
+		11ABFCA918C7D28300639A20 /* NEOColorPickerHSLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11ABFC9A18C7D28300639A20 /* NEOColorPickerHSLViewController.xib */; };
+		11ABFCAA18C7D28300639A20 /* NEOColorPickerHueGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9C18C7D28300639A20 /* NEOColorPickerHueGridViewController.m */; };
+		11ABFCAB18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11ABFC9D18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib */; };
+		11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFC9F18C7D28300639A20 /* NEOColorPickerViewController.m */; };
+		11ABFCAD18C7D28300639A20 /* NEOColorPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11ABFCA018C7D28300639A20 /* NEOColorPickerViewController.xib */; };
+		11ABFCAE18C7D28300639A20 /* UIColor+NEOColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCA218C7D28300639A20 /* UIColor+NEOColor.m */; };
+		11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCB118C7DA9200639A20 /* CMPopTipView.m */; };
 		11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC442618C46A7B0052D98F /* HistoryDetailCell.m */; };
 		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
 		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
@@ -815,6 +829,29 @@
 		11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPSessionManager+AutoRetry.m"; sourceTree = "<group>"; };
 		11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AFNetworking+AutoRetry.podspec"; sourceTree = "<group>"; };
 		11AB2E4D18AAA61000B511E1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		11ABFC8818C7870600639A20 /* UIView+Glow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Glow.h"; sourceTree = "<group>"; };
+		11ABFC8918C7870600639A20 /* UIView+Glow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Glow.m"; sourceTree = "<group>"; };
+		11ABFC9018C7D28300639A20 /* colorPicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = colorPicker.bundle; sourceTree = "<group>"; };
+		11ABFC9118C7D28300639A20 /* NEOColorPickerBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerBaseViewController.h; sourceTree = "<group>"; };
+		11ABFC9218C7D28300639A20 /* NEOColorPickerBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerBaseViewController.m; sourceTree = "<group>"; };
+		11ABFC9318C7D28300639A20 /* NEOColorPickerFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerFavoritesViewController.h; sourceTree = "<group>"; };
+		11ABFC9418C7D28300639A20 /* NEOColorPickerFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerFavoritesViewController.m; sourceTree = "<group>"; };
+		11ABFC9518C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NEOColorPickerFavoritesViewController.xib; sourceTree = "<group>"; };
+		11ABFC9618C7D28300639A20 /* NEOColorPickerGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerGradientView.h; sourceTree = "<group>"; };
+		11ABFC9718C7D28300639A20 /* NEOColorPickerGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerGradientView.m; sourceTree = "<group>"; };
+		11ABFC9818C7D28300639A20 /* NEOColorPickerHSLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerHSLViewController.h; sourceTree = "<group>"; };
+		11ABFC9918C7D28300639A20 /* NEOColorPickerHSLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerHSLViewController.m; sourceTree = "<group>"; };
+		11ABFC9A18C7D28300639A20 /* NEOColorPickerHSLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NEOColorPickerHSLViewController.xib; sourceTree = "<group>"; };
+		11ABFC9B18C7D28300639A20 /* NEOColorPickerHueGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerHueGridViewController.h; sourceTree = "<group>"; };
+		11ABFC9C18C7D28300639A20 /* NEOColorPickerHueGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerHueGridViewController.m; sourceTree = "<group>"; };
+		11ABFC9D18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NEOColorPickerHueGridViewController.xib; sourceTree = "<group>"; };
+		11ABFC9E18C7D28300639A20 /* NEOColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEOColorPickerViewController.h; sourceTree = "<group>"; };
+		11ABFC9F18C7D28300639A20 /* NEOColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEOColorPickerViewController.m; sourceTree = "<group>"; };
+		11ABFCA018C7D28300639A20 /* NEOColorPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NEOColorPickerViewController.xib; sourceTree = "<group>"; };
+		11ABFCA118C7D28300639A20 /* UIColor+NEOColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NEOColor.h"; sourceTree = "<group>"; };
+		11ABFCA218C7D28300639A20 /* UIColor+NEOColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NEOColor.m"; sourceTree = "<group>"; };
+		11ABFCB018C7DA9200639A20 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
+		11ABFCB118C7DA9200639A20 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		11BC442518C46A7B0052D98F /* HistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailCell.h; sourceTree = "<group>"; };
 		11BC442618C46A7B0052D98F /* HistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailCell.m; sourceTree = "<group>"; };
 		11C2D6EF18B5226F00577A68 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
@@ -1000,6 +1037,10 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11ABFCAF18C7DA9200639A20 /* CMPopTipView */,
+				11ABFC8F18C7D28300639A20 /* color-picker */,
+				11ABFC8818C7870600639A20 /* UIView+Glow.h */,
+				11ABFC8918C7870600639A20 /* UIView+Glow.m */,
 				11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */,
 				11C994C218C51BA300A01F31 /* NSDate+TimeAgo.h */,
 				11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */,
@@ -1673,6 +1714,41 @@
 			path = "AFNetworking-AutoRetry-master";
 			sourceTree = "<group>";
 		};
+		11ABFC8F18C7D28300639A20 /* color-picker */ = {
+			isa = PBXGroup;
+			children = (
+				11ABFC9018C7D28300639A20 /* colorPicker.bundle */,
+				11ABFC9118C7D28300639A20 /* NEOColorPickerBaseViewController.h */,
+				11ABFC9218C7D28300639A20 /* NEOColorPickerBaseViewController.m */,
+				11ABFC9318C7D28300639A20 /* NEOColorPickerFavoritesViewController.h */,
+				11ABFC9418C7D28300639A20 /* NEOColorPickerFavoritesViewController.m */,
+				11ABFC9518C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib */,
+				11ABFC9618C7D28300639A20 /* NEOColorPickerGradientView.h */,
+				11ABFC9718C7D28300639A20 /* NEOColorPickerGradientView.m */,
+				11ABFC9818C7D28300639A20 /* NEOColorPickerHSLViewController.h */,
+				11ABFC9918C7D28300639A20 /* NEOColorPickerHSLViewController.m */,
+				11ABFC9A18C7D28300639A20 /* NEOColorPickerHSLViewController.xib */,
+				11ABFC9B18C7D28300639A20 /* NEOColorPickerHueGridViewController.h */,
+				11ABFC9C18C7D28300639A20 /* NEOColorPickerHueGridViewController.m */,
+				11ABFC9D18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib */,
+				11ABFC9E18C7D28300639A20 /* NEOColorPickerViewController.h */,
+				11ABFC9F18C7D28300639A20 /* NEOColorPickerViewController.m */,
+				11ABFCA018C7D28300639A20 /* NEOColorPickerViewController.xib */,
+				11ABFCA118C7D28300639A20 /* UIColor+NEOColor.h */,
+				11ABFCA218C7D28300639A20 /* UIColor+NEOColor.m */,
+			);
+			path = "color-picker";
+			sourceTree = "<group>";
+		};
+		11ABFCAF18C7DA9200639A20 /* CMPopTipView */ = {
+			isa = PBXGroup;
+			children = (
+				11ABFCB018C7DA9200639A20 /* CMPopTipView.h */,
+				11ABFCB118C7DA9200639A20 /* CMPopTipView.m */,
+			);
+			path = CMPopTipView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1757,7 +1833,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
+				11ABFCA918C7D28300639A20 /* NEOColorPickerHSLViewController.xib in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
+				11ABFCA618C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib in Resources */,
 				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */,
@@ -1769,6 +1847,9 @@
 				11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
+				11ABFCA318C7D28300639A20 /* colorPicker.bundle in Resources */,
+				11ABFCAD18C7D28300639A20 /* NEOColorPickerViewController.xib in Resources */,
+				11ABFCAB18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1825,6 +1906,7 @@
 				1153E19118A9DF4800AD950E /* GPUImageMedianFilter.m in Sources */,
 				1107316318863B2E0065D77F /* UIAlertView+AFNetworking.m in Sources */,
 				1153E19718A9DF4800AD950E /* GPUImageMovie.m in Sources */,
+				11ABFCAA18C7D28300639A20 /* NEOColorPickerHueGridViewController.m in Sources */,
 				1153E1C418A9DF4800AD950E /* GPUImageSwirlFilter.m in Sources */,
 				1153E1D718A9DF4800AD950E /* GPUImageVoronoiConsumerFilter.m in Sources */,
 				1153E1C918A9DF4800AD950E /* GPUImageThresholdedNonMaximumSuppressionFilter.m in Sources */,
@@ -1866,6 +1948,7 @@
 				1153E15918A9DF4800AD950E /* GPUImageContrastFilter.m in Sources */,
 				1184FDDD18BCFB3700FDEAE0 /* AddFriendCell.m in Sources */,
 				1153E17118A9DF4800AD950E /* GPUImageGlassSphereFilter.m in Sources */,
+				11ABFCA818C7D28300639A20 /* NEOColorPickerHSLViewController.m in Sources */,
 				1153E1B918A9DF4800AD950E /* GPUImageSketchFilter.m in Sources */,
 				1153E1A118A9DF4800AD950E /* GPUImageParallelCoordinateLineTransformFilter.m in Sources */,
 				1153E17518A9DF4800AD950E /* GPUImageHarrisCornerDetectionFilter.m in Sources */,
@@ -1885,6 +1968,7 @@
 				1153E19D18A9DF4800AD950E /* GPUImageOpacityFilter.m in Sources */,
 				1153E1A618A9DF4800AD950E /* GPUImagePoissonBlendFilter.m in Sources */,
 				118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */,
+				11ABFCAE18C7D28300639A20 /* UIColor+NEOColor.m in Sources */,
 				1153E1AB18A9DF4800AD950E /* GPUImageRawDataInput.m in Sources */,
 				1153E1D618A9DF4800AD950E /* GPUImageVignetteFilter.m in Sources */,
 				1153E1B018A9DF4800AD950E /* GPUImageRGBFilter.m in Sources */,
@@ -1902,6 +1986,7 @@
 				1184FE0618BD03A000FDEAE0 /* SDWebImageManager.m in Sources */,
 				1153E17C18A9DF4800AD950E /* GPUImageHSBFilter.m in Sources */,
 				1153E1B618A9DF4800AD950E /* GPUImageSharpenFilter.m in Sources */,
+				11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */,
 				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
 				11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */,
@@ -1929,6 +2014,7 @@
 				113EE17818BBD08E0095D876 /* FacebookFriends.m in Sources */,
 				1184FE0518BD03A000FDEAE0 /* SDWebImageDownloaderOperation.m in Sources */,
 				1153E1BA18A9DF4800AD950E /* GPUImageSmoothToonFilter.m in Sources */,
+				11ABFCA718C7D28300639A20 /* NEOColorPickerGradientView.m in Sources */,
 				1153E1D318A9DF4800AD950E /* GPUImageUIElement.m in Sources */,
 				1153E15718A9DF4800AD950E /* GPUImageColorMatrixFilter.m in Sources */,
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
@@ -1956,15 +2042,18 @@
 				1153E1CC18A9DF4800AD950E /* GPUImageToneCurveFilter.m in Sources */,
 				1153E18618A9DF4800AD950E /* GPUImageLightenBlendFilter.m in Sources */,
 				1153E19618A9DF4800AD950E /* GPUImageMotionDetector.m in Sources */,
+				11ABFCA418C7D28300639A20 /* NEOColorPickerBaseViewController.m in Sources */,
 				1153E1BC18A9DF4800AD950E /* GPUImageSoftEleganceFilter.m in Sources */,
 				118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */,
 				1153E19C18A9DF4800AD950E /* GPUImageNormalBlendFilter.m in Sources */,
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
+				11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */,
 				119711E018AE0203008AD895 /* OverlayView.m in Sources */,
 				1153E16318A9DF4800AD950E /* GPUImageDivideBlendFilter.m in Sources */,
 				1153E15A18A9DF4800AD950E /* GPUImageCropFilter.m in Sources */,
+				11ABFCA518C7D28300639A20 /* NEOColorPickerFavoritesViewController.m in Sources */,
 				1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */,
 				1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */,
 				1153E1BF18A9DF4800AD950E /* GPUImageSourceOverBlendFilter.m in Sources */,
@@ -1994,6 +2083,7 @@
 				1107316118863B2E0065D77F /* AFNetworkActivityIndicatorManager.m in Sources */,
 				1186B1191888D7CE0082F35F /* LoginViewController.m in Sources */,
 				1153E1B718A9DF4800AD950E /* GPUImageShiTomasiFeatureDetectionFilter.m in Sources */,
+				11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,
 				11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */,

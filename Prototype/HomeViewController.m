@@ -30,6 +30,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "FacebookFriends.h"
 #import "UIImage+Utils.h"
+#import "CMPopTipView.h"
 
 
 
@@ -70,6 +71,7 @@
 
 @property (nonatomic, strong)NSString *finalPhrase;
 @property CGPoint finalPhraseLabelPostion;
+@property (strong,nonatomic)CMPopTipView *toolTip;
 
 
 @end
@@ -204,9 +206,23 @@
     [self.snapPicButton addGestureRecognizer:snapTap];
     self.snapPicButton.userInteractionEnabled = YES;
     
+    self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Tap once to take picture. Tap Twice for photo library"];
+    self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    self.toolTip.textColor = [UIColor whiteColor];
+    self.toolTip.hasGradientBackground = NO;
+    self.toolTip.preferredPointDirection = PointDirectionDown;
+    self.toolTip.hasShadow = NO;
+    self.toolTip.has3DStyle = NO;
+    self.toolTip.borderWidth = 1.0;
+    [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
+    [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:3.0];
+
+    
     self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
     self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"];
     self.snapPicButton.textColor =[UIColor colorWithHexString:@"#3498db"];
+    
+    
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
@@ -273,6 +289,11 @@
    
 
     
+}
+
+- (void)dismissToolTip
+{
+    [self.toolTip dismissAnimated:YES];
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {
