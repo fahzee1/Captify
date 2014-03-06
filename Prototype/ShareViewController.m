@@ -10,6 +10,8 @@
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "UIColor+HexValue.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "FacebookFriends.h"
 
 @interface ShareViewController ()
 
@@ -20,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *facebookDisplayLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
+@property (strong,nonatomic)FacebookFriends *friends;
 
 @property BOOL shareFacebook;
 @property BOOL shareInstagram;
@@ -83,9 +86,37 @@
     [self.myInstagramLabel addGestureRecognizer:tapIG];
 }
 
+- (void)saveImage
+{
+    NSParameterAssert(self.shareImage);
+    UIImageWriteToSavedPhotosAlbum(self.shareImage, nil, nil, nil);
+}
+
+
 
 - (void)tappedFacebook
 {
+    if (!FBSession.activeSession.isOpen){
+        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"]
+                                           defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES
+                                         completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                             if (error){
+                                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                 message:error.localizedDescription
+                                                                                                delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                                                 
+                                                 [alert show];
+                                             }
+                                             else if (session.isOpen){
+                                                 [self tappedFacebook];
+                                             }
+                                         }];
+        
+        return;
+    }
+    
+
+    
     self.shareFacebook = !self.shareFacebook;
     if (self.shareFacebook){
         self.myFacebookLabel.textColor = [UIColor colorWithHexString:@"#3B5998"];
@@ -110,6 +141,47 @@
         self.instagramDisplayLabel.textColor = [UIColor whiteColor];
     }
 }
+
+
+- (IBAction)tappedShare:(UIButton *)sender {
+    // after share show success overlay or alert or something
+    // then pop to root
+    [self saveImage];
+    
+    if (self.shareFacebook){
+        NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
+        if (!albumID){
+            albumID = @"NEED TO GRAB THIS";
+        }
+        [self.friends postImageToFeed:self.shareImage
+                              message:@"Or nah?"
+                              caption:@"Or nah?"
+                                 name:@"A name"
+                              albumID:albumID
+                            feedBlock:^(BOOL wasSuccessful) {
+                                if (wasSuccessful){
+                                    NSLog(@"posting to feed was successful");
+                                }
+                            } albumBlock:^(BOOL wasSuccessful) {
+                                NSLog(@"posting to album was successful");
+                            }];
+    }
+    
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    
+    
+}
+
+- (FacebookFriends *)friends
+{
+    if (!_friends){
+        _friends = [[FacebookFriends alloc] init];
+    }
+    return _friends;
+}
+
 
 
 

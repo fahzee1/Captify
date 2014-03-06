@@ -39,7 +39,7 @@
     else
     {
         //legacy support
-        [text drawInRect:CGRectIntegral(rect) withFont:font];
+        //[text drawInRect:CGRectIntegral(rect) withFont:font];
     }
     
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();

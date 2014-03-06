@@ -253,10 +253,13 @@
     if (self.title) {
         [self.titleColor set];
         CGRect titleFrame = [self contentFrame];
+        NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paragraph.lineBreakMode = NSLineBreakByClipping;
+        paragraph.alignment = self.titleAlignment;
+
         [self.title drawInRect:titleFrame
-                      withFont:self.titleFont
-                 lineBreakMode:NSLineBreakByClipping
-                     alignment:self.titleAlignment];
+                withAttributes:@{NSFontAttributeName: self.titleFont ? self.titleFont:[UIFont systemFontOfSize:13],
+                                 NSParagraphStyleAttributeName: paragraph}];
     }
 	
 	if (self.message) {
@@ -265,15 +268,18 @@
         
         // Move down to make room for title
         if (self.title) {
-            textFrame.origin.y += [self.title sizeWithFont:self.titleFont
-                                         constrainedToSize:CGSizeMake(textFrame.size.width, 99999.0)
-                                             lineBreakMode:NSLineBreakByClipping].height;
+            NSAttributedString *attrinutedText = [[NSAttributedString alloc] initWithString:self.title attributes:@{NSFontAttributeName: self.titleFont ? self.titleFont:[UIFont systemFontOfSize:13]}];
+            
+            textFrame.origin.y += [attrinutedText boundingRectWithSize: (CGSize){textFrame.size.width, CGFLOAT_MAX}
+                                                               options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height;
+            
         }
-        
+        NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+        paragraph.alignment = self.titleAlignment;
         [self.message drawInRect:textFrame
-                        withFont:self.textFont
-                   lineBreakMode:NSLineBreakByWordWrapping
-                       alignment:self.textAlignment];
+                  withAttributes:@{NSFontAttributeName: self.titleFont ? self.titleFont:[UIFont systemFontOfSize:13],NSParagraphStyleAttributeName:paragraph, NSForegroundColorAttributeName:self.textColor}];
+    
     }
 }
 
@@ -329,18 +335,22 @@
 	CGSize textSize = CGSizeZero;
     
     if (self.message!=nil) {
-        textSize= [self.message sizeWithFont:self.textFont
-                           constrainedToSize:CGSizeMake(rectWidth, 99999.0)
-                               lineBreakMode:NSLineBreakByWordWrapping];
+          NSAttributedString *attrinutedText = [[NSAttributedString alloc] initWithString:self.message attributes:@{NSFontAttributeName: self.titleFont ? self.titleFont:[UIFont systemFontOfSize:13]}];
+        textSize = [attrinutedText boundingRectWithSize: (CGSize){rectWidth, CGFLOAT_MAX}
+                                                           options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        
+
     }
     if (self.customView != nil) {
         textSize = self.customView.frame.size;
     }
     if (self.title != nil) {
-        textSize.height += [self.title sizeWithFont:self.titleFont
-                                  constrainedToSize:CGSizeMake(rectWidth, 99999.0)
-                                      lineBreakMode:NSLineBreakByClipping].height;
-    }
+        NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:self.title attributes:@{NSFontAttributeName: self.titleFont ? self.titleFont:[UIFont systemFontOfSize:13]}];
+        textSize.height += [attributedTitle boundingRectWithSize:(CGSize){rectWidth, CGFLOAT_MAX}
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                         context:nil].size.height;
+        
+        }
     
 	_bubbleSize = CGSizeMake(textSize.width + _cornerRadius*2, textSize.height + _cornerRadius*2);
 	

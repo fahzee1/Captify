@@ -214,7 +214,7 @@
     self.toolTip.preferredPointDirection = PointDirectionDown;
     self.toolTip.hasShadow = NO;
     self.toolTip.has3DStyle = NO;
-    self.toolTip.borderWidth = 1.0;
+    self.toolTip.borderWidth = 0;
     [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
     [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:7.0];
 

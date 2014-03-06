@@ -320,6 +320,7 @@
     [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (error){
             NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
+            NSLog(@"%@",error);
             if (ablock){
                 ablock(NO);
             }

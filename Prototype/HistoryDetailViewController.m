@@ -21,6 +21,14 @@
 #import "NEOColorPickerViewController.h"
 #import "CMPopTipView.h"
 
+/*
+ mark challenge as done when complete
+ 
+ check if challenge is done on view did
+ load
+ 
+ 
+ */
 
 
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate>
@@ -159,7 +167,7 @@
                          self.toolTip.preferredPointDirection = PointDirectionDown;
                          self.toolTip.hasShadow = NO;
                          self.toolTip.has3DStyle = NO;
-                         self.toolTip.borderWidth = 1.0;
+                         self.toolTip.borderWidth = 0;
                          [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
                          [self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
                          
