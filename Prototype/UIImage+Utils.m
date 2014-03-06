@@ -92,6 +92,47 @@
     return imageView.image;
 }
 
++(UIImage*)imageCrop:(UIImage*)original
+{
+    UIImage *ret = nil;
+    
+    // This calculates the crop area.
+    
+    float originalWidth  = original.size.width;
+    float originalHeight = original.size.height;
+    
+    float edge = fminf(originalWidth, originalHeight);
+    
+    float posX = (originalWidth   - edge) / 2.0f;
+    float posY = (originalHeight  - edge) / 2.0f;
+    
+    CGRect cropSquare;
+    // If orientation indicates a change to portrait.
+    if(original.imageOrientation == UIImageOrientationLeft ||
+       original.imageOrientation == UIImageOrientationRight)
+    {
+        cropSquare = CGRectMake(posY, posX,
+                                edge, edge);
+        
+    }
+    else
+    {
+        cropSquare = CGRectMake(posX, posY,
+                                edge, edge);
+    }
+    // This performs the image cropping.
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([original CGImage], cropSquare);
+    
+    ret = [UIImage imageWithCGImage:imageRef
+                              scale:original.scale
+                        orientation:original.imageOrientation];
+    
+    CGImageRelease(imageRef);
+    
+    return ret;
+}
+
 
 
 @end

@@ -14,6 +14,7 @@
 -(UIImage *)convertViewToImage;
 
 
+// dont use
 -(UIImage *)snapshotView:(UIView *)view;
 
 @end

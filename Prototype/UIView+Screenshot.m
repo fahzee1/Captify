@@ -21,6 +21,7 @@
     return image;
 }
 
+// dont use
 -(UIImage *)snapshotView:(UIView *)view
 {
     

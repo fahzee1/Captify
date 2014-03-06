@@ -37,7 +37,7 @@
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define ONEFIELD_TAG 1990
-#define PHRASE_LIMIT 40
+#define TITLE_LIMIT 40
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate>
 
@@ -57,6 +57,7 @@
 @property (strong,nonatomic)UIImage *previewOriginalSnapshot;
 @property (strong, nonatomic)UIView *previewControls;
 @property (strong, nonatomic)UIView *mainControls;
+@property (strong, nonatomic)UIView *previewBackground;
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
 @property (weak, nonatomic) IBOutlet UITextField *previewTextField;
@@ -69,7 +70,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *previewFinalPhraseLabel;
 
-@property (nonatomic, strong)NSString *finalPhrase;
+@property (nonatomic, strong)NSString *challengeTitle;
 @property CGPoint finalPhraseLabelPostion;
 @property (strong,nonatomic)CMPopTipView *toolTip;
 
@@ -215,7 +216,7 @@
     self.toolTip.has3DStyle = NO;
     self.toolTip.borderWidth = 1.0;
     [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
-    [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:7.0];
 
     
     self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
@@ -276,7 +277,7 @@
     self.previewFinalPhraseLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
     self.previewFinalPhraseLabel.hidden = YES;
     
-    self.previewTextField.placeholder = NSLocalizedString(@"Enter your phrase!", @"Textfield placeholder text");
+    self.previewTextField.placeholder = NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text");
     self.previewOneFieldContainer.layer.cornerRadius = 10.0f;
     self.previewOneFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
     CGRect firstRect = self.previewOneFieldContainer.frame;
@@ -339,7 +340,7 @@
 - (IBAction)tappedNextPreview:(UIButton *)sender {
     if ([self.previewTextField.text length] == 0){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Alert error title")
-                                                            message:NSLocalizedString(@"Must enter phrase before continuing", @"Alert error message")
+                                                            message:NSLocalizedString(@"Must enter challenge title before continuing", @"Alert error message")
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
                                                   otherButtonTitles:nil];
@@ -347,24 +348,9 @@
             return;
     }
     
-    // if label is still hidden then we mimic action of clicking
-    // next button on keyboard
-    if (self.previewFinalPhraseLabel.hidden){
-        [self textFieldShouldReturn:self.previewTextField];
-        return;
-    }
-    
-    // hide top buttons and take a snapshot
-    self.previewNextButton.hidden = YES;
-    self.previewCancelButton.hidden = YES;
-    
-    self.previewEditedSnapshot = [self.view convertViewToImage];
-    
-    // save position of label on image
-    self.finalPhraseLabelPostion = self.previewFinalPhraseLabel.frame.origin;
-    
     [self pushFinalPreview];
 }
+
 
 - (void)doubleTappedSnap:(UITapGestureRecognizer *)sender {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
@@ -385,16 +371,21 @@
 
 - (void)pushFinalPreview
 {
-    //[self performSegueWithIdentifier:@"showFinalPreview" sender:self];
+    self.challengeTitle = self.previewTextField.text;
+    [self.previewTextField resignFirstResponder];
+    [self animateTextFieldUp:0];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
     
-    vc.image = self.previewOriginalSnapshot;
-    vc.name = self.finalPhrase;
-    vc.phrase = self.finalPhrase;
+    vc.image = [UIImage imageCrop:self.previewOriginalSnapshot];
+    vc.name = self.challengeTitle;
     vc.delegate = self;
     
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.navigationController pushViewController:vc animated:YES];
+
+    });
 }
 
 
@@ -433,7 +424,7 @@
     [self.snapper captureStillImageAsynchronouslyFromConnection:vc
                                               completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                                                   NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                                                  self.previewOriginalSnapshot = [UIImage imageWithData:data];
+                                                   self.previewOriginalSnapshot = [UIImage imageWithData:data];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
                                                       
                                                       
@@ -447,14 +438,30 @@
                                               }];
 }
 
+- (void)toggleCameraControls
+{
+    if (!self.snapPicButton.hidden && !self.topMenuButton.hidden && !self.cameraOptionsButton.hidden){
+        self.snapPicButton.hidden = YES;
+        self.topMenuButton.hidden = YES;
+        self.cameraOptionsButton.hidden = YES;
+    }
+    else{
+        self.snapPicButton.hidden = NO;
+        self.topMenuButton.hidden = NO;
+        self.cameraOptionsButton.hidden = NO;
+
+    }
+}
+
 
 - (void)setupImagePreviewScreen
 {
+    [self toggleCameraControls];
     self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.previewSnap.contentMode = UIViewContentModeScaleAspectFill;
+    self.previewSnap.contentMode = UIViewContentModeScaleAspectFit;
     self.previewSnap.image = self.previewOriginalSnapshot;
 
-    
+    [self.view addSubview:self.previewBackground];
     [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
     
@@ -468,11 +475,22 @@
 
 - (void)cancelPreviewImage
 {
+    [self toggleCameraControls];
+    
     [self.previewControls removeFromSuperview];
     [self.previewSnap removeFromSuperview];
+    [self.previewBackground removeFromSuperview];
     
     self.previewControls = nil;
     self.previewSnap = nil;
+    self.previewOriginalSnapshot = nil;
+    self.previewBackground = nil;
+    self.previewNextButton = nil;
+    self.previewCancelButton = nil;
+    self.previewFinalPhraseLabel = nil;
+    self.previewTextField = nil;
+    self.previewOneFieldContainer = nil;
+    
 }
 
 
@@ -491,7 +509,9 @@
                                                                               oneFrame.size.width,
                                                                               oneFrame.size.height);
 
-                         } completion:nil];
+                         } completion:^(BOOL finished) {
+                             [self.previewTextField becomeFirstResponder];
+                         }];
     }
     else{
         CGRect oneFrame = self.previewOneFieldContainer.frame;
@@ -611,7 +631,7 @@
     }
 }
 
-
+/*
 - (void)showFinalTextLabel
 {
     // move text field off screen
@@ -658,6 +678,7 @@
                      }];
 
 }
+ */
 
 
 - (void)showMenu
@@ -720,7 +741,7 @@
     self.cameraOptionsButton = nil;
     self.cameraOptionsContainerView = nil;
     self.previewOneFieldContainer = nil;
-    self.finalPhrase = nil;
+    self.challengeTitle = nil;
     self.previewEditedSnapshot = nil;
     self.previewOriginalSnapshot = nil;
     
@@ -753,12 +774,31 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if ([textField.text length] <=1){
+        [self.previewNextButton.layer removeAnimationForKey:@"previewNextButton"];
+    }
+    else{
+        if  (![self.previewNextButton.layer animationForKey:@"previewNextButton"]){
+            
+            
+            CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+            pulseAnimation.duration = .5;
+            pulseAnimation.toValue = [NSNumber numberWithFloat:1.3];
+            pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            pulseAnimation.autoreverses = YES;
+            pulseAnimation.repeatCount = FLT_MAX;
+            [self.previewNextButton.layer addAnimation:pulseAnimation forKey:@"previewNextButton"];
+        }
+        
+        
+    }
+
 
     if ([string isEqualToString:@""]){
         return YES;
     }
     
-    if ([textField.text length] <= PHRASE_LIMIT){
+    if ([textField.text length] <= TITLE_LIMIT){
         return YES;
     }
     else{
@@ -772,8 +812,10 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    self.finalPhrase = textField.text;
-    [self showFinalTextLabel];
+    self.challengeTitle = textField.text;
+    [self pushFinalPreview];
+    
+    //[self showFinalTextLabel];
     
     //[self proceedToFinalPreview];
     
@@ -787,13 +829,14 @@
 }
 
 
+
 #pragma -mark UIImagepickercontroller delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
+        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
         [self setupImagePreviewScreen];
     }
     
@@ -818,7 +861,7 @@
             self.previewNextButton.hidden = NO;
             self.previewCancelButton.hidden = NO;
             self.previewFinalPhraseLabel.hidden = YES;
-            self.finalPhrase = nil;
+            self.challengeTitle = nil;
             CGRect oneFrame = self.previewOneFieldContainer.frame;
             self.previewOneFieldContainer.frame = CGRectMake(oneFrame.origin.x,
                                                              SCREENHEIGHT - 290,
@@ -922,6 +965,15 @@
     }
     
     return _previewControls;
+}
+
+- (UIView *)previewBackground
+{
+    if (!_previewBackground){
+        _previewBackground = [[UIView alloc] initWithFrame:self.view.frame];
+        _previewBackground.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+    }
+    return _previewBackground;
 }
 
 

@@ -45,7 +45,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"friends loaded");
 	// Do any additional setup after loading the view.
     
     UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentedControl.selectedSegmentIndex];

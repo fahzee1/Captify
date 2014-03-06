@@ -10,7 +10,7 @@
 
 @interface ShareViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIImageView *myImageView;
-
+@property (weak, nonatomic) IBOutlet UIImageView *shareImageView;
+@property (strong, nonatomic)UIImage *shareImage;
 
 @end

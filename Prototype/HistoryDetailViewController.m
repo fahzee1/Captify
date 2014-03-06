@@ -33,7 +33,7 @@
 @property NSString *selectedCaption;
 @property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
 @property UIImageView *finalContainerScreen;
-@property UIImage *finalImage;
+@property (strong, nonatomic)UIImage *finalImage;
 @property (strong, nonatomic)UIView *imageControls;
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
 @property (weak, nonatomic) IBOutlet UILabel *captionFontValue;
@@ -41,7 +41,6 @@
 @property (weak, nonatomic) IBOutlet UIStepper *captionFontStepper;
 @property (weak, nonatomic) IBOutlet UIButton *captionDoneButton;
 @property (strong,nonatomic)CMPopTipView *toolTip;
-
 @end
 
 @implementation HistoryDetailViewController
@@ -103,9 +102,14 @@
 
 - (void)showShareScreen
 {
+    
+    [self captureFinalImage];
+    
     UIViewController *shareVc = [self.storyboard instantiateViewControllerWithIdentifier:@"shareController"];
     if ([shareVc isKindOfClass:[ShareViewController class]]){
-        ((ShareViewController *)shareVc).myImageView.image = self.myImageView.image;
+        if (self.finalImage){
+            ((ShareViewController *)shareVc).shareImage = self.finalImage;
+        }
         [self.navigationController pushViewController:shareVc animated:YES];
         
     }
@@ -157,7 +161,7 @@
                          self.toolTip.has3DStyle = NO;
                          self.toolTip.borderWidth = 1.0;
                          [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
-                         [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:3.0];
+                         [self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
                          
                          
                      }];
@@ -165,9 +169,9 @@
 }
 
 
-- (void)dismissToolTip
+- (void)dismissToolTipAnimated:(BOOL)animated
 {
-    [self.toolTip dismissAnimated:YES];
+    [self.toolTip dismissAnimated:animated];
     self.toolTip = nil;
 }
 
@@ -179,11 +183,10 @@
     
     self.captionColor.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     [self.captionColor setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil"] forState:UIControlStateNormal];
-    [self.captionColor setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.captionColor setTitleColor:self.finalCaptionLabel.textColor forState:UIControlStateNormal];
     
     self.captionFontStepper.tintColor = [UIColor whiteColor];
     self.captionFontValue .textColor = [UIColor whiteColor];
-    [self.captionColor setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.captionFontStepper.value = 25;
     [self.captionFontStepper addTarget:self action:@selector(captionFontChanged) forControlEvents:UIControlEventValueChanged];
@@ -205,10 +208,10 @@
 
 - (void)captureFinalImage
 {
-    // hide controls
-    
-    self.finalImage = [self.view convertViewToImage];
-    //UIImageWriteToSavedPhotosAlbum(self.finalImage, nil, nil, nil);
+    [self dismissToolTipAnimated:NO];
+    [self.finalCaptionLabel stopGlowing];
+    self.finalImage = [self.myImageView convertViewToImage];
+ 
     
 }
 
@@ -369,6 +372,7 @@
 - (void)colorPickerViewController:(NEOColorPickerBaseViewController *)controller didSelectColor:(UIColor *)color
 {
     self.finalCaptionLabel.textColor = color;
+    [self.captionColor setTitleColor:color forState:UIControlStateNormal];
     self.imageControls.hidden = YES;
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
