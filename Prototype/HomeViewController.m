@@ -94,7 +94,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    NSString *logThis = @"options for history are 4 in length. 'sender' or 'reciever' and 'active or inactive' \
+    if sender and active show screen that allows to choose caption. If sender and inactive show same screen but \
+    remoove select buttons. If receiver and active show answer challenege request screen. If receiver and inactive show challenge screen with all submitted captions. GET THIS HISTORY NAV RIGHT! IM OUT";
+    NSLog(logThis);
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
@@ -881,18 +884,6 @@
         }
         return [GoHomeTransition new];
     }
-    
-    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[ReceiverPreviewViewController class]]){
-        UIView *picAndName = ((ChallengeViewController *)fromVC).topLabel;
-        if (picAndName){
-            [picAndName removeFromSuperview];
-        }
-    }
-    
-    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[ReceiverPreviewViewController class]]){
-        [((ChallengeViewController *)toVC) setupTopLabel];
-    }
-    
 
     
     return nil;

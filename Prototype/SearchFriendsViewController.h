@@ -10,4 +10,6 @@
 
 @interface SearchFriendsViewController : UITableViewController
 
+
+- (void)slideDownKeyboard;
 @end

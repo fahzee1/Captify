@@ -115,6 +115,9 @@
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES];
+    request.sortDescriptors = @[sort];
+    
     if (all){
         return [context executeFetchRequest:request error:&error];
     }

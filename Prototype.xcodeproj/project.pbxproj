@@ -39,9 +39,12 @@
 		1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107315E18863B2E0065D77F /* UIProgressView+AFNetworking.m */; };
 		1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */; };
 		110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */ = {isa = PBXBuildFile; fileRef = 110731761888C6230065D77F /* AwesomeAPICLient.m */; };
+		1108021218CA57880014BAD8 /* HistoryContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021118CA57880014BAD8 /* HistoryContainerViewController.m */; };
+		1108021518CA5AB00014BAD8 /* HistorySentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021418CA5AB00014BAD8 /* HistorySentViewController.m */; };
+		1108021818CA7A640014BAD8 /* HistorySentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021718CA7A640014BAD8 /* HistorySentCell.m */; };
 		11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewContr.m */; };
 		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
-		11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryCell.m */; };
+		11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
 		1121284718C5A8AF0033E026 /* shareControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1121284618C5A8AF0033E026 /* shareControls.xib */; };
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
@@ -374,12 +377,18 @@
 		1107316018863B2E0065D77F /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		110731751888C6230065D77F /* AwesomeAPICLient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeAPICLient.h; sourceTree = "<group>"; };
 		110731761888C6230065D77F /* AwesomeAPICLient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeAPICLient.m; sourceTree = "<group>"; };
-		11101DD718B17073009D44BD /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		1108021018CA57880014BAD8 /* HistoryContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryContainerViewController.h; sourceTree = "<group>"; };
+		1108021118CA57880014BAD8 /* HistoryContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryContainerViewController.m; sourceTree = "<group>"; };
+		1108021318CA5AB00014BAD8 /* HistorySentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySentViewController.h; sourceTree = "<group>"; };
+		1108021418CA5AB00014BAD8 /* HistorySentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySentViewController.m; sourceTree = "<group>"; };
+		1108021618CA7A640014BAD8 /* HistorySentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySentCell.h; sourceTree = "<group>"; };
+		1108021718CA7A640014BAD8 /* HistorySentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySentCell.m; sourceTree = "<group>"; };
+		11101DD718B17073009D44BD /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
 		11101DD818B17073009D44BD /* HistoryViewContr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewContr.m; sourceTree = "<group>"; };
 		1114293818BDBAFD00D36F0D /* DraggableCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableCaption.h; sourceTree = "<group>"; };
 		1114293918BDBAFD00D36F0D /* DraggableCaption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableCaption.m; sourceTree = "<group>"; };
-		11176DEB18B7F6E600FA69B7 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
-		11176DEC18B7F6E600FA69B7 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		11176DEB18B7F6E600FA69B7 /* HistoryReceivedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryReceivedCell.h; sourceTree = "<group>"; };
+		11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryReceivedCell.m; sourceTree = "<group>"; };
 		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
 		111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderPreviewViewController.m; sourceTree = "<group>"; };
 		1121284618C5A8AF0033E026 /* shareControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = shareControls.xib; sourceTree = "<group>"; };
@@ -1195,12 +1204,16 @@
 				119711D418ADE5EF008AD895 /* SettingsViewController.m */,
 				119711C918ADAAC3008AD895 /* MenuViewController.h */,
 				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
-				11101DD718B17073009D44BD /* HistoryViewController.h */,
+				11101DD718B17073009D44BD /* HistoryRecievedViewController.h */,
 				11101DD818B17073009D44BD /* HistoryViewContr.m */,
 				11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */,
 				11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */,
 				11FAA7FC18C6763900147E75 /* ShareViewController.h */,
 				11FAA7FD18C6763900147E75 /* ShareViewController.m */,
+				1108021018CA57880014BAD8 /* HistoryContainerViewController.h */,
+				1108021118CA57880014BAD8 /* HistoryContainerViewController.m */,
+				1108021318CA5AB00014BAD8 /* HistorySentViewController.h */,
+				1108021418CA5AB00014BAD8 /* HistorySentViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1216,14 +1229,16 @@
 				114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */,
 				118F24F618BFC2C90007797E /* UIImage+Utils.h */,
 				118F24F718BFC2C90007797E /* UIImage+Utils.m */,
-				11176DEB18B7F6E600FA69B7 /* HistoryCell.h */,
-				11176DEC18B7F6E600FA69B7 /* HistoryCell.m */,
+				11176DEB18B7F6E600FA69B7 /* HistoryReceivedCell.h */,
+				11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */,
 				11BC442518C46A7B0052D98F /* HistoryDetailCell.h */,
 				11BC442618C46A7B0052D98F /* HistoryDetailCell.m */,
 				11C8E8D218C9277F00FE6B5E /* CJFilterView.h */,
 				11C8E8D318C9277F00FE6B5E /* CJFilterView.m */,
 				1121284618C5A8AF0033E026 /* shareControls.xib */,
 				11C8E8D518C930E900FE6B5E /* filterControls.xib */,
+				1108021618CA7A640014BAD8 /* HistorySentCell.h */,
+				1108021718CA7A640014BAD8 /* HistorySentCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1882,6 +1897,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1153E16718A9DF4800AD950E /* GPUImageExposureFilter.m in Sources */,
+				1108021218CA57880014BAD8 /* HistoryContainerViewController.m in Sources */,
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
 				1153E1CD18A9DF4800AD950E /* GPUImageToonFilter.m in Sources */,
@@ -1967,6 +1983,7 @@
 				1153E1A118A9DF4800AD950E /* GPUImageParallelCoordinateLineTransformFilter.m in Sources */,
 				1153E17518A9DF4800AD950E /* GPUImageHarrisCornerDetectionFilter.m in Sources */,
 				1153E1C618A9DF4800AD950E /* GPUImageTextureOutput.m in Sources */,
+				1108021518CA5AB00014BAD8 /* HistorySentViewController.m in Sources */,
 				1153E1DE18A9DF4800AD950E /* GPUImagePicture.m in Sources */,
 				1107314D18863B1E0065D77F /* AFURLConnectionOperation.m in Sources */,
 				1153E1C318A9DF4800AD950E /* GPUImageSubtractBlendFilter.m in Sources */,
@@ -2021,6 +2038,7 @@
 				1186B15C188C6F860082F35F /* SignUpViewController.m in Sources */,
 				1153E16118A9DF4800AD950E /* GPUimageDirectionalSobelEdgeDetectionFilter.m in Sources */,
 				1153E1AF18A9DF4800AD950E /* GPUImageRGBErosionFilter.m in Sources */,
+				1108021818CA7A640014BAD8 /* HistorySentCell.m in Sources */,
 				1153E16018A9DF4800AD950E /* GPUImageDirectionalNonMaximumSuppressionFilter.m in Sources */,
 				1153E16E18A9DF4800AD950E /* GPUImageGaussianBlurFilter.m in Sources */,
 				114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */,
@@ -2089,7 +2107,7 @@
 				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1153E16618A9DF4800AD950E /* GPUImageExclusionBlendFilter.m in Sources */,
 				1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */,
-				11176DED18B7F6E600FA69B7 /* HistoryCell.m in Sources */,
+				11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */,
 				1153E15118A9DF4800AD950E /* GPUImageChromaKeyFilter.m in Sources */,
 				1184FE0218BD03A000FDEAE0 /* SDWebImageCompat.m in Sources */,
 				1107315018863B1E0065D77F /* AFURLSessionManager.m in Sources */,

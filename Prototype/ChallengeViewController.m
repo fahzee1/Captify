@@ -115,10 +115,22 @@
    
 }
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self setupTopLabel];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    
+   
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.topLabel removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning

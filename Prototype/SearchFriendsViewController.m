@@ -56,6 +56,11 @@
 
 
 
+- (void)slideDownKeyboard
+{
+    [self.mySearchBar resignFirstResponder];
+}
+
 - (void)searchForText:(NSString *)searchText
 {
     //NSString *predicateFormat = @"%K BEGINSWITH[cd] %@";

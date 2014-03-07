@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class User;
 
-@interface HistoryViewController : UIViewController
+@interface HistoryRecievedViewController : UIViewController
 
+
+@property (nonatomic, retain)User *myUser;
 @end

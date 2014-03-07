@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HistoryCell : UITableViewCell
+@interface HistoryReceivedCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *historyTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *historyImageView;

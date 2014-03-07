@@ -143,6 +143,8 @@
 
 }
 
+// this is crashing 
+
 - (void)sendButtonTapped:(UIButton *)sender
 {
     // create challenge in core data.
@@ -160,9 +162,28 @@
     [Challenge createChallengeWithParams:params];
     
     NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
+    
+    //maybe show history
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+#pragma -mark UIscrollview delegate
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if (scrollView == self.friendsTable){
+        self.bottomLabel.hidden = NO;
+        self.bottomSendButton.hidden = NO;
+    }
+}
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (scrollView == self.friendsTable){
+        self.bottomLabel.hidden = YES;
+        self.bottomSendButton.hidden = YES;
+    }
+
+}
 
 #pragma -mark UItableview delegate
 

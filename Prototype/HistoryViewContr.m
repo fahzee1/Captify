@@ -6,25 +6,29 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "HistoryViewController.h"
+#import "HistoryRecievedViewController.h"
 #import "TWTSideMenuViewController.h"
 #import "UIColor+HexValue.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
-#import "HistoryCell.h"
+#import "HistoryReceivedCell.h"
 #import "FAImageView.h"
 #import "HistoryDetailViewController.h"
 #import "NSDate+TimeAgo.h"
+#import "Challenge+Utils.h"
+#import "AppDelegate.h"
+#import "ChallengeViewController.h"
 
-@interface HistoryViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface HistoryRecievedViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property NSArray *data;
+@property (strong, nonatomic) NSArray *cData;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 
 
 @end
 
-@implementation HistoryViewController
+@implementation HistoryRecievedViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,11 +42,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
-    self.navigationItem.leftBarButtonItem = button;
-    self.navigationItem.title = NSLocalizedString(@"History", nil);
-    
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
    
@@ -62,12 +61,6 @@
 }
 
 
-- (void)showMenu
-{
-    [self.sideMenuViewController openMenuAnimated:YES completion:nil];
-    
-}
-
 
 #pragma -mark Uitableview delegate
 
@@ -81,15 +74,34 @@
     return [self.data count];
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
      static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell && [cell isKindOfClass:[HistoryCell class]]){
+    if (cell && [cell isKindOfClass:[HistoryReceivedCell class]]){
+        
+        if ([[self.data objectAtIndex:indexPath.row] isEqualToString:@"' The trinity' \r by splacca"]){
+            UIView *colo = [[UIView alloc] initWithFrame:cell.frame];
+            colo.backgroundColor = [UIColor whiteColor];
+            colo.layer.borderColor = [[[UIColor greenColor]colorWithAlphaComponent:0.5f] CGColor];
+            colo.layer.borderWidth = 2.0f;
+            colo.layer.cornerRadius = 10.0f;
+            cell.backgroundView = colo;
+        }
+        else{
+            UIView *colo = [[UIView alloc] initWithFrame:cell.frame];
+            colo.backgroundColor = [UIColor whiteColor];
+            colo.layer.borderColor = [[[UIColor redColor] colorWithAlphaComponent:0.5f] CGColor];
+            colo.layer.borderWidth = 2.0f;
+            colo.layer.cornerRadius = 10.0f;
+            cell.backgroundView = colo;
+
+        }
     
-        UILabel *titleLabel = ((HistoryCell *)cell).historyTitleLabel;
-        UILabel *activeLabel = ((HistoryCell *)cell).activeLabel;
-        UIImageView *KimageView =  ((HistoryCell *)cell).historyImageView;
+        UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
+        UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
+        UIImageView *KimageView =  ((HistoryReceivedCell *)cell).historyImageView;
         titleLabel.text = [self.data objectAtIndex:indexPath.row];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
         titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -139,16 +151,60 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // go to detail screen
+    // go to detail screen or go to challenge screen
+    UIViewController *vc;
+    if ([[self.data objectAtIndex:indexPath.section]isEqualToString:@"' The trinity' \r by splacca"]){
+        
+         vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
+    }
+    else{
+          vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+    }
     
-    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+    
+    
     if ([vc isKindOfClass:[HistoryDetailViewController class]]){
         
         // give vc all the data it needs
-        
-        [self.navigationController pushViewController:vc animated:YES];
     }
+    else if ([vc isKindOfClass:[ChallengeViewController class]]){
+        // give vc all data it needs
+    }
+    
+    // if responded too dont push anything
+    
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
+
+
+- (NSArray *)cData
+{
+    if (!_cData){
+        _cData = [Challenge getChallengesWithUsername:nil
+                                          fromFriends:0
+                                               getAll:YES
+                                              context:self.myUser.managedObjectContext];
+    }
+    return _cData;
+}
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
 
 
 

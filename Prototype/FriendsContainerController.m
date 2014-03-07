@@ -15,9 +15,10 @@
 #import "FacebookFriends.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
+#import "SearchFriendsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate>
+@interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 @property (strong,nonatomic)UIViewController *currentController;
@@ -46,6 +47,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.sideMenuViewController.delegate = self;
     
     UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
@@ -263,6 +265,17 @@
     }
     
     return _friend;
+}
+
+
+
+#pragma -mark side menu delegate
+
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sideMenuViewController
+{
+    if ([self.currentController isKindOfClass:[SearchFriendsViewController class]]){
+        [((SearchFriendsViewController *)self.currentController) slideDownKeyboard];
+    }
 }
 
 #pragma -mark FBFRIENDS delegate

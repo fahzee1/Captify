@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "HistoryCell.h"
+#import "HistoryReceivedCell.h"
 
-@implementation HistoryCell
+@implementation HistoryReceivedCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

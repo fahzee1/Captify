@@ -88,7 +88,7 @@
         }
         case HistoryTag:
         {
-            UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"historyRoot"];
+            UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
             if ([self isAlreadyMainVC:history.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
             }
