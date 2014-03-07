@@ -143,11 +143,21 @@
 }
 
 
+- (void)testPost
+{
+    [self.friends postImage:self.shareImage block:^(BOOL wasSuccessful) {
+        if (wasSuccessful){
+            NSLog(@"good money");
+        }
+    }];
+}
+
 - (IBAction)tappedShare:(UIButton *)sender {
     // after share show success overlay or alert or something
     // then pop to root
     [self saveImage];
     
+
     if (self.shareFacebook){
         NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
         if (!albumID){

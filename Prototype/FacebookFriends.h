@@ -48,4 +48,7 @@ typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
                   feedBlock:(FacebookPostStatus)fblock
              albumBlock:(FacebookPostStatus)ablock;
 
+- (void)postImage:(UIImage *)image
+            block:(FacebookPostStatus)block;
+
 @end

@@ -301,7 +301,7 @@
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (error){
             if (fblock) {
-                fblock(YES);
+                fblock(NO);
          
             
             }
@@ -336,6 +336,47 @@
 
     
     
+    
 }
+
+
+- (void)postImage:(UIImage *)image
+            block:(FacebookPostStatus)block
+{
+    [self createAlbumWithName:@"stunner" block:^(BOOL wasSuccessful, id albumID) {
+        if (wasSuccessful){
+            
+            NSString *albumPath = [NSString stringWithFormat:@"%@/photos",albumID];
+            FBRequest *albumRequest = [FBRequest requestWithGraphPath:albumPath
+                                                           parameters:@{@"source": image}
+                                                           HTTPMethod:@"POST"];
+            
+            [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (error){
+                    NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
+                    NSLog(@"%@",error);
+                    if (block){
+                        block(NO);
+                    }
+                    
+                    return;
+                }
+                
+                if (block){
+                    NSLog(@"album result %@",result);
+                    block(YES);
+                }
+            }];
+            
+            
+        }
+        else{
+            NSLog(@"error");
+        }
+    }];
+    
+}
+
+
 
 @end

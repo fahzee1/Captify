@@ -264,6 +264,7 @@
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
+		1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1191604318C9894F00C25E36 /* FacebookSDK.framework */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -815,6 +816,7 @@
 		118D513A18B66807001AA7FC /* SearchFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFriendsViewController.m; sourceTree = "<group>"; };
 		118F24F618BFC2C90007797E /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		118F24F718BFC2C90007797E /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
+		1191604318C9894F00C25E36 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -887,6 +889,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				1153DFE818A9DF0400AD950E /* AVFoundation.framework in Frameworks */,
@@ -938,6 +941,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1191604318C9894F00C25E36 /* FacebookSDK.framework */,
 				11C8E8D018C8FA7600FE6B5E /* FacebookSDK.framework */,
 				11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */,
 				1153DFE918A9DF0F00AD950E /* QuartzCore.framework */,
@@ -2281,7 +2285,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				FRAMEWORK_SEARCH_PATHS = "/Users/cjogbuehi/ios/prototype-words/prototype-words";
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
+					/Users/cjogbuehi/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
@@ -2298,7 +2305,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				FRAMEWORK_SEARCH_PATHS = "/Users/cjogbuehi/ios/prototype-words/prototype-words";
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
+					/Users/cjogbuehi/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Prototype-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Prototype-Info.plist";
