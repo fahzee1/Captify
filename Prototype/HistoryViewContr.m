@@ -80,24 +80,6 @@
      static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell && [cell isKindOfClass:[HistoryReceivedCell class]]){
-        
-        if ([[self.data objectAtIndex:indexPath.row] isEqualToString:@"' The trinity' \r by splacca"]){
-            UIView *colo = [[UIView alloc] initWithFrame:cell.frame];
-            colo.backgroundColor = [UIColor whiteColor];
-            colo.layer.borderColor = [[[UIColor greenColor]colorWithAlphaComponent:0.5f] CGColor];
-            colo.layer.borderWidth = 2.0f;
-            colo.layer.cornerRadius = 10.0f;
-            cell.backgroundView = colo;
-        }
-        else{
-            UIView *colo = [[UIView alloc] initWithFrame:cell.frame];
-            colo.backgroundColor = [UIColor whiteColor];
-            colo.layer.borderColor = [[[UIColor redColor] colorWithAlphaComponent:0.5f] CGColor];
-            colo.layer.borderWidth = 2.0f;
-            colo.layer.cornerRadius = 10.0f;
-            cell.backgroundView = colo;
-
-        }
     
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
         UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
@@ -152,29 +134,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // go to detail screen or go to challenge screen
-    UIViewController *vc;
-    if ([[self.data objectAtIndex:indexPath.section]isEqualToString:@"' The trinity' \r by splacca"]){
-        
-         vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
+    
+    // check if active
+    if (1){
+        UIViewController *vc;
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    else{
-          vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
-    }
-    
-    
-    
-    if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-        
-        // give vc all the data it needs
-    }
-    else if ([vc isKindOfClass:[ChallengeViewController class]]){
-        // give vc all data it needs
-    }
-    
-    // if responded too dont push anything
-    
-    
-    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

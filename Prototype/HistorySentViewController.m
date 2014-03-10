@@ -37,6 +37,11 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [self.myTableView deselectRowAtIndexPath:[self.myTableView indexPathForSelectedRow] animated:NO];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -87,6 +92,20 @@
     
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // go to detail screen or go to challenge screen
+    
+    // check if active
+    if (1){
+        UIViewController *vc;
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+}
+
 
 
 
