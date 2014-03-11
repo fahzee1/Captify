@@ -42,6 +42,8 @@
 		1108021218CA57880014BAD8 /* HistoryContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021118CA57880014BAD8 /* HistoryContainerViewController.m */; };
 		1108021518CA5AB00014BAD8 /* HistorySentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021418CA5AB00014BAD8 /* HistorySentViewController.m */; };
 		1108021818CA7A640014BAD8 /* HistorySentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021718CA7A640014BAD8 /* HistorySentCell.m */; };
+		110B087B18CF867300EC850F /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087A18CF867300EC850F /* Accounts.framework */; };
+		110B087D18CF896900EC850F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087C18CF896900EC850F /* Social.framework */; };
 		11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewContr.m */; };
 		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
 		11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */; };
@@ -51,7 +53,7 @@
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
-		113EE17818BBD08E0095D876 /* FacebookFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* FacebookFriends.m */; };
+		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
 		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
@@ -383,6 +385,8 @@
 		1108021418CA5AB00014BAD8 /* HistorySentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySentViewController.m; sourceTree = "<group>"; };
 		1108021618CA7A640014BAD8 /* HistorySentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySentCell.h; sourceTree = "<group>"; };
 		1108021718CA7A640014BAD8 /* HistorySentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySentCell.m; sourceTree = "<group>"; };
+		110B087A18CF867300EC850F /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		110B087C18CF896900EC850F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		11101DD718B17073009D44BD /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
 		11101DD818B17073009D44BD /* HistoryViewContr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewContr.m; sourceTree = "<group>"; };
 		1114293818BDBAFD00D36F0D /* DraggableCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableCaption.h; sourceTree = "<group>"; };
@@ -399,8 +403,8 @@
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
-		113EE17618BBD08E0095D876 /* FacebookFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriends.h; sourceTree = "<group>"; };
-		113EE17718BBD08E0095D876 /* FacebookFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookFriends.m; sourceTree = "<group>"; };
+		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
+		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		1144914D18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -898,6 +902,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110B087D18CF896900EC850F /* Social.framework in Frameworks */,
+				110B087B18CF867300EC850F /* Accounts.framework in Frameworks */,
 				1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
@@ -950,6 +956,8 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				110B087C18CF896900EC850F /* Social.framework */,
+				110B087A18CF867300EC850F /* Accounts.framework */,
 				1191604318C9894F00C25E36 /* FacebookSDK.framework */,
 				11C8E8D018C8FA7600FE6B5E /* FacebookSDK.framework */,
 				11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */,
@@ -1191,8 +1199,8 @@
 		11101DD418B16EF5009D44BD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				113EE17618BBD08E0095D876 /* FacebookFriends.h */,
-				113EE17718BBD08E0095D876 /* FacebookFriends.m */,
+				113EE17618BBD08E0095D876 /* SocialFriends.h */,
+				113EE17718BBD08E0095D876 /* SocialFriends.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2043,7 +2051,7 @@
 				1153E16E18A9DF4800AD950E /* GPUImageGaussianBlurFilter.m in Sources */,
 				114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */,
 				1153E17D18A9DF4800AD950E /* GPUImageHueBlendFilter.m in Sources */,
-				113EE17818BBD08E0095D876 /* FacebookFriends.m in Sources */,
+				113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */,
 				1184FE0518BD03A000FDEAE0 /* SDWebImageDownloaderOperation.m in Sources */,
 				1153E1BA18A9DF4800AD950E /* GPUImageSmoothToonFilter.m in Sources */,
 				11ABFCA718C7D28300639A20 /* NEOColorPickerGradientView.m in Sources */,

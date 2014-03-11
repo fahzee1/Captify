@@ -10,7 +10,7 @@
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
 #import "TMCache.h"
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "FriendsContainerController.h"
 
 #define HomeTag 1000

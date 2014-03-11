@@ -8,7 +8,7 @@
 
 #import "FacebookFriendsViewController.h"
 #import "User.h"
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "AddFriendCell.h"
 #import "FAImageView.h"
 #import "UIImageView+WebCache.h"
@@ -23,7 +23,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic)NSArray *contactsArray;
 @property (strong, nonatomic)NSArray *sections;
-@property (strong, nonatomic)FacebookFriends *friend;
+@property (strong, nonatomic)SocialFriends *friend;
 
 @end
 
@@ -66,10 +66,10 @@
     [self.myTableView reloadData];
 }
 
-- (FacebookFriends *)friend
+- (SocialFriends *)friend
 {
     if (!_friend){
-        _friend = [[FacebookFriends alloc] init];
+        _friend = [[SocialFriends alloc] init];
     }
     return _friend;
 }

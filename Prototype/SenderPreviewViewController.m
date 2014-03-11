@@ -149,8 +149,6 @@
 {
     // create challenge in core data.
     // send request to create challenge on backend.
-    // follow that with another request to create a challenge send
-    // so all receipients get notified
 
 
     NSDictionary *params = @{@"sender":self.myUser.username,

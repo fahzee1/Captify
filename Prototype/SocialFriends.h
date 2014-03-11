@@ -8,13 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
+
+
 
 typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
 typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult result);
 typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
 typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
+typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
 
-@interface FacebookFriends : NSObject
+@interface SocialFriends : NSObject
 
 
 
@@ -40,13 +45,20 @@ typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
 - (void)createAlbumWithName:(NSString *)name
                       block:(FacebookCreateAlbum)block;
 
-- (void)postImageToFeed:(UIImage *)image
+- (void)postImageToFacebookFeed:(UIImage *)image
                 message:(NSString *)message
                 caption:(NSString *)caption
                    name:(NSString *)name
                 albumID:(NSString *)albumId
+                   facebookUser:(BOOL)isFB
                   feedBlock:(FacebookPostStatus)fblock
              albumBlock:(FacebookPostStatus)ablock;
+
+
+- (void)postImageToTwitterFeed:(UIImage *)image
+                       caption:(NSString *)caption
+                         block:(TwitterPostStatus)block;
+
 
 - (void)postImage:(UIImage *)image
             block:(FacebookPostStatus)block;

@@ -28,7 +28,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "UIImage+Utils.h"
 #import "CMPopTipView.h"
 
@@ -37,7 +37,7 @@
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define ONEFIELD_TAG 1990
-#define TITLE_LIMIT 40
+
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate>
 
@@ -97,7 +97,11 @@
     NSString *logThis = @"options for history are 4 in length. 'sender' or 'reciever' and 'active or inactive' \
     if sender and active show screen that allows to choose caption. If sender and inactive show same screen but \
     remoove select buttons. If receiver and active show answer challenege request screen. If receiver and inactive show challenge screen with all submitted captions. GET THIS HISTORY NAV RIGHT! IM OUT";
+    
+    NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
     NSLog(logThis);
+    NSLog(logthis2);
+    
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;

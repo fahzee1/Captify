@@ -11,21 +11,24 @@
 #import "UIFont+FontAwesome.h"
 #import "UIColor+HexValue.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 
 @interface ShareViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myInstagramLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myTwitterLabel;
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (weak, nonatomic) IBOutlet UILabel *facebookDisplayLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
-@property (strong,nonatomic)FacebookFriends *friends;
+@property (weak, nonatomic) IBOutlet UILabel *twitterDisplayLabel;
+@property (strong,nonatomic)SocialFriends *friends;
+
 
 @property BOOL shareFacebook;
 @property BOOL shareInstagram;
+@property BOOL shareTwitter;
 
 @end
 
@@ -65,7 +68,7 @@
     self.myShareButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
     [self.myShareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFacebook)];
+    UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
     tapFB.numberOfTapsRequired = 1;
     tapFB.numberOfTouchesRequired = 1;
     
@@ -74,6 +77,7 @@
     self.myFacebookLabel.textColor = [UIColor whiteColor];
     self.myFacebookLabel.userInteractionEnabled = YES;
     [self.myFacebookLabel addGestureRecognizer:tapFB];
+    
     
     UITapGestureRecognizer *tapIG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedInstagram)];
     tapIG.numberOfTapsRequired = 1;
@@ -84,6 +88,15 @@
     self.myInstagramLabel.textColor = [UIColor whiteColor];
     self.myInstagramLabel.userInteractionEnabled = YES;
     [self.myInstagramLabel addGestureRecognizer:tapIG];
+    
+    
+    UITapGestureRecognizer *tapTw = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedTwitter)];
+    self.myTwitterLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    self.myTwitterLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"];
+    self.myTwitterLabel.textColor = [UIColor whiteColor];
+    self.myTwitterLabel.userInteractionEnabled = YES;
+    [self.myTwitterLabel addGestureRecognizer:tapTw];
+    
 }
 
 - (void)saveImage
@@ -94,7 +107,7 @@
 
 
 
-- (void)tappedFacebook
+- (void)tappedFB
 {
     if (!FBSession.activeSession.isOpen){
         [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"]
@@ -108,7 +121,7 @@
                                                  [alert show];
                                              }
                                              else if (session.isOpen){
-                                                 [self tappedFacebook];
+                                                 [self tappedFB];
                                              }
                                          }];
         
@@ -143,6 +156,20 @@
 }
 
 
+- (void)tappedTwitter
+{
+    NSLog(@"tapped twitter");
+    self.shareTwitter = !self.shareTwitter;
+    if (self.shareTwitter){
+        self.myTwitterLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
+        self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
+    }
+    else{
+        self.myTwitterLabel.textColor = [UIColor whiteColor];
+        self.twitterDisplayLabel.textColor = [UIColor whiteColor];
+    }
+}
+
 - (void)testPost
 {
     [self.friends postImage:self.shareImage block:^(BOOL wasSuccessful) {
@@ -163,11 +190,12 @@
         if (!albumID){
             albumID = @"NEED TO GRAB THIS";
         }
-        [self.friends postImageToFeed:self.shareImage
+        [self.friends postImageToFacebookFeed:self.shareImage
                               message:@"Or nah?"
                               caption:@"Or nah?"
                                  name:@"A name"
                               albumID:albumID
+                                 facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
                             feedBlock:^(BOOL wasSuccessful) {
                                 if (wasSuccessful){
                                     NSLog(@"posting to feed was successful");
@@ -177,6 +205,16 @@
                             }];
     }
     
+    if (self.shareTwitter){
+        [self.friends postImageToTwitterFeed:self.shareImage
+                                     caption:@"..."
+                                       block:^(BOOL wasSuccessful) {
+                                           if (wasSuccessful){
+                                               NSLog(@"post to twitter success");
+                                           }
+                                        }];
+    }
+    
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     
@@ -184,10 +222,10 @@
     
 }
 
-- (FacebookFriends *)friends
+- (SocialFriends *)friends
 {
     if (!_friends){
-        _friends = [[FacebookFriends alloc] init];
+        _friends = [[SocialFriends alloc] init];
     }
     return _friends;
 }

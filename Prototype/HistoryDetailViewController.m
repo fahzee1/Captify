@@ -13,7 +13,7 @@
 #import "UIFont+FontAwesome.h"
 #import "NSDate+TimeAgo.h"
 #import "UIView+Screenshot.h"
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "UIImage+Utils.h"
 #import "UIColor+HexValue.h"
 #import "ShareViewController.h"
@@ -31,7 +31,7 @@
  */
 
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate>
 
 @property NSArray *data;
 @property BOOL hideSelectButtons;
@@ -49,6 +49,9 @@
 @property (weak, nonatomic) IBOutlet UIStepper *captionFontStepper;
 @property (weak, nonatomic) IBOutlet UIButton *captionDoneButton;
 @property (strong,nonatomic)CMPopTipView *toolTip;
+@property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
+@property (strong, nonatomic)UIAlertView *makeCaptionAlert;
+
 @end
 
 @implementation HistoryDetailViewController
@@ -150,16 +153,19 @@
     [self.finalCaptionLabel addGestureRecognizer:press];
     [self.finalCaptionLabel addGestureRecognizer:controls];
     self.finalCaptionLabel.hidden = NO;
+     
     
     [UIView animateWithDuration:1.0
                      animations:^{
                          self.finalCaptionLabel.alpha = 1;
                          [self.finalCaptionLabel startGlowingWithColor:[UIColor whiteColor] intensity:0.9];
                      } completion:^(BOOL finished) {
+    
                         self.finalCaptionLabel.userInteractionEnabled = YES;
                          self.myImageView.userInteractionEnabled = YES;
-                         [self toggleNextButton];
-                         
+
+                         [self showNextButton];
+                        
                          self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Press and hold for edit options or drag caption"];
                          self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
                          self.toolTip.textColor = [UIColor whiteColor];
@@ -170,6 +176,7 @@
                          self.toolTip.borderWidth = 0;
                          [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
                          [self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
+                         
                          
                          
                      }];
@@ -203,14 +210,14 @@
     
 }
 
-- (void)toggleNextButton
+- (void)showNextButton
 {
-    if (!self.navigationItem.rightBarButtonItem){
-        self.navigationItem.rightBarButtonItem = self.nextButton;
-        }
-    else{
-        self.navigationItem.rightBarButtonItem = nil;
+
+    if (self.navigationItem.rightBarButtonItem == self.nextButton){
+        return;
     }
+    
+    self.navigationItem.rightBarButtonItem = self.nextButton;
 }
 
 
@@ -302,6 +309,23 @@
 
 
 
+- (void)makeCaption
+{
+    [self showAlertWithTextField];
+}
+
+
+- (void)showAlertWithTextField
+{
+    self.makeCaptionAlert = [[UIAlertView alloc] initWithTitle:@"Make your own"
+                                                    message:@"Dont like any of the captions below? Create your own." delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Make Caption", nil];
+    self.makeCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [self.makeCaptionAlert show];
+}
+
+
 - (void)selectedCaption:(UIButton *)sender
 {
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.myTable];
@@ -310,13 +334,10 @@
         self.selectedCaption = [self.data objectAtIndex:indexPath.row];
     }
 
-    UIAlertView *confirm = [[UIAlertView alloc]
-                            initWithTitle:@"Confirm"
-                            message:[NSString stringWithFormat:@"Are you sure you want this caption? '%@' ",[self.data objectAtIndex:indexPath.row]]
-                            delegate:self
-                            cancelButtonTitle:@"Not sure"
-                            otherButtonTitles:@"I'm sure", nil];
-    [confirm show];
+    [self.finalCaptionLabel stopGlowing];
+    self.hideSelectButtons = YES;
+    [self.myTable reloadData];
+    [self setupFinalLabel];
     
 }
 
@@ -375,6 +396,8 @@
  */
 
 
+
+
 # pragma -mark Color picker delegate
 
 - (void)colorPickerViewController:(NEOColorPickerBaseViewController *)controller didSelectColor:(UIColor *)color
@@ -389,21 +412,54 @@
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma -mark UITextField delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    
+    if ([string isEqualToString:@""]){
+        return YES;
+    }
+    
+    if ([textField.text length] <= CAPTION_LIMIT){
+        return YES;
+    }
+    else{
+        return NO;
+    }
+    
+    
+    
+}
+
+
 #pragma -mark Uialertview delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // if user chooses caption. Hide caption select buttons
     // and add caption to the image
-    
-    if (buttonIndex == 0){
-        self.selectedCaption = nil;
+    if ([alertView textFieldAtIndex:0].delegate == self){
+        [alertView textFieldAtIndex:0].delegate = nil;
     }
     
-    else if (buttonIndex == 1){
-        self.hideSelectButtons = YES;
-        [self.myTable reloadData];
-        [self setupFinalLabel];
+    if (alertView == self.makeCaptionAlert){
+        if (buttonIndex == 1){
+            NSString *caption = [alertView textFieldAtIndex:0].text;
+            if ([caption length] > 0){
+                [self.finalCaptionLabel stopGlowing];
+                self.selectedCaption = caption;
+                self.hideSelectButtons = YES;
+                [self.myTable reloadData];
+                [self setupFinalLabel];
+            }
+        }
+    }
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView
+{
+    if (alertView == self.makeCaptionAlert){
+        [alertView textFieldAtIndex:0].delegate = self;
     }
 }
 
@@ -428,6 +484,42 @@
         return [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
     }
    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(100, 0.0, 100, 60)];
+    container.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
+    
+    NSString *title;
+    if (self.hideSelectButtons){
+        title = [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
+    }
+    else{
+        title = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
+    }
+
+    UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, 300, 50)];
+    titleLablel.text = title;
+    titleLablel.numberOfLines = 0;
+    [titleLablel sizeToFit];
+    titleLablel.font = [UIFont boldSystemFontOfSize:12];
+    
+    UIButton *makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
+    makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    [makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
+    [makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+    
+    [container addSubview:titleLablel];
+    [container addSubview:makeButton];
+    
+    return container;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -460,9 +552,11 @@
         
         
         [selectButton addTarget:self action:@selector(selectedCaption:) forControlEvents:UIControlEventTouchUpInside];
+        /*
         if (self.hideSelectButtons){
             selectButton.hidden = YES;
         }
+         */
        
         /*
         [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];

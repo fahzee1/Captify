@@ -12,7 +12,7 @@
 #import "UIFont+FontAwesome.h"
 #import "FacebookFriendsViewController.h"
 #import "TMCache.h"
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "SearchFriendsViewController.h"
@@ -24,7 +24,7 @@
 @property (strong,nonatomic)UIViewController *currentController;
 @property (strong, nonatomic) FBFriendPickerViewController *friendPickerController;
 @property (strong, nonatomic) FBFriendPickerViewController *appFriendPickerController;
-@property (strong, nonatomic) FacebookFriends *friend;
+@property (strong, nonatomic) SocialFriends *friend;
 @property (strong, nonatomic) FBCacheDescriptor *cacheDescriptor;
 @property (strong, nonatomic) FBCacheDescriptor *appCacheDescriptor;
 
@@ -258,10 +258,10 @@
     return  _appFriendPickerController;
 }
 
-- (FacebookFriends *)friend
+- (SocialFriends *)friend
 {
     if (!_friend){
-        _friend = [[FacebookFriends alloc] init];
+        _friend = [[SocialFriends alloc] init];
     }
     
     return _friend;

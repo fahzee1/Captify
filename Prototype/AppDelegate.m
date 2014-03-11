@@ -14,7 +14,7 @@
 #import "MenuViewController.h"
 #import "TWTSideMenuViewController.h"
 #import "GoHomeTransition.h"
-#import "FacebookFriends.h"
+#import "SocialFriends.h"
 #import "TMCache.h"
 
 @interface AppDelegate()
@@ -559,7 +559,7 @@
 - (void)fetchFacebookFriends
 {
  
-    FacebookFriends *f = [[FacebookFriends alloc] init];
+    SocialFriends *f = [[SocialFriends alloc] init];
     [f onlyFriendsUsingApp:^(BOOL wasSuccessful, NSArray *data) {
         if (wasSuccessful){
             NSLog(@"called from bg and successful");
