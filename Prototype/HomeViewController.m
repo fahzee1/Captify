@@ -37,7 +37,7 @@
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define ONEFIELD_TAG 1990
-
+#define PHONE_LIMIT 12
 
 @interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate>
 
@@ -73,7 +73,8 @@
 @property (nonatomic, strong)NSString *challengeTitle;
 @property CGPoint finalPhraseLabelPostion;
 @property (strong,nonatomic)CMPopTipView *toolTip;
-
+@property (strong, nonatomic)UIAlertView *makePhoneAlert;
+@property (strong, nonatomic)UITextField *makePhoneTextField;
 
 @end
 
@@ -94,12 +95,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSString *logThis = @"options for history are 4 in length. 'sender' or 'reciever' and 'active or inactive' \
-    if sender and active show screen that allows to choose caption. If sender and inactive show same screen but \
-    remoove select buttons. If receiver and active show answer challenege request screen. If receiver and inactive show challenge screen with all submitted captions. GET THIS HISTORY NAV RIGHT! IM OUT";
+
     
     NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
-    NSLog(logThis);
     NSLog(logthis2);
     
     self.navigationController.delegate = self;
@@ -131,6 +129,8 @@
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
         return;
     }
+    
+    [self showAlertForPhoneNumber];
     
 }
 
@@ -298,6 +298,27 @@
 
     
 }
+
+- (void)showAlertForPhoneNumber
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    // always show for testing
+    [defaults removeObjectForKey:@"phone_number"];
+    [defaults removeObjectForKey:@"phone_never"];
+    
+    if (![defaults boolForKey:@"phone_never"]){
+        if (![defaults valueForKey:@"phone_number"]){
+            self.makePhoneAlert = [[UIAlertView alloc] initWithTitle:@"Enter Phone Number"
+                                                               message:@"Your phone number will only be used to find all your contacts using the app. We promise it wont be shared in any way!" delegate:self
+                                                     cancelButtonTitle:@"No Thanks"
+                                                     otherButtonTitles:@"Get contacts!", nil];
+            self.makePhoneAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [self.makePhoneAlert show];
+        }
+    }
+}
+
 
 - (void)dismissToolTip
 {
@@ -776,11 +797,82 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
+#pragma -mark Uialertview delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // if user chooses caption. Hide caption select buttons
+    // and add caption to the image
+    if ([alertView textFieldAtIndex:0].delegate == self){
+        [alertView textFieldAtIndex:0].delegate = nil;
+    }
+    
+    if (alertView == self.makePhoneAlert){
+        if (buttonIndex == 0){
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"phone_never"];
+            return;
+        }
+        if (buttonIndex == 1){
+            NSString *number = [alertView textFieldAtIndex:0].text;
+            if ([number length] > 0){
+                // save number
+                [[NSUserDefaults standardUserDefaults] setValue:number forKey:@"phone_number"];
+                [SocialFriends sendPhoneNumber:number
+                                       forUser:[[NSUserDefaults standardUserDefaults]valueForKey:@"username"]
+                                         block:^(BOOL wasSuccessful) {
+                                             if (wasSuccessful){
+                                                 NSLog(@"success sending phone from home");
+                                             }
+                                         }];
+              
+                
+            }
+        }
+    }
+}
+
+
+- (void)willPresentAlertView:(UIAlertView *)alertView
+{
+    if (alertView == self.makePhoneAlert){
+        [alertView textFieldAtIndex:0].delegate = self;
+        self.makePhoneTextField = [alertView textFieldAtIndex:0];
+    }
+}
+
 
 #pragma -mark UItextfield delegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if (textField == self.makePhoneTextField){
+        
+        int length = [SocialFriends getLength:textField.text];
+        if (length == 10){
+            if (range.length == 0){
+                return NO;
+            }
+        }
+        
+        if (length == 3){
+            NSString *num = [SocialFriends formatNumber:textField.text];
+            textField.text = [NSString stringWithFormat:@"(%@)",num];
+            if (range.length > 0){
+                textField.text = [NSString stringWithFormat:@"%@",[num substringToIndex:3]];
+            }
+        }
+        else if (length == 6){
+            NSString *num = [SocialFriends formatNumber:textField.text];
+            textField.text = [NSString stringWithFormat:@"(%@) %@-",[num substringToIndex:3],[num substringFromIndex:3]];
+            if (range.length > 0){
+                textField.text =  [NSString stringWithFormat:@"(%@) %@",[num substringToIndex:3],[num substringFromIndex:3]];
+            }
+            return  YES;
+        }
+        
+      
+    }
+    
     if ([textField.text length] <=1){
         [self.previewNextButton.layer removeAnimationForKey:@"previewNextButton"];
     }

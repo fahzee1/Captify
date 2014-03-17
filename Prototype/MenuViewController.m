@@ -17,7 +17,6 @@
 #define HistoryTag 1001
 #define FriendsTag 1002
 #define SettingsTag 1003
-#define GameTag 1004
 
 @interface MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *menuCamera;
@@ -135,23 +134,6 @@
             break;
 
         }
-        case GameTag:
-        {
-            UIViewController *game = [self.storyboard instantiateViewControllerWithIdentifier:@"rootChallenge"];
-            if([self isAlreadyMainVC:game.childViewControllers[0]]){
-                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
-            }
-            else{
-                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
-                    [self.delegate menuShowingAnotherScreen];
-                }
-                
-                [self.sideMenuViewController setMainViewController:game animated:YES closeMenu:YES];
-            }
-            break;
-
-        }
-            
         default:
             break;
     }

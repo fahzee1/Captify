@@ -17,6 +17,7 @@
 #import "UIFont+FontAwesome.h"
 #import "SearchFriendsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "Contacts.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
@@ -73,6 +74,13 @@
     
     self.appCacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
     [self.appCacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+    
+    Contacts *c = [[Contacts alloc] init];
+    [c fetchContactsWithBlock:^(BOOL done, id data) {
+        if (done){
+               NSLog(@"%@",data);
+        }
+    }];
    
 
 }

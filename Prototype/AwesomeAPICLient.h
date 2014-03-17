@@ -11,12 +11,13 @@
 #import "AFNetworkReachabilityManager.h"
 
 //static NSString * const AwesomeAPIBaseUrlString = @"http://127.0.0.1:8000";
-static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
-//static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.113.47:8000";
+//static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
+static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
 static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
 static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
 static NSString * const AwesomeAPIFacebookUrlString = @"api/v1/register/facebook";
 static NSString * const AwesomeAPISettingsString = @"/api/v1/profile/settings";
+static NSString * const AwesomeAPIFriendsString = @"/api/v1/profile/friends";
 
 // challenge urls
 static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/challenge/results";

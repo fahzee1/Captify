@@ -7,6 +7,7 @@
 //
 
 #import "SocialFriends.h"
+#import "AwesomeAPICLient.h"
 
 @interface SocialFriends()
 
@@ -560,4 +561,70 @@
     [alert show];
 }
 
+
+// used for phone number formatting
++ (NSString *)formatNumber:(NSString*)mobileNumber
+{
+    
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    
+    
+    int length = [mobileNumber length];
+    if(length > 10)
+    {
+        mobileNumber = [mobileNumber substringFromIndex: length-10];
+        
+    }
+    
+    
+    return mobileNumber;
+}
+
+
++ (int)getLength:(NSString *)mobileNumber
+{
+    
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    
+    int length = [mobileNumber length];
+    
+    return length;
+    
+    
+}
+
++ (void)sendPhoneNumber:(NSString *)number
+                forUser:(NSString *)user
+                  block:(SendPhoneNumberBlock)block
+{
+    NSDictionary *params = @{@"content": number,
+                             @"username": user,
+                             @"action":@"updatePhoneNumber"};
+    [[AwesomeAPICLient sharedClient] POST:AwesomeAPISettingsString
+                               parameters:params
+                                  success:^(NSURLSessionDataTask *task, id responseObject) {
+                                    NSLog(@"%@",responseObject);
+                                      int code = [[responseObject valueForKey:@"code"] intValue];
+                                      if (code == 1){
+                                        NSLog(@"success");
+                                          if (block){
+                                              block(YES);
+                                          }
+                                      }
+                                  }
+                                  failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                      NSLog(@"%@",error.localizedDescription);
+                                      if (block){
+                                          block(NO);
+                                      }
+                                  }];
+}
 @end
