@@ -106,28 +106,34 @@
     }
 }
 
-+ (NSURLSessionDataTask *)requestFriendsFromContactsList:(NSDictionary *)params
+
+- (NSURLSessionDataTask *)requestFriendsFromContactsList:(NSDictionary *)params
                                                    block:(ContactsRequestBlock)block
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    NSLog(@"%@", client.requestSerializer.HTTPRequestHeaders);
+    [client.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"apiString"]
+                    forHTTPHeaderField:@"Authorization"];
     [client startNetworkActivity];
     return [client POST:AwesomeAPIFriendsString
              parameters:params
                 success:^(NSURLSessionDataTask *task, id responseObject) {
                     [client stopNetworkActivity];
+                    NSLog(@"%@",responseObject);
                     if (block){
                         int code = [[responseObject valueForKey:@"code"] intValue];
                         if (code == 1){
-                            block(YES);
+                            block(YES, responseObject);
                         }
                         else{
-                            block(NO);
+                            block(NO, NULL);
                         }
                     }
                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
                     [client stopNetworkActivity];
+                    NSLog(@"error was %@",error.localizedDescription);
                     if (block){
-                        block(NO);
+                        block(NO, NULL);
                     }
                 }];
 }

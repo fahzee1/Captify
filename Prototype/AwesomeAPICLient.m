@@ -13,6 +13,7 @@
 
 + (instancetype)sharedClient
 {
+    NSLog(@"hit");
     static AwesomeAPICLient *client = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -20,8 +21,8 @@
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",[defaults valueForKey:@"username"],[defaults valueForKey:@"api_key"]];
-        [client.requestSerializer setValue:apiString
+        //NSLog(@"%@",apiString);
+        [client.requestSerializer setValue:[defaults valueForKey:@"apiString"]
                         forHTTPHeaderField:@"Authorization"];
         
         

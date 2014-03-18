@@ -69,6 +69,39 @@
     }
 }
 
++ (BOOL)createContactsWithParams:(NSDictionary *)params
+           inMangedObjectContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+    request.predicate = [NSPredicate predicateWithFormat:@"username = %@",[params valueForKey:@"username"]];
+    NSInteger gotUser = [self checkIfUserWithFetch:request
+                                           context:context
+                                             error:&error];
+    if (gotUser){
+        return NO;
+    }
+    
+    
+    User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
+                                               inManagedObjectContext:context];
+    user.username = [params valueForKey:@"username"];
+    user.facebook_user = [params valueForKey:@"facebook_user"];
+    user.facebook_id = [params valueForKey:@"facebook_id"];
+    user.private = [NSNumber numberWithBool:NO];
+    user.super_user = [NSNumber numberWithBool:NO];
+    user.is_friend = [NSNumber numberWithBool:YES];
+    
+    if (![user.managedObjectContext save:&error]){
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+        
+    }
+    
+    return YES;
+
+}
+
 
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
@@ -265,6 +298,10 @@
                                      [defaults setBool:YES forKey:@"logged"];
                                      [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                      [defaults setValue:[responseObject valueForKey:@"api_key"] forKey:@"api_key"];
+                                     
+                                     NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",username,[responseObject valueForKey:@"api_key"]];
+                                     [defaults setValue:apiString forKey:@"apiString"];
+
                                      [defaults synchronize];
                                      
                                      if (block){
@@ -347,6 +384,10 @@
                                                  [defaults setBool:YES forKey:@"logged"];
                                                  [defaults setBool:YES forKey:@"facebook_user"];
                                                  [defaults setValue:[responseObject valueForKey:@"api_key"] forKey:@"api_key"];
+                                                 
+                                                 NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",username,[responseObject valueForKey:@"api_key"]];
+
+                                                 [defaults setValue:apiString forKey:@"apiString"];
                                                  [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                                  [defaults setBool:YES forKey:@"fbServerSuccess"];
                                                  

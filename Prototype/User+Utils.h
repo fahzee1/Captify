@@ -20,6 +20,9 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 
 + (BOOL)validPhoneNumber:(NSString *)number;
 
++ (BOOL)createContactsWithParams:(NSDictionary *)params
+           inMangedObjectContext:(NSManagedObjectContext *)context;
+
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
                          skipCreate:(BOOL)skip;

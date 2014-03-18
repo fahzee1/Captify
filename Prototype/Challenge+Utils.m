@@ -138,6 +138,15 @@
 }
 
 
++ (NSArray *)getSentChallengesInContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+    return [context executeFetchRequest:request error:&error];
+}
+
+
 + (NSArray *)fetchUsersHistoryInContext:(NSManagedObjectContext *)context
 {
 
@@ -245,10 +254,9 @@
     NSError *error;
     Challenge *challenge = nil;
     challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
-    challenge.fields_count = [NSNumber numberWithInt:1];
-    challenge.selected_phrase = @"cj";
-    challenge.challenge_id = @"0001";
+    challenge.challenge_id = @"0002";
     challenge.sender = user;
+    challenge.recipients_count = @25;
     if (![challenge.managedObjectContext save:&error]){
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
@@ -265,6 +273,7 @@
     NSAssert([params valueForKey:@"sender"], @"Must include sender");
     NSAssert([params valueForKey:@"context"], @"Must include context");
     NSAssert([params valueForKey:@"recipients"], @"Must include recipients");
+    NSAssert([params valueForKey:@"recipients_count"], @"Must include recipients_count");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     
     Challenge *challenge;
@@ -280,6 +289,7 @@
     NSString *uuid = [[NSUUID UUID] UUIDString];
     challenge.challenge_id = [NSString stringWithFormat:@"%@-%@",[params valueForKey:@"sender"],uuid];
     challenge.active = [NSNumber numberWithBool:YES];
+    challenge.recipients_count = [params valueForKey:@"recipients_count"];
     
     for (NSString *friend in [params valueForKey:@"recipients"]){
         User *uFriend = [User GetOrCreateUserWithParams:@{@"username": friend}

@@ -18,6 +18,8 @@
 #import "SearchFriendsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "Contacts.h"
+#import "AppDelegate.h"
+#import "User+Utils.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
@@ -28,6 +30,7 @@
 @property (strong, nonatomic) SocialFriends *friend;
 @property (strong, nonatomic) FBCacheDescriptor *cacheDescriptor;
 @property (strong, nonatomic) FBCacheDescriptor *appCacheDescriptor;
+@property (strong, nonatomic) NSArray *contactNumbers;
 
 @end
 
@@ -75,14 +78,58 @@
     self.appCacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
     [self.appCacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
     
-    Contacts *c = [[Contacts alloc] init];
-    [c fetchContactsWithBlock:^(BOOL done, id data) {
-        if (done){
-               NSLog(@"%@",data);
-        }
-    }];
-   
+    
+    // fetch contacts from phone and
+    // from backend in the background
+    dispatch_queue_t contactQueue = dispatch_queue_create("com.cjapp.contactQueue", 0);
+    dispatch_async(contactQueue, ^{
+        // get all phone numbers
+        Contacts *c = [[Contacts alloc] init];
+        [c fetchContactsWithBlock:^(BOOL done, id data) {
+            if (done){
+                NSLog(@"%@",data);
+                if ([data isKindOfClass:[NSArray class]]){
+                    self.contactNumbers = [NSArray arrayWithArray:data];
+                    NSLog(@"%@ is second time",self.contactNumbers);
+                }
+            }
+        }];
+        
+        // send numbers to backend to see if any users return
+        NSDictionary *params = @{@"username":self.myUser.username,
+                                 @"action":@"getCF",
+                                 @"content":self.contactNumbers};
+        
+        [c requestFriendsFromContactsList:params
+                                    block:^(BOOL success, id data) {
+                                        if (success){
+                                            for (id user in data[@"contacts"]){
+                                                NSNumber *facebook_id;
+                                                if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                    facebook_id = @0;
+                                                }
+                                                else{
+                                                    facebook_id = user[@"facebook_id"];
+                                                }
+                                                
+                                                NSDictionary *params = @{@"username": user[@"username"],
+                                                                         @"facebook_user":user[@"is_facebook"],
+                                                                         @"facebook_id":facebook_id};
+                                                BOOL create = [User createContactsWithParams:params
+                                                                       inMangedObjectContext:self.myUser.managedObjectContext];
+                                                if (create){
+                                                    NSLog(@"successfully created %@", user[@"username"]);
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                }];
+        
 
+    });
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -275,6 +322,22 @@
     return _friend;
 }
 
+
+#pragma -mark Lazy inst
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
 
 
 #pragma -mark side menu delegate

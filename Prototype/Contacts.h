@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef void (^ContactsBlock) (BOOL done, id data);
-typedef void (^ContactsRequestBlock) (BOOL success);
+typedef void (^ContactsRequestBlock) (BOOL success, id data);
 
 @interface Contacts : NSObject
 
@@ -17,4 +17,6 @@ typedef void (^ContactsRequestBlock) (BOOL success);
 
 - (void)fetchContactsWithBlock:(ContactsBlock)block;
 
+- (NSURLSessionDataTask *)requestFriendsFromContactsList:(NSDictionary *)params
+                                                   block:(ContactsRequestBlock)block;
 @end

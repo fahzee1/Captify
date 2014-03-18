@@ -2,7 +2,7 @@
 //  Challenge.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 2/26/14.
+//  Created by CJ Ogbuehi on 3/18/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -23,8 +23,9 @@
 @dynamic success;
 @dynamic sync_status;
 @dynamic timestamp;
+@dynamic recipients_count;
 @dynamic picks;
-@dynamic sender;
 @dynamic recipients;
+@dynamic sender;
 
 @end

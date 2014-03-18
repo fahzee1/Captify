@@ -2,7 +2,7 @@
 //  Challenge.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 2/26/14.
+//  Created by CJ Ogbuehi on 3/18/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -23,9 +23,10 @@
 @property (nonatomic, retain) NSNumber * success;
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSNumber * recipients_count;
 @property (nonatomic, retain) ChallengePicks *picks;
-@property (nonatomic, retain) User *sender;
 @property (nonatomic, retain) NSSet *recipients;
+@property (nonatomic, retain) User *sender;
 @end
 
 @interface Challenge (CoreDataGeneratedAccessors)

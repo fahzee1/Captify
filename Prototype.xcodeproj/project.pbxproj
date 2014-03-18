@@ -53,14 +53,14 @@
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
+		11390F5918D8BB0F004308AA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11390F5818D8BB0F004308AA /* User.m */; };
+		11390F5C18D8F635004308AA /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11390F5B18D8F635004308AA /* Challenge.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
 		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
 		1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
 		1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */; };
-		114626D918BE4E880058E821 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626D818BE4E880058E821 /* Challenge.m */; };
-		114626DC18BE4E890058E821 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626DB18BE4E890058E821 /* User.m */; };
 		114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */; };
 		1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */; };
 		1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153DFDF18A9CCB600AD950E /* CJPopup.m */; };
@@ -405,6 +405,10 @@
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
+		11390F5718D8BB0F004308AA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		11390F5818D8BB0F004308AA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		11390F5A18D8F635004308AA /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		11390F5B18D8F635004308AA /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
@@ -417,10 +421,6 @@
 		1144915218AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TPKeyboardAvoidingAdditions.m"; sourceTree = "<group>"; };
 		1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverPreviewViewController.h; sourceTree = "<group>"; };
 		1144915818AEBEA2009B47B6 /* ReceiverPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverPreviewViewController.m; sourceTree = "<group>"; };
-		114626D718BE4E880058E821 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		114626D818BE4E880058E821 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
-		114626DA18BE4E890058E821 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		114626DB18BE4E890058E821 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+ReloadAnimation.h"; sourceTree = "<group>"; };
 		114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+ReloadAnimation.m"; sourceTree = "<group>"; };
 		1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1037,10 +1037,10 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				114626DA18BE4E890058E821 /* User.h */,
-				114626DB18BE4E890058E821 /* User.m */,
-				114626D718BE4E880058E821 /* Challenge.h */,
-				114626D818BE4E880058E821 /* Challenge.m */,
+				11390F5A18D8F635004308AA /* Challenge.h */,
+				11390F5B18D8F635004308AA /* Challenge.m */,
+				11390F5718D8BB0F004308AA /* User.h */,
+				11390F5818D8BB0F004308AA /* User.m */,
 				11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */,
 				11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */,
 				11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */,
@@ -1922,7 +1922,6 @@
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
-				114626DC18BE4E890058E821 /* User.m in Sources */,
 				11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */,
 				1184FE0A18BD03A000FDEAE0 /* UIImage+MultiFormat.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
@@ -2067,6 +2066,7 @@
 				1153E1D318A9DF4800AD950E /* GPUImageUIElement.m in Sources */,
 				1153E15718A9DF4800AD950E /* GPUImageColorMatrixFilter.m in Sources */,
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
+				11390F5C18D8F635004308AA /* Challenge.m in Sources */,
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
@@ -2162,13 +2162,13 @@
 				1153E1C518A9DF4800AD950E /* GPUImageTextureInput.m in Sources */,
 				1153E15318A9DF4800AD950E /* GPUImageColorBlendFilter.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
+				11390F5918D8BB0F004308AA /* User.m in Sources */,
 				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */,
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
 				11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */,
-				114626D918BE4E880058E821 /* Challenge.m in Sources */,
 				1153E14B18A9DF4800AD950E /* GPUImageBrightnessFilter.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 				1153E17018A9DF4800AD950E /* GPUImageGaussianSelectiveBlurFilter.m in Sources */,

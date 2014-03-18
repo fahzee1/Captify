@@ -13,7 +13,7 @@
 #import "FAImageView.h"
 
 
-#define test 1
+#define test 0
 
 @interface ContactsViewController ()
 
@@ -50,6 +50,10 @@
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
     
     self.data = [NSArray arrayWithObjects:@"apples",@"bannas",@"chips", @"dogs",@"apllsl",@"yolo",@"spagetti",@"finally",@"zappo",@"zebra",@"appspkksksksss", nil];
+    
+    
+    
+    
     
 }
 
@@ -202,13 +206,17 @@
         }
         // not testing
         else{
-            User *user = [self.myFriends objectAtIndex:indexPath.row];
             
             sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+            
+            User *user = [sectionArray objectAtIndex:indexPath.row];
             if ([user isKindOfClass:[User class]]){
                 ((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
                 ((FriendCell *)cell).myFriendUsername.text = user.username;
-                ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+                ((FriendCell *)cell).myFriendPic.image = nil;
+                FAImageView *imageView = ((FAImageView *)((FriendCell *)cell).myFriendPic);
+                [imageView setDefaultIconIdentifier:@"fa-user"];
+
             }
 
 

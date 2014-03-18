@@ -10,10 +10,12 @@
 #import "HistorySentCell.h"
 #import "NSDate+TimeAgo.h"
 #import "FAImageView.h"
+#import "Challenge+Utils.h"
+#import "AppDelegate.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
-@property NSArray *data;
+@property (strong, nonatomic) NSArray *data;
 @end
 
 @implementation HistorySentViewController
@@ -33,7 +35,7 @@
 	// Do any additional setup after loading the view.
     self.myTableView.delegate = self;
     self.myTableView.dataSource = self;
-    self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
+    //self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
 
 }
 
@@ -48,6 +50,32 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+
+
+- (NSArray *)data
+{
+    if (!_data){
+        _data = [Challenge getSentChallengesInContext:self.myUser.managedObjectContext];
+        NSLog(@"%@",_data);
+    }
+    
+    return _data;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -69,7 +97,10 @@
         UILabel *numberOfFriends = ((HistorySentCell *)cell).sentToLabel;
         UILabel *dateLabel = ((HistorySentCell *)cell).myDateLabel;
         
-        myLabel.text = [self.data objectAtIndex:indexPath.row];
+        Challenge *challenge = [self.data objectAtIndex:indexPath.row];
+        if ([challenge isKindOfClass:[Challenge class]]){
+            myLabel.text = challenge.name;
+        }
         
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
         
@@ -77,14 +108,13 @@
         [myLabel sizeToFit];
 
         
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:60];
-        dateLabel.text = [date timeAgo];
+        dateLabel.text = [challenge.timestamp timeAgo];
         
         myImageView.image = nil;
         FAImageView *imageView = (FAImageView *)myImageView;
         [imageView setDefaultIconIdentifier:@"fa-user"];
         
-        numberOfFriends.text = [NSString stringWithFormat:@"%d",[self.data count]];
+        numberOfFriends.text = [challenge.recipients_count stringValue];
         
 
         

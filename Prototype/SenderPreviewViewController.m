@@ -151,11 +151,14 @@
 
     
     // create challenge in core data
+    int count = [self.selectedFriends[@"friends"] count];
     NSDictionary *params = @{@"sender":self.myUser.username,
                              @"context":self.myUser.managedObjectContext,
                              @"recipients":self.selectedFriends[@"friends"],
+                             @"recipients_count":[NSNumber numberWithInt:count],
                              @"challenge_name":self.name};
-    [Challenge createChallengeWithParams:params];
+    
+    Challenge *challenge = [Challenge createChallengeWithParams:params];
     
     
     // create challenge in backend
@@ -163,7 +166,7 @@
                                 @"is_picture":[NSNumber numberWithBool:YES],
                                 @"name":self.name,
                                 @"recipients":self.selectedFriends[@"friends"],
-                                @"challenge_id":@"000005"};
+                                @"challenge_id":challenge.challenge_id};
     
     [Challenge sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1)];
     

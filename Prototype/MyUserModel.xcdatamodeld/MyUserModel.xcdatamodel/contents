@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Challenge" representedClassName="Challenge" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="challenge_id" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,6 +7,7 @@
         <attribute name="is_deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="original_phrase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipients_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="selected_phrase" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="success" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sync_status" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
@@ -22,16 +23,11 @@
         <relationship name="challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="picks" inverseEntity="Challenge" syncable="YES"/>
         <relationship name="player" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="FriendsAddedMe" representedClassName="FriendsAddedMe" syncable="YES">
-        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends_added_me" inverseEntity="User" syncable="YES"/>
-    </entity>
-    <entity name="FriendsIAdded" representedClassName="FriendsIAdded" syncable="YES">
-        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends_i_added" inverseEntity="User" syncable="YES"/>
-    </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="facebook_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="facebook_user" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="is_contactFriend" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_friend" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="pic_url" optional="YES" attributeType="String" syncable="YES"/>
@@ -41,17 +37,13 @@
         <attribute name="sync_status" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="friends_added_me" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FriendsAddedMe" inverseName="friend" inverseEntity="FriendsAddedMe" syncable="YES"/>
-        <relationship name="friends_i_added" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FriendsIAdded" inverseName="friend" inverseEntity="FriendsIAdded" syncable="YES"/>
         <relationship name="picks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengePicks" inverseName="player" inverseEntity="ChallengePicks" syncable="YES"/>
         <relationship name="received_challenges" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="recipients" inverseEntity="Challenge" syncable="YES"/>
         <relationship name="sent_challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="sender" inverseEntity="Challenge" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Challenge" positionX="315" positionY="-153" width="128" height="238"/>
+        <element name="Challenge" positionX="376" positionY="-283" width="128" height="238"/>
         <element name="ChallengePicks" positionX="475" positionY="-486" width="128" height="118"/>
-        <element name="FriendsAddedMe" positionX="630" positionY="-90" width="128" height="58"/>
-        <element name="FriendsIAdded" positionX="630" positionY="-247" width="128" height="58"/>
-        <element name="User" positionX="115" positionY="-448" width="128" height="298"/>
+        <element name="User" positionX="115" positionY="-448" width="128" height="283"/>
     </elements>
 </model>

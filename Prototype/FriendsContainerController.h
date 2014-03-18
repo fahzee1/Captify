@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
 @interface FriendsContainerController : UIViewController
 
 
 @property (strong, nonatomic)NSArray *facebookFriendsArray;
+@property (nonatomic, retain)User *myUser;
 
 @end
