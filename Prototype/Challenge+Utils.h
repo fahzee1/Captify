@@ -25,6 +25,9 @@
 
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;
 
++ (NSURLSessionDataTask *)sendCreateChallengeRequest:(NSDictionary *)params
+                                               image:(NSData *)image;;
+
 + (Challenge *) createTestChallengeWithUser:(User *)user;
 
 + (Challenge *)createChallengeWithParams:(NSDictionary *)params;

@@ -12,6 +12,7 @@
 @protocol SenderPreviewDelegate <NSObject>
 
 - (void)previewscreenDidMoveBack;
+- (void)previewscreenFinished;
 
 @end
 
@@ -21,7 +22,6 @@
 @property (nonatomic, retain)User *myUser;
 @property(nonatomic,strong)NSString *name;
 @property (strong, nonatomic) UIImage *image;
-@property (strong, nonatomic) NSString *phrase;
 @property (weak) id <SenderPreviewDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 

@@ -75,6 +75,7 @@
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *makePhoneAlert;
 @property (strong, nonatomic)UITextField *makePhoneTextField;
+@property BOOL showHistory;
 
 @end
 
@@ -130,10 +131,21 @@
         return;
     }
     
-    [self showAlertForPhoneNumber];
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self showAlertForPhoneNumber];
+    
+    if (self.showHistory){
+        UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
+        [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
+        self.showHistory = NO;
+
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -214,17 +226,13 @@
     [self.snapPicButton addGestureRecognizer:snapTap];
     self.snapPicButton.userInteractionEnabled = YES;
     
-    self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Tap once to take picture. Tap Twice for photo library"];
-    self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    self.toolTip.textColor = [UIColor whiteColor];
-    self.toolTip.hasGradientBackground = NO;
-    self.toolTip.preferredPointDirection = PointDirectionDown;
-    self.toolTip.hasShadow = NO;
-    self.toolTip.has3DStyle = NO;
-    self.toolTip.borderWidth = 0;
-    [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
-    [self performSelector:@selector(dismissToolTip) withObject:nil afterDelay:7.0];
-
+    // alert shows in viewdidappear which is to late from where this is being
+    // called so delay a second then run
+    if (!self.makePhoneAlert.isVisible){
+            [self showTooltip];
+        }
+     
+    
     
     self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
     self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"];
@@ -303,10 +311,6 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    // always show for testing
-    [defaults removeObjectForKey:@"phone_number"];
-    [defaults removeObjectForKey:@"phone_never"];
-    
     if (![defaults boolForKey:@"phone_never"]){
         if (![defaults valueForKey:@"phone_number"]){
             self.makePhoneAlert = [[UIAlertView alloc] initWithTitle:@"Enter Phone Number"
@@ -319,10 +323,23 @@
     }
 }
 
-
-- (void)dismissToolTip
+- (void)showTooltip
 {
-    [self.toolTip dismissAnimated:YES];
+    self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Tap once to take picture. Tap Twice for photo library"];
+    self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    self.toolTip.textColor = [UIColor whiteColor];
+    self.toolTip.hasGradientBackground = NO;
+    self.toolTip.preferredPointDirection = PointDirectionDown;
+    self.toolTip.hasShadow = NO;
+    self.toolTip.has3DStyle = NO;
+    self.toolTip.borderWidth = 0;
+    [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
+    double delayInSeconds = 7.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.toolTip dismissAnimated:YES];
+    });
+
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {
@@ -797,6 +814,13 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
+- (void)previewscreenFinished
+{
+    self.navigationController.navigationBarHidden = YES;
+    [self cancelPreviewImage];
+    self.showHistory = YES;
+}
+
 #pragma -mark Uialertview delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -810,9 +834,11 @@
     if (alertView == self.makePhoneAlert){
         if (buttonIndex == 0){
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"phone_never"];
+            [self showTooltip];
             return;
         }
         if (buttonIndex == 1){
+            [self showTooltip];
             NSString *number = [alertView textFieldAtIndex:0].text;
             if ([number length] > 0){
                 // save number

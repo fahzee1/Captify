@@ -80,6 +80,27 @@
         }
     }
     
+    if ([numbersList count] == 0){
+        // retry
+        NSLog(@"i did retry");
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            for (int i = 0; i < nPeople; i++){
+                ABRecordRef person = CFArrayGetValueAtIndex(allPeople, i);
+                
+                ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+                for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++){
+                    NSString *phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
+                    //NSLog(@"phone is %@",phoneNumber);
+                    [numbersList addObject:phoneNumber];
+                }
+            }
+
+        });
+    }
+    
+    
     if (block){
         block(YES,numbersList);
     }

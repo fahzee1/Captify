@@ -143,26 +143,40 @@
 
 }
 
-// this is crashing 
 
 - (void)sendButtonTapped:(UIButton *)sender
 {
     // create challenge in core data.
     // send request to create challenge on backend.
 
-
+    
+    // create challenge in core data
     NSDictionary *params = @{@"sender":self.myUser.username,
                              @"context":self.myUser.managedObjectContext,
-                             @"recipients":self.selectedFriends,
-                             @"original_phrase":self.phrase,
+                             @"recipients":self.selectedFriends[@"friends"],
                              @"challenge_name":self.name};
-    
     [Challenge createChallengeWithParams:params];
+    
+    
+    // create challenge in backend
+    NSDictionary *apiParams = @{@"username": self.myUser.username,
+                                @"is_picture":[NSNumber numberWithBool:YES],
+                                @"name":self.name,
+                                @"recipients":self.selectedFriends[@"friends"],
+                                @"challenge_id":@"000005"};
+    
+    [Challenge sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1)];
     
     NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
     
-    //maybe show history
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    if (self.delegate){
+        if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
+            
+            [self.delegate previewscreenFinished];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
 }
 
 #pragma -mark UIscrollview delegate
@@ -250,11 +264,11 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         if (cell){
             
-            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook Friends"]){
+            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
                 // retrurn cells for fbook friends
                     ((SenderFriendsCell *)cell).myFriendUsername.text = [self.facebookFriendsArray objectAtIndex:indexPath.row];
             }
-            else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contact Friends"]){
+            else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]){
                 // return cells for contact friends
                 ((SenderFriendsCell *)cell).myFriendUsername.text = [self.friendsArray objectAtIndex:indexPath.row];
                 

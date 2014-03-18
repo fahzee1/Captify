@@ -177,8 +177,9 @@
         }
     }
     if (self.navigationController){
-        self.navigationController.navigationBarHidden = NO;
+        //self.navigationController.navigationBarHidden = NO;
         [self.navigationController popToViewController:home animated:YES];
+        
     }
     else{
         NSLog(@"no navigation");

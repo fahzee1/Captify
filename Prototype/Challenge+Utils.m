@@ -265,7 +265,6 @@
     NSAssert([params valueForKey:@"sender"], @"Must include sender");
     NSAssert([params valueForKey:@"context"], @"Must include context");
     NSAssert([params valueForKey:@"recipients"], @"Must include recipients");
-    NSAssert([params valueForKey:@"original_phrase"], @"Must include original phrase for challenge");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     
     Challenge *challenge;
@@ -303,5 +302,35 @@
     return challenge;
 }
 
++ (NSURLSessionDataTask *)sendCreateChallengeRequest:(NSDictionary *)params
+                                               image:(NSData *)image
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    
+    return [client POST:AwesomeAPIChallengeCreateString
+             parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                 
+                 NSString *filename = @"test.jpg";
+                 NSString *name = @"test";
+                 [formData appendPartWithFileData:image name:name fileName:filename mimeType:@"image/jpeg"];
+                  
+                 
+             } success:^(NSURLSessionDataTask *task, id responseObject) {
+                 [client stopNetworkActivity];
+                 int code = [[responseObject valueForKey:@"code"] intValue];
+                 if (code == 1){
+                     NSLog(@"success uploading");
+                 }
+                 else{
+                     NSLog(@"no success uploading");
+                 }
+             } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                 [client stopNetworkActivity];
+                 NSLog(@"error %@",error);
+             }];
+     
+    
+}
 
 @end
