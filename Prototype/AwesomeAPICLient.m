@@ -13,20 +13,29 @@
 
 + (instancetype)sharedClient
 {
-    NSLog(@"hit");
+    
     static AwesomeAPICLient *client = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+     NSString *apiString = [defaults valueForKey:@"apiString"];
+    
+    if (apiString){
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
+            client.responseSerializer = [AFJSONResponseSerializer serializer];
+            client.requestSerializer = [AFJSONRequestSerializer serializer];
+            [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+            client.apiKeyFound = YES;
+        });
+    }
+    else{
         client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        //NSLog(@"%@",apiString);
-        [client.requestSerializer setValue:[defaults valueForKey:@"apiString"]
-                        forHTTPHeaderField:@"Authorization"];
-        
-        
-    });
+        client.apiKeyFound = NO;
+
+    }
     
     return client;
 }

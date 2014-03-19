@@ -608,7 +608,14 @@
     NSDictionary *params = @{@"content": number,
                              @"username": user,
                              @"action":@"updatePhoneNumber"};
-    [[AwesomeAPICLient sharedClient] POST:AwesomeAPISettingsString
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    if (!client.apiKeyFound){
+        NSString *apiString = [[NSUserDefaults standardUserDefaults] valueForKey:@"apiString"];
+        [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+    }
+    
+    id header = client.requestSerializer.HTTPRequestHeaders;
+    [client POST:AwesomeAPISettingsString
                                parameters:params
                                   success:^(NSURLSessionDataTask *task, id responseObject) {
                                     NSLog(@"%@",responseObject);

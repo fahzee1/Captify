@@ -97,7 +97,7 @@
 {
     [super viewDidLoad];
 
-    [Challenge createTestChallengeWithUser:self.myUser];
+    //[Challenge createTestChallengeWithUser:self.myUser];
     
     NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
     NSLog(logthis2);

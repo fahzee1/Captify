@@ -112,8 +112,6 @@
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     NSLog(@"%@", client.requestSerializer.HTTPRequestHeaders);
-    [client.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"apiString"]
-                    forHTTPHeaderField:@"Authorization"];
     [client startNetworkActivity];
     return [client POST:AwesomeAPIFriendsString
              parameters:params

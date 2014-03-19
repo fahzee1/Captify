@@ -79,6 +79,7 @@
                                            context:context
                                              error:&error];
     if (gotUser){
+        NSLog(@"cant create cause we have %@",[params valueForKey:@"username"]);
         return NO;
     }
     

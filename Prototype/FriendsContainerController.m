@@ -90,41 +90,49 @@
                 NSLog(@"%@",data);
                 if ([data isKindOfClass:[NSArray class]]){
                     self.contactNumbers = [NSArray arrayWithArray:data];
-                    NSLog(@"%@ is second time",self.contactNumbers);
+                    
+                    // send numbers to backend to see if any users return
+                    NSDictionary *params = @{@"username":self.myUser.username,
+                                             @"action":@"getCF",
+                                             @"content":self.contactNumbers};
+                    
+                    [c requestFriendsFromContactsList:params
+                                                block:^(BOOL success, id data) {
+                                                    if (success){
+                                                        for (id user in data[@"contacts"]){
+                                                            NSNumber *facebook_id;
+                                                            if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                                facebook_id = @0;
+                                                            }
+                                                            else{
+                                                                facebook_id = user[@"facebook_id"];
+                                                            }
+                                                            
+                                                            NSDictionary *params = @{@"username": user[@"username"],
+                                                                                     @"facebook_user":user[@"is_facebook"],
+                                                                                     @"facebook_id":facebook_id};
+                                                            BOOL create = [User createContactsWithParams:params
+                                                                                   inMangedObjectContext:self.myUser.managedObjectContext];
+                                                            if (create){
+                                                                NSLog(@"successfully created %@", user[@"username"]);
+                                                            }
+                                                            else
+                                                            {
+                                                                NSLog(@"failerd created %@", user[@"username"]);
+                                                            }
+                                                            
+                                                        }
+                                                        
+                                                    }
+                                                    else{
+                                                        NSLog(@"no success");
+                                                    }
+                                                }];
+
                 }
             }
         }];
         
-        // send numbers to backend to see if any users return
-        NSDictionary *params = @{@"username":self.myUser.username,
-                                 @"action":@"getCF",
-                                 @"content":self.contactNumbers};
-        
-        [c requestFriendsFromContactsList:params
-                                    block:^(BOOL success, id data) {
-                                        if (success){
-                                            for (id user in data[@"contacts"]){
-                                                NSNumber *facebook_id;
-                                                if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
-                                                    facebook_id = @0;
-                                                }
-                                                else{
-                                                    facebook_id = user[@"facebook_id"];
-                                                }
-                                                
-                                                NSDictionary *params = @{@"username": user[@"username"],
-                                                                         @"facebook_user":user[@"is_facebook"],
-                                                                         @"facebook_id":facebook_id};
-                                                BOOL create = [User createContactsWithParams:params
-                                                                       inMangedObjectContext:self.myUser.managedObjectContext];
-                                                if (create){
-                                                    NSLog(@"successfully created %@", user[@"username"]);
-                                                }
-                                                
-                                            }
-                                            
-                                        }
-                                }];
         
 
     });
