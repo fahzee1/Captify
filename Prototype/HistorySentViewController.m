@@ -12,6 +12,7 @@
 #import "FAImageView.h"
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
+#import "HistoryDetailViewController.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
@@ -107,12 +108,14 @@
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
 
-        
         dateLabel.text = [challenge.timestamp timeAgo];
         
-        myImageView.image = nil;
+        UIImage *thumbnail = [Challenge loadImagewithFileName:challenge.thumbnail_path];
+        myImageView.image = thumbnail;
+        /*
         FAImageView *imageView = (FAImageView *)myImageView;
         [imageView setDefaultIconIdentifier:@"fa-user"];
+         */
         
         numberOfFriends.text = [challenge.recipients_count stringValue];
         
@@ -127,11 +130,17 @@
 {
     // go to detail screen or go to challenge screen
     
+    Challenge *challenge = [self.data objectAtIndex:indexPath.row];
     // check if active
-    if (1){
+    if (challenge.active){
+        
         UIViewController *vc;
         vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([vc isKindOfClass:[HistoryDetailViewController class]]){
+            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.image_path];
+            ((HistoryDetailViewController *)vc).image = challenge_image;
+             [self.navigationController pushViewController:vc animated:YES];
+        }
     }
     
 }

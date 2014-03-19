@@ -10,4 +10,6 @@
 
 @interface HistoryContainerViewController : UIViewController
 
+@property BOOL showSentScreen;
+
 @end

@@ -80,10 +80,8 @@
         // no challenge create one
         challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:context];
 
-        challenge.original_phrase = [params valueForKey:@"original_phrase"];
         challenge.sender = user;
-        NSString *uuid = [[NSUUID UUID] UUIDString];
-        challenge.challenge_id = [NSString stringWithFormat:@"%@-%@",[params valueForKey:@"sender"],uuid];
+        challenge.challenge_id = [self createChallengeIDWithUser:[params valueForKey:@"sender"]];
         challenge.active = [NSNumber numberWithBool:YES];
         if (![challenge.managedObjectContext save:&error]){
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -284,10 +282,8 @@
     challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
     
     challenge.name = [params valueForKey:@"challenge_name"];
-    challenge.original_phrase = [params valueForKey:@"original_phrase"];
     challenge.sender = user;
-    NSString *uuid = [[NSUUID UUID] UUIDString];
-    challenge.challenge_id = [NSString stringWithFormat:@"%@-%@",[params valueForKey:@"sender"],uuid];
+    challenge.challenge_id = [params valueForKey:@"challenge_id"];
     challenge.active = [NSNumber numberWithBool:YES];
     challenge.recipients_count = [params valueForKey:@"recipients_count"];
     
@@ -341,6 +337,41 @@
              }];
      
     
+}
+
+
+
++ (void)saveImage:(UIImage *)image
+         filename:(NSString *)name
+{
+    // filename can be /test/another/test.jpg
+    if (image != nil)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+        NSData* data = UIImageJPEGRepresentation(image, 0.9);
+        [data writeToFile:path atomically:YES];
+    }
+}
+
+
++ (UIImage *)loadImagewithFileName:(NSString *)name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+    UIImage* image = [UIImage imageWithContentsOfFile:path];
+    return image;
+}
+
+
++ (NSString *)createChallengeIDWithUser:(NSString *)user
+{
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    return [NSString stringWithFormat:@"%@-%@",user,uuid];
 }
 
 @end

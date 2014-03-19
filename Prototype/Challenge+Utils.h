@@ -35,5 +35,11 @@
 
 + (Challenge *)createChallengeWithParams:(NSDictionary *)params;
 
++ (NSString *)createChallengeIDWithUser:(NSString *)user;
+
++ (void)saveImage:(UIImage *)image
+         filename:(NSString *)name;
+
++ (UIImage *)loadImagewithFileName:(NSString *)name;
 
 @end

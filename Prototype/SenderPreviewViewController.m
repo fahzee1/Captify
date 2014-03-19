@@ -144,11 +144,60 @@
 }
 
 
+- (UIImage *)createThumbnailWithSize:(CGSize)size
+{
+    UIImage *thumbnail = [UIImage imageWithImage:self.image convertToSize:size];
+    return thumbnail;
+    
+}
+
+- (void)saveImage:(UIImage *)image
+           filename:(NSString *)name
+{
+    // filename can be /test/another/test.jpg
+    if (image != nil)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+        NSData* data = UIImageJPEGRepresentation(image, 0.9);
+        [data writeToFile:path atomically:YES];
+    }
+}
+
+
+- (UIImage *)loadImagewithFileName:(NSString *)name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+    UIImage* image = [UIImage imageWithContentsOfFile:path];
+    return image;
+}
+
+
+
 - (void)sendButtonTapped:(UIButton *)sender
 {
+    // create thumbnail, save it, and save filepath
+    // save image and save filepath
     // create challenge in core data.
     // send request to create challenge on backend.
 
+    
+    
+     NSString *challenge_id = [Challenge createChallengeIDWithUser:self.myUser.username];
+    
+    // create/save thumbnail and save image
+    // thumbnail is size of imageview
+    UIImage *thumbnail = [self createThumbnailWithSize:CGSizeMake(60, 60)];
+    NSString *thumbnail_path = [NSString stringWithFormat:@"challenges/thumbnail-%@.jpg",challenge_id];
+    NSString *image_path = [NSString stringWithFormat:@"challenges/image-%@.jpg",challenge_id];
+    [Challenge saveImage:thumbnail filename:thumbnail_path];
+    [Challenge saveImage:self.image filename:image_path];
+    
     
     // create challenge in core data
     int count = [self.selectedFriends[@"friends"] count];
@@ -156,7 +205,10 @@
                              @"context":self.myUser.managedObjectContext,
                              @"recipients":self.selectedFriends[@"friends"],
                              @"recipients_count":[NSNumber numberWithInt:count],
-                             @"challenge_name":self.name};
+                             @"challenge_name":self.name,
+                             @"challenge_id":challenge_id,
+                             @"thumbnail_path":thumbnail_path,
+                             @"image_path":image_path};
     
     Challenge *challenge = [Challenge createChallengeWithParams:params];
     

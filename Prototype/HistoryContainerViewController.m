@@ -41,6 +41,14 @@
     self.navigationItem.leftBarButtonItem = button;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
 
+    // we're comming from senderpreview screen right
+    // after creating challenge so show sent screen
+    // home sets this
+    if (self.showSentScreen){
+        self.mySegmentControl.selectedSegmentIndex = 1;
+        self.showSentScreen = NO;
+    }
+    
     UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentControl.selectedSegmentIndex];
     [self addChildViewController:vc];
     vc.view.frame = self.myContainerView.bounds;
@@ -102,6 +110,12 @@
 - (void)showMenu
 {
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
+    
+}
+
+
+- (void)fetchSentChallengePicks
+{
     
 }
 
