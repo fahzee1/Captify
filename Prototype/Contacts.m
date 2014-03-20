@@ -111,7 +111,6 @@
                                                    block:(ContactsRequestBlock)block
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    NSLog(@"%@", client.requestSerializer.HTTPRequestHeaders);
     [client startNetworkActivity];
     return [client POST:AwesomeAPIFriendsString
              parameters:params

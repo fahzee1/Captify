@@ -98,7 +98,8 @@
 {
     [super viewDidLoad];
 
-    //[Challenge createTestChallengeWithUser:self.myUser];
+    //User *test = [User createTestFriendWithName:@"pusha_t" context:self.myUser.managedObjectContext];
+    //[Challenge createTestChallengeWithUser:test];
     
     NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
     NSString *logthis = @"Need to test the creation of thumbnails, saving and loading them and displaying them in tableview from senderpreview screen";

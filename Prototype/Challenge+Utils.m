@@ -136,11 +136,20 @@
 }
 
 
-+ (NSArray *)getSentChallengesInContext:(NSManagedObjectContext *)context
++ (NSArray *)getHistoryChallengesInContext:(NSManagedObjectContext *)context
+                                      sent:(BOOL)sent
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    
+    if (sent){
     request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+    }
+    else{
+        request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.is_friend = 1)"];
+    }
+    NSSortDescriptor *sortByDate = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+    request.sortDescriptors = @[sortByDate];
     return [context executeFetchRequest:request error:&error];
 }
 
@@ -255,6 +264,8 @@
     challenge.challenge_id = @"0002";
     challenge.sender = user;
     challenge.recipients_count = @25;
+    challenge.name = @"make her go bananas...hanna!";
+    challenge.active = [NSNumber numberWithBool:YES];
     if (![challenge.managedObjectContext save:&error]){
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();

@@ -18,6 +18,8 @@
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
 #import "ChallengeViewController.h"
+#import "UIImageView+WebCache.h"
+
 
 @interface HistoryRecievedViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -61,6 +63,10 @@
 }
 
 
+- (void)fetchUpdates
+{
+    
+}
 
 #pragma -mark Uitableview delegate
 
@@ -71,7 +77,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.data count];
+    return [self.cData count];
 }
 
 
@@ -84,23 +90,43 @@
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
         UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
         UIImageView *KimageView =  ((HistoryReceivedCell *)cell).historyImageView;
-        titleLabel.text = [self.data objectAtIndex:indexPath.row];
+        UILabel *dateLabel = ((HistoryReceivedCell *)cell).dateLabel;
+        
+        Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
+        User *sender = challenge.sender;
+        
+        titleLabel.text = [NSString stringWithFormat:@"%@ \r- %@",challenge.name,sender.username];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
 
+        dateLabel.text = [challenge.timestamp timeAgo];
       
+     
+        if ([sender.facebook_user intValue] == 1){
+            // get facebook id and show image
+            // pic size - normal, small, large
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
+            NSURL * fbUrl = [NSURL URLWithString:fbString];
+            [KimageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+            
+        }
+        else{
+            // show placeholder
+            KimageView.image = nil;
+            FAImageView *imageView = ((FAImageView *)KimageView);
+            [imageView setDefaultIconIdentifier:@"fa-user"];
+        }
         
-        KimageView.image = nil;
-        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         
         // check if challenge is active or not
         // if active show animating green filled circle, if not ahow circle outline
+        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         [activeLabel setTextColor:[UIColor greenColor]];
-        if (1){
-            
+        if ([challenge.active intValue] == 1){
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
             [activeLabel setTextColor:[UIColor greenColor]];
             if (![activeLabel.layer animationForKey:@"historyActive"]){
@@ -117,12 +143,12 @@
             }
         }
         else{
+             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
              [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
     
         }
         
-        FAImageView *imageView = ((FAImageView *)KimageView);
-        [imageView setDefaultIconIdentifier:@"fa-user"];
+     
         
     }
     
@@ -136,7 +162,8 @@
     // go to detail screen or go to challenge screen
     
     // check if active
-    if (1){
+    Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
+    if ([challenge.active intValue] == 1){
         UIViewController *vc;
         vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
         [self.navigationController pushViewController:vc animated:YES];
@@ -148,10 +175,8 @@
 - (NSArray *)cData
 {
     if (!_cData){
-        _cData = [Challenge getChallengesWithUsername:nil
-                                          fromFriends:0
-                                               getAll:YES
-                                              context:self.myUser.managedObjectContext];
+        _cData = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
+                                                     sent:NO];
     }
     return _cData;
 }

@@ -18,6 +18,7 @@ static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
 static NSString * const AwesomeAPIFacebookUrlString = @"api/v1/register/facebook";
 static NSString * const AwesomeAPISettingsString = @"/api/v1/profile/settings";
 static NSString * const AwesomeAPIFriendsString = @"/api/v1/profile/friends";
+static NSString * const AwesomeAPIFetchString = @"/api/v1/profile/fetch";
 
 // challenge urls
 static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/challenge/results";

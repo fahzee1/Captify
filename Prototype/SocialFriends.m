@@ -614,7 +614,6 @@
         [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
     }
     
-    id header = client.requestSerializer.HTTPRequestHeaders;
     [client POST:AwesomeAPISettingsString
                                parameters:params
                                   success:^(NSURLSessionDataTask *task, id responseObject) {

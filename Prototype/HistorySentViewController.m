@@ -13,6 +13,8 @@
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
 #import "HistoryDetailViewController.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
@@ -71,8 +73,8 @@
 - (NSArray *)data
 {
     if (!_data){
-        _data = [Challenge getSentChallengesInContext:self.myUser.managedObjectContext];
-        NSLog(@"%@",_data);
+        _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
+                                                    sent:YES];
     }
     
     return _data;
@@ -97,14 +99,19 @@
         UIImageView *myImageView = ((HistorySentCell *)cell).myImageVew;
         UILabel *numberOfFriends = ((HistorySentCell *)cell).sentToLabel;
         UILabel *dateLabel = ((HistorySentCell *)cell).myDateLabel;
+        UILabel *activeLabel = ((HistorySentCell *)cell).activeLabel;
         
         Challenge *challenge = [self.data objectAtIndex:indexPath.row];
-        if ([challenge isKindOfClass:[Challenge class]]){
-            myLabel.text = challenge.name;
+        
+        if ([challenge.active intValue] == 0){
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else{
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         
+        myLabel.text = challenge.name;
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
-        
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
 
@@ -117,7 +124,33 @@
         [imageView setDefaultIconIdentifier:@"fa-user"];
          */
         
-        numberOfFriends.text = [challenge.recipients_count stringValue];
+        numberOfFriends.text = [NSString stringWithFormat:@"Sent to %@ friends",[challenge.recipients_count stringValue]];
+        
+        // show green active circle
+        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+        [activeLabel setTextColor:[UIColor greenColor]];
+        if ([challenge.active intValue] == 1){
+            
+            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
+            [activeLabel setTextColor:[UIColor greenColor]];
+            if (![activeLabel.layer animationForKey:@"historyActive"]){
+                
+                
+                CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
+                colorPulse.toValue = [NSNumber numberWithFloat:0.1];
+                colorPulse.autoreverses = YES;
+                colorPulse.duration = 0.8;
+                colorPulse.repeatCount = FLT_MAX;
+                [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
+            }
+        }
+        else{
+            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+            
+        }
+
         
 
         
@@ -132,7 +165,8 @@
     
     Challenge *challenge = [self.data objectAtIndex:indexPath.row];
     // check if active
-    if (challenge.active){
+    
+    if ([challenge.active intValue] == 1){
         
         UIViewController *vc;
         vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
@@ -142,7 +176,7 @@
              [self.navigationController pushViewController:vc animated:YES];
         }
     }
-    
+        
 }
 
 

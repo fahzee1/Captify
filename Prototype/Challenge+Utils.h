@@ -23,7 +23,8 @@
                                 getAll:(BOOL)all
                                context:(NSManagedObjectContext *)context;
 
-+ (NSArray *)getSentChallengesInContext:(NSManagedObjectContext *)context;
++ (NSArray *)getHistoryChallengesInContext:(NSManagedObjectContext *)context
+                                      sent:(BOOL)sent;
 
 
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;

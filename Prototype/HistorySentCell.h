@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface HistorySentCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *activeLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *myImageVew;
 @property (weak, nonatomic) IBOutlet UILabel *myDateLabel;
