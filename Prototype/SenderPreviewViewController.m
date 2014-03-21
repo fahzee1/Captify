@@ -15,6 +15,8 @@
 #import "AppDelegate.h"
 #import "UploaderAPIClient.h"
 
+typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message);
+
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
@@ -216,37 +218,62 @@
     Challenge *challenge = [Challenge createChallengeWithParams:params];
     
     
-    // create challenge in backend
-    
-    NSArray *friends = [self.selectedFriends valueForKey:@"friends"];
-    NSDictionary *apiParams = @{@"username": self.myUser.username,
-                                @"is_picture":[NSNumber numberWithBool:YES],
-                                @"name":self.name,
-                                @"recipients":friends,
-                                @"challenge_id":challenge.challenge_id};
-    
- 
-    
-    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1)];
-    
-    
-    NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
-    
-    
-    if (self.delegate){
-        if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
-            
-            self.name = nil;
-            self.selectedFriends = nil;
-            [self.delegate previewscreenFinished];
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
+    if (challenge){
+        // create challenge in backend
+        
+        NSArray *friends = [self.selectedFriends valueForKey:@"friends"];
+        NSDictionary *apiParams = @{@"username": self.myUser.username,
+                                    @"is_picture":[NSNumber numberWithBool:YES],
+                                    @"name":self.name,
+                                    @"recipients":friends,
+                                    @"challenge_id":challenge.challenge_id};
+        
+     
+        
+        [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message) {
+            if (wasSuccessful){
+                // continue
+                if (self.delegate){
+                    if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
+                        
+                        self.name = nil;
+                        self.selectedFriends = nil;
+                        [self.delegate previewscreenFinished];
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                    }
+                }
+            }
+            else{
+                if (fail){
+                    // 500
+                      NSLog(@"fail creating challebge");
+                    if (message){
+                        [self showAlertWithMessage:message];
+                    }
+                    else{
+                        [self showAlertWithMessage:@"There was an error sending your request"];
+                    }
+                }
+                else{
+                    // 200 but error
+                      NSLog(@"200 but error creating");
+                     [self showAlertWithMessage:@"There was an error sending your request"];
+                }
+        
+            }
+        }];
+        
+        
+        NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
     }
+    // if challenge failed we should crash
+    
 }
 
 
 - (void)sendCreateChallengeRequest:(NSDictionary *)params
                              image:(NSData *)image
+                             block:(SendChallengeRequestBlock)block
 {
     UploaderAPIClient *client = [UploaderAPIClient sharedClient];
     
@@ -266,14 +293,33 @@
                 int code = [[responseObject valueForKey:@"code"] intValue];
                 if (code == 1){
                     NSLog(@"true success");
+                    if (block){
+                        block(YES,NO,[responseObject valueForKey:@"message"]);
+                    }
                 }
                 if (code == -10){
                     NSLog(@"success but issues");
+                    if (block){
+                        block(NO,NO,[responseObject valueForKey:@"message"]);
+                    }
                 }
             }
             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                NSLog(@"fail.. %@",error);
+                if (block){
+                    block(NO,YES,error.localizedDescription);
+                }
             }];
+}
+
+- (void)showAlertWithMessage:(NSString *)message
+{
+    UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                message:message
+                                               delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+    [a show];
 }
 
 #pragma -mark UIscrollview delegate
