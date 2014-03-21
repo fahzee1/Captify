@@ -1,13 +1,12 @@
 //
-//  AwesomeAPICLient.h
+//  UploaderAPIClient.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 1/16/14.
+//  Created by CJ Ogbuehi on 3/20/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "AFHTTPSessionManager+AutoRetry.h"
+#import "AFHTTPRequestOperationManager.h"
 #import "AFNetworkReachabilityManager.h"
 
 //static NSString * const AwesomeAPIBaseUrlString = @"http://127.0.0.1:8000";
@@ -26,23 +25,16 @@ static NSString * const AwesomeAPIChallengeSendString = @"api/v1/challenge/send"
 static NSString * const AwesomeAPIChallengeCreateString = @"api/v1/challenge";
 static NSString * const AwesomeAPIChallengeFetchString = @"api/v1/challenge/blob";
 
-@interface AwesomeAPICLient : AFHTTPSessionManager
-
-@property BOOL apiKeyFound;
+@interface UploaderAPIClient : AFHTTPRequestOperationManager
 
 + (instancetype)sharedClient;
 
-
 - (BOOL)connected;
-
-- (void)startMonitoringConnection;
 
 - (void)stopMonitoringConnection;
 
 - (void)startNetworkActivity;
 
 - (void)stopNetworkActivity;
-
-
 
 @end

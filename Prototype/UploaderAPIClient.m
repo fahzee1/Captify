@@ -1,45 +1,33 @@
 //
-//  AwesomeAPICLient.m
+//  UploaderAPIClient.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 1/16/14.
+//  Created by CJ Ogbuehi on 3/20/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "AwesomeAPICLient.h"
+#import "UploaderAPIClient.h"
 
-
-@implementation AwesomeAPICLient
+@implementation UploaderAPIClient
 
 + (instancetype)sharedClient
 {
-    
-    static AwesomeAPICLient *client = nil;
-    
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-     NSString *apiString = [defaults valueForKey:@"apiString"];
-    
-    if (apiString){
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
-            client.responseSerializer = [AFJSONResponseSerializer serializer];
-            client.requestSerializer = [AFJSONRequestSerializer serializer];
-            [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-            client.apiKeyFound = YES;
-        });
-    }
-    else{
-        client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
+    static UploaderAPIClient *client = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *apiString = [defaults valueForKey:@"apiString"];
+        client = [[UploaderAPIClient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
-        client.apiKeyFound = NO;
-
-    }
+        [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+        
+    });
     
     return client;
+    
 }
-
 
 
 - (BOOL)connected

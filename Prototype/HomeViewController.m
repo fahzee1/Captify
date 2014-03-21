@@ -144,10 +144,15 @@
     [self showAlertForPhoneNumber];
     
     if (self.showHistory){
-        UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
-        if ([history isKindOfClass:[HistoryContainerViewController class]]){
-            ((HistoryContainerViewController *)history).showSentScreen = YES;
-            [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
+        UIViewController *historyNav = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
+        if ([historyNav isKindOfClass:[UINavigationController class]]){
+            ((UINavigationController *)historyNav).navigationBarHidden = NO;
+            UIViewController *history = ((UINavigationController *)historyNav).topViewController;
+            if ([history isKindOfClass:[HistoryContainerViewController class]]){
+                ((HistoryContainerViewController *)history).showSentScreen = YES;
+                [self.sideMenuViewController setMainViewController:historyNav animated:YES closeMenu:YES];
+            }
+            
         }
         
         self.showHistory = NO;
@@ -824,6 +829,7 @@
 
 - (void)previewscreenFinished
 {
+    
     self.navigationController.navigationBarHidden = YES;
     [self cancelPreviewImage];
     self.showHistory = YES;

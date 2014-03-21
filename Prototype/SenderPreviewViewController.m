@@ -13,6 +13,7 @@
 #import "FAImageView.h"
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
+#import "UploaderAPIClient.h"
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -195,8 +196,10 @@
     UIImage *thumbnail = [self createThumbnailWithSize:CGSizeMake(60, 60)];
     NSString *thumbnail_path = [NSString stringWithFormat:@"challenges/thumbnail-%@.jpg",challenge_id];
     NSString *image_path = [NSString stringWithFormat:@"challenges/image-%@.jpg",challenge_id];
+    /*
     [Challenge saveImage:thumbnail filename:thumbnail_path];
     [Challenge saveImage:self.image filename:image_path];
+     */
     
     
     // create challenge in core data
@@ -214,13 +217,18 @@
     
     
     // create challenge in backend
+    
+    NSArray *friends = [self.selectedFriends valueForKey:@"friends"];
     NSDictionary *apiParams = @{@"username": self.myUser.username,
                                 @"is_picture":[NSNumber numberWithBool:YES],
                                 @"name":self.name,
-                                @"recipients":self.selectedFriends[@"friends"],
+                                @"recipients":friends,
                                 @"challenge_id":challenge.challenge_id};
     
-    [Challenge sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1)];
+ 
+    
+    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1)];
+    
     
     NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
     
@@ -228,10 +236,44 @@
     if (self.delegate){
         if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
             
+            self.name = nil;
+            self.selectedFriends = nil;
             [self.delegate previewscreenFinished];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
+}
+
+
+- (void)sendCreateChallengeRequest:(NSDictionary *)params
+                             image:(NSData *)image
+{
+    UploaderAPIClient *client = [UploaderAPIClient sharedClient];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *apiString = [defaults valueForKey:@"apiString"];
+    
+    //client.responseSerializer = [AFJSONResponseSerializer serializer];
+    //client.requestSerializer = [AFJSONRequestSerializer serializer];
+    [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+    
+    [client POST:AwesomeAPIChallengeCreateString parameters:params
+            constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                 [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
+            }
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",responseObject);
+                int code = [[responseObject valueForKey:@"code"] intValue];
+                if (code == 1){
+                    NSLog(@"true success");
+                }
+                if (code == -10){
+                    NSLog(@"success but issues");
+                }
+            }
+            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               NSLog(@"fail.. %@",error);
+            }];
 }
 
 #pragma -mark UIscrollview delegate

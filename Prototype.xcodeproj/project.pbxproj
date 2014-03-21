@@ -270,6 +270,7 @@
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
 		1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1191604318C9894F00C25E36 /* FacebookSDK.framework */; };
+		1191604718DBEBD300C25E36 /* UploaderAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604618DBEBD300C25E36 /* UploaderAPIClient.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -832,6 +833,8 @@
 		118F24F618BFC2C90007797E /* UIImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utils.h"; sourceTree = "<group>"; };
 		118F24F718BFC2C90007797E /* UIImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utils.m"; sourceTree = "<group>"; };
 		1191604318C9894F00C25E36 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		1191604518DBEBD300C25E36 /* UploaderAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploaderAPIClient.h; sourceTree = "<group>"; };
+		1191604618DBEBD300C25E36 /* UploaderAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploaderAPIClient.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -1151,6 +1154,8 @@
 			children = (
 				110731751888C6230065D77F /* AwesomeAPICLient.h */,
 				110731761888C6230065D77F /* AwesomeAPICLient.m */,
+				1191604518DBEBD300C25E36 /* UploaderAPIClient.h */,
+				1191604618DBEBD300C25E36 /* UploaderAPIClient.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -1930,6 +1935,7 @@
 				1153E1A718A9DF4800AD950E /* GPUImagePolarPixellateFilter.m in Sources */,
 				1153E18F18A9DF4800AD950E /* GPUImageLuminosityBlendFilter.m in Sources */,
 				1184FE0418BD03A000FDEAE0 /* SDWebImageDownloader.m in Sources */,
+				1191604718DBEBD300C25E36 /* UploaderAPIClient.m in Sources */,
 				1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */,
 				11FAA7FE18C6763900147E75 /* ShareViewController.m in Sources */,
 				1153E1BD18A9DF4800AD950E /* GPUImageSoftLightBlendFilter.m in Sources */,
