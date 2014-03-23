@@ -53,7 +53,6 @@
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
-		11390F5918D8BB0F004308AA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11390F5818D8BB0F004308AA /* User.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
@@ -229,13 +228,11 @@
 		1153E1DE18A9DF4800AD950E /* GPUImagePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12D18A9DF4800AD950E /* GPUImagePicture.m */; };
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
-		115B264D18D9E5D9009CA60F /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 115B264C18D9E5D9009CA60F /* Challenge.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
 		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
-		11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAC18A2B85D00DAF07C /* ChallengeSend.m */; };
 		11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */; };
 		1184FDDD18BCFB3700FDEAE0 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FDDC18BCFB3700FDEAE0 /* AddFriendCell.m */; };
 		1184FDFF18BD03A000FDEAE0 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FDE318BD03A000FDEAE0 /* MKAnnotationView+WebCache.m */; };
@@ -271,6 +268,10 @@
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
 		1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1191604318C9894F00C25E36 /* FacebookSDK.framework */; };
 		1191604718DBEBD300C25E36 /* UploaderAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604618DBEBD300C25E36 /* UploaderAPIClient.m */; };
+		1191604D18DF4C5B00C25E36 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604C18DF4C5B00C25E36 /* ChallengePicks.m */; };
+		1191605018DF4C5C00C25E36 /* ReceivedChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */; };
+		1191605318DF4C5D00C25E36 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605218DF4C5D00C25E36 /* User.m */; };
+		1191605618DF4DB900C25E36 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605518DF4DB900C25E36 /* Challenge.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -295,9 +296,6 @@
 		11ABFCAE18C7D28300639A20 /* UIColor+NEOColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCA218C7D28300639A20 /* UIColor+NEOColor.m */; };
 		11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCB118C7DA9200639A20 /* CMPopTipView.m */; };
 		11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC442618C46A7B0052D98F /* HistoryDetailCell.m */; };
-		11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F018B5226F00577A68 /* ChallengePicks.m */; };
-		11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */; };
-		11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */; };
 		11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */; };
 		11C8E8D118C8FA7600FE6B5E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C8E8D018C8FA7600FE6B5E /* FacebookSDK.framework */; };
 		11C8E8D418C9277F00FE6B5E /* CJFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C8E8D318C9277F00FE6B5E /* CJFilterView.m */; };
@@ -406,8 +404,6 @@
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
-		11390F5718D8BB0F004308AA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		11390F5818D8BB0F004308AA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
@@ -754,8 +750,6 @@
 		1153E12F18A9DF4800AD950E /* GPUImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageView.m; sourceTree = "<group>"; };
 		1153E1E718A9E04600AD950E /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
-		115B264B18D9E5D9009CA60F /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		115B264C18D9E5D9009CA60F /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		115D938E18B28312006A1C02 /* SenderFriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFriendsCell.h; sourceTree = "<group>"; };
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
 		11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
@@ -766,8 +760,6 @@
 		116F0C5F189C03E300C1C430 /* AnswerFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerFieldView.m; sourceTree = "<group>"; };
 		117594E118A1FF670078EFA2 /* GoHomeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoHomeTransition.h; sourceTree = "<group>"; };
 		117594E218A1FF670078EFA2 /* GoHomeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoHomeTransition.m; sourceTree = "<group>"; };
-		11827BAB18A2B85D00DAF07C /* ChallengeSend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeSend.h; sourceTree = "<group>"; };
-		11827BAC18A2B85D00DAF07C /* ChallengeSend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeSend.m; sourceTree = "<group>"; };
 		11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Challenge+Utils.h"; sourceTree = "<group>"; };
 		11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Challenge+Utils.m"; sourceTree = "<group>"; };
 		1184FDDB18BCFB3700FDEAE0 /* AddFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendCell.h; sourceTree = "<group>"; };
@@ -835,6 +827,14 @@
 		1191604318C9894F00C25E36 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1191604518DBEBD300C25E36 /* UploaderAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploaderAPIClient.h; sourceTree = "<group>"; };
 		1191604618DBEBD300C25E36 /* UploaderAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploaderAPIClient.m; sourceTree = "<group>"; };
+		1191604B18DF4C5B00C25E36 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
+		1191604C18DF4C5B00C25E36 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
+		1191604E18DF4C5C00C25E36 /* ReceivedChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceivedChallenge.h; sourceTree = "<group>"; };
+		1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceivedChallenge.m; sourceTree = "<group>"; };
+		1191605118DF4C5D00C25E36 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1191605218DF4C5D00C25E36 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1191605418DF4DB900C25E36 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		1191605518DF4DB900C25E36 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -875,12 +875,6 @@
 		11ABFCB118C7DA9200639A20 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		11BC442518C46A7B0052D98F /* HistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailCell.h; sourceTree = "<group>"; };
 		11BC442618C46A7B0052D98F /* HistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailCell.m; sourceTree = "<group>"; };
-		11C2D6EF18B5226F00577A68 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
-		11C2D6F018B5226F00577A68 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
-		11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsAddedMe.h; sourceTree = "<group>"; };
-		11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsAddedMe.m; sourceTree = "<group>"; };
-		11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsIAdded.h; sourceTree = "<group>"; };
-		11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsIAdded.m; sourceTree = "<group>"; };
 		11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		11C8E8D018C8FA7600FE6B5E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		11C8E8D218C9277F00FE6B5E /* CJFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJFilterView.h; sourceTree = "<group>"; };
@@ -1040,18 +1034,14 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				115B264B18D9E5D9009CA60F /* Challenge.h */,
-				115B264C18D9E5D9009CA60F /* Challenge.m */,
-				11390F5718D8BB0F004308AA /* User.h */,
-				11390F5818D8BB0F004308AA /* User.m */,
-				11C2D6F818B55EFC00577A68 /* FriendsIAdded.h */,
-				11C2D6F918B55EFC00577A68 /* FriendsIAdded.m */,
-				11C2D6F518B55EFB00577A68 /* FriendsAddedMe.h */,
-				11C2D6F618B55EFB00577A68 /* FriendsAddedMe.m */,
-				11C2D6EF18B5226F00577A68 /* ChallengePicks.h */,
-				11C2D6F018B5226F00577A68 /* ChallengePicks.m */,
-				11827BAB18A2B85D00DAF07C /* ChallengeSend.h */,
-				11827BAC18A2B85D00DAF07C /* ChallengeSend.m */,
+				1191605418DF4DB900C25E36 /* Challenge.h */,
+				1191605518DF4DB900C25E36 /* Challenge.m */,
+				1191605118DF4C5D00C25E36 /* User.h */,
+				1191605218DF4C5D00C25E36 /* User.m */,
+				1191604E18DF4C5C00C25E36 /* ReceivedChallenge.h */,
+				1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */,
+				1191604B18DF4C5B00C25E36 /* ChallengePicks.h */,
+				1191604C18DF4C5B00C25E36 /* ChallengePicks.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
 				11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */,
@@ -1927,7 +1917,6 @@
 				1107316618863B2E0065D77F /* UIProgressView+AFNetworking.m in Sources */,
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
-				11C2D6F118B5226F00577A68 /* ChallengePicks.m in Sources */,
 				1184FE0A18BD03A000FDEAE0 /* UIImage+MultiFormat.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
 				1153E17318A9DF4800AD950E /* GPUImageHalftoneFilter.m in Sources */,
@@ -1997,6 +1986,7 @@
 				1153E1D018A9DF4800AD950E /* GPUImageTwoInputFilter.m in Sources */,
 				1153E17E18A9DF4800AD950E /* GPUImageHueFilter.m in Sources */,
 				1153E14918A9DF4800AD950E /* GPUImageBilateralFilter.m in Sources */,
+				1191604D18DF4C5B00C25E36 /* ChallengePicks.m in Sources */,
 				1153E15918A9DF4800AD950E /* GPUImageContrastFilter.m in Sources */,
 				1184FDDD18BCFB3700FDEAE0 /* AddFriendCell.m in Sources */,
 				1153E17118A9DF4800AD950E /* GPUImageGlassSphereFilter.m in Sources */,
@@ -2066,13 +2056,13 @@
 				114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */,
 				1153E17D18A9DF4800AD950E /* GPUImageHueBlendFilter.m in Sources */,
 				113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */,
+				1191605318DF4C5D00C25E36 /* User.m in Sources */,
 				1184FE0518BD03A000FDEAE0 /* SDWebImageDownloaderOperation.m in Sources */,
 				1153E1BA18A9DF4800AD950E /* GPUImageSmoothToonFilter.m in Sources */,
 				11ABFCA718C7D28300639A20 /* NEOColorPickerGradientView.m in Sources */,
 				1153E1D318A9DF4800AD950E /* GPUImageUIElement.m in Sources */,
 				1153E15718A9DF4800AD950E /* GPUImageColorMatrixFilter.m in Sources */,
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
-				115B264D18D9E5D9009CA60F /* Challenge.m in Sources */,
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
@@ -2120,6 +2110,7 @@
 				1107314B18863B1E0065D77F /* AFNetworkReachabilityManager.m in Sources */,
 				1153E17218A9DF4800AD950E /* GPUImageGrayscaleFilter.m in Sources */,
 				1144915918AEBEA2009B47B6 /* ReceiverPreviewViewController.m in Sources */,
+				1191605018DF4C5C00C25E36 /* ReceivedChallenge.m in Sources */,
 				1153E16A18A9DF4800AD950E /* GPUImageFilter.m in Sources */,
 				11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */,
 				1153E1A918A9DF4800AD950E /* GPUImagePosterizeFilter.m in Sources */,
@@ -2128,7 +2119,6 @@
 				1153E18918A9DF4800AD950E /* GPUImageLocalBinaryPatternFilter.m in Sources */,
 				118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */,
 				1153E14118A9DF4800AD950E /* GPUImage3x3ConvolutionFilter.m in Sources */,
-				11827BAD18A2B85D00DAF07C /* ChallengeSend.m in Sources */,
 				1153E16618A9DF4800AD950E /* GPUImageExclusionBlendFilter.m in Sources */,
 				1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */,
@@ -2142,7 +2132,6 @@
 				11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,
-				11C2D6F718B55EFB00577A68 /* FriendsAddedMe.m in Sources */,
 				1184FE0318BD03A000FDEAE0 /* SDWebImageDecoder.m in Sources */,
 				1153E15218A9DF4800AD950E /* GPUImageClosingFilter.m in Sources */,
 				1184FE0718BD03A000FDEAE0 /* SDWebImagePrefetcher.m in Sources */,
@@ -2150,6 +2139,7 @@
 				1153E16918A9DF4800AD950E /* GPUImageFASTCornerDetectionFilter.m in Sources */,
 				1153E1C718A9DF4800AD950E /* GPUImageThreeInputFilter.m in Sources */,
 				117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */,
+				1191605618DF4DB900C25E36 /* Challenge.m in Sources */,
 				1184FE1618BD053800FDEAE0 /* TMMemoryCache.m in Sources */,
 				1153E14218A9DF4800AD950E /* GPUImage3x3TextureSamplingFilter.m in Sources */,
 				1153E15818A9DF4800AD950E /* GPUImageColorPackingFilter.m in Sources */,
@@ -2168,13 +2158,11 @@
 				1153E1C518A9DF4800AD950E /* GPUImageTextureInput.m in Sources */,
 				1153E15318A9DF4800AD950E /* GPUImageColorBlendFilter.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
-				11390F5918D8BB0F004308AA /* User.m in Sources */,
 				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */,
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
 				1153E1D518A9DF4800AD950E /* GPUImageVideoCamera.m in Sources */,
-				11C2D6FA18B55EFC00577A68 /* FriendsIAdded.m in Sources */,
 				1153E14B18A9DF4800AD950E /* GPUImageBrightnessFilter.m in Sources */,
 				1186B159188B45D10082F35F /* HomeViewController.m in Sources */,
 				1153E17018A9DF4800AD950E /* GPUImageGaussianSelectiveBlurFilter.m in Sources */,

@@ -2,7 +2,7 @@
 //  ChallengePicks.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 2/19/14.
+//  Created by CJ Ogbuehi on 3/23/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) Challenge *challenge;
 @property (nonatomic, retain) User *player;
+@property (nonatomic, retain) NSManagedObject *received_challenge;
 
 @end
