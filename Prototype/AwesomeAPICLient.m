@@ -53,7 +53,16 @@
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusNotReachable:
-                NSLog(@"No Internet connection");
+            {
+                UIAlertView *a = [[UIAlertView alloc]
+                                  initWithTitle:@"Oops!"
+                                  message:@"There doesn't seem to be an internet connection"
+                                  delegate:nil
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil];
+                [a show];
+            }
+
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 NSLog(@"WIFI");

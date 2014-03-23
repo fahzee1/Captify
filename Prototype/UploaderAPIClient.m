@@ -21,13 +21,16 @@
         client = [[UploaderAPIClient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
+        [client.requestSerializer setHTTPMethodsEncodingParametersInURI:[NSSet setWithObject:@"POST"]];
         [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+        
         
     });
     
     return client;
     
 }
+
 
 
 - (BOOL)connected
@@ -41,13 +44,21 @@
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusNotReachable:
-                NSLog(@"No Internet connection");
+            {
+                UIAlertView *a = [[UIAlertView alloc]
+                                  initWithTitle:@"Oops!"
+                                  message:@"There doesn't seem to be an internet connection"
+                                  delegate:nil
+                                  cancelButtonTitle:@"Ok"
+                                  otherButtonTitles:nil];
+                [a show];
+            }
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                NSLog(@"WIFI");
+                //NSLog(@"WIFI");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
-                NSLog(@"3G");
+                //NSLog(@"3G");
                 break;
             default:
                 NSLog(@"Unknown network");

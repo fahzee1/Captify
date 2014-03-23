@@ -184,98 +184,91 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 
 - (void)sendButtonTapped:(UIButton *)sender
 {
-    // create thumbnail, save it, and save filepath
-    // save image and save filepath
-    // create challenge in core data.
-    // send request to create challenge on backend.
-
+    // create challenge in backend
+    // then in core data
+    // then show history screen
+#warning show progress hud here
     
     
-     NSString *challenge_id = [Challenge createChallengeIDWithUser:self.myUser.username];
-    
-    // create/save thumbnail and save image
-    // thumbnail is size of imageview
-    UIImage *thumbnail = [self createThumbnailWithSize:CGSizeMake(60, 60)];
-    NSString *thumbnail_path = [NSString stringWithFormat:@"challenges/thumbnail-%@.jpg",challenge_id];
-    NSString *image_path = [NSString stringWithFormat:@"challenges/image-%@.jpg",challenge_id];
+    NSString *challenge_id = [Challenge createChallengeIDWithUser:self.myUser.username];
     /*
     [Challenge saveImage:thumbnail filename:thumbnail_path];
     [Challenge saveImage:self.image filename:image_path];
      */
     
     
-    // create challenge in core data
-    int count = [self.selectedFriends[@"friends"] count];
-    NSDictionary *params = @{@"sender":self.myUser.username,
-                             @"context":self.myUser.managedObjectContext,
-                             @"recipients":self.selectedFriends[@"friends"],
-                             @"recipients_count":[NSNumber numberWithInt:count],
-                             @"challenge_name":self.name,
-                             @"challenge_id":challenge_id,
-                             @"thumbnail_path":thumbnail_path,
-                             @"image_path":image_path};
     
-    Challenge *challenge = [Challenge createChallengeWithParams:params];
-    
-    
-    if (challenge){
         // create challenge in backend
-        
-        NSArray *friends = [self.selectedFriends valueForKey:@"friends"];
-        NSDictionary *apiParams = @{@"username": self.myUser.username,
-                                    @"is_picture":[NSNumber numberWithBool:YES],
-                                    @"name":self.name,
-                                    @"recipients":friends,
-                                    @"challenge_id":challenge.challenge_id};
-        
-     
-        
-        [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message) {
-            if (wasSuccessful){
-                // continue
-                if (self.delegate){
-                    if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
-                        
-                        self.name = nil;
-                        self.selectedFriends = nil;
-                        [self.delegate previewscreenFinished];
-                        [self.navigationController popToRootViewControllerAnimated:YES];
-                    }
+    
+    NSDictionary *apiParams = @{@"username": self.myUser.username,
+                                @"is_picture":[NSNumber numberWithBool:YES],
+                                @"name":self.name,
+                                @"recipients":self.selectedFriends[@"friends"],
+                                @"challenge_id":challenge_id};
+    
+ 
+    
+    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message) {
+        if (wasSuccessful){
+            NSString *image_path = [NSString stringWithFormat:@"challenges/image-%@.jpg",challenge_id];
+            NSUInteger count = [self.selectedFriends[@"friends"] count];
+            NSDictionary *params = @{@"sender":self.myUser.username,
+                                     @"context":self.myUser.managedObjectContext,
+                                     @"recipients":self.selectedFriends[@"friends"],
+                                     @"recipients_count":[NSNumber numberWithInteger:count],
+                                     @"challenge_name":self.name,
+                                     @"challenge_id":challenge_id,
+                                     @"image_path":image_path};
+
+            Challenge *challenge = [Challenge createChallengeWithParams:params];
+            if (challenge){
+                [self notifyDelegateAndGoHome];
+            }
+            
+            
+        }
+        else{
+            if (fail){
+                // 500
+                if (message){
+                    [self showAlertWithMessage:message];
+                }
+                else{
+                    [self showAlertWithMessage:@"There was an error sending your request"];
                 }
             }
             else{
-                if (fail){
-                    // 500
-                      NSLog(@"fail creating challebge");
-                    if (message){
-                        [self showAlertWithMessage:message];
-                    }
-                    else{
-                        [self showAlertWithMessage:@"There was an error sending your request"];
-                    }
-                }
-                else{
-                    // 200 but error
-                      NSLog(@"200 but error creating");
-                     [self showAlertWithMessage:@"There was an error sending your request"];
-                }
-        
+                // 200 but error
+                 [self showAlertWithMessage:@"There was an error sending your request"];
             }
-        }];
-        
-        
+    
+        }
+    }];
+    
+    
         NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
-    }
-    // if challenge failed we should crash
     
 }
 
+
+- (void)notifyDelegateAndGoHome
+{
+    if (self.delegate){
+        if ([self.delegate respondsToSelector:@selector(previewscreenFinished)]){
+            [self.delegate previewscreenFinished];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+
+    
+}
 
 - (void)sendCreateChallengeRequest:(NSDictionary *)params
                              image:(NSData *)image
                              block:(SendChallengeRequestBlock)block
 {
     UploaderAPIClient *client = [UploaderAPIClient sharedClient];
+    client.requestSerializer = [AFHTTPRequestSerializer serializer];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *apiString = [defaults valueForKey:@"apiString"];
@@ -283,12 +276,13 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     //client.responseSerializer = [AFJSONResponseSerializer serializer];
     //client.requestSerializer = [AFJSONRequestSerializer serializer];
     [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-    
+    [client startNetworkActivity];
     [client POST:AwesomeAPIChallengeCreateString parameters:params
             constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                  [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
             }
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [client stopNetworkActivity];
                 NSLog(@"%@",responseObject);
                 int code = [[responseObject valueForKey:@"code"] intValue];
                 if (code == 1){
@@ -305,6 +299,7 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
                 }
             }
             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [client stopNetworkActivity];
                NSLog(@"fail.. %@",error);
                 if (block){
                     block(NO,YES,error.localizedDescription);
