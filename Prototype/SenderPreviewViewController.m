@@ -14,6 +14,7 @@
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
 #import "UploaderAPIClient.h"
+#import "UIImageView+WebCache.h"
 
 typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message);
 
@@ -70,8 +71,8 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     //self.name = @"Guess what im eating";
     //self.phrase = @"Nothing stupid";
     self.previewImage.image = [UIImage imageWithImage:self.image convertToSize:self.previewImage.frame.size];
-    self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
-    self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
+    //self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
+    //self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
  
     self.selectedFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
                                                                                [@[]mutableCopy],@"index_paths",
@@ -272,39 +273,42 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *apiString = [defaults valueForKey:@"apiString"];
-    
-    //client.responseSerializer = [AFJSONResponseSerializer serializer];
-    //client.requestSerializer = [AFJSONRequestSerializer serializer];
     [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPIChallengeCreateString parameters:params
-            constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                 [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
-            }
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [client stopNetworkActivity];
-                NSLog(@"%@",responseObject);
-                int code = [[responseObject valueForKey:@"code"] intValue];
-                if (code == 1){
-                    NSLog(@"true success");
-                    if (block){
-                        block(YES,NO,[responseObject valueForKey:@"message"]);
-                    }
-                }
-                if (code == -10){
-                    NSLog(@"success but issues");
-                    if (block){
-                        block(NO,NO,[responseObject valueForKey:@"message"]);
-                    }
-                }
-            }
-            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [client stopNetworkActivity];
-               NSLog(@"fail.. %@",error);
-                if (block){
-                    block(NO,YES,error.localizedDescription);
-                }
-            }];
+    if ([client connected]){
+            [client startNetworkActivity];
+            [client POST:AwesomeAPIChallengeCreateString parameters:params
+        constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
+       }
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     [client stopNetworkActivity];
+                     NSLog(@"%@",responseObject);
+                     int code = [[responseObject valueForKey:@"code"] intValue];
+                     if (code == 1){
+                         NSLog(@"true success");
+                         if (block){
+                             block(YES,NO,[responseObject valueForKey:@"message"]);
+                         }
+                     }
+                     if (code == -10){
+                         [self showAlertWithMessage:@"There was an error with your request."];
+                         if (block){
+                             block(NO,NO,[responseObject valueForKey:@"message"]);
+                         }
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     [client stopNetworkActivity];
+                     [self showAlertWithMessage:error.localizedDescription];
+                     if (block){
+                         block(NO,YES,error.localizedDescription);
+                     }
+                 }];
+
+    }
+    else{
+        [self showAlertWithMessage:@"No connection detected"];
+    }
 }
 
 - (void)showAlertWithMessage:(NSString *)message
@@ -333,6 +337,23 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
         self.bottomSendButton.hidden = YES;
     }
 
+}
+
+- (NSArray *)friendsArray
+{
+    if (!_friendsArray){
+        _friendsArray = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
+    }
+    
+    return _friendsArray;
+}
+
+- (NSArray *)facebookFriendsArray
+{
+    if (!_facebookFriendsArray){
+        _facebookFriendsArray = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:NO];
+    }
+    return _facebookFriendsArray;
 }
 
 #pragma -mark UItableview delegate
@@ -398,38 +419,45 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
 
-        CellIdentifier = @"senderFriends";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        if (cell){
+    CellIdentifier = @"senderFriends";
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UIImageView *imageView = ((SenderFriendsCell *)cell).myFriendPic;
+    
+    if (cell){
+        
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
+            // retrurn cells for fbook friends
+            User *friend = [self.facebookFriendsArray objectAtIndex:indexPath.row];
+            ((SenderFriendsCell *)cell).myFriendUsername.text = friend.username;
             
-            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
-                // retrurn cells for fbook friends
-                    ((SenderFriendsCell *)cell).myFriendUsername.text = [self.facebookFriendsArray objectAtIndex:indexPath.row];
-            }
-            else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]){
-                // return cells for contact friends
-                ((SenderFriendsCell *)cell).myFriendUsername.text = [self.friendsArray objectAtIndex:indexPath.row];
-                
-            }
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",friend.facebook_id];
+            NSURL * fbUrl = [NSURL URLWithString:fbString];
+            [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
 
             
+            
+        }
+        else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]){
+            // return cells for contact friends
+            User *friend = [self.friendsArray objectAtIndex:indexPath.row];
+            ((SenderFriendsCell *)cell).myFriendUsername.text = friend.username;
             ((SenderFriendsCell *)cell).myFriendPic.image = nil;
             FAImageView *imageView =  ((FAImageView *)((SenderFriendsCell *)cell).myFriendPic);
             [imageView setDefaultIconIdentifier:@"fa-user"];
-            
-            // add this to list of cells that have checkmarks
-            if ([self.selectedFriends[@"index_paths"] containsObject:indexPath]){
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            }
-            else{
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
 
-    
         }
-    
-    
-    // Configure the cell...
+
+        // add this to list of cells that have checkmarks
+        if ([self.selectedFriends[@"index_paths"] containsObject:indexPath]){
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else{
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+
+
+    }
+
     
     return cell;
 }

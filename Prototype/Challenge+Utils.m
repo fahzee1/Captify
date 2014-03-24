@@ -23,7 +23,7 @@
     self.success = [NSNumber numberWithBool:NO];
     self.active = [NSNumber numberWithBool:YES];
     
-    NSLog(@"just created challenge now send request to create it on server");
+
 }
 
 
@@ -34,7 +34,10 @@
 }
 
 
-
++ (NSString *)name
+{
+    return @"Challenge";
+}
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skip

@@ -268,7 +268,6 @@
 		118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 118F24F718BFC2C90007797E /* UIImage+Utils.m */; };
 		1191604418C9894F00C25E36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1191604318C9894F00C25E36 /* FacebookSDK.framework */; };
 		1191604718DBEBD300C25E36 /* UploaderAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604618DBEBD300C25E36 /* UploaderAPIClient.m */; };
-		1191604D18DF4C5B00C25E36 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604C18DF4C5B00C25E36 /* ChallengePicks.m */; };
 		1191605018DF4C5C00C25E36 /* ReceivedChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */; };
 		1191605318DF4C5D00C25E36 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605218DF4C5D00C25E36 /* User.m */; };
 		1191605618DF4DB900C25E36 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605518DF4DB900C25E36 /* Challenge.m */; };
@@ -308,6 +307,9 @@
 		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
 		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
 		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
+		11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */; };
+		11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */; };
+		11DFE7B218E0D03000066E62 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7B118E0D03000066E62 /* ChallengePicks.m */; };
 		11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FA2F4018D79380000F6DB9 /* Contacts.m */; };
 		11FA2F4318D793DE000F6DB9 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FA2F4218D793DE000F6DB9 /* AddressBook.framework */; };
 		11FAA7FE18C6763900147E75 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA7FD18C6763900147E75 /* ShareViewController.m */; };
@@ -827,8 +829,6 @@
 		1191604318C9894F00C25E36 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		1191604518DBEBD300C25E36 /* UploaderAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploaderAPIClient.h; sourceTree = "<group>"; };
 		1191604618DBEBD300C25E36 /* UploaderAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploaderAPIClient.m; sourceTree = "<group>"; };
-		1191604B18DF4C5B00C25E36 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
-		1191604C18DF4C5B00C25E36 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
 		1191604E18DF4C5C00C25E36 /* ReceivedChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceivedChallenge.h; sourceTree = "<group>"; };
 		1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceivedChallenge.m; sourceTree = "<group>"; };
 		1191605118DF4C5D00C25E36 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -892,6 +892,12 @@
 		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
 		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
+		11DFE7AA18E0A0B700066E62 /* TestDataCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDataCreator.h; sourceTree = "<group>"; };
+		11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestDataCreator.m; sourceTree = "<group>"; };
+		11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChallengePicks+Utils.h"; sourceTree = "<group>"; };
+		11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ChallengePicks+Utils.m"; sourceTree = "<group>"; };
+		11DFE7B018E0D03000066E62 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
+		11DFE7B118E0D03000066E62 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
 		11FA2F3F18D79380000F6DB9 /* Contacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contacts.h; sourceTree = "<group>"; };
 		11FA2F4018D79380000F6DB9 /* Contacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contacts.m; sourceTree = "<group>"; };
 		11FA2F4218D793DE000F6DB9 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1038,12 +1044,14 @@
 				1191605518DF4DB900C25E36 /* Challenge.m */,
 				1191605118DF4C5D00C25E36 /* User.h */,
 				1191605218DF4C5D00C25E36 /* User.m */,
+				11DFE7B018E0D03000066E62 /* ChallengePicks.h */,
+				11DFE7B118E0D03000066E62 /* ChallengePicks.m */,
 				1191604E18DF4C5C00C25E36 /* ReceivedChallenge.h */,
 				1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */,
-				1191604B18DF4C5B00C25E36 /* ChallengePicks.h */,
-				1191604C18DF4C5B00C25E36 /* ChallengePicks.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
+				11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */,
+				11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */,
 				11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */,
 				11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */,
 			);
@@ -1205,6 +1213,8 @@
 				113EE17718BBD08E0095D876 /* SocialFriends.m */,
 				11FA2F3F18D79380000F6DB9 /* Contacts.h */,
 				11FA2F4018D79380000F6DB9 /* Contacts.m */,
+				11DFE7AA18E0A0B700066E62 /* TestDataCreator.h */,
+				11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1986,7 +1996,7 @@
 				1153E1D018A9DF4800AD950E /* GPUImageTwoInputFilter.m in Sources */,
 				1153E17E18A9DF4800AD950E /* GPUImageHueFilter.m in Sources */,
 				1153E14918A9DF4800AD950E /* GPUImageBilateralFilter.m in Sources */,
-				1191604D18DF4C5B00C25E36 /* ChallengePicks.m in Sources */,
+				11DFE7B218E0D03000066E62 /* ChallengePicks.m in Sources */,
 				1153E15918A9DF4800AD950E /* GPUImageContrastFilter.m in Sources */,
 				1184FDDD18BCFB3700FDEAE0 /* AddFriendCell.m in Sources */,
 				1153E17118A9DF4800AD950E /* GPUImageGlassSphereFilter.m in Sources */,
@@ -2148,6 +2158,7 @@
 				1153E16B18A9DF4800AD950E /* GPUImageFilterGroup.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
 				1153E19A18A9DF4800AD950E /* GPUImageNobleCornerDetectionFilter.m in Sources */,
+				11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */,
 				1153E15D18A9DF4800AD950E /* GPUImageDarkenBlendFilter.m in Sources */,
 				1153E17B18A9DF4800AD950E /* GPUImageHoughTransformLineDetector.m in Sources */,
 				1184FE0118BD03A000FDEAE0 /* SDImageCache.m in Sources */,
@@ -2170,6 +2181,7 @@
 				111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */,
 				1153E1B218A9DF4800AD950E /* GPUImageSaturationBlendFilter.m in Sources */,
 				1153E1CA18A9DF4800AD950E /* GPUImageThresholdSketchFilter.m in Sources */,
+				11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */,
 				1153E14E18A9DF4800AD950E /* GPUImageCannyEdgeDetectionFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

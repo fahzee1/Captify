@@ -31,6 +31,11 @@
     // called everytime this object is fetched
 }
 
++ (NSString *)name
+{
+    return @"User";
+}
+
 - (BOOL)isFacebookUser
 {
     return self.facebook_user ? YES:NO;
@@ -455,28 +460,6 @@
      
 }
 
-+ (User *) createTestFriendWithName:(NSString *)name
-                            context:(NSManagedObjectContext *)context
-{
-    NSError *error;
-    User *user = nil;
-    user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-    user.username = name;
-    user.facebook_user = [NSNumber numberWithBool:NO];
-    user.private = [NSNumber numberWithBool:NO];
-    user.super_user = [NSNumber numberWithBool:NO];
-    user.facebook_id = [NSNumber numberWithInt:12345];
-    user.is_friend = [NSNumber numberWithBool:YES];
-    
-    if (![user.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-        
-    }
-    
-    
-    return  user;
-}
 
 + (void)updateDeviceTokenWithParams:(NSDictionary *)params
                            callback:(DeviceTokenSendBlock)block
@@ -513,14 +496,24 @@
 }
 
 + (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context
+                       getContacts:(BOOL)contacts
 {
-    NSError *error;
-    NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (facebook_user = 0)";
+    NSFetchRequest *firstRequest;
+    if (contacts){
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (facebook_user = 0)";
+        
+        firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+        firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
+    }
+    else{
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (facebook_user = 1)";
+        
+        firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+        firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
+
+    }
     
-    NSFetchRequest *firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
-    
-    
+     NSError *error;
 
     
     return [context executeFetchRequest:firstRequest error:&error];

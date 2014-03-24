@@ -11,6 +11,8 @@
 
 @interface Challenge (Utils)
 
++ (NSString *)name;
+
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skipCreate;

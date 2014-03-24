@@ -13,7 +13,7 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 
 @interface User (Utils)
 
-
++ (NSString *)name;
 
 - (BOOL)isFacebookUser;
 - (BOOL)isPrivate;
@@ -40,12 +40,11 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 + (void)getFacebookPicWithUser:(User *)user
                      imageview:(UIImageView *)iv;
 
-+ (User *)createTestFriendWithName:(NSString *)name
-                            context:(NSManagedObjectContext *)context;
 
 + (void)updateDeviceTokenWithParams:(NSDictionary *)params
                            callback:(DeviceTokenSendBlock)block;
 
-+ (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context;
++ (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context
+                       getContacts:(BOOL)contacts;
 
 @end

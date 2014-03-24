@@ -7,10 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
+#import "Challenge.h"
 
 @interface HistoryDetailViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *myImageView;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) UIImage *image;
+
+
+@property (nonatomic, retain)User *myUser;
+@property (nonatomic, retain)Challenge *myChallenge;
+
 @end

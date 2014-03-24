@@ -57,9 +57,10 @@
     }
     
     
-    
+    [self createAlbumAfterTime:60.0 * 5];
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
+        
         //Whenever a person opens the app, check for cached sesssion
         if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded){
             //if theres one just open silently without showing login
@@ -81,6 +82,7 @@
                                           }];
         }
         
+        /*
         if (![defaults boolForKey:@"facebookFriendsFetch"]){
             // fetch friends in the background if we dont have any
             dispatch_queue_t fbookQue = dispatch_queue_create("facebookFetcherQueue", DISPATCH_QUEUE_PRIORITY_DEFAULT);
@@ -89,6 +91,7 @@
             });
             
         }
+         */
         
         
     }
@@ -270,6 +273,7 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
 
 
 - (BOOL)saveFileToDocuments:(NSString *)name
@@ -573,5 +577,27 @@
 }
 
 
+- (void)createAlbumAfterTime:(double)time
+{
+    
+    double delayInSeconds = time;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (![[NSUserDefaults standardUserDefaults] valueForKey:@"albumID"]){
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
+                SocialFriends *s = [[SocialFriends alloc] init];
+                [s createAlbumWithName:@"Captify" block:^(BOOL wasSuccessful, id albumID) {
+                    if (wasSuccessful){
+                        [[NSUserDefaults standardUserDefaults] setValue:albumID forKey:@"albumID"];
+                    }
+            
+                }];
+            }
+        }
+        
+    });
+    
+
+}
 
 @end

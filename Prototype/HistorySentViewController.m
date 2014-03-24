@@ -15,6 +15,7 @@
 #import "HistoryDetailViewController.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
+#import "UIImageView+WebCache.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
@@ -102,6 +103,7 @@
         UILabel *activeLabel = ((HistorySentCell *)cell).activeLabel;
         
         Challenge *challenge = [self.data objectAtIndex:indexPath.row];
+        User *sender = challenge.sender;
         
         if ([challenge.active intValue] == 0){
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -117,8 +119,19 @@
 
         dateLabel.text = [challenge.timestamp timeAgo];
         
-        UIImage *thumbnail = [Challenge loadImagewithFileName:challenge.thumbnail_path];
-        myImageView.image = thumbnail;
+        if (sender.facebook_user){
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
+            NSURL * fbUrl = [NSURL URLWithString:fbString];
+            [myImageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+     
+        }
+        else{
+            myImageView.image = nil;
+            FAImageView *imageView = (FAImageView *)myImageView;
+            [imageView setDefaultIconIdentifier:@"fa-user"];
+            
+        }
+     
         /*
         FAImageView *imageView = (FAImageView *)myImageView;
         [imageView setDefaultIconIdentifier:@"fa-user"];
@@ -173,6 +186,9 @@
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
             UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.image_path];
             ((HistoryDetailViewController *)vc).image = challenge_image;
+            ((HistoryDetailViewController *)vc).myChallenge = challenge;
+            ((HistoryDetailViewController *)vc).myUser = self.myUser;
+            
              [self.navigationController pushViewController:vc animated:YES];
         }
     }

@@ -20,6 +20,8 @@
 #import "UIView+Glow.h"
 #import "NEOColorPickerViewController.h"
 #import "CMPopTipView.h"
+#import "ChallengePicks+Utils.h"
+#import "UIImageView+WebCache.h"
 
 /*
  mark challenge as done when complete
@@ -33,7 +35,7 @@
 
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate>
 
-@property NSArray *data;
+@property (strong, nonatomic) NSArray *data;
 @property BOOL hideSelectButtons;
 @property BOOL shareToFacebook;
 @property BOOL shareContainerOnScreen;
@@ -77,7 +79,6 @@
     self.finalCaptionLabel.hidden = YES;
     [self.myImageView addSubview:self.finalCaptionLabel];
     self.myImageView.clipsToBounds = YES;
-    self.data = @[@"This is one long example of a caption that could be used",@"Buggy woggy its late right now",@"Wait a minute dont you hear me",@"She wanna have what you have",@"Yolo son!",@"Her ass cant handle it",@"Its alright, its Ok!"];
     self.imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
     self.imageControls.frame = self.myImageView.frame;
     self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
@@ -397,6 +398,14 @@
 
 
 
+- (NSArray *)data
+{
+    if (!_data){
+        _data = [self.myChallenge.picks allObjects];
+    }
+    return _data;
+}
+
 
 # pragma -mark Color picker delegate
 
@@ -475,16 +484,6 @@
     return [self.data count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (self.hideSelectButtons){
-        return [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
-    }
-    else{
-        return [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
-    }
-   
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -497,7 +496,11 @@
     container.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
     
     NSString *title;
-    if (self.hideSelectButtons){
+    if ([self.data count] == 0){
+        title = @"No captions received yet";
+    }
+
+    else if  (self.hideSelectButtons){
         title = [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
     }
     else{
@@ -527,44 +530,55 @@
     static NSString *cellIdentifier = @"historyDetailCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    if ([cell isKindOfClass:[HistoryDetailCell class]]){
-        UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
-        UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
-        UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
-        
-        ((HistoryDetailCell *)cell).myImageVew.image = nil;
-        FAImageView *imageView = ((FAImageView *)((HistoryDetailCell *)cell).myImageVew);
-        [imageView setDefaultIconIdentifier:@"fa-user"];
-        
-        captionLabel.text = [self.data objectAtIndex:indexPath.row];
-    
-        // set width and height so "sizeToFit" uses those constraints
-      
-        captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
+    if ([pick isKindOfClass:[ChallengePicks class]]){
 
-        captionLabel.numberOfLines = 0;
-        [captionLabel sizeToFit];
+        if ([cell isKindOfClass:[HistoryDetailCell class]]){
+            UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
+            UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
+            UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
+            
+            if (pick.player.facebook_user){
+                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
+                NSURL * fbUrl = [NSURL URLWithString:fbString];
+                [((HistoryDetailCell *)cell).myImageVew setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+
+            }
+            else{
+                ((HistoryDetailCell *)cell).myImageVew.image = nil;
+                FAImageView *imageView = ((FAImageView *)((HistoryDetailCell *)cell).myImageVew);
+                [imageView setDefaultIconIdentifier:@"fa-user"];
+            }
+            
+            captionLabel.text = pick.answer;
         
-        NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:0];
-        dateLabel.text = [date timeAgo];
-    
+            // set width and height so "sizeToFit" uses those constraints
+          
+            captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
+
+            captionLabel.numberOfLines = 0;
+            [captionLabel sizeToFit];
+            
+            dateLabel.text = [pick.timestamp timeAgo];
         
-        
-        [selectButton addTarget:self action:@selector(selectedCaption:) forControlEvents:UIControlEventTouchUpInside];
-        /*
-        if (self.hideSelectButtons){
-            selectButton.hidden = YES;
+            
+            
+            [selectButton addTarget:self action:@selector(selectedCaption:) forControlEvents:UIControlEventTouchUpInside];
+            
+            /*
+            if (self.hideSelectButtons){
+                selectButton.hidden = YES;
+            }
+             */
+           
+            /*
+            [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
+            [((HistoryDetailCell *)cell).mySelectButton.titleLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"]];
+            [((HistoryDetailCell *)cell).mySelectButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+             */
+            
+            
         }
-         */
-       
-        /*
-        [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
-        [((HistoryDetailCell *)cell).mySelectButton.titleLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"]];
-        [((HistoryDetailCell *)cell).mySelectButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-         */
-        
-        
     }
     return cell;
     

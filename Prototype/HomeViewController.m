@@ -32,7 +32,7 @@
 #import "UIImage+Utils.h"
 #import "CMPopTipView.h"
 #import "HistoryContainerViewController.h"
-
+#import "TestDataCreator.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -98,11 +98,13 @@
 {
     [super viewDidLoad];
 
-    //User *test = [User createTestFriendWithName:@"pusha_t" context:self.myUser.managedObjectContext];
-    //[Challenge createTestChallengeWithUser:test];
+    User *user = [TestDataCreator createTestFriendWithName:@"cj_prince22" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+    Challenge *challenge = [TestDataCreator createTestChallengeWithName:@"drunk in love" byUser:self.myUser toFriends:@[user] withID:@"0002"];
+    
+    [TestDataCreator addChallengePickToChallenge:challenge withPlayer:user caption:@"This is a stupid good test"];
+    
     
     NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
-    NSString *logthis = @"Need to test the creation of thumbnails, saving and loading them and displaying them in tableview from senderpreview screen";
     NSLog(logthis2);
     
     self.navigationController.delegate = self;

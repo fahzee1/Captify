@@ -2,12 +2,13 @@
 //  ChallengePicks.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/23/14.
+//  Created by CJ Ogbuehi on 3/24/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
 #import "ChallengePicks.h"
 #import "Challenge.h"
+#import "ReceivedChallenge.h"
 #import "User.h"
 
 

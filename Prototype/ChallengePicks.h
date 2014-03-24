@@ -2,14 +2,14 @@
 //  ChallengePicks.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/23/14.
+//  Created by CJ Ogbuehi on 3/24/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Challenge, User;
+@class Challenge, ReceivedChallenge, User;
 
 @interface ChallengePicks : NSManagedObject
 
@@ -18,6 +18,6 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) Challenge *challenge;
 @property (nonatomic, retain) User *player;
-@property (nonatomic, retain) NSManagedObject *received_challenge;
+@property (nonatomic, retain) ReceivedChallenge *received_challenge;
 
 @end
