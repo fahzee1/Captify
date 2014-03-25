@@ -74,6 +74,8 @@
     
     //self.navigationItem.rightBarButtonItem = nextButton;
     
+    self.navigationItem.title = NSLocalizedString(@"All Captions", @"All captions to showing on final screen");
+    
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.finalCaptionLabel.hidden = YES;
@@ -90,6 +92,7 @@
     self.captionFontStepper.minimumValue = 8;
     self.captionFontStepper.maximumValue = 45;
    
+    self.topLabel.text = self.myChallenge.name;
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
@@ -167,7 +170,7 @@
 
                          [self showNextButton];
                         
-                         self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Press and hold for edit options or drag caption"];
+                         self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Press and hold for edit options or drag caption", nil)];
                          self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
                          self.toolTip.textColor = [UIColor whiteColor];
                          self.toolTip.hasGradientBackground = NO;
@@ -243,7 +246,7 @@
     NEOColorPickerViewController *colorPicker = [[NEOColorPickerViewController alloc] init];
     colorPicker.delegate = self;
     colorPicker.selectedColor = [UIColor blackColor];
-    colorPicker.title = @"Caption color";
+    colorPicker.title = NSLocalizedString(@"Caption Color", @"Color to use on caption");
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:colorPicker];
     [self presentViewController:navVC animated:YES completion:nil];
 }
@@ -318,10 +321,10 @@
 
 - (void)showAlertWithTextField
 {
-    self.makeCaptionAlert = [[UIAlertView alloc] initWithTitle:@"Make your own"
-                                                    message:@"Dont like any of the captions below? Create your own." delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Make Caption", nil];
+    self.makeCaptionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make your own", nil)
+                                                    message:NSLocalizedString(@"Dont like any of the captions below? Create your own.", nil) delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                          otherButtonTitles:NSLocalizedString(@"Make Caption", nil), nil];
     self.makeCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [self.makeCaptionAlert show];
 }
@@ -401,7 +404,8 @@
 - (NSArray *)data
 {
     if (!_data){
-        _data = [self.myChallenge.picks allObjects];
+        NSSet *picks = self.myChallenge.picks;
+        _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
     }
     return _data;
 }
@@ -497,14 +501,16 @@
     
     NSString *title;
     if ([self.data count] == 0){
-        title = @"No captions received yet";
+        title = NSLocalizedString(@"No captions received yet", @"Nothing received yet");
     }
 
     else if  (self.hideSelectButtons){
-        title = [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
+        NSString *string = [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
+        title = NSLocalizedString(string, nil);
     }
     else{
-        title = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
+        NSString *string = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
+        title = NSLocalizedString(string, nil);
     }
 
     UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, 300, 50)];
@@ -531,25 +537,18 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
+    
     if ([pick isKindOfClass:[ChallengePicks class]]){
-
+        
         if ([cell isKindOfClass:[HistoryDetailCell class]]){
             UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
             UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
+            UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
             
-            if (pick.player.facebook_user){
-                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
-                NSURL * fbUrl = [NSURL URLWithString:fbString];
-                [((HistoryDetailCell *)cell).myImageVew setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-
-            }
-            else{
-                ((HistoryDetailCell *)cell).myImageVew.image = nil;
-                FAImageView *imageView = ((FAImageView *)((HistoryDetailCell *)cell).myImageVew);
-                [imageView setDefaultIconIdentifier:@"fa-user"];
-            }
             
+            [pick.player getCorrectProfilePicWithImageView:imageView];
+    
             captionLabel.text = pick.answer;
         
             // set width and height so "sizeToFit" uses those constraints

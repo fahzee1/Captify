@@ -104,21 +104,7 @@
 
         dateLabel.text = [challenge.timestamp timeAgo];
       
-     
-        if ([sender.facebook_user intValue] == 1){
-            // get facebook id and show image
-            // pic size - normal, small, large
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
-            NSURL * fbUrl = [NSURL URLWithString:fbString];
-            [KimageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-            
-        }
-        else{
-            // show placeholder
-            KimageView.image = nil;
-            FAImageView *imageView = ((FAImageView *)KimageView);
-            [imageView setDefaultIconIdentifier:@"fa-user"];
-        }
+        [sender getCorrectProfilePicWithImageView:KimageView];
         
         
         // check if challenge is active or not
@@ -164,9 +150,14 @@
     // check if active
     Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
     if ([challenge.active intValue] == 1){
-        UIViewController *vc;
-        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
-        [self.navigationController pushViewController:vc animated:YES];
+        UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
+        if ([vc isKindOfClass:[ChallengeViewController class]]){
+            ((ChallengeViewController *)vc).myChallenge = challenge;
+            ((ChallengeViewController *)vc).myUser = self.myUser;
+            ((ChallengeViewController *)vc).name = challenge.name;
+            ((ChallengeViewController *)vc).sender = challenge.sender.username;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
     
 }

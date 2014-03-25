@@ -11,6 +11,9 @@
 #import "HomeViewController.h"
 #import "AppDelegate.h"
 #import "UIImageView+AFNetworking.h"
+#import "UIImageView+WebCache.h"
+#import "FAImageView.h"
+#import "UIFont+FontAwesome.h"
 
 
 @implementation User (Utils)
@@ -44,6 +47,25 @@
 - (BOOL)isPrivate
 {
     return self.private ? YES:NO;
+}
+
+
+- (void)getCorrectProfilePicWithImageView:(UIImageView *)iV
+{
+    
+    if (self.facebook_user){
+        NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",self.facebook_id];
+        NSURL * fbUrl = [NSURL URLWithString:fbString];
+        [iV setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+
+    }
+    
+    else{
+        iV.image = nil;
+        FAImageView *imageView2 = (FAImageView *)iV;
+        [imageView2 setDefaultIconIdentifier:@"fa-user"];
+
+    }
 }
 
 + (BOOL)validPhoneNumber:(NSString *)number

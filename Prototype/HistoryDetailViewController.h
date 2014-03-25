@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "User.h"
+#import "User+Utils.h"
 #import "Challenge.h"
 
 @interface HistoryDetailViewController : UIViewController

@@ -98,10 +98,20 @@
 {
     [super viewDidLoad];
 
-    User *user = [TestDataCreator createTestFriendWithName:@"cj_prince22" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-    Challenge *challenge = [TestDataCreator createTestChallengeWithName:@"drunk in love" byUser:self.myUser toFriends:@[user] withID:@"0002"];
     
-    [TestDataCreator addChallengePickToChallenge:challenge withPlayer:user caption:@"This is a stupid good test"];
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+        User *user = [TestDataCreator createTestFriendWithName:@"rich_homie_quan" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        Challenge *challenge = [TestDataCreator createTestChallengeWithName:@"Making no noise yall boys aint making no noise" byUser:user2 toFriends:@[user,self.myUser] withID:@"0004"];
+        
+        [TestDataCreator addChallengePickToChallenge:challenge withPlayer:user caption:@"Yall look in drunk in love"];
+        [TestDataCreator addChallengePickToChallenge:challenge withPlayer:self.myUser caption:@"We aint never going broke...this the shit i live for"];
+        [TestDataCreator addChallengePickToChallenge:challenge withPlayer:user caption:@"Pour it for the dead homies"];
+        [TestDataCreator addChallengePickToChallenge:challenge withPlayer:self.myUser caption:@"Well let me be the first to get mines"];
+
+    }
+    
+    
     
     
     NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
@@ -357,15 +367,22 @@
 
 }
 
-- (IBAction)tappedMenuButton:(UIButton *)sender {
+- (IBAction)tappedMenuButton:(UIButton *)sender
+{
     [self showMenu];
 }
 
 
 
-- (void)tappedSnapPic:(UITapGestureRecognizer *)sender {
-  
-       [self snapPhoto];
+- (void)tappedSnapPic:(UITapGestureRecognizer *)sender
+{
+    sender.view.userInteractionEnabled = NO;
+    [self snapPhoto];
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        sender.view.userInteractionEnabled = YES;
+    });
 }
 
 

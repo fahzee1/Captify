@@ -24,16 +24,12 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 @interface SenderPreviewViewController ()<UIScrollViewDelegate,UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *selectedFriendsScroll;
-@property (weak, nonatomic) IBOutlet UILabel *toLabel;
-
 @property (weak, nonatomic) IBOutlet UITableView *friendsTable;
 @property (strong, nonatomic)NSMutableDictionary *selectedFriends;
 @property (strong, nonatomic)NSMutableDictionary *selectedPositions;
 @property (strong, nonatomic) NSArray *friendsArray;
 @property (strong, nonatomic) NSArray *facebookFriendsArray;
-@property (weak, nonatomic) IBOutlet UILabel *bottomLabel;
-@property (strong, nonatomic) UIButton *bottomSendButton;
+@property (strong, nonatomic)IBOutlet UIButton *bottomSendButton;
 @property CGPoint scrollStart;
 @property (strong, nonatomic)NSArray *sections;
 
@@ -59,12 +55,8 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = NSLocalizedString(@"Preview", nil);
-    self.selectedFriendsScroll.delegate = self;
     self.friendsTable.delegate = self;
     self.friendsTable.dataSource = self;
-    self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width, self.selectedFriendsScroll.frame.size.height);
-    self.selectedFriendsScroll.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2f];
-    self.scrollStart = CGPointMake(self.toLabel.frame.origin.x + 30, 10);
     
     [self setupStyles];
     
@@ -98,9 +90,6 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 
 - (void)dealloc
 {
-    if (self.selectedFriendsScroll.delegate == self){
-        self.selectedFriendsScroll.delegate = nil;
-    }
     if (self.friendsTable.delegate == self){
         self.friendsTable.delegate = nil;
     }
@@ -120,27 +109,18 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 - (void)setupStyles
 {
     
-    self.toLabel.text = NSLocalizedString(@"To:", @"Recipient list to send challenge to");
     
     self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.topLabel.textColor = [UIColor whiteColor];
     self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     
-    // the bottom label
-    self.bottomLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
-    self.bottomLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
-    self.bottomLabel.textColor = [UIColor whiteColor];
-    self.bottomLabel.layer.opacity = 0.6f;
-    self.bottomLabel.text = NSLocalizedString(@"Choose Friends", @"Choose a list of friends to send challenge to");
     
     // the bottom send button
-    self.bottomSendButton = [[UIButton alloc] initWithFrame:self.bottomLabel.frame];
-    self.bottomSendButton.titleLabel.textColor = [UIColor whiteColor];
-    [self.bottomSendButton setTitle:NSLocalizedString(@"Send", @"Send challenge to recipients") forState:UIControlStateNormal];
-    self.bottomSendButton.titleLabel.font = self.bottomLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25
-    ];
+    [self.bottomSendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.bottomSendButton.layer.opacity = 0.6f;
+    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
     self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
-    self.bottomSendButton.userInteractionEnabled = YES;
+    self.bottomSendButton.userInteractionEnabled = NO;
     [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 
@@ -325,16 +305,19 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     if (scrollView == self.friendsTable){
-        self.bottomLabel.hidden = NO;
-        self.bottomSendButton.hidden = NO;
+
+        CGRect frame = self.friendsTable.frame;
+        self.friendsTable.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - self.bottomSendButton.frame.size.height);
+        [self.view addSubview:self.bottomSendButton];
     }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     if (scrollView == self.friendsTable){
-        self.bottomLabel.hidden = YES;
-        self.bottomSendButton.hidden = YES;
+        [self.bottomSendButton removeFromSuperview];
+        CGRect frame = self.friendsTable.frame;
+        self.friendsTable.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height + self.bottomSendButton.frame.size.height);
     }
 
 }
@@ -422,13 +405,17 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     CellIdentifier = @"senderFriends";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     UIImageView *imageView = ((SenderFriendsCell *)cell).myFriendPic;
+    UILabel *usernameLabel =  ((SenderFriendsCell *)cell).myFriendUsername;
     
     if (cell){
         
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
             // retrurn cells for fbook friends
             User *friend = [self.facebookFriendsArray objectAtIndex:indexPath.row];
-            ((SenderFriendsCell *)cell).myFriendUsername.text = friend.username;
+            usernameLabel.text = friend.username;
+            usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 200, 40);
+            usernameLabel.numberOfLines = 0;
+            [usernameLabel sizeToFit];
             
             NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",friend.facebook_id];
             NSURL * fbUrl = [NSURL URLWithString:fbString];
@@ -440,7 +427,11 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
         else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]){
             // return cells for contact friends
             User *friend = [self.friendsArray objectAtIndex:indexPath.row];
-            ((SenderFriendsCell *)cell).myFriendUsername.text = friend.username;
+            usernameLabel.text = friend.username;
+            usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 200, 40);
+            usernameLabel.numberOfLines = 0;
+            [usernameLabel sizeToFit];
+
             ((SenderFriendsCell *)cell).myFriendPic.image = nil;
             FAImageView *imageView =  ((FAImageView *)((SenderFriendsCell *)cell).myFriendPic);
             [imageView setDefaultIconIdentifier:@"fa-user"];
@@ -465,95 +456,29 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *selection = [self.friendsArray objectAtIndex:indexPath.row];
-    if ([self.selectedFriends[@"friends"] containsObject:selection]){
-        
-          // remove user from list and and scroll view
-        
-        NSInteger index = [self.selectedFriends[@"friends"] indexOfObject:selection];
+   // get correct type of friend
+    User *friend;
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
+        friend = [self.facebookFriendsArray objectAtIndex:indexPath.row];
+    }
+    else{
+        friend = [self.friendsArray objectAtIndex:indexPath.row];
+    }
+    
+    
+    // add/remove friend from selected list
+    if ([self.selectedFriends[@"friends"] containsObject:friend.username]){
         
         // remove friends from list and their positions
-        [self.selectedFriends[@"friends"] removeObject:selection];
-        [self.selectedPositions removeObjectForKey:selection];
+        [self.selectedFriends[@"friends"] removeObject:friend.username];
         
-        // temp list of all users after the removed user to resize positions
-        NSMutableArray *temp = [[NSMutableArray alloc] init];
-        for (NSString *username in self.selectedFriends[@"friends"]){
-            NSInteger tempIndex = [self.selectedFriends[@"friends"] indexOfObject:username];
-            if ( tempIndex >= index){
-                [temp addObject:username];
-            }
-        }
-        
-        // get remaining users tags to reposition view
-        for (NSString *username in temp){
-            int viewTag = [[self.selectedPositions objectForKey:username] intValue];
-            UIView *view = [self.selectedFriendsScroll viewWithTag:viewTag];
-            [UIView animateWithDuration:1.0f
-                             animations:^{
-                                 if (view.frame.origin.x >= self.toLabel.frame.origin.x +7){
-                                     view.frame = CGRectMake(view.frame.origin.x - 35, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
-                                 }
-
-                             }];
-
-        }
-        
-        if (self.scrollStart.x >= self.toLabel.frame.origin.x +45){
-            self.scrollStart = CGPointMake(self.scrollStart.x -35, self.scrollStart.y);
-        }
-       
-       
-        self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width -40, self.selectedFriendsScroll.frame.size.height);
-
-        UIView *userPic = [self.selectedFriendsScroll viewWithTag:(indexPath.row + SCROLLPICADD_VALUE) * SCROLLPICMULTIPLY_VALUE];
-        if (userPic){
-            if ([userPic.subviews count] == 0 && [userPic isKindOfClass:[UIImageView class]]){
-            [userPic removeFromSuperview];
-            }
-            else{
-                // not the userpic i want to remove
-            }
-        }
         
     }
     else{
         // add user to selected list
         
-        [self.selectedFriends[@"friends"] addObject:selection];
+        [self.selectedFriends[@"friends"] addObject:friend.username];
         
-        
-        
-        // get users pic , testing for now, add it to scroll
-        UIImageView *testView = [[UIImageView alloc] initWithImage:[UIImage imageWithRoundedCornersSize:30.0f usingImage:[UIImage imageNamed:@"profile-placeholder"]]];
-        
-        testView.layer.masksToBounds = YES;
-        
-        // set tag to a very unique value so we dont risk getting a tag for another view
-        testView.tag = (indexPath.row + SCROLLPICADD_VALUE) * SCROLLPICMULTIPLY_VALUE;
-        
-        // save views postion to slide into freed up space
-        // "positions" is a list of dictionaries with key being username
-        // and value being cgpoint
-        self.selectedPositions[selection] = [NSNumber numberWithInt:testView.tag];
-        
-        if ([self.selectedFriends[@"friends"] count] > 1){
-            //int tag = [[self.selectedPositions objectForKey:nameOfLast] intValue];
-            self.scrollStart = CGPointMake(self.scrollStart.x +45, self.scrollStart.y);
-            
-        }
-        
-     
-        testView.frame = CGRectMake(self.scrollStart.x, self.scrollStart.y, 35, 35);
-
-        
-        [self.selectedFriendsScroll addSubview:testView];
-        
-        
-        self.selectedFriendsScroll.contentSize = CGSizeMake(self.selectedFriendsScroll.contentSize.width +48, self.selectedFriendsScroll.frame.size.height);
-        
-    
-
         
     
     }
@@ -570,15 +495,18 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 
     // if selected friend list is empty show "choose friends" label
     // else remove label and show send button
-    if (![self.selectedFriends[@"friends"] count] == 0){
-    
-        self.bottomLabel.hidden = YES;
-        [self.view addSubview:self.bottomSendButton];
+    NSUInteger count = [self.selectedFriends[@"friends"] count];
+    if (!count == 0){
+        self.bottomSendButton.userInteractionEnabled = YES;
+        self.bottomSendButton.layer.opacity = 1.0f;
+        NSString *sendString = [NSString stringWithFormat:@"Send to %lu friends",(unsigned long)count];
+        [self.bottomSendButton setTitle:NSLocalizedString(sendString, nil) forState:UIControlStateNormal];
         
     }
     else{
-        [self.bottomSendButton removeFromSuperview];
-        self.bottomLabel.hidden = NO;
+        self.bottomSendButton.userInteractionEnabled = NO;
+        self.bottomSendButton.layer.opacity = 0.6f;
+        [self.bottomSendButton setTitle:NSLocalizedString(@"Choose Friends", nil) forState:UIControlStateNormal];
     }
     
     // reload to show checkmarks
@@ -600,6 +528,7 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     }
     return _myUser;
 }
+
 
 
 

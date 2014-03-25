@@ -11,12 +11,12 @@
 @interface ReceiverPreviewViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
-@property (weak, nonatomic) IBOutlet UILabel *previewPhrase;
+@property (weak, nonatomic) IBOutlet UILabel *previewCaption;
 @property (weak, nonatomic) IBOutlet UILabel *previewChallengeName;
 
 
 @property (strong, nonatomic) UIImage *image;
-@property (strong, nonatomic) NSString *phrase;
+@property (strong, nonatomic) NSString *caption;
 @property (strong, nonatomic) NSString *challengeName;
 
 

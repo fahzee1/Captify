@@ -18,6 +18,9 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 - (BOOL)isFacebookUser;
 - (BOOL)isPrivate;
 
+- (void)getCorrectProfilePicWithImageView:(UIImageView *)iV;
+
+
 + (BOOL)validPhoneNumber:(NSString *)number;
 
 + (BOOL)createContactsWithParams:(NSDictionary *)params

@@ -119,24 +119,8 @@
 
         dateLabel.text = [challenge.timestamp timeAgo];
         
-        if (sender.facebook_user){
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
-            NSURL * fbUrl = [NSURL URLWithString:fbString];
-            [myImageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-     
-        }
-        else{
-            myImageView.image = nil;
-            FAImageView *imageView = (FAImageView *)myImageView;
-            [imageView setDefaultIconIdentifier:@"fa-user"];
-            
-        }
-     
-        /*
-        FAImageView *imageView = (FAImageView *)myImageView;
-        [imageView setDefaultIconIdentifier:@"fa-user"];
-         */
-        
+        [sender getCorrectProfilePicWithImageView:myImageView];
+              
         numberOfFriends.text = [NSString stringWithFormat:@"Sent to %@ friends",[challenge.recipients_count stringValue]];
         
         // show green active circle

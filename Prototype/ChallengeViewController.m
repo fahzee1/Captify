@@ -15,21 +15,21 @@
 #import "ReceiverPreviewViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "UIColor+HexValue.h"
+#import "User.h"
+#import "UIImageView+WebCache.h"
+#import "FAImageView.h"
 
-
-#define FIRSTANSWERFIELD_TAG 100
-#define SECONDANSWERFIELD_TAG 200
-#define THIRDANSWERFIELD_TAG 300
 #define TEST 1
 
 @interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic)CJPopup *successPop;
 @property (strong, nonatomic)CJPopup *failPop;
-@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIButton *nonKeyboardDoneButton;
-@property (nonatomic)CGRect answerFieldRect;
 
+
+@property (weak, nonatomic) IBOutlet UIView *captionContainerView;
+@property (weak, nonatomic) IBOutlet UITextField *captionField;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -48,52 +48,99 @@
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    self.scrollView.delegate = self;
+    self.captionField.delegate = self;
+    self.captionField.returnKeyType = UIReturnKeyDone;
     [self setupStylesAndMore];
     
-
-    self.answer = @"cj ogbuehi";
-    self.name = @"guess what im eating";
-    self.numberOfFields = 2;
-    self.myFriend = @"dukesof229";
-    self.challengeNameLabel.text = self.name;
-    
+    // so the scroll view positions right
+    self.automaticallyAdjustsScrollViewInsets = NO;
+   
     
     [self setupTopLabel];
     
     
-    [self layAnswerFields];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.captionField becomeFirstResponder];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self setupTopLabel];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.topLabel removeFromSuperview];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    
+    
+}
+
+
 - (void)setupStylesAndMore
 {
-    self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
+    // need a limit of 30 - 40 for title
+    //self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.challengeNameLabel.textColor = [UIColor whiteColor];
-    self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    if ([self.name length] > 35){
+         self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+    }
+    else{
+         self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    }
     
-    self.nonKeyboardDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
-    [self.nonKeyboardDoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.nonKeyboardDoneButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
-    self.nonKeyboardDoneButton.alpha = 0;
+    self.challengeNameLabel.text = self.name;
+    CGRect frame = self.challengeNameLabel.frame;
+    self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
+    self.challengeNameLabel.numberOfLines = 0;
+    [self.challengeNameLabel sizeToFit];
     
-    self.scrollView.contentSize = CGSizeMake(320,450);
-    self.scrollView.scrollEnabled = YES;
-    self.scrollView.delegate = self;
-
+    
 
 }
 
 - (void)setupTopLabel
 {
     if (!self.topLabel){
+        User *sender = self.myChallenge.sender;
+        
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         view.backgroundColor = [UIColor clearColor];
         CGRect navFrameBase = CGRectMake(100, 8, 30, 30);
-        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile-placeholder"]];
+        
+        FAImageView *image = [[FAImageView alloc] init];
+        if (sender.facebook_user){
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
+            NSURL * fbUrl = [NSURL URLWithString:fbString];
+            [image setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+            
+        }
+        
+        else{
+            image.image = nil;
+            FAImageView *imageView2 = (FAImageView *)image;
+            [imageView2 setDefaultIconIdentifier:@"fa-user"];
+            
+        }
+
+     
         image.frame = navFrameBase;
         UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-        friendName.text = self.myFriend;
+        friendName.text = self.sender;
         image.layer.masksToBounds = YES;
         image.layer.cornerRadius = 15.0f;
         [view addSubview:image];
@@ -116,232 +163,13 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)chooseCaption
 {
-    [self setupTopLabel];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:YES];
-   
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.topLabel removeFromSuperview];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    
+    self.answer = self.captionField.text;
     
 }
 
 
-- (IBAction)nonKeyboardDoneButtonPressed:(UIButton *)sender {
-    if ([self returnChallengeChoiceString] != nil){
-        [self performSegueWithIdentifier:@"goToRecieverPreview" sender:self];
-    }
-}
-
-
-- (void)layAnswerFields
-{
-    
-    // answer textfields
-    NSArray *splitAnswer = [self.answer componentsSeparatedByString:@" "];
-    NSAssert(self.numberOfFields == [splitAnswer count], @"answer length should be same as level");
-    
-    CGFloat startX = self.scrollView.center.x;
-    CGFloat startY = self.scrollView.center.y;
-    CGFloat startWidth = 90;
-    if (self.numberOfFields == 2){
-        startX -= 95;
-    }
-    if (self.numberOfFields == 3){
-        startX -= 144;
-    }
-    
-    BOOL showResponder = YES;
-    int i = 0;
-    for (NSString *word in splitAnswer){
-        i ++;
-        NSUInteger wordLength = [word length];
-        NSString *holderString;
-        if (wordLength < 2 && ![word intValue]){
-            holderString = [NSString stringWithFormat:@"%lu letter",(unsigned long)wordLength];
-        }
-        if (wordLength < 2 && [word intValue]){
-            holderString = [NSString stringWithFormat:@"%lu number",(unsigned long)wordLength];
-        }
-        if (wordLength >= 2 && ![word intValue]){
-            holderString = [NSString stringWithFormat:@"%lu letters",(unsigned long)wordLength];
-        }
-        if (wordLength >= 2 && [word intValue]){
-            // doesnt work if numbers not in front of strings
-            holderString = [NSString stringWithFormat:@"%lu letters/numbers",(unsigned long)wordLength];
-        }
-        UITextField *answer = [[AnswerFieldView alloc] initWithFrame:CGRectMake(startX, startY, startWidth, 35) placeholder:holderString];
-        answer.delegate = self;
-        
-        // tags will be 10, 20, 30
-        answer.tag = i *100;
-        
-        if (word == [splitAnswer lastObject]){
-            answer.returnKeyType = UIReturnKeyDone;
-        }
-        else{
-            answer.returnKeyType = UIReturnKeyNext;
-        }
-        
-        if (self.numberOfFields ==1){
-            answer.center = CGPointMake(self.view.center.x, startY);
-        }
-   
-        if (showResponder){
-            //[answer becomeFirstResponder];
-        }
-        
-        if (CGRectIsEmpty(self.answerFieldRect)){
-            NSLog(@"hit");
-            self.answerFieldRect = answer.frame;
-        }
-        
-        [self.scrollView addSubview:answer];
-        startX += startWidth +10;
-        showResponder = NO;
-        
-    }
-    
-    
-    UIView *answerBorder = [[UIView alloc] initWithFrame:CGRectMake(0, self.answerFieldRect.origin.y -15, [UIScreen mainScreen].bounds.size.width,self.answerFieldRect.size.height +30 )];
-    answerBorder.backgroundColor = [UIColor colorWithHexString:@"#2ecc71"];
-    answerBorder.layer.opacity = 0.2f;
-
-    [self.scrollView addSubview:answerBorder];
-    [self.scrollView sendSubviewToBack:answerBorder];
-    
-}
-
-
-- (void)toggleFirstResponder
-{
-
-    
-    UIView *firstField = [self.view viewWithTag:FIRSTANSWERFIELD_TAG];
-    UIView *secondField = nil;
-    UIView *thirdField = nil;
-    if (self.numberOfFields == 3){
-        secondField = [self.view viewWithTag:SECONDANSWERFIELD_TAG];
-        thirdField = [self.view viewWithTag:THIRDANSWERFIELD_TAG];
-    }
-    else{
-        secondField = [self.view viewWithTag:SECONDANSWERFIELD_TAG];
-    }
-    
-    
-    if ([firstField isFirstResponder] && secondField){
-        [secondField becomeFirstResponder];
-        return;
-    }
-    
-    if (secondField && [secondField isFirstResponder]){
-        if (thirdField){
-            [thirdField becomeFirstResponder];
-            return;
-        }
-    }
-    
-    
-}
-
-- (NSString *)returnChallengeChoiceString
-{
-    NSString *choice;
-    UITextField *firstField = ((UITextField *)[self.view viewWithTag:FIRSTANSWERFIELD_TAG]);
-    UITextField *secondField = nil;
-    UITextField *thirdField = nil;
-    
-    if (![firstField isKindOfClass:[UITextField class]]){
-        //bail
-        return choice;
-    }
-    
-    if (self.numberOfFields == 3){
-        secondField = ((UITextField *)[self.view viewWithTag:SECONDANSWERFIELD_TAG]);
-        thirdField = ((UITextField *)[self.view viewWithTag:THIRDANSWERFIELD_TAG]);
-        
-        if (![secondField isKindOfClass:[UITextField class]] && ![thirdField isKindOfClass:[UITextField class]]){
-            return choice;
-        }
-        
-        
-    }
-    if (self.numberOfFields == 2){
-        secondField = ((UITextField *)[self.view viewWithTag:SECONDANSWERFIELD_TAG]);
-        if (![secondField isKindOfClass:[UITextField class]]){
-            return choice;
-        }
-        
-    }
-    
-    // all views are within in scroll view not self.view
-    BOOL didNotify = NO;
-    for (UIView *view in self.view.subviews){
-        if ([view isKindOfClass:[UIScrollView class]]){
-            for (id view2 in view.subviews){
-                if ([view2 isKindOfClass:[UITextField class]]){
-                    if ([((UITextField *)view2).text isEqualToString:@""]){
-                        if (!didNotify){
-                            NSLog(@"notify");
-                            didNotify = YES;
-                            [self showAlertWithTitle:@"Sheesh!" message:@"No field can be empty"];
-                            return choice;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    if (self.numberOfFields == 3){
-        NSAssert(thirdField, @"level 3 should have third field");
-        choice = [NSString stringWithFormat:@"%@ %@ %@",firstField.text,secondField.text,thirdField.text];
-        
-    }
-    
-    if (self.numberOfFields == 2){
-        NSAssert(secondField, @"level 2 should have second field");
-        choice = [NSString stringWithFormat:@"%@ %@",firstField.text,secondField.text];
-    }
-    
-    if (self.numberOfFields == 1){
-        NSAssert(firstField, @"level 1 should have a field");
-        choice = firstField.text;
-    }
-    
-    
-    choice = [NSString stringWithFormat:@" \"%@\" ",choice];
-    
-    return choice;
-}
-
-
-
-
-- (void)showDoneButtonAnimated
-{
-    [UIView animateWithDuration:.6
-                     animations:^{
-                         self.nonKeyboardDoneButton.alpha = 1;
-                     }];
-
-}
 
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
@@ -381,20 +209,29 @@
 }
 
 
-- (Challenge *)myChallenge
-{
-    if (!_myChallenge){
-        // create and return challenge
-        }
-    return _myChallenge;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self toggleFirstResponder];
+    [self chooseCaption];
+    
     if (textField.returnKeyType == UIReturnKeyDone){
-        if ([self returnChallengeChoiceString] != nil){
-              [self performSegueWithIdentifier:@"goToRecieverPreview" sender:self];
+        // check if caption is empty
+        if ([self.answer length] != 0){
+            UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"receiverPreviewRoot"];
+            if ([vc isKindOfClass:[UINavigationController class]]){
+                UIViewController *finalVc = ((UINavigationController *)vc).topViewController;
+                if ([finalVc isKindOfClass:[ReceiverPreviewViewController class]]){
+                    ReceiverPreviewViewController *finalVcGo = (ReceiverPreviewViewController *)finalVc;
+                    finalVcGo.image = self.challengeImage.image;
+                    finalVcGo.challengeName = self.name;
+                    finalVcGo.caption = self.answer;
+                    [self.navigationController pushViewController:finalVc animated:YES];
+                }
+                
+            }
+        }
+        else{
+            [self showAlertWithTitle:@"Error" message:@"Did you forget to enter your caption?"];
         }
         
     }
@@ -405,34 +242,20 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (self.numberOfFields == 1 && textField.tag == FIRSTANSWERFIELD_TAG){
-        [self showDoneButtonAnimated];
-    }
     
-    if (self.numberOfFields == 2 && textField.tag == SECONDANSWERFIELD_TAG){
-        [self showDoneButtonAnimated];
-    }
-    
-    if (self.numberOfFields == 3 && textField.tag ==THIRDANSWERFIELD_TAG){
-        [self showDoneButtonAnimated];
-    }
 }
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma -mark UIscrollview delegate
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    if ([[segue identifier]isEqualToString:@"goToRecieverPreview"]){
-        UIViewController *destination = segue.destinationViewController;
-        if ([destination isKindOfClass:[ReceiverPreviewViewController class]]){
-            NSLog(@"%@",destination);
-            ReceiverPreviewViewController *preview = (ReceiverPreviewViewController *)destination;
-            preview.phrase = [self returnChallengeChoiceString];
-            preview.image = self.challengeImage.image;
-            preview.challengeName = self.name;
-            
-        }
-    }
+    
 }
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.captionField resignFirstResponder];
+}
+
 
 
 

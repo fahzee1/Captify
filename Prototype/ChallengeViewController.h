@@ -17,15 +17,14 @@
 @interface ChallengeViewController : UIViewController 
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
-//@property (nonatomic, retain)User *myFriend;
 @property (strong, nonatomic)NSString *myFriend; //temp for testing
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (strong, nonatomic)NSString *answer;
 @property (strong, nonatomic)NSString *name;
-@property (strong, nonatomic)NSString *challengeId;
-@property (nonatomic, assign) NSInteger numberOfFields;
+@property (nonatomic, retain)NSString *sender;
 @property (weak, nonatomic) IBOutlet UIImageView *challengeImage;
 @property (weak, nonatomic) IBOutlet UILabel *challengeNameLabel;
 @property (strong, nonatomic)UIView *topLabel;
+@property (strong, nonatomic)UIImage *image;
 - (void)setupTopLabel;
 @end

@@ -124,6 +124,7 @@
                                      withPlayer:(User *)player
                                         caption:(NSString *)caption
 {
+    
     NSError *error;
     ChallengePicks *pick;
     pick = [NSEntityDescription insertNewObjectForEntityForName:[ChallengePicks name] inManagedObjectContext:player.managedObjectContext];

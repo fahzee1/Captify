@@ -37,10 +37,6 @@
     [self setupColors];
     [self setupOutlets];
     
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    self.navigationItem.leftBarButtonItem = button;
-    
-    
     
 	// Do any additional setup after loading the view.
 }
@@ -54,7 +50,7 @@
 - (void)setupOutlets
 {
     self.previewImage.image = self.image;
-    self.previewPhrase.text = self.phrase;
+    self.previewCaption.text = self.caption;
     self.previewChallengeName.text = self.challengeName;
     
     
@@ -73,8 +69,8 @@
     self.previewPhraseTitle.textColor = [UIColor whiteColor];
     
     // the phrase
-    self.previewPhrase.font =  [UIFont fontWithName:@"Optima-ExtraBlack" size:21.5];
-    self.previewPhrase.textColor = [UIColor colorWithHexString:@"#3498db"];
+    self.previewCaption.font =  [UIFont fontWithName:@"Optima-ExtraBlack" size:21.5];
+    self.previewCaption.textColor = [UIColor colorWithHexString:@"#3498db"];
     
     // the send button
     self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
@@ -97,6 +93,8 @@
 }
 
 - (IBAction)sendRecieverPick:(UIButton *)sender {
+    
+    
 }
 
 
