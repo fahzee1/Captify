@@ -36,7 +36,6 @@
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) NSArray *data;
-@property BOOL hideSelectButtons;
 @property BOOL shareToFacebook;
 @property BOOL shareContainerOnScreen;
 @property CGPoint priorPoint;
@@ -501,11 +500,11 @@
     
     NSString *title;
     if ([self.data count] == 0){
-        title = NSLocalizedString(@"No captions received yet", @"Nothing received yet");
+        title = NSLocalizedString(@"No captions received yet!", @"Nothing received yet");
     }
 
-    else if  (self.hideSelectButtons){
-        NSString *string = [NSString stringWithFormat:@"%lu captions", (unsigned long)[self.data count]];
+    else if  (self.hideSelectButtons || self.hideSelectButtonsMax){
+        NSString *string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)[self.data count]];
         title = NSLocalizedString(string, nil);
     }
     else{
@@ -519,13 +518,15 @@
     [titleLablel sizeToFit];
     titleLablel.font = [UIFont boldSystemFontOfSize:12];
     
-    UIButton *makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
-    makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
-    [makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
-    [makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+    if (!self.hideSelectButtonsMax){
+        UIButton *makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
+        makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+        [makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
+        [makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+        [container addSubview:makeButton];
+    }
     
     [container addSubview:titleLablel];
-    [container addSubview:makeButton];
     
     return container;
 
@@ -564,11 +565,13 @@
             
             [selectButton addTarget:self action:@selector(selectedCaption:) forControlEvents:UIControlEventTouchUpInside];
             
-            /*
-            if (self.hideSelectButtons){
+          
+            if (self.hideSelectButtonsMax){
                 selectButton.hidden = YES;
             }
-             */
+#warning add trophy icon to selected caption
+#warning get challenge image and show in image view
+            
            
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];

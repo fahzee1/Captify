@@ -44,7 +44,6 @@
 		1108021818CA7A640014BAD8 /* HistorySentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1108021718CA7A640014BAD8 /* HistorySentCell.m */; };
 		110B087B18CF867300EC850F /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087A18CF867300EC850F /* Accounts.framework */; };
 		110B087D18CF896900EC850F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087C18CF896900EC850F /* Social.framework */; };
-		11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */ = {isa = PBXBuildFile; fileRef = 11101DD818B17073009D44BD /* HistoryViewContr.m */; };
 		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
 		11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
@@ -54,6 +53,7 @@
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
+		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
 		1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144915018AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m */; };
@@ -390,8 +390,6 @@
 		1108021718CA7A640014BAD8 /* HistorySentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySentCell.m; sourceTree = "<group>"; };
 		110B087A18CF867300EC850F /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		110B087C18CF896900EC850F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		11101DD718B17073009D44BD /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
-		11101DD818B17073009D44BD /* HistoryViewContr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewContr.m; sourceTree = "<group>"; };
 		1114293818BDBAFD00D36F0D /* DraggableCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableCaption.h; sourceTree = "<group>"; };
 		1114293918BDBAFD00D36F0D /* DraggableCaption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableCaption.m; sourceTree = "<group>"; };
 		11176DEB18B7F6E600FA69B7 /* HistoryReceivedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryReceivedCell.h; sourceTree = "<group>"; };
@@ -408,6 +406,8 @@
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
+		113FF14A18E1F3A8005D5A82 /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
+		113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryRecievedViewController.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		1144914D18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -1232,8 +1232,8 @@
 				11FAA7FD18C6763900147E75 /* ShareViewController.m */,
 				1108021018CA57880014BAD8 /* HistoryContainerViewController.h */,
 				1108021118CA57880014BAD8 /* HistoryContainerViewController.m */,
-				11101DD718B17073009D44BD /* HistoryRecievedViewController.h */,
-				11101DD818B17073009D44BD /* HistoryViewContr.m */,
+				113FF14A18E1F3A8005D5A82 /* HistoryRecievedViewController.h */,
+				113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */,
 				1108021318CA5AB00014BAD8 /* HistorySentViewController.h */,
 				1108021418CA5AB00014BAD8 /* HistorySentViewController.m */,
 			);
@@ -2042,7 +2042,6 @@
 				11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */,
 				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
-				11101DD918B17073009D44BD /* HistoryViewContr.m in Sources */,
 				1153E14318A9DF4800AD950E /* GPUImageAdaptiveThresholdFilter.m in Sources */,
 				1153E1BB18A9DF4800AD950E /* GPUImageSobelEdgeDetectionFilter.m in Sources */,
 				1153E1A418A9DF4800AD950E /* GPUImagePixellateFilter.m in Sources */,
@@ -2076,6 +2075,7 @@
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
+				113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */,
 				1153E18B18A9DF4800AD950E /* GPUImageLowPassFilter.m in Sources */,
 				1153E19218A9DF4800AD950E /* GPUImageMissEtikateFilter.m in Sources */,
 				1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */,

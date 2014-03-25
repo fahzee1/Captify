@@ -88,6 +88,8 @@
         challenge.active = [NSNumber numberWithBool:YES];
         if (![challenge.managedObjectContext save:&error]){
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            
+            [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
             abort();
 
         }
@@ -186,74 +188,85 @@
                                      challenge:(Challenge *)challenge
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    challenge.active = [NSNumber numberWithBool:NO];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPIChallengeResultsString
-             parameters:params
-                success:^(NSURLSessionDataTask *task, id responseObject) {
-                    [client stopNetworkActivity];
-                    NSLog(@"%@",responseObject);
-                    int code = [[responseObject valueForKey:@"code"] intValue];
-                    if (code == 1){
-                        // we're good
-                        NSLog(@"we're all good here");
-                        challenge.sync_status = [NSNumber numberWithBool:NO];
+    if ([client connected]){
+        challenge.active = [NSNumber numberWithBool:NO];
+        [client startNetworkActivity];
+        [client POST:AwesomeAPIChallengeResultsString
+                 parameters:params
+                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                        [client stopNetworkActivity];
+                        NSLog(@"%@",responseObject);
+                        int code = [[responseObject valueForKey:@"code"] intValue];
+                        if (code == 1){
+                            // we're good
+                            NSLog(@"we're all good here");
+                            challenge.sync_status = [NSNumber numberWithBool:NO];
+                        }
+                        
+                        if (code == -10){
+                            // 500 issue on our end
+                            NSLog(@"we're not all good here");
+                            challenge.sync_status = [NSNumber numberWithBool:YES];
+                        }
+                        
                     }
-                    
-                    if (code == -10){
-                        // 500 issue on our end
-                        NSLog(@"we're not all good here");
+                    failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        //something bad happened
+                        // find ways to handle this. maybe set it for retry
+                        [client stopNetworkActivity];
+                        NSLog(@"definitely not all good here");
                         challenge.sync_status = [NSNumber numberWithBool:YES];
-                    }
-                    
-                }
-                failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    //something bad happened
-                    // find ways to handle this. maybe set it for retry
-                    [client stopNetworkActivity];
-                    NSLog(@"definitely not all good here");
-                    challenge.sync_status = [NSNumber numberWithBool:YES];
-                    
+                        
 
-                } autoRetry:5];
-    
-    NSError *error;
-    if ([challenge.managedObjectContext hasChanges]){
-        if(![challenge.managedObjectContext save:&error]){
-            NSLog(@"error saving active status of challenge");
+                    } autoRetry:5];
+        
+        NSError *error;
+        if ([challenge.managedObjectContext hasChanges]){
+            if(![challenge.managedObjectContext save:&error]){
+                NSLog(@"error saving active status of challenge");
+            }
         }
+    }
+    else{
+        [Challenge showAlertWithTitle:@"Error" message:@"No internet connection detected"];
     }
 }
 
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    [client startNetworkActivity];
-    return [client POST:AwesomeAPIChallengeFetchString
-             parameters:params
-                success:^(NSURLSessionDataTask *task, id responseObject) {
-                    [client stopNetworkActivity];
-                    int code = [[responseObject valueForKey:@"code"] intValue];
-                    if (code == 1){
-                         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-                        NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
-                                                 @"answer": [responseObject valueForKey:@"answer"],
-                                                 @"hint": [responseObject valueForKey:@"hint"],
-                                                 @"challenge_id": [responseObject valueForKey:@"challenge_id"],
-                                                 @"sender": [responseObject valueForKeyPath:@"sender.username"]};
-                        
-                        Challenge *ch = [self GetOrCreateChallengeWithParams:params
-                                      inManagedObjectContext:context
-                                                  skipCreate:NO];
-                        if (ch){
-                            ch = nil;
+    if ([client connected]){
+        [client startNetworkActivity];
+        return [client POST:AwesomeAPIChallengeFetchString
+                 parameters:params
+                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                        [client stopNetworkActivity];
+                        int code = [[responseObject valueForKey:@"code"] intValue];
+                        if (code == 1){
+                             NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                            NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
+                                                     @"answer": [responseObject valueForKey:@"answer"],
+                                                     @"hint": [responseObject valueForKey:@"hint"],
+                                                     @"challenge_id": [responseObject valueForKey:@"challenge_id"],
+                                                     @"sender": [responseObject valueForKeyPath:@"sender.username"]};
+                            
+                            Challenge *ch = [self GetOrCreateChallengeWithParams:params
+                                          inManagedObjectContext:context
+                                                      skipCreate:NO];
+                            if (ch){
+                                ch = nil;
+                            }
                         }
                     }
-                }
-                failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    [client stopNetworkActivity];
-                    NSLog(@"failure fetching challenge");
-                } autoRetry:5];
+                    failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        [client stopNetworkActivity];
+                        NSLog(@"failure fetching challenge");
+                    } autoRetry:5];
+    }
+    else{
+        [Challenge showAlertWithTitle:@"Error" message:@"No internet connection detected"];
+        return nil;
+    }
 }
 
 
@@ -280,7 +293,7 @@
 }
 
 
-+ (Challenge *)createChallengeWithParams:(NSDictionary *)params
++ (Challenge *)createChallengeWithRecipientsWithParams:(NSDictionary *)params
 {
     NSAssert([params valueForKey:@"sender"], @"Must include sender");
     NSAssert([params valueForKey:@"context"], @"Must include context");
@@ -288,34 +301,46 @@
     NSAssert([params valueForKey:@"recipients_count"], @"Must include recipients_count");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     
+    
+    
     Challenge *challenge;
     User *user = [User GetOrCreateUserWithParams:@{@"username": [params valueForKey:@"sender"]}
                           inManagedObjectContext:[params valueForKey:@"context"]
                                       skipCreate:YES];
     
-    challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
-    
-    challenge.name = [params valueForKey:@"challenge_name"];
-    challenge.sender = user;
-    challenge.challenge_id = [params valueForKey:@"challenge_id"];
-    challenge.active = [NSNumber numberWithBool:YES];
-    challenge.recipients_count = [params valueForKey:@"recipients_count"];
-    
-    for (NSString *friend in [params valueForKey:@"recipients"]){
-        User *uFriend = [User GetOrCreateUserWithParams:@{@"username": friend}
-                                 inManagedObjectContext:challenge.managedObjectContext
-                                             skipCreate:YES];
-        if (uFriend && uFriend.is_friend && !uFriend.super_user){
-            [challenge addRecipientsObject:uFriend];
-        }
-    }
-    
-    
+    // check if exists first
     NSError *error;
-    if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
+    int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
+    if (exist == 0){
+    
+        challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
         
+        challenge.name = [params valueForKey:@"challenge_name"];
+        challenge.sender = user;
+        challenge.challenge_id = [params valueForKey:@"challenge_id"];
+        challenge.active = [NSNumber numberWithBool:YES];
+        challenge.recipients_count = [params valueForKey:@"recipients_count"];
+        
+        for (NSString *friend in [params valueForKey:@"recipients"]){
+            User *uFriend = [User GetOrCreateUserWithParams:@{@"username": friend}
+                                     inManagedObjectContext:challenge.managedObjectContext
+                                                 skipCreate:YES];
+            if (uFriend && uFriend.is_friend && !uFriend.super_user){
+                [challenge addRecipientsObject:uFriend];
+            }
+        }
+        
+        
+        NSError *error;
+        if (![challenge.managedObjectContext save:&error]){
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+
+            abort();
+            
+        }
     }
 
     
@@ -327,8 +352,8 @@
                                                image:(NSData *)image
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    if ([client connected]){
     [client startNetworkActivity];
-    
     return [client POST:AwesomeAPIChallengeCreateString
              parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                  
@@ -350,10 +375,13 @@
                  [client stopNetworkActivity];
                  NSLog(@"error %@",error);
              }];
-     
+    }
+    else{
+        [Challenge showAlertWithTitle:@"Error" message:@"No internet connection detected"];
+        return nil;
+    }
     
 }
-
 
 
 
@@ -390,6 +418,19 @@
 {
     NSString *uuid = [[NSUUID UUID] UUIDString];
     return [NSString stringWithFormat:@"%@-%@",user,uuid];
+}
+
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
 }
 
 @end

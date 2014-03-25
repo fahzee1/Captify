@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class User;
+#import "User+Utils.h"
 
 @interface HistoryRecievedViewController : UIViewController
 

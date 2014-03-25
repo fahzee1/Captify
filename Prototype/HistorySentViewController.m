@@ -45,6 +45,8 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTableView deselectRowAtIndexPath:[self.myTableView indexPathForSelectedRow] animated:NO];
+    
+    [self fetchUpdates];
 }
 
 
@@ -54,32 +56,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (User *)myUser
+
+- (void)fetchUpdates
 {
-    if (!_myUser){
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-        if (uri){
-            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-            NSError *error;
-            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
-        }
-        
-    }
-    return _myUser;
-}
-
-
-
-- (NSArray *)data
-{
-    if (!_data){
-        _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
-                                                    sent:YES];
-    }
     
-    return _data;
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -145,6 +127,7 @@
         }
         else{
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+            [activeLabel setTextColor:[UIColor redColor]];
             
         }
 
@@ -165,8 +148,7 @@
     
     if ([challenge.active intValue] == 1){
         
-        UIViewController *vc;
-        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
             UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.image_path];
             ((HistoryDetailViewController *)vc).image = challenge_image;
@@ -179,6 +161,33 @@
         
 }
 
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+
+
+- (NSArray *)data
+{
+    if (!_data){
+        _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
+                                                    sent:YES];
+    }
+    
+    return _data;
+}
 
 
 

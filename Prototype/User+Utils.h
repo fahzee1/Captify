@@ -10,6 +10,7 @@
 
 typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user, BOOL failure);
 typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
+typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 
 @interface User (Utils)
 
@@ -49,5 +50,8 @@ typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 
 + (NSArray *)fetchFriendsInContext:(NSManagedObjectContext *)context
                        getContacts:(BOOL)contacts;
+
++ (void)fetchUserBlobWithParams:(NSDictionary *)params
+                          block:(BlobFetchBlock)block;
 
 @end

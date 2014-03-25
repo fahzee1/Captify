@@ -15,8 +15,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *myImageView;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) UIImage *image;
-
-
+@property BOOL hideSelectButtons;
+@property BOOL hideSelectButtonsMax;
 @property (nonatomic, retain)User *myUser;
 @property (nonatomic, retain)Challenge *myChallenge;
 

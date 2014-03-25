@@ -38,7 +38,7 @@
 
 + (Challenge *) createTestChallengeWithUser:(User *)user;
 
-+ (Challenge *)createChallengeWithParams:(NSDictionary *)params;
++ (Challenge *)createChallengeWithRecipientsWithParams:(NSDictionary *)params;
 
 + (NSString *)createChallengeIDWithUser:(NSString *)user;
 

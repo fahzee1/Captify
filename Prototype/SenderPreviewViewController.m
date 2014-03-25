@@ -201,7 +201,7 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
                                      @"challenge_id":challenge_id,
                                      @"image_path":image_path};
 
-            Challenge *challenge = [Challenge createChallengeWithParams:params];
+            Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
             if (challenge){
                 [self notifyDelegateAndGoHome];
             }

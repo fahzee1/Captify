@@ -19,11 +19,11 @@
 #import "AppDelegate.h"
 #import "ChallengeViewController.h"
 #import "UIImageView+WebCache.h"
+#import "AwesomeAPICLient.h"
 
 
 @interface HistoryRecievedViewController ()<UITableViewDataSource,UITableViewDelegate>
 
-@property NSArray *data;
 @property (strong, nonatomic) NSArray *cData;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 
@@ -46,14 +46,18 @@
     [super viewDidLoad];
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
-   
-    self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
-
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view.
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
+    
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self fetchUpdates];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,7 +69,19 @@
 
 - (void)fetchUpdates
 {
-    
+    [User fetchUserBlobWithParams:@{@"username": self.myUser.username}
+                            block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                if (wasSuccessful){
+                                    id challenges = [data valueForKey:@"received_challenges"];
+#warning loop through here and create challenges in core data
+                                    /*
+                                    NSData *json = [challenges dataUsingEncoding:NSUTF8StringEncoding];
+                                    NSError *error;
+                                    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:json options:0 error:&error];
+                                     */
+                                    
+                                }
+                            }];
 }
 
 #pragma -mark Uitableview delegate
@@ -83,10 +99,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     static NSString *cellIdentifier = @"historyCells";
+    static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell && [cell isKindOfClass:[HistoryReceivedCell class]]){
-    
+        
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
         UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
         UIImageView *KimageView =  ((HistoryReceivedCell *)cell).historyImageView;
@@ -101,9 +117,9 @@
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
-
+        
         dateLabel.text = [challenge.timestamp timeAgo];
-      
+        
         [sender getCorrectProfilePicWithImageView:KimageView];
         
         
@@ -117,7 +133,7 @@
             [activeLabel setTextColor:[UIColor greenColor]];
             if (![activeLabel.layer animationForKey:@"historyActive"]){
                 
-            
+                
                 CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
                 colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
@@ -129,17 +145,18 @@
             }
         }
         else{
-             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
-    
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+            [activeLabel setTextColor:[UIColor redColor]];
+            
         }
         
-     
+        
         
     }
     
     return cell;
-
+    
 }
 
 
@@ -152,12 +169,27 @@
     if ([challenge.active intValue] == 1){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
         if ([vc isKindOfClass:[ChallengeViewController class]]){
+#warning load challenge image for inactive screen
             ((ChallengeViewController *)vc).myChallenge = challenge;
             ((ChallengeViewController *)vc).myUser = self.myUser;
             ((ChallengeViewController *)vc).name = challenge.name;
             ((ChallengeViewController *)vc).sender = challenge.sender.username;
             [self.navigationController pushViewController:vc animated:YES];
         }
+    }
+    // challenge inactive show detail screen
+    else{
+        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+        if ([vc isKindOfClass:[HistoryDetailViewController class]]){
+#warning load challenge image for inactive screen
+            ((HistoryDetailViewController *)vc).image = [UIImage imageNamed:@"brilliant-grill"];
+            ((HistoryDetailViewController *)vc).myChallenge = challenge;
+            ((HistoryDetailViewController *)vc).myUser = self.myUser;
+            ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
+            ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+
     }
     
 }

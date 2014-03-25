@@ -370,7 +370,7 @@
                                  }
 
                              }];
-}
+  }
 
 + (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
                                             callback:(AwesomeAPICompleteBlock)block;
@@ -491,29 +491,34 @@
     NSAssert([params objectForKey:@"content"], @"need content to update device token");
     
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPISettingsString parameters:params
-         success:^(NSURLSessionDataTask *task, id responseObject){
-             [client stopNetworkActivity];
-             if ([[responseObject valueForKey:@"code"]intValue] == 1){
-                 if (block){
-                     block(YES);
+    if ([client connected]){
+        [client startNetworkActivity];
+        [client POST:AwesomeAPISettingsString parameters:params
+             success:^(NSURLSessionDataTask *task, id responseObject){
+                 [client stopNetworkActivity];
+                 if ([[responseObject valueForKey:@"code"]intValue] == 1){
+                     if (block){
+                         block(YES);
+                     }
+                 }
+                 else{
+                     if (block){
+                         block(NO);
+                     }
                  }
              }
-             else{
+             failure:^(NSURLSessionDataTask *task, NSError *error) {
+                 [client stopNetworkActivity];
                  if (block){
                      block(NO);
                  }
+                 
              }
-         }
-         failure:^(NSURLSessionDataTask *task, NSError *error) {
-             [client stopNetworkActivity];
-             if (block){
-                 block(NO);
-             }
-             
-         }
-       autoRetry:3];
+           autoRetry:3];
+    }
+    else{
+        [User showAlertWithTitle:@"Error" message:@"No internet connection detected"];
+    }
 
 }
 
@@ -541,5 +546,51 @@
     return [context executeFetchRequest:firstRequest error:&error];
     
 }
+
++ (void)fetchUserBlobWithParams:(NSDictionary *)params
+                          block:(BlobFetchBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIFetchString parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        [client stopNetworkActivity];
+        int code = [[responseObject valueForKey:@"code"] intValue];
+        if (code == 1){
+            NSLog(@"success");
+            if (block){
+                block(YES,responseObject,@"success");
+            }
+        }
+        
+        else if (code == -10){
+            NSLog(@"success but not quite");
+            if (block){
+                block(NO,nil,[responseObject valueForKey:@"message"]);
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [client stopNetworkActivity];
+        if (block){
+            block(NO,nil,error.localizedDescription);
+            [User showAlertWithTitle:@"Error" message:error.localizedDescription];
+        }
+    }];
+        
+}
+
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
+
 
 @end

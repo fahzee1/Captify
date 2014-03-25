@@ -67,7 +67,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.captionField becomeFirstResponder];
+    
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+          [self.captionField becomeFirstResponder];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -80,6 +85,7 @@
 {
     [super viewWillDisappear:animated];
     [self.topLabel removeFromSuperview];
+    [self.captionField resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
