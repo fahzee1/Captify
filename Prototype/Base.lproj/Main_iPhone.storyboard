@@ -1322,7 +1322,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Nru-Bp-g0h"/>
                     <connections>
-                        <outlet property="myTableView" destination="X2f-ad-q55" id="4ts-LY-upl"/>
+                        <outlet property="myTable" destination="X2f-ad-q55" id="mge-hC-TZw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bfj-Em-cgO" userLabel="First Responder" sceneMemberID="firstResponder"/>

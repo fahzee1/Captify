@@ -155,6 +155,8 @@
     }
     NSSortDescriptor *sortByDate = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
     request.sortDescriptors = @[sortByDate];
+    
+    
     return [context executeFetchRequest:request error:&error];
 }
 
@@ -312,36 +314,41 @@
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
     int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
-    
-        challenge = [NSEntityDescription insertNewObjectForEntityForName:[Challenge name] inManagedObjectContext:user.managedObjectContext];
-        
-        challenge.name = [params valueForKey:@"challenge_name"];
-        challenge.sender = user;
-        challenge.recipients_count = [params valueForKey:@"recipients_count"];
-        challenge.challenge_id = [params valueForKey:@"challenge_id"];
-        
-        NSNumber *active = [params valueForKey:@"active"];
-        challenge.active = active ? active : [NSNumber numberWithBool:YES];
+        if (user){
+            challenge = [NSEntityDescription insertNewObjectForEntityForName:[Challenge name] inManagedObjectContext:user.managedObjectContext];
+            
+            challenge.name = [params valueForKey:@"challenge_name"];
+            challenge.sender = user;
+            challenge.recipients_count = [params valueForKey:@"recipients_count"];
+            challenge.challenge_id = [params valueForKey:@"challenge_id"];
+            
+            NSNumber *active = [params valueForKey:@"active"];
+            challenge.active = active ? active : [NSNumber numberWithBool:YES];
 
-        
-        for (NSString *friend in [params valueForKey:@"recipients"]){
-            User *uFriend = [User GetOrCreateUserWithParams:@{@"username": friend}
-                                     inManagedObjectContext:challenge.managedObjectContext
-                                                 skipCreate:YES];
-            if (uFriend && uFriend.is_friend && !uFriend.super_user){
-                [challenge addRecipientsObject:uFriend];
+            
+            for (NSString *friend in [params valueForKey:@"recipients"]){
+                User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
+                if (uFriend && uFriend.is_friend && !uFriend.super_user){
+                    [challenge addRecipientsObject:uFriend];
+                }
+            }
+            
+            
+            NSError *error;
+            if (![challenge.managedObjectContext save:&error]){
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+
+                abort();
+                
             }
         }
-        
-        
-        NSError *error;
-        if (![challenge.managedObjectContext save:&error]){
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
-
-            abort();
-            
+        else{
+            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
         }
+    }
+    else{
+        NSLog(@"'%@' is already created",[params valueForKey:@"challenge_name"]);
     }
 
     

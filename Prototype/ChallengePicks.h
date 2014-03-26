@@ -2,7 +2,7 @@
 //  ChallengePicks.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/24/14.
+//  Created by CJ Ogbuehi on 3/26/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -21,3 +21,5 @@
 @property (nonatomic, retain) ReceivedChallenge *received_challenge;
 
 @end
+
+

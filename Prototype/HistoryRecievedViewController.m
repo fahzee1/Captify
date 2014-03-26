@@ -70,6 +70,7 @@
 }
 
 
+
 - (void)fetchUpdates
 {
     if (!self.pendingRequest){
@@ -82,7 +83,6 @@
                                         // create challenge add recipients
                                         // create challege picks and add them to challenge
                                         
-                                        self.picksList = [[NSMutableArray alloc] init];
                                         
                                         // create json objects
                                         id challenges = [data valueForKey :@"received_challenges"];
@@ -112,38 +112,36 @@
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                             
                                             
-                                            // create challenge picks to add to challenge
-                                            for (id results in ch[@"results"]){
-                                                // create picks
-                                                NSString *player = results[@"player"];
-                                                NSString *caption = results[@"answer"];
-                                                NSNumber *is_chosen = results[@"is_chosen"];
+                                            if (challenge){
+                                                // create challenge picks to add to challenge
+                                                for (id results in ch[@"results"]){
+                                                    // create picks
+                                                    NSString *player = results[@"player"];
+                                                    NSString *caption = results[@"answer"];
+                                                    NSNumber *is_chosen = results[@"is_chosen"];
+                                                    
+                                                    NSDictionary *params2 = @{@"player": player,
+                                                                              @"context":self.myUser.managedObjectContext,
+                                                                              @"is_chosen":is_chosen,
+                                                                              @"answer":caption};
+                                                    ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
+                                                    
+                                                    [challenge addPicksObject:pick];
+                                                    
+                                                    
+                                                }
                                                 
-                                                NSDictionary *params2 = @{@"player": player,
-                                                                          @"context":self.myUser.managedObjectContext,
-                                                                          @"is_chosen":is_chosen,
-                                                                          @"answer":caption};
-                                                ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
-                                                
-                                                [challenge addPicksObject:pick];
-                                                
-                                                
+                                                NSError *error;
+                                                if (![challenge.managedObjectContext save:&error]){
+                                                    NSLog(@"%@",error);
+                                                    
+                                                }
                                             }
-                                            
-                                            
-                                            NSError *error;
-                                            if (![challenge.managedObjectContext save:&error]){
-                                                NSLog(@"%@",error);
-                                                
-                                            }
-                                            
                                             
                                         }
                                         
-                                        double delayInSeconds = 2.0;
-                                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                             [self.myTable reloadData];
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [self.myTable reloadData];
                                         });
                                     }
                                     
@@ -179,7 +177,7 @@
         Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
         User *sender = challenge.sender;
         
-        titleLabel.text = [NSString stringWithFormat:@"%@ \r- %@",challenge.name,sender.username];
+        titleLabel.text = [[NSString stringWithFormat:@"%@ \r- %@",challenge.name,sender.username] capitalizedString];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
@@ -265,10 +263,8 @@
 
 - (NSArray *)cData
 {
-    if (!_cData){
-        _cData = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
-                                                     sent:NO];
-    }
+    _cData = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
+                                                    sent:NO];
     return _cData;
 }
 

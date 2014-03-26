@@ -52,6 +52,7 @@
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
+@property BOOL pendingRequest;
 
 @end
 
@@ -103,6 +104,12 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self fetchUpdates];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -110,9 +117,63 @@
 }
 
 
+- (void)fetchUpdates
+{
+    if (!self.pendingRequest){
+        self.pendingRequest = YES;
+        [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
+                                 block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                     if (wasSuccessful){
+                                         
+                                         // save locally and check if its there 
+                                         // save and display image if not done yet
+                                         NSData *media = [[NSData alloc] initWithBase64EncodedString:[data valueForKey:@"media"]  options:0];
+                                         UIImage *image = [UIImage imageWithData:media];
+                                         
+                                         self.myImageView.image = image;
+                                         
+                                         // get picks
+                                         id picks = [data valueForKey :@"picks"];
+                                         NSData *jsonString = [picks dataUsingEncoding:NSUTF8StringEncoding];
+                                         id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                         
+                                         for (id pick in json){
+                                             NSString *caption = pick[@"answer"];
+                                             NSString *player = pick[@"player"];
+                                             NSNumber *is_chosen = pick[@"is_chosen"];
+                                             
+                                             
+                                             
+                                             NSDictionary *params = @{@"player": player,
+                                                                       @"context":self.myUser.managedObjectContext,
+                                                                       @"is_chosen":is_chosen,
+                                                                       @"answer":caption};
+                                             
+                                             ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
+                                             if (pick){
+                                                 [self.myChallenge addPicksObject:pick];
+                                                 
+                                                 NSError *error;
+                                                 if (![self.myChallenge.managedObjectContext save:&error]){
+                                                     NSLog(@"%@",error);
+                                                     
+                                                 }
+                                                 
+                                             }
+                                             
+                                         }
+                                         
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             [self.myTable reloadData];
+                                         });
 
-
-
+                                     }
+            
+                                 }];
+        self.pendingRequest = NO;
+        
+    }
+}
 
 - (void)showShareScreen
 {
@@ -402,10 +463,9 @@
 
 - (NSArray *)data
 {
-    if (!_data){
-        NSSet *picks = self.myChallenge.picks;
-        _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
-    }
+    NSSet *picks = self.myChallenge.picks;
+    _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+    
     return _data;
 }
 
@@ -499,12 +559,20 @@
     container.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
     
     NSString *title;
-    if ([self.data count] == 0){
+    int count = [self.data count];
+    if (count == 0){
         title = NSLocalizedString(@"No captions received yet!", @"Nothing received yet");
     }
 
     else if  (self.hideSelectButtons || self.hideSelectButtonsMax){
-        NSString *string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)[self.data count]];
+        NSString *string;
+        if (count == 1){
+            string = [NSString stringWithFormat:@"%lu caption has been sent to this challenge!", (unsigned long)count];
+        }
+        else{
+           string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)count];
+
+        }
         title = NSLocalizedString(string, nil);
     }
     else{
@@ -534,6 +602,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+#warning add pick sender username
     static NSString *cellIdentifier = @"historyDetailCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -547,8 +616,22 @@
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
             
-            
             [pick.player getCorrectProfilePicWithImageView:imageView];
+            
+            if (pick.player.facebook_user){
+                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
+                NSURL * fbUrl = [NSURL URLWithString:fbString];
+                [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                
+            }
+            
+            else{
+                imageView.image = nil;
+                FAImageView *imageView2 = (FAImageView *)imageView;
+                [imageView2 setDefaultIconIdentifier:@"fa-user"];
+                
+            }
+
     
             captionLabel.text = pick.answer;
         

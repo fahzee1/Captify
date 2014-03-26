@@ -52,7 +52,6 @@
 
 - (void)getCorrectProfilePicWithImageView:(UIImageView *)iV
 {
-    
     if (self.facebook_user){
         NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",self.facebook_id];
         NSURL * fbUrl = [NSURL URLWithString:fbString];
@@ -596,6 +595,38 @@
     }];
         
 }
+
++ (void)fetchMediaBlobWithParams:(NSDictionary *)params
+                          block:(BlobFetchBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeMediaString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             if (code == 1){
+                 NSLog(@"success");
+                 if (block){
+                     block(YES,responseObject,@"success");
+                 }
+             }
+             else if (code == -10){
+                 NSLog(@"success but not really");
+                 if (block){
+                     block(NO,nil,[responseObject valueForKey:@"message"]);
+                 }
+             }
+             
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [client stopNetworkActivity];
+        if (block){
+            block(NO,nil,error.localizedDescription);
+            [User showAlertWithTitle:@"Error" message:error.localizedDescription];
+        }
+    }];
+}
+
 
 + (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message

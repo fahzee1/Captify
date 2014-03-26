@@ -11,6 +11,7 @@
 #import "NSDate+TimeAgo.h"
 #import "FAImageView.h"
 #import "Challenge+Utils.h"
+#import "ChallengePicks+Utils.h"
 #import "AppDelegate.h"
 #import "HistoryDetailViewController.h"
 #import "NSString+FontAwesome.h"
@@ -18,8 +19,10 @@
 #import "UIImageView+WebCache.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *myTableView;
+@property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) NSArray *data;
+@property BOOL pendingRequest;
+
 @end
 
 @implementation HistorySentViewController
@@ -37,14 +40,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.myTableView.delegate = self;
-    self.myTableView.dataSource = self;
+    self.myTable.delegate = self;
+    self.myTable.dataSource = self;
     //self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
 
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    [self.myTableView deselectRowAtIndexPath:[self.myTableView indexPathForSelectedRow] animated:NO];
+    [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
     
     [self fetchUpdates];
 }
@@ -59,6 +62,80 @@
 
 - (void)fetchUpdates
 {
+    if (!self.pendingRequest){
+        self.pendingRequest = YES;
+        [User fetchUserBlobWithParams:@{@"username": self.myUser.username}
+                                block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                    self.pendingRequest = NO;
+                                    if (wasSuccessful){
+                                        // fetch sender user and all recipient users
+                                        // create challenge add recipients
+                                        // create challege picks and add them to challenge
+                                    
+                                        
+                                        // create json objects
+                                        id challenges = [data valueForKey :@"my_challenges"];
+                                        NSData *jsonString = [challenges dataUsingEncoding:NSUTF8StringEncoding];
+                                        id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                        
+                                        // get sender and create challenge from data
+                                        for (id ch in json[@"challenges"]){
+                                            NSString *challenge_id = ch[@"id"];
+                                            NSString *name = ch[@"name"];
+                                            NSNumber *active = ch[@"is_active"];
+                                            NSNumber *recipients_count = ch[@"recipients_count"];
+                                            NSArray *recipients = ch[@"recipients"];
+                                            
+                                            
+                                            
+                                            NSDictionary *params = @{@"sender": self.myUser.username,
+                                                                     @"context": self.myUser.managedObjectContext,
+                                                                     @"recipients": recipients,
+                                                                     @"recipients_count": recipients_count,
+                                                                     @"challenge_name":name,
+                                                                     @"active":active,
+                                                                     @"challenge_id":challenge_id
+                                                                     };
+                                            
+                                            Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+                                            
+                                            if (challenge){
+                                                // create challenge picks to add to challenge
+                                                for (id results in ch[@"results"]){
+                                                    // create picks
+                                                    NSString *player = results[@"player"];
+                                                    NSString *caption = results[@"answer"];
+                                                    NSNumber *is_chosen = results[@"is_chosen"];
+                                                    
+                                                    NSDictionary *params2 = @{@"player": player,
+                                                                              @"context":self.myUser.managedObjectContext,
+                                                                              @"is_chosen":is_chosen,
+                                                                              @"answer":caption};
+                                                    ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
+                                                    
+                                                    
+                                                    [challenge addPicksObject:pick];
+                                                    
+                                                    
+                                                }
+                                                
+                                                NSError *error;
+                                                if (![challenge.managedObjectContext save:&error]){
+                                                    NSLog(@"%@",error);
+                                                    
+                                                }
+                                            }
+                                            
+                                        }
+                                        
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [self.myTable reloadData];
+                                        });
+                                    }
+                                    
+                                    
+                                }];
+    }
     
 }
 
@@ -94,7 +171,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         
-        myLabel.text = challenge.name;
+        myLabel.text = [challenge.name capitalizedString];
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
@@ -181,11 +258,8 @@
 
 - (NSArray *)data
 {
-    if (!_data){
-        _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
+    _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
                                                     sent:YES];
-    }
-    
     return _data;
 }
 

@@ -42,31 +42,42 @@
     NSAssert([params valueForKey:@"player"], @"Must include player");
     NSAssert([params valueForKey:@"context"], @"Must include context");
     
+    NSLog(@"%@",[params valueForKey:@"answer"]);
+    NSLog(@"%@",[params valueForKey:@"player"]);
+    
    NSError *error;
    ChallengePicks *pick;
     User *user = [User getUserWithUsername:[params valueForKey:@"player"] inContext:[params valueForKey:@"context"] error:&error];
     
     // check if exists first
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(answer = %@) && (player.username = %@)",[params valueForKey:@"answer"],[params valueForKey:@"player"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(answer = %@)",[params valueForKey:@"answer"]];
     int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
-        
-       pick = [NSEntityDescription insertNewObjectForEntityForName:[ChallengePicks name] inManagedObjectContext:user.managedObjectContext];
-        
-        pick.answer = [params valueForKey:@"answer"];
-        pick.is_chosen = [params valueForKey:@"is_chosen"];
-        pick.player = user;
-    
-        
-        NSError *error;
-        if (![pick.managedObjectContext save:&error]){
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            [ChallengePicks showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+        if (user){
+           pick = [NSEntityDescription insertNewObjectForEntityForName:[ChallengePicks name] inManagedObjectContext:user.managedObjectContext];
             
-            abort();
+            pick.answer = [params valueForKey:@"answer"];
+            pick.is_chosen = [params valueForKey:@"is_chosen"];
+            pick.player = user;
+        
             
+            NSError *error;
+            if (![pick.managedObjectContext save:&error]){
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                [ChallengePicks showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+                
+                abort();
+                
+            }
         }
+        else{
+            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
+        }
+
+    }
+    else{
+        NSLog(@"pick by %@ already created",[params valueForKey:@"player"]);
     }
     
     
