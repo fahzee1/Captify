@@ -13,4 +13,6 @@
 
 
 + (NSString *)name;
+
++ (ChallengePicks *)createChallengePickWithParams:(NSDictionary *)params;
 @end

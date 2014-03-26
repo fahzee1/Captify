@@ -100,7 +100,10 @@
 
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
-        User *user = [TestDataCreator createTestFriendWithName:@"rich_homie_quan" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        //User *user = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        
+        /*
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
         Challenge *challenge = [TestDataCreator createTestChallengeWithName:@"Making no noise yall boys aint making no noise" byUser:user2 toFriends:@[user,self.myUser] withID:@"0004"];
         
@@ -108,6 +111,7 @@
         [TestDataCreator addChallengePickToChallenge:challenge withPlayer:self.myUser caption:@"We aint never going broke...this the shit i live for"];
         [TestDataCreator addChallengePickToChallenge:challenge withPlayer:user caption:@"Pour it for the dead homies"];
         [TestDataCreator addChallengePickToChallenge:challenge withPlayer:self.myUser caption:@"Well let me be the first to get mines"];
+         */
 
     }
     

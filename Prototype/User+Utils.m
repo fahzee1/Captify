@@ -130,6 +130,24 @@
 
 }
 
++ (User *)getUserWithUsername:(NSString *)username
+                    inContext:(NSManagedObjectContext *)context
+                        error:(NSError **)error
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
+    request.fetchLimit = 1;
+    request.predicate = [NSPredicate predicateWithFormat:@"username = %@",username];
+    
+    NSArray *results = [context executeFetchRequest:request error:error];
+    if (results){
+        return [results firstObject];
+    }
+    else{
+        return nil;
+    }
+
+}
+
 
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
@@ -140,7 +158,7 @@
     NSAssert([params objectForKey:@"username"], @"username required");
 
     NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
     request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) and (username = %@)",[params valueForKey:@"username"]];
     request.fetchLimit = 1;
     
@@ -546,6 +564,7 @@
     return [context executeFetchRequest:firstRequest error:&error];
     
 }
+
 
 + (void)fetchUserBlobWithParams:(NSDictionary *)params
                           block:(BlobFetchBlock)block

@@ -304,24 +304,25 @@
     
     
     Challenge *challenge;
-    User *user = [User GetOrCreateUserWithParams:@{@"username": [params valueForKey:@"sender"]}
-                          inManagedObjectContext:[params valueForKey:@"context"]
-                                      skipCreate:YES];
-    
-    // check if exists first
     NSError *error;
+    User *user = [User getUserWithUsername:[params valueForKey:@"sender"] inContext:[params valueForKey:@"context"] error:&error];
+    // check if exists first
+                  
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
     int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
     
-        challenge = [NSEntityDescription insertNewObjectForEntityForName:@"Challenge" inManagedObjectContext:user.managedObjectContext];
+        challenge = [NSEntityDescription insertNewObjectForEntityForName:[Challenge name] inManagedObjectContext:user.managedObjectContext];
         
         challenge.name = [params valueForKey:@"challenge_name"];
         challenge.sender = user;
-        challenge.challenge_id = [params valueForKey:@"challenge_id"];
-        challenge.active = [NSNumber numberWithBool:YES];
         challenge.recipients_count = [params valueForKey:@"recipients_count"];
+        challenge.challenge_id = [params valueForKey:@"challenge_id"];
+        
+        NSNumber *active = [params valueForKey:@"active"];
+        challenge.active = active ? active : [NSNumber numberWithBool:YES];
+
         
         for (NSString *friend in [params valueForKey:@"recipients"]){
             User *uFriend = [User GetOrCreateUserWithParams:@{@"username": friend}

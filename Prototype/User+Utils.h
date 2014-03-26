@@ -27,6 +27,10 @@ typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 + (BOOL)createContactsWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context;
 
++ (User *)getUserWithUsername:(NSString *)username
+                    inContext:(NSManagedObjectContext *)context
+                        error:(NSError **)error;
+
 + (User *)GetOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
                          skipCreate:(BOOL)skip;

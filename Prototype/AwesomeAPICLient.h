@@ -11,8 +11,8 @@
 #import "AFNetworkReachabilityManager.h"
 
 //static NSString * const AwesomeAPIBaseUrlString = @"http://127.0.0.1:8000";
-//static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
-static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
+static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
+//static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
 static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
 static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
 static NSString * const AwesomeAPIFacebookUrlString = @"api/v1/register/facebook";
@@ -25,6 +25,8 @@ static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/challenge/re
 static NSString * const AwesomeAPIChallengeSendString = @"api/v1/challenge/send";
 static NSString * const AwesomeAPIChallengeCreateString = @"api/v1/challenge";
 static NSString * const AwesomeAPIChallengeFetchString = @"api/v1/challenge/blob";
+static NSString * const AwesomeAPIChallengeMediaString = @"api/v1/challenge/media";
+
 
 @interface AwesomeAPICLient : AFHTTPSessionManager
 

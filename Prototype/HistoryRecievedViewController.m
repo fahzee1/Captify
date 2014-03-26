@@ -16,6 +16,7 @@
 #import "HistoryDetailViewController.h"
 #import "NSDate+TimeAgo.h"
 #import "Challenge+Utils.h"
+#import "ChallengePicks+Utils.h"
 #import "AppDelegate.h"
 #import "ChallengeViewController.h"
 #import "UIImageView+WebCache.h"
@@ -26,6 +27,8 @@
 
 @property (strong, nonatomic) NSArray *cData;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
+@property BOOL pendingRequest;
+@property (strong, nonatomic) NSMutableArray *picksList;
 
 
 @end
@@ -47,7 +50,7 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
-	// Do any additional setup after loading the view.
+
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -69,19 +72,84 @@
 
 - (void)fetchUpdates
 {
-    [User fetchUserBlobWithParams:@{@"username": self.myUser.username}
-                            block:^(BOOL wasSuccessful, id data, NSString *message) {
-                                if (wasSuccessful){
-                                    id challenges = [data valueForKey:@"received_challenges"];
-#warning loop through here and create challenges in core data
-                                    /*
-                                    NSData *json = [challenges dataUsingEncoding:NSUTF8StringEncoding];
-                                    NSError *error;
-                                    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:json options:0 error:&error];
-                                     */
+    if (!self.pendingRequest){
+        self.pendingRequest = YES;
+        [User fetchUserBlobWithParams:@{@"username": self.myUser.username}
+                                block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                    self.pendingRequest = NO;
+                                    if (wasSuccessful){
+                                        // fetch sender user and all recipient users
+                                        // create challenge add recipients
+                                        // create challege picks and add them to challenge
+                                        
+                                        self.picksList = [[NSMutableArray alloc] init];
+                                        
+                                        // create json objects
+                                        id challenges = [data valueForKey :@"received_challenges"];
+                                        NSData *jsonString = [challenges dataUsingEncoding:NSUTF8StringEncoding];
+                                        id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                        
+                                        // get sender and create challenge from data
+                                        for (id ch in json[@"challenges"]){
+                                            NSString *challenge_id = ch[@"id"];
+                                            NSString *name = ch[@"name"];
+                                            NSNumber *active = ch[@"is_active"];
+                                            NSNumber *recipients_count = ch[@"recipients_count"];
+                                            NSString *sender_name = ch[@"sender"];
+                                            NSArray *recipients = ch[@"recipients"];
+                                            
+
+        
+                                            NSDictionary *params = @{@"sender": sender_name,
+                                                                     @"context": self.myUser.managedObjectContext,
+                                                                     @"recipients": recipients,
+                                                                     @"recipients_count": recipients_count,
+                                                                     @"challenge_name":name,
+                                                                     @"active":active,
+                                                                     @"challenge_id":challenge_id
+                                                                     };
+                                            
+                                            Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+                                            
+                                            
+                                            // create challenge picks to add to challenge
+                                            for (id results in ch[@"results"]){
+                                                // create picks
+                                                NSString *player = results[@"player"];
+                                                NSString *caption = results[@"answer"];
+                                                NSNumber *is_chosen = results[@"is_chosen"];
+                                                
+                                                NSDictionary *params2 = @{@"player": player,
+                                                                          @"context":self.myUser.managedObjectContext,
+                                                                          @"is_chosen":is_chosen,
+                                                                          @"answer":caption};
+                                                ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
+                                                
+                                                [challenge addPicksObject:pick];
+                                                
+                                                
+                                            }
+                                            
+                                            
+                                            NSError *error;
+                                            if (![challenge.managedObjectContext save:&error]){
+                                                NSLog(@"%@",error);
+                                                
+                                            }
+                                            
+                                            
+                                        }
+                                        
+                                        double delayInSeconds = 2.0;
+                                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                             [self.myTable reloadData];
+                                        });
+                                    }
                                     
-                                }
-                            }];
+                                    
+                                }];
+    }
 }
 
 #pragma -mark Uitableview delegate

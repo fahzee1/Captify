@@ -7,6 +7,7 @@
 //
 
 #import "ChallengePicks+Utils.h"
+#import "User+Utils.h"
 
 @implementation ChallengePicks (Utils)
 
@@ -32,6 +33,60 @@
 {
     return @"ChallengePicks";
 }
+
+
++ (ChallengePicks *)createChallengePickWithParams:(NSDictionary *)params
+{
+    NSAssert([params valueForKey:@"answer"], @"Must include answer");
+    NSAssert([params valueForKey:@"is_chosen"], @"Must include is_chosen");
+    NSAssert([params valueForKey:@"player"], @"Must include player");
+    NSAssert([params valueForKey:@"context"], @"Must include context");
+    
+   NSError *error;
+   ChallengePicks *pick;
+    User *user = [User getUserWithUsername:[params valueForKey:@"player"] inContext:[params valueForKey:@"context"] error:&error];
+    
+    // check if exists first
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(answer = %@) && (player.username = %@)",[params valueForKey:@"answer"],[params valueForKey:@"player"]];
+    int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
+    if (exist == 0){
+        
+       pick = [NSEntityDescription insertNewObjectForEntityForName:[ChallengePicks name] inManagedObjectContext:user.managedObjectContext];
+        
+        pick.answer = [params valueForKey:@"answer"];
+        pick.is_chosen = [params valueForKey:@"is_chosen"];
+        pick.player = user;
+    
+        
+        NSError *error;
+        if (![pick.managedObjectContext save:&error]){
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            [ChallengePicks showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+            
+            abort();
+            
+        }
+    }
+    
+    
+    return pick;
+}
+
+
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
 
 
 @end

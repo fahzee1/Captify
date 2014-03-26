@@ -106,7 +106,7 @@
     challenge.recipients_count = @25;
     challenge.name = name;
     [challenge addRecipients:[NSSet setWithArray:friends]];
-    challenge.active = [NSNumber numberWithBool:YES];
+    challenge.active = [NSNumber numberWithBool:NO];
     if (![challenge.managedObjectContext save:&error]){
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
