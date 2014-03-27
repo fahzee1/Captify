@@ -9,14 +9,22 @@
 #import "Challenge.h"
 #import "User.h"
 
+
+typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
+
 @interface Challenge (Utils)
 
 + (NSString *)name;
+
+
 
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skipCreate;
 
+
++ (void)updateChallengeWithParams:(NSDictionary *)params
+                            block:(ChallengeUpdateBlock)block;
 
 + (Challenge *)getChallengeWithID:(NSString *)challenge_id
                         inContext:(NSManagedObjectContext *)context;

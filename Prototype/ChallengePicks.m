@@ -2,7 +2,7 @@
 //  ChallengePicks.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/26/14.
+//  Created by CJ Ogbuehi on 3/27/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @dynamic answer;
 @dynamic is_chosen;
 @dynamic timestamp;
+@dynamic pick_id;
 @dynamic challenge;
 @dynamic player;
 @dynamic received_challenge;

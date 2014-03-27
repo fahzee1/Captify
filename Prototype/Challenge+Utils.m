@@ -392,7 +392,7 @@
     [client startNetworkActivity];
     return [client POST:AwesomeAPIChallengeCreateString
              parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                 
+#warning make correct image names
                  NSString *filename = @"test.jpg";
                  NSString *name = @"test";
                  [formData appendPartWithFileData:image name:name fileName:filename mimeType:@"image/jpeg"];
@@ -420,7 +420,36 @@
 }
 
 
-
++ (void)updateChallengeWithParams:(NSDictionary *)params
+                                block:(ChallengeUpdateBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeUpdateActiveString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             if (code == 1){
+                 if (block){
+                     block(YES, @"Success!");
+                 }
+             }
+             
+             if (code == -10){
+                 NSLog(@"%@",[responseObject valueForKey:@"message"]);
+                 if (block){
+                     block(NO,@"Fail");
+                 }
+             }
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             NSLog(@"%@",error);
+             if (block){
+                 block(NO, error.localizedDescription);
+             }
+       }];
+}
 
 
 + (void)saveImage:(UIImage *)image

@@ -41,6 +41,7 @@
 @property BOOL shareContainerOnScreen;
 @property CGPoint priorPoint;
 @property NSString *selectedCaption;
+@property NSString *selectedUsername;
 @property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
 @property UIImageView *finalContainerScreen;
 @property (strong, nonatomic)UIImage *finalImage;
@@ -137,13 +138,14 @@
                                              NSString *caption = pick[@"answer"];
                                              NSString *player = pick[@"player"];
                                              NSNumber *is_chosen = pick[@"is_chosen"];
-                                             
+                                             NSString *pick_id = pick[@"pick_id"];
                                              
                                              
                                              NSDictionary *params = @{@"player": player,
                                                                        @"context":self.myUser.managedObjectContext,
                                                                        @"is_chosen":is_chosen,
-                                                                       @"answer":caption};
+                                                                       @"answer":caption,
+                                                                       @"pick_id":pick_id};
                                              
                                              ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
                                              if (pick){
@@ -392,6 +394,7 @@
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
     if (indexPath != nil){
         self.selectedCaption = pick.answer;
+        self.selectedUsername = pick.player.username;
     }
 
     [self.finalCaptionLabel stopGlowing];
@@ -608,7 +611,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning add pick sender username
     static NSString *cellIdentifier = @"historyDetailCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -646,10 +648,15 @@
             else{
                 username = @"User23";
             }
-        
-         
             
-            captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+            
+            if ([pick.is_chosen intValue] == 1){
+                captionLabel.text = @"this one was selected.. show trophy badge";
+            }
+            else{
+                 captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+            }
+
         
             // set width and height so "sizeToFit" uses those constraints
           
@@ -669,7 +676,6 @@
                 selectButton.hidden = YES;
             }
 #warning add trophy icon to selected caption
-#warning get challenge image and show in image view
             
            
             /*

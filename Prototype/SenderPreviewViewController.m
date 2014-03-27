@@ -191,15 +191,13 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     
     [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message) {
         if (wasSuccessful){
-            NSString *image_path = [NSString stringWithFormat:@"challenges/image-%@.jpg",challenge_id];
             NSUInteger count = [self.selectedFriends[@"friends"] count];
             NSDictionary *params = @{@"sender":self.myUser.username,
                                      @"context":self.myUser.managedObjectContext,
                                      @"recipients":self.selectedFriends[@"friends"],
                                      @"recipients_count":[NSNumber numberWithInteger:count],
                                      @"challenge_name":self.name,
-                                     @"challenge_id":challenge_id,
-                                     @"image_path":image_path};
+                                     @"challenge_id":challenge_id};
 
             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
             if (challenge){

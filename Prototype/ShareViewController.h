@@ -12,5 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *shareImageView;
 @property (strong, nonatomic)UIImage *shareImage;
+@property (strong, nonatomic)NSString *selectedUsername;
+@property (strong, nonatomic)NSString *selectedCaption;
 
 @end

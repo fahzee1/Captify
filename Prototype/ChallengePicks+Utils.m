@@ -49,7 +49,7 @@
     
     // check if exists first
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(answer = %@)",[params valueForKey:@"answer"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(pick_id = %@)",[params valueForKey:@"pick_id"]];
     int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
         if (user){
@@ -75,12 +75,22 @@
 
     }
     else{
+        // fetch and update
         NSLog(@"pick by %@ already created",[params valueForKey:@"player"]);
+        NSNumber *is_chosen = [params valueForKey:@"is_chosen"];
+        ChallengePicks *pick = [self getPicksWithUser:[params valueForKey:@"player"]
+                                            andAnswer:[params valueForKey:@"answer"]
+                                            inContext:[params valueForKey:@"context"]];
+        pick.is_chosen = is_chosen ? is_chosen : [NSNumber numberWithBool:NO];
+        
+        
     }
     
     
     return pick;
 }
+
+
 
 
 + (void)showAlertWithTitle:(NSString *)title
@@ -94,6 +104,33 @@
                       cancelButtonTitle:@"Ok"
                       otherButtonTitles:nil];
     [a show];
+}
+
+
++ (ChallengePicks *)getPicksWithUser:(NSString *)user
+                               andAnswer:(NSString *)answer
+                        inContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(player.username = %@) && (answer = %@)",user,answer];
+    request.fetchLimit = 1;
+    
+    NSArray *picks = [context executeFetchRequest:request error:&error];
+    if (! picks){
+        NSLog(@"%@",error);
+        return nil;
+    }
+    
+    return [picks firstObject];
+    
+}
+
+
++ (NSString *)createPickID
+{
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    return [NSString stringWithFormat:@"pick-%@",uuid];
 }
 
 

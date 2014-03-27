@@ -21,6 +21,7 @@
     <entity name="ChallengePicks" representedClassName="ChallengePicks" syncable="YES">
         <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="is_chosen" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="pick_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="picks" inverseEntity="Challenge" syncable="YES"/>
         <relationship name="player" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
@@ -60,7 +61,7 @@
     </entity>
     <elements>
         <element name="Challenge" positionX="646" positionY="-13" width="128" height="283"/>
-        <element name="ChallengePicks" positionX="90" positionY="-189" width="128" height="133"/>
+        <element name="ChallengePicks" positionX="90" positionY="-189" width="128" height="148"/>
         <element name="ReceivedChallenge" positionX="45" positionY="27" width="128" height="208"/>
         <element name="User" positionX="270" positionY="-19" width="128" height="298"/>
     </elements>
