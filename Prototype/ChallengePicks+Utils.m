@@ -42,8 +42,6 @@
     NSAssert([params valueForKey:@"player"], @"Must include player");
     NSAssert([params valueForKey:@"context"], @"Must include context");
     
-    NSLog(@"%@",[params valueForKey:@"answer"]);
-    NSLog(@"%@",[params valueForKey:@"player"]);
     
    NSError *error;
    ChallengePicks *pick;

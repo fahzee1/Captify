@@ -22,6 +22,7 @@
 #import "CMPopTipView.h"
 #import "ChallengePicks+Utils.h"
 #import "UIImageView+WebCache.h"
+#import "AwesomeAPICLient.h"
 
 /*
  mark challenge as done when complete
@@ -98,9 +99,11 @@
         self.hideSelectButtons = NO;
     }
     
-
     
     
+    if (self.media_url){
+        [self.myImageView setImageWithURL:self.media_url placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+    }
     
 }
 
@@ -124,13 +127,6 @@
         [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
                                  block:^(BOOL wasSuccessful, id data, NSString *message) {
                                      if (wasSuccessful){
-                                         
-                                         // save locally and check if its there 
-                                         // save and display image if not done yet
-                                         NSData *media = [[NSData alloc] initWithBase64EncodedString:[data valueForKey:@"media"]  options:0];
-                                         UIImage *image = [UIImage imageWithData:media];
-                                         
-                                         self.myImageView.image = image;
                                          
                                          // get picks
                                          id picks = [data valueForKey :@"picks"];
@@ -204,7 +200,6 @@
     controls.minimumPressDuration = 0.7;
     
     [press requireGestureRecognizerToFail:controls];
-    
     
     self.finalCaptionLabel.text = self.selectedCaption;
     self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
@@ -394,13 +389,14 @@
 {
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.myTable];
     NSIndexPath *indexPath = [self.myTable indexPathForRowAtPoint:buttonPosition];
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
     if (indexPath != nil){
-        self.selectedCaption = [self.data objectAtIndex:indexPath.row];
+        self.selectedCaption = pick.answer;
     }
 
     [self.finalCaptionLabel stopGlowing];
     self.hideSelectButtons = YES;
-    [self.myTable reloadData];
+    //[self.myTable reloadData];
     [self setupFinalLabel];
     
 }
@@ -408,6 +404,10 @@
 - (void)captionFontChanged
 {
     [self.finalCaptionLabel stopGlowing];
+    
+    CGRect labelFrame = self.finalCaptionLabel.frame;
+    self.finalCaptionLabel.frame = CGRectMake(labelFrame.origin.x, labelFrame.origin.y, 500, 200);
+
     self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionFontStepper.value];
     self.captionFontValue.text = [NSString stringWithFormat:@"%d", (int)self.captionFontStepper.value];
     
@@ -576,7 +576,13 @@
         title = NSLocalizedString(string, nil);
     }
     else{
-        NSString *string = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)[self.data count]];
+        NSString *string;
+        if (count == 1){
+            string = [NSString stringWithFormat:@" Choose from %lu caption!", (unsigned long)count];
+        }
+        else{
+            string = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)count];
+        }
         title = NSLocalizedString(string, nil);
     }
 
@@ -633,7 +639,17 @@
             }
 
     
-            captionLabel.text = pick.answer;
+            NSString *username;
+            if (pick.player.username){
+                username = [pick.player.username capitalizedString];
+            }
+            else{
+                username = @"User23";
+            }
+        
+         
+            
+            captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
         
             // set width and height so "sizeToFit" uses those constraints
           

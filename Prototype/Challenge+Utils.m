@@ -47,7 +47,7 @@
     NSAssert([params objectForKey:@"username"] || [params objectForKey:@"sender"], @"username required");
     
     NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"challenge_id = %@",[params valueForKey:@"challenge_id"]];
     
     // check to see if we have the challenge already
@@ -99,6 +99,24 @@
 
 }
 
+
++ (Challenge *)getChallengeWithID:(NSString *)challenge_id
+                        inContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
+    request.predicate = [NSPredicate predicateWithFormat:@"challenge_id = %@",challenge_id];
+    request.fetchLimit = 1;
+    
+    NSArray *challenges = [context executeFetchRequest:request error:&error];
+    if (! challenges){
+        NSLog(@"%@",error);
+        return nil;
+    }
+    
+    return [challenges firstObject];
+   
+}
 
 + (Challenge *)getChallengeWithFetch:(NSFetchRequest *)fetch
                    context:(NSManagedObjectContext *)context
@@ -322,7 +340,9 @@
             challenge.recipients_count = [params valueForKey:@"recipients_count"];
             challenge.challenge_id = [params valueForKey:@"challenge_id"];
             
+            NSString *media_url = [params valueForKey:@"media_url"];
             NSNumber *active = [params valueForKey:@"active"];
+            challenge.image_path = media_url ? media_url : NULL;
             challenge.active = active ? active : [NSNumber numberWithBool:YES];
 
             
@@ -348,7 +368,15 @@
         }
     }
     else{
-        NSLog(@"'%@' is already created",[params valueForKey:@"challenge_name"]);
+        // fetch
+        challenge = [self getChallengeWithID:[params valueForKey:@"challenge_id"] inContext:[params valueForKey:@"context"]];
+        NSNumber *active = [params valueForKey:@"active"];
+        challenge.active = active ? active : [NSNumber numberWithBool:YES];
+        
+        if (![challenge.managedObjectContext save:&error]){
+            NSLog(@"%@",error);
+        }
+        return nil;
     }
 
     

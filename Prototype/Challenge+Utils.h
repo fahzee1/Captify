@@ -17,6 +17,10 @@
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skipCreate;
 
+
++ (Challenge *)getChallengeWithID:(NSString *)challenge_id
+                        inContext:(NSManagedObjectContext *)context;
+
 + (void)sendChallengeResults:(NSDictionary *)params
                                      challenge:(Challenge *)challenge;
 

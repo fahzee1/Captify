@@ -31,4 +31,14 @@
 - (void)showLoginOrHomeScreen;
 
 
+
++ (BOOL)saveFileToDocuments:(NSString *)name
+                   withFile:(NSData *)file;
+
++ (NSData *)retrieveFileAtPath:(NSString *)path;
+
++ (BOOL)deleteFileAtPath:(NSString *)path;
+
+
+
 @end

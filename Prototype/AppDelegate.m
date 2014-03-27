@@ -276,7 +276,7 @@
 
 
 
-- (BOOL)saveFileToDocuments:(NSString *)name
++ (BOOL)saveFileToDocuments:(NSString *)name
                          withFile:(NSData *)file
 {
     NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -286,12 +286,12 @@
     
 }
 
-- (NSData *)retrieveFileAtPath:(NSString *)path
++ (NSData *)retrieveFileAtPath:(NSString *)path
 {
     return [[NSFileManager defaultManager] contentsAtPath:path];
 }
 
-- (BOOL)deleteFileAtPath:(NSString *)path
++ (BOOL)deleteFileAtPath:(NSString *)path
 {
     NSError *error;
     BOOL ok = [[NSFileManager defaultManager] removeItemAtPath:path error:&error];

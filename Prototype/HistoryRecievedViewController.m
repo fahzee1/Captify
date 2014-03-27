@@ -89,6 +89,7 @@
                                         NSData *jsonString = [challenges dataUsingEncoding:NSUTF8StringEncoding];
                                         id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
                                         
+
                                         // get sender and create challenge from data
                                         for (id ch in json[@"challenges"]){
                                             NSString *challenge_id = ch[@"id"];
@@ -97,7 +98,12 @@
                                             NSNumber *recipients_count = ch[@"recipients_count"];
                                             NSString *sender_name = ch[@"sender"];
                                             NSArray *recipients = ch[@"recipients"];
+                                            NSString *media_url = ch[@"media_url"];
+    
+                                            NSString *baseUrlString = [[AwesomeAPICLient sharedClient].baseURL absoluteString];
+                                            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
                                             
+
 
         
                                             NSDictionary *params = @{@"sender": sender_name,
@@ -106,7 +112,8 @@
                                                                      @"recipients_count": recipients_count,
                                                                      @"challenge_name":name,
                                                                      @"active":active,
-                                                                     @"challenge_id":challenge_id
+                                                                     @"challenge_id":challenge_id,
+                                                                     @"media_url":fullMediaUrl
                                                                      };
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
@@ -177,9 +184,9 @@
         Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
         User *sender = challenge.sender;
         
-        titleLabel.text = [[NSString stringWithFormat:@"%@ \r- %@",challenge.name,sender.username] capitalizedString];
+        titleLabel.text = [[NSString stringWithFormat:@"%@ \r \rby %@",challenge.name,sender.username] capitalizedString];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
-        titleLabel.textAlignment = NSTextAlignmentCenter;
+        //titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
@@ -235,7 +242,6 @@
     if ([challenge.active intValue] == 1){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
         if ([vc isKindOfClass:[ChallengeViewController class]]){
-#warning load challenge image for inactive screen
             ((ChallengeViewController *)vc).myChallenge = challenge;
             ((ChallengeViewController *)vc).myUser = self.myUser;
             ((ChallengeViewController *)vc).name = challenge.name;
@@ -247,12 +253,13 @@
     else{
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-#warning load challenge image for inactive screen
             ((HistoryDetailViewController *)vc).image = [UIImage imageNamed:@"brilliant-grill"];
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
+            ((HistoryDetailViewController *)vc).media_url = [NSURL URLWithString:challenge.image_path];
+            
             [self.navigationController pushViewController:vc animated:YES];
         }
 

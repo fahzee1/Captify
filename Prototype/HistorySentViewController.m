@@ -17,6 +17,7 @@
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "UIImageView+WebCache.h"
+#import "AwesomeAPICLient.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
@@ -85,8 +86,10 @@
                                             NSNumber *active = ch[@"is_active"];
                                             NSNumber *recipients_count = ch[@"recipients_count"];
                                             NSArray *recipients = ch[@"recipients"];
+                                            NSString *media_url = ch[@"media_url"];
                                             
-                                            
+                                            NSString *baseUrlString = [[AwesomeAPICLient sharedClient].baseURL absoluteString];
+                                            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
                                             
                                             NSDictionary *params = @{@"sender": self.myUser.username,
                                                                      @"context": self.myUser.managedObjectContext,
@@ -94,7 +97,8 @@
                                                                      @"recipients_count": recipients_count,
                                                                      @"challenge_name":name,
                                                                      @"active":active,
-                                                                     @"challenge_id":challenge_id
+                                                                     @"challenge_id":challenge_id,
+                                                                     @"media_url":fullMediaUrl
                                                                      };
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
@@ -179,8 +183,13 @@
         dateLabel.text = [challenge.timestamp timeAgo];
         
         [sender getCorrectProfilePicWithImageView:myImageView];
-              
-        numberOfFriends.text = [NSString stringWithFormat:@"Sent to %@ friends",[challenge.recipients_count stringValue]];
+        
+        if ([challenge.recipients_count intValue] == 1){
+            numberOfFriends.text = [NSString stringWithFormat:@"%@ friend",[challenge.recipients_count stringValue]];
+        }
+        else{
+            numberOfFriends.text = [NSString stringWithFormat:@"%@ friends",[challenge.recipients_count stringValue]];
+        }
         
         // show green active circle
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
@@ -231,6 +240,8 @@
             ((HistoryDetailViewController *)vc).image = challenge_image;
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
+            ((HistoryDetailViewController *)vc).media_url = [NSURL URLWithString:challenge.image_path];
+            NSLog(@"%@ is image path",challenge.image_path);
             
              [self.navigationController pushViewController:vc animated:YES];
         }
