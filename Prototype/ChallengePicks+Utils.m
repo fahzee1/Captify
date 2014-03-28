@@ -8,6 +8,7 @@
 
 #import "ChallengePicks+Utils.h"
 #import "User+Utils.h"
+#import "AwesomeAPICLient.h"
 
 @implementation ChallengePicks (Utils)
 
@@ -33,6 +34,14 @@
 {
     return @"ChallengePicks";
 }
+
++ (NSString *)dateStringFromDate:(NSDate *)date
+{
+    return [NSDateFormatter localizedStringFromDate:date
+                                          dateStyle:NSDateFormatterLongStyle
+                                          timeStyle:NSDateFormatterShortStyle];
+}
+
 
 
 + (ChallengePicks *)createChallengePickWithParams:(NSDictionary *)params
@@ -132,6 +141,43 @@
     return [NSString stringWithFormat:@"pick-%@",uuid];
 }
 
+
++ (void)sendCreatePickRequestWithParams:(NSDictionary *)params
+                                  block:(CreatePickUpdateBlock)block
+{
+#warning send username, challenge id and answer to this method to create pick
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeCreatePickString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             if (code == 1){
+                 if (block){
+                     block(YES,@"Success");
+                 }
+                 return;
+             }
+             
+             if (code == -10){
+                 if (block){
+                     block(NO,@"Fail");
+                 }
+             }
+        
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             NSLog(@"%@",error);
+             if (block){
+                 block(NO,error.localizedDescription);
+             }
+        
+        }];
+
+    
+    
+}
 
 
 @end

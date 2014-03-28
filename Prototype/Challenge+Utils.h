@@ -18,6 +18,8 @@ typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
 
 + (NSString *)baseUrl;
 
++ (NSString *)dateStringFromDate:(NSDate *)date;
+
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skipCreate;

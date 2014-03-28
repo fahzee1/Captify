@@ -52,8 +52,7 @@ typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
                    name:(NSString *)name
                 albumID:(NSString *)albumId
                    facebookUser:(BOOL)isFB
-                  feedBlock:(FacebookPostStatus)fblock
-             albumBlock:(FacebookPostStatus)ablock;
+                      feedBlock:(FacebookPostStatus)fblock;
 
 
 - (void)postImageToTwitterFeed:(UIImage *)image

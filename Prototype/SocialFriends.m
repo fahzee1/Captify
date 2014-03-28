@@ -254,7 +254,6 @@
                         albumID:(NSString *)albumId
                    facebookUser:(BOOL)isFB
               feedBlock:(FacebookPostStatus)fblock
-             albumBlock:(FacebookPostStatus)ablock
 
 {
     if (!isFB){
@@ -266,8 +265,7 @@
                               caption:caption
                                  name:name
                               albumID:albumId
-                            feedBlock:fblock
-                           albumBlock:ablock];
+                            feedBlock:fblock];
         return;
     }
     
@@ -288,8 +286,7 @@
                                                                   name:name
                                                                albumID:albumId
                                                                   facebookUser:isFB
-                                                                     feedBlock:fblock
-                                                                    albumBlock:ablock];
+                                                                     feedBlock:fblock];
                                              }
                                          }];
         
@@ -337,16 +334,16 @@
         if (error){
             NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
             NSLog(@"%@",error);
-            if (ablock){
-                ablock(NO);
+            if (fblock){
+                fblock(NO);
             }
             
             return;
         }
         
-        if (ablock){
+        if (fblock){
             NSLog(@"album result %@",result);
-            ablock(YES);
+            fblock(YES);
         }
     }];
 
@@ -365,7 +362,6 @@
                            name:(NSString *)name
                         albumID:(NSString *)albumId
                       feedBlock:(FacebookPostStatus)fblock
-                     albumBlock:(FacebookPostStatus)ablock
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -379,6 +375,7 @@
                                           options:options
                                        completion:^(BOOL granted, NSError *error) {
                                            if (granted){
+                                               // post to feed
                                                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
                                                ACAccount *facebookAccount = [accounts lastObject];
                                                
@@ -402,38 +399,33 @@
                                                        return;
                                                    }
                                                    else{
-                                                       if (fblock){
-                                                           fblock(YES);
-                                                           NSLog(@"%ld status code",(long)[urlResponse statusCode]);
-                                                       }
-                                                   }
+                                                       // successfully posted to feed now post to album
+                                                       NSURL *albumURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId]];
+                                                       NSDictionary *params2 = @{@"source": image};
+                                                       
+                                                       SLRequest *albumRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                                                                    requestMethod:SLRequestMethodPOST
+                                                                                                              URL:albumURL
+                                                                                                       parameters:params2];
+                                                       [albumRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                                                           if (error){
+                                                               if (fblock){
+                                                                   fblock(NO);
+                                                               }
+                                                               return;
+                                                           }
+                                                           else{
+                                                               if (fblock){
+                                                                   fblock(YES);
+                                                                   NSLog(@"%ld status code",(long)[urlResponse statusCode]);
+                                                               }
+                                                               return;
+                                                           }
+                                                       }];
+
+                                                       
+                                                    }
                                                }];
-                                               
-                                               NSURL *albumURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId]];
-                                               NSDictionary *params2 = @{@"source": image};
-                                               
-                                               SLRequest *albumRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                                                                            requestMethod:SLRequestMethodPOST
-                                                                                                      URL:albumURL
-                                                                                               parameters:params2];
-                                               [albumRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                                                   if (error){
-                                                       if (ablock){
-                                                           ablock(NO);
-                                                       }
-                                                       return;
-                                                   }
-                                                   else{
-                                                       if (ablock){
-                                                           ablock(YES);
-                                                           NSLog(@"%ld status code",(long)[urlResponse statusCode]);
-                                                       }
-                                                   }
-                                               }];
-                                               
-                                               
-                                               
-                                               
                                                
                                                
                                            }

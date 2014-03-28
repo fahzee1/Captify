@@ -9,13 +9,20 @@
 #import "ChallengePicks.h"
 @class User;
 
+typedef void (^CreatePickUpdateBlock) (BOOL wasSuccessful, NSString *message);
+
 @interface ChallengePicks (Utils)
 
 
 + (NSString *)name;
 
++ (NSString *)dateStringFromDate:(NSDate *)date;
+
 + (ChallengePicks *)createChallengePickWithParams:(NSDictionary *)params;
 
 + (NSString *)createPickID;
+
++ (void)sendCreatePickRequestWithParams:(NSDictionary *)params
+                                  block:(CreatePickUpdateBlock)block;
 
 @end

@@ -44,6 +44,13 @@
     return [[AwesomeAPICLient sharedClient].baseURL absoluteString];
 }
 
++ (NSString *)dateStringFromDate:(NSDate *)date
+{
+    return [NSDateFormatter localizedStringFromDate:date
+                                                    dateStyle:NSDateFormatterLongStyle
+                                                    timeStyle:NSDateFormatterShortStyle];
+}
+
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skip
@@ -431,7 +438,7 @@
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
-    [client POST:AwesomeAPIChallengeUpdateActiveString parameters:params
+    [client POST:AwesomeAPIChallengeUpdateString parameters:params
          success:^(NSURLSessionDataTask *task, id responseObject) {
              [client stopNetworkActivity];
              int code = [[responseObject valueForKey:@"code"] intValue];

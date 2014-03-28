@@ -65,7 +65,13 @@
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
-        [User fetchUserBlobWithParams:@{@"username": self.myUser.username}
+        NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:@"lastSentFetch"];
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"lastSentFetch"];
+        NSMutableDictionary *params =[@{@"username": self.myUser.username} mutableCopy];
+        if (lastFetch){
+            params[@"date"] = [Challenge dateStringFromDate:lastFetch];
+        }
+        [User fetchUserBlobWithParams:params
                                 block:^(BOOL wasSuccessful, id data, NSString *message) {
                                     self.pendingRequest = NO;
                                     if (wasSuccessful){
@@ -118,18 +124,18 @@
                                                                               @"answer":caption,
                                                                               @"pick_id":pick_id};
                                                     ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
-                                                    
-                                                    
-                                                    [challenge addPicksObject:pick];
+                                                    if (pick){
+                                                        [challenge addPicksObject:pick];
+                                                        NSError *error;
+                                                        if (![challenge.managedObjectContext save:&error]){
+                                                            NSLog(@"%@",error);
+                                                            
+                                                        }
+                                                    }
                                                     
                                                     
                                                 }
                                                 
-                                                NSError *error;
-                                                if (![challenge.managedObjectContext save:&error]){
-                                                    NSLog(@"%@",error);
-                                                    
-                                                }
                                             }
                                             
                                         }

@@ -674,9 +674,10 @@
           
             if (self.hideSelectButtonsMax){
                 selectButton.hidden = YES;
-            }
-#warning add trophy icon to selected caption
+          }
             
+
+#warning add trophy icon to selected caption
            
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];

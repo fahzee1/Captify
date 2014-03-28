@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *twitterDisplayLabel;
 @property (strong,nonatomic)SocialFriends *friends;
+@property  BOOL fbSuccess;
+@property BOOL twSuccess;
 
 
 @property BOOL shareFacebook;
@@ -190,6 +192,7 @@
         if (!albumID){
             albumID = @"NEED TO GRAB THIS";
         }
+        
         [self.friends postImageToFacebookFeed:self.shareImage
                               message:@"Or nah?"
                               caption:@"Or nah?"
@@ -199,9 +202,8 @@
                             feedBlock:^(BOOL wasSuccessful) {
                                 if (wasSuccessful){
                                     NSLog(@"posting to feed was successful");
+                                    self.fbSuccess = YES;
                                 }
-                            } albumBlock:^(BOOL wasSuccessful) {
-                                NSLog(@"posting to album was successful");
                             }];
     }
     
@@ -211,10 +213,24 @@
                                        block:^(BOOL wasSuccessful) {
                                            if (wasSuccessful){
                                                NSLog(@"post to twitter success");
+                                               self.twSuccess = YES;
                                            }
                                         }];
     }
     
+    if (self.shareFacebook){
+        if (!self.fbSuccess){
+            [self showAlertWithTitle:@"Facebook Error!" message:@"There was an error sharing your photo to Facebook."];
+            return;
+        }
+    }
+    
+    if (self.shareTwitter){
+        if (!self.twSuccess){
+            [self showAlertWithTitle:@"Twitter Error!" message:@"There was an error sharing your photo to Twitter."];
+            return;
+        }
+    }
     
     [self.navigationController popToRootViewControllerAnimated:YES];
     
@@ -230,6 +246,18 @@
     return _friends;
 }
 
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
 
 
 

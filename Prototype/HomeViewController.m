@@ -118,10 +118,6 @@
     
     
     
-    
-    NSString *logthis2 = @"I need to handle pop to root view controller on share screen so that i check for error first and if either successful we pop to root if not we just show error";
-    NSLog(logthis2);
-    
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;

@@ -110,10 +110,13 @@
     }
     
     self.challengeNameLabel.text = self.name;
-    CGRect frame = self.challengeNameLabel.frame;
-    self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
+    self.challengeNameLabel.textAlignment = NSTextAlignmentCenter;
     self.challengeNameLabel.numberOfLines = 0;
     [self.challengeNameLabel sizeToFit];
+    
+    CGRect frame = self.challengeNameLabel.frame;
+    self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
+    
     
     
 
