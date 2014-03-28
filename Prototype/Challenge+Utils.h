@@ -16,7 +16,7 @@ typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
 
 + (NSString *)name;
 
-
++ (NSString *)baseUrl;
 
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context

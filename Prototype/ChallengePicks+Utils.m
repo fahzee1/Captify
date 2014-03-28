@@ -41,7 +41,7 @@
     NSAssert([params valueForKey:@"is_chosen"], @"Must include is_chosen");
     NSAssert([params valueForKey:@"player"], @"Must include player");
     NSAssert([params valueForKey:@"context"], @"Must include context");
-    
+    NSAssert([params valueForKey:@"pick_id"], @"Must include pick_id");
     
    NSError *error;
    ChallengePicks *pick;
@@ -49,7 +49,7 @@
     
     // check if exists first
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(pick_id = %@)",[params valueForKey:@"pick_id"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"pick_id = %@",[params valueForKey:@"pick_id"]];
     int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
         if (user){
@@ -58,6 +58,7 @@
             pick.answer = [params valueForKey:@"answer"];
             pick.is_chosen = [params valueForKey:@"is_chosen"];
             pick.player = user;
+            pick.pick_id = [params valueForKey:@"pick_id"];
         
             
             NSError *error;
@@ -78,9 +79,8 @@
         // fetch and update
         NSLog(@"pick by %@ already created",[params valueForKey:@"player"]);
         NSNumber *is_chosen = [params valueForKey:@"is_chosen"];
-        ChallengePicks *pick = [self getPicksWithUser:[params valueForKey:@"player"]
-                                            andAnswer:[params valueForKey:@"answer"]
-                                            inContext:[params valueForKey:@"context"]];
+        ChallengePicks *pick = [self getPicksWithID:[params valueForKey:@"pick_id"]
+                                          inContext:[params valueForKey:@"context"]];
         pick.is_chosen = is_chosen ? is_chosen : [NSNumber numberWithBool:NO];
         
         
@@ -107,13 +107,12 @@
 }
 
 
-+ (ChallengePicks *)getPicksWithUser:(NSString *)user
-                               andAnswer:(NSString *)answer
++ (ChallengePicks *)getPicksWithID:(NSString *)picID
                         inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(player.username = %@) && (answer = %@)",user,answer];
+    request.predicate = [NSPredicate predicateWithFormat:@"(pick_id = %@)",picID];
     request.fetchLimit = 1;
     
     NSArray *picks = [context executeFetchRequest:request error:&error];

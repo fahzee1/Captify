@@ -16,7 +16,7 @@
 #import "UploaderAPIClient.h"
 #import "UIImageView+WebCache.h"
 
-typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message);
+typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message, id data);
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -189,15 +189,21 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     
  
     
-    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message) {
+    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message, id data) {
         if (wasSuccessful){
             NSUInteger count = [self.selectedFriends[@"friends"] count];
+            NSString *media_url = [data valueForKey:@"media"];
+            NSString *baseUrlString = [Challenge baseUrl];
+            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
+            
+
             NSDictionary *params = @{@"sender":self.myUser.username,
                                      @"context":self.myUser.managedObjectContext,
                                      @"recipients":self.selectedFriends[@"friends"],
                                      @"recipients_count":[NSNumber numberWithInteger:count],
                                      @"challenge_name":self.name,
-                                     @"challenge_id":challenge_id};
+                                     @"challenge_id":challenge_id,
+                                     @"media_url":fullMediaUrl};
 
             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
             if (challenge){
@@ -252,41 +258,37 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *apiString = [defaults valueForKey:@"apiString"];
     [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-    if ([client connected]){
-            [client startNetworkActivity];
-            [client POST:AwesomeAPIChallengeCreateString parameters:params
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeCreateString parameters:params
         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
        }
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      [client stopNetworkActivity];
                      NSLog(@"%@",responseObject);
-                     int code = [[responseObject valueForKey:@"code"] intValue];
-                     if (code == 1){
+                     
+                     if (responseObject[@"media"]){
                          NSLog(@"true success");
                          if (block){
-                             block(YES,NO,[responseObject valueForKey:@"message"]);
+                             block(YES,NO,@"success",responseObject);
                          }
                      }
-                     if (code == -10){
+                     else{
                          [self showAlertWithMessage:@"There was an error with your request."];
                          if (block){
-                             block(NO,NO,[responseObject valueForKey:@"message"]);
+                             block(NO,NO,@"Fail",nil);
                          }
+
                      }
-                 }
+                }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      [client stopNetworkActivity];
                      [self showAlertWithMessage:error.localizedDescription];
                      if (block){
-                         block(NO,YES,error.localizedDescription);
+                         block(NO,YES,error.localizedDescription,nil);
                      }
                  }];
 
-    }
-    else{
-        [self showAlertWithMessage:@"No connection detected"];
-    }
 }
 
 - (void)showAlertWithMessage:(NSString *)message

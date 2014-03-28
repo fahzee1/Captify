@@ -126,11 +126,13 @@
                                                     NSString *player = results[@"player"];
                                                     NSString *caption = results[@"answer"];
                                                     NSNumber *is_chosen = results[@"is_chosen"];
+                                                    NSString *pick_id = results[@"pick_id"];
                                                     
                                                     NSDictionary *params2 = @{@"player": player,
                                                                               @"context":self.myUser.managedObjectContext,
                                                                               @"is_chosen":is_chosen,
-                                                                              @"answer":caption};
+                                                                              @"answer":caption,
+                                                                              @"pick_id":pick_id};
                                                     ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
                                                     
                                                     [challenge addPicksObject:pick];

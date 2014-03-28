@@ -38,6 +38,12 @@
 {
     return @"Challenge";
 }
+
++ (NSString *)baseUrl
+{
+    return [[AwesomeAPICLient sharedClient].baseURL absoluteString];
+}
+
 + (Challenge *)GetOrCreateChallengeWithParams:(NSDictionary *)params
                        inManagedObjectContext:(NSManagedObjectContext *)context
                                    skipCreate:(BOOL)skip
