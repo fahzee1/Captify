@@ -102,8 +102,8 @@
     
     
     
-    if (self.media_url){
-        [self.myImageView setImageWithURL:self.media_url placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+    if (self.mediaURL){
+        [self.myImageView setImageWithURL:self.mediaURL placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
     }
     
 }

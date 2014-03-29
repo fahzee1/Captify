@@ -465,6 +465,44 @@
 }
 
 
+
++ (void)sendCreateChallengeRequestWithParams:(NSDictionary *)params
+                                       block:(SendChallengeRequestBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeCreateString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             NSString *media = responseObject[@"media"];
+             // response is tastypie api automatic response
+             // so just check if the media string was passed
+             
+             if (media){
+                 if (block){
+                     block(YES,NO,@"Success",responseObject);
+                 }
+             }
+             else{
+                 if (block){
+                     block(NO,NO,@"Fail",nil);
+                 }
+             }
+        
+        }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+             if (block){
+                 block(NO,YES,error.localizedDescription,nil);
+             }
+
+        
+      }];
+}
+
+
+
 + (void)saveImage:(UIImage *)image
          filename:(NSString *)name
 {

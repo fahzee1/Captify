@@ -11,6 +11,7 @@
 
 
 typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
+typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message, id data);
 
 @interface Challenge (Utils)
 
@@ -48,6 +49,10 @@ typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
 
 + (NSURLSessionDataTask *)sendCreateChallengeRequest:(NSDictionary *)params
                                                image:(NSData *)image;
+
+//use this one not ^ 
++ (void)sendCreateChallengeRequestWithParams:(NSDictionary *)params
+                                       block:(SendChallengeRequestBlock)block;
  
 
 + (Challenge *) createTestChallengeWithUser:(User *)user;

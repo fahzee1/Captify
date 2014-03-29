@@ -16,7 +16,6 @@
 #import "UploaderAPIClient.h"
 #import "UIImageView+WebCache.h"
 
-typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message, id data);
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -181,14 +180,68 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     
         // create challenge in backend
     
-    NSDictionary *apiParams = @{@"username": self.myUser.username,
+    TICK;
+    NSData *mediaData = [UIImageJPEGRepresentation(self.image, 0.9) base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    TOCK;
+    
+    NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
                                 @"is_picture":[NSNumber numberWithBool:YES],
                                 @"name":self.name,
                                 @"recipients":self.selectedFriends[@"friends"],
-                                @"challenge_id":challenge_id};
+                                @"challenge_id":challenge_id,
+                               } mutableCopy];
+
+    if (mediaData){
+        NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
+        apiParams[@"media"] = media;
+    }
     
- 
     
+    
+    [Challenge sendCreateChallengeRequestWithParams:apiParams
+                                              block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
+                                                  if (wasSuccessful){
+                                                      NSUInteger count = [self.selectedFriends[@"friends"] count];
+                                                      NSString *media_url = [data valueForKey:@"media"];
+                                                      NSString *baseUrlString = [Challenge baseUrl];
+                                                      NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
+                                                      
+                                                      
+                                                      NSDictionary *params = @{@"sender":self.myUser.username,
+                                                                               @"context":self.myUser.managedObjectContext,
+                                                                               @"recipients":self.selectedFriends[@"friends"],
+                                                                               @"recipients_count":[NSNumber numberWithInteger:count],
+                                                                               @"challenge_name":self.name,
+                                                                               @"challenge_id":challenge_id,
+                                                                               @"media_url":fullMediaUrl};
+                                                      
+                                                      Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+                                                      if (challenge){
+                                                          [self notifyDelegateAndGoHome];
+                                                      }
+
+                                                      
+                                                  }
+                                                  else{
+                                                      if (fail){
+                                                          // 500
+                                                          if (message){
+                                                              [self showAlertWithMessage:message];
+                                                          }
+                                                          else{
+                                                              [self showAlertWithMessage:@"There was an error sending your request"];
+                                                          }
+                                                      }
+                                                      else{
+                                                          // 200 but error
+                                                          [self showAlertWithMessage:@"There was an error sending your request"];
+                                                      }
+                                                      
+
+                                                  }
+                                              }];
+    
+    /*
     [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message, id data) {
         if (wasSuccessful){
             NSUInteger count = [self.selectedFriends[@"friends"] count];
@@ -229,6 +282,8 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
     
         }
     }];
+    
+    */
     
     
         NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);

@@ -59,6 +59,10 @@
     
     [self setupTopLabel];
     
+    if (self.mediaURL){
+        [self.challengeImage setImageWithURL:self.mediaURL placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+    }
+
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
    

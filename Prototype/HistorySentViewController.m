@@ -193,10 +193,10 @@
         [sender getCorrectProfilePicWithImageView:myImageView];
         
         if ([challenge.recipients_count intValue] == 1){
-            numberOfFriends.text = [NSString stringWithFormat:@"%@ friend",[challenge.recipients_count stringValue]];
+            numberOfFriends.text = [NSString stringWithFormat:@"%@ friend playing",[challenge.recipients_count stringValue]];
         }
         else{
-            numberOfFriends.text = [NSString stringWithFormat:@"%@ friends",[challenge.recipients_count stringValue]];
+            numberOfFriends.text = [NSString stringWithFormat:@"%@ friends playing",[challenge.recipients_count stringValue]];
         }
         
         // show green active circle
@@ -248,7 +248,7 @@
             ((HistoryDetailViewController *)vc).image = challenge_image;
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
-            ((HistoryDetailViewController *)vc).media_url = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
             NSLog(@"%@ is image path",challenge.image_path);
             
              [self.navigationController pushViewController:vc animated:YES];

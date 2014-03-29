@@ -11,7 +11,6 @@
 #import "TWTSideMenuViewController.h"
 
 @interface ReceiverPreviewViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *previewPhraseTitle;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @end
@@ -33,6 +32,9 @@
     // for challenge name/title
     
     [super viewDidLoad];
+    
+    [self.previewImage addSubview:self.previewCaption];
+    self.previewImage.clipsToBounds = YES;
 
     [self setupColors];
     [self setupOutlets];
@@ -50,8 +52,32 @@
 - (void)setupOutlets
 {
     self.previewImage.image = self.image;
+    
+    CGRect captionRect = self.previewCaption.frame;
+    CGRect nameRect = self.previewChallengeName.frame;
+    
+
     self.previewCaption.text = self.caption;
+    self.previewCaption.textAlignment = NSTextAlignmentCenter;
+    self.previewCaption.font = [UIFont fontWithName:@"Chalkduster" size:25];
+    self.previewCaption.frame = CGRectMake(captionRect.origin.x, captionRect.origin.y, 300, 100);
+    self.previewCaption.numberOfLines = 0;
+    [self.previewCaption sizeToFit];
+    
     self.previewChallengeName.text = self.challengeName;
+    self.previewChallengeName.textAlignment = NSTextAlignmentCenter;
+    self.previewChallengeName.frame = CGRectMake(nameRect.origin.x, nameRect.origin.y, 300, 100);
+    self.previewChallengeName.numberOfLines = 0;
+    [self.previewChallengeName sizeToFit];
+    
+    UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
+    press.minimumPressDuration = 0.1;
+    
+    [self.previewCaption addGestureRecognizer:press];
+    self.previewCaption.userInteractionEnabled = YES;
+    self.previewImage.userInteractionEnabled = YES;
+
+    
     
     
 
@@ -61,12 +87,7 @@
        // title of challege
     self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     self.previewChallengeName.textColor = [UIColor whiteColor];
-    self.previewChallengeName.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
-    
-    // phrase title "Your phase"
-    self.previewPhraseTitle.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:25];
-    self.previewPhraseTitle.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
-    self.previewPhraseTitle.textColor = [UIColor whiteColor];
+
     
     // the phrase
     self.previewCaption.font =  [UIFont fontWithName:@"Optima-ExtraBlack" size:21.5];
@@ -76,6 +97,7 @@
     self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
     self.sendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.sendButton.layer.cornerRadius = 20.0f;
     
     
 
@@ -96,6 +118,37 @@
     
     
 }
+
+- (void)startedLabelDrag:(UILongPressGestureRecognizer *)gesture
+{
+    UIView *view = gesture.view;
+    CGPoint point = [gesture locationInView:view.superview];
+    
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+        {
+            //[self captionStartedDragging];
+        }
+            
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            view.center = point;
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+        {
+            //[self captionStoppedDragging];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 
 
 @end

@@ -26,5 +26,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *challengeNameLabel;
 @property (strong, nonatomic)UIView *topLabel;
 @property (strong, nonatomic)UIImage *image;
+@property (strong, nonatomic)NSURL *mediaURL;
 - (void)setupTopLabel;
 @end

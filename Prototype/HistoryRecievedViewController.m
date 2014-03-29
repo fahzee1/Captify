@@ -257,6 +257,7 @@
             ((ChallengeViewController *)vc).myUser = self.myUser;
             ((ChallengeViewController *)vc).name = challenge.name;
             ((ChallengeViewController *)vc).sender = challenge.sender.username;
+            ((ChallengeViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
@@ -264,12 +265,11 @@
     else{
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-            ((HistoryDetailViewController *)vc).image = [UIImage imageNamed:@"brilliant-grill"];
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
-            ((HistoryDetailViewController *)vc).media_url = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
             
             [self.navigationController pushViewController:vc animated:YES];
         }

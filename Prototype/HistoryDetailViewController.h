@@ -19,5 +19,5 @@
 @property BOOL hideSelectButtonsMax;
 @property (nonatomic, retain)User *myUser;
 @property (nonatomic, retain)Challenge *myChallenge;
-@property (nonatomic, strong)NSURL *media_url;
+@property (nonatomic, strong)NSURL *mediaURL;
 @end
