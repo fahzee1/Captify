@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Challenge.h"
 
 @interface ShareViewController : UIViewController
 
@@ -15,4 +16,6 @@
 @property (strong, nonatomic)NSString *selectedUsername;
 @property (strong, nonatomic)NSString *selectedCaption;
 
+
+@property (nonatomic, retain)Challenge *myChallenge;
 @end

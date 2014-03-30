@@ -66,8 +66,8 @@
             
             pick.answer = [params valueForKey:@"answer"];
             pick.is_chosen = [params valueForKey:@"is_chosen"];
-            pick.player = user;
             pick.pick_id = [params valueForKey:@"pick_id"];
+            pick.player = user;
             
             NSError *error;
             if (![pick.managedObjectContext save:&error]){
@@ -77,6 +77,7 @@
                 abort();
                 
             }
+            
         }
         else{
             NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
@@ -85,7 +86,6 @@
     }
     else{
         // fetch and update
-        NSLog(@"pick by %@ already created",[params valueForKey:@"player"]);
         NSNumber *is_chosen = [params valueForKey:@"is_chosen"];
         ChallengePicks *pick = [self getPicksWithID:[params valueForKey:@"pick_id"]
                                           inContext:[params valueForKey:@"context"]];

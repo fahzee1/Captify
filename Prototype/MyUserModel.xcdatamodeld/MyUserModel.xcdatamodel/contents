@@ -11,6 +11,7 @@
         <attribute name="recipients_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="selected_phrase" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sentPick" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="shared" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="success" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="sync_status" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="thumbnail_path" optional="YES" attributeType="String" syncable="YES"/>
@@ -25,7 +26,7 @@
         <attribute name="pick_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="picks" inverseEntity="Challenge" syncable="YES"/>
-        <relationship name="player" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
+        <relationship name="player" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
         <relationship name="received_challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceivedChallenge" inverseName="picks" inverseEntity="ReceivedChallenge" syncable="YES"/>
     </entity>
     <entity name="ReceivedChallenge" representedClassName="ReceivedChallenge" syncable="YES">
@@ -55,7 +56,7 @@
         <attribute name="sync_status" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="picks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChallengePicks" inverseName="player" inverseEntity="ChallengePicks" syncable="YES"/>
+        <relationship name="picks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChallengePicks" inverseName="player" inverseEntity="ChallengePicks" syncable="YES"/>
         <relationship name="received_challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReceivedChallenge" inverseName="sender" inverseEntity="ReceivedChallenge" syncable="YES"/>
         <relationship name="recipient_challenge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Challenge" inverseName="recipients" inverseEntity="Challenge" syncable="YES"/>
         <relationship name="sent_challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="sender" inverseEntity="Challenge" syncable="YES"/>

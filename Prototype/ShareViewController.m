@@ -52,6 +52,7 @@
     self.shareFacebook = NO;
     self.shareInstagram = NO;
     [self setupShareStyles];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,6 +64,7 @@
 
 - (void)setupShareStyles
 {
+    [self.myShareButton setTitle:NSLocalizedString(@"Save", nil) forState:UIControlStateNormal];
     self.shareImageView.image = self.shareImage;
     
     self.shareContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
@@ -136,10 +138,16 @@
     if (self.shareFacebook){
         self.myFacebookLabel.textColor = [UIColor colorWithHexString:@"#3B5998"];
         self.facebookDisplayLabel.textColor = [UIColor colorWithHexString:@"#3B5998"];
+        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
+    
     }
     else{
         self.myFacebookLabel.textColor = [UIColor whiteColor];
         self.facebookDisplayLabel.textColor = [UIColor whiteColor];
+        
+        if (!self.shareTwitter && !self.shareInstagram){
+            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
+        }
     }
 }
 
@@ -149,11 +157,16 @@
     if (self.shareInstagram){
         self.myInstagramLabel.textColor = [UIColor colorWithHexString:@"#3f729b"];
         self.instagramDisplayLabel.textColor = [UIColor colorWithHexString:@"#3f729b"];
+        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
 
     }
     else{
         self.myInstagramLabel.textColor = [UIColor whiteColor];
         self.instagramDisplayLabel.textColor = [UIColor whiteColor];
+        if (!self.shareTwitter && !self.shareFacebook){
+            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
+        }
+
     }
 }
 
@@ -165,10 +178,15 @@
     if (self.shareTwitter){
         self.myTwitterLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
         self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
+        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
     }
     else{
         self.myTwitterLabel.textColor = [UIColor whiteColor];
         self.twitterDisplayLabel.textColor = [UIColor whiteColor];
+        if (!self.shareInstagram && !self.shareFacebook){
+            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
+        }
+
     }
 }
 
@@ -230,6 +248,12 @@
             [self showAlertWithTitle:@"Twitter Error!" message:@"There was an error sharing your photo to Twitter."];
             return;
         }
+    }
+    
+    self.myChallenge.shared = [NSNumber numberWithBool:YES];
+    NSError *error;
+    if (![self.myChallenge.managedObjectContext save:&error]){
+        NSLog(@"%@",error);
     }
     
     [self.navigationController popToRootViewControllerAnimated:YES];

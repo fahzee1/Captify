@@ -24,6 +24,7 @@
     self.success = [NSNumber numberWithBool:NO];
     self.active = [NSNumber numberWithBool:YES];
     self.sentPick = [NSNumber numberWithBool:NO];
+    self.shared = [NSNumber numberWithBool:NO];
     
 
 }

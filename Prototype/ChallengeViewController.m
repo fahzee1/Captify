@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIView *captionContainerView;
 @property (weak, nonatomic) IBOutlet UITextField *captionField;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) NSArray *data;
+@property (strong, nonatomic) UIBarButtonItem *sentCaptionsButton;
 
 @end
 
@@ -65,6 +67,8 @@
 
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    
+     NSLog(@"%@", self.data);
    
 }
 
@@ -120,6 +124,8 @@
     
     CGRect frame = self.challengeNameLabel.frame;
     self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
+    
+    self.navigationItem.rightBarButtonItem = self.sentCaptionsButton;
     
     
     
@@ -182,6 +188,11 @@
     
 }
 
+
+- (void)showSentCaptionsScreen
+{
+    
+}
 
 
 - (void)showAlertWithTitle:(NSString *)title
@@ -272,7 +283,26 @@
 }
 
 
+- (NSArray *)data
+{
+    NSSet *picks = self.myChallenge.picks;
+    _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+    
+    return _data;
+}
 
+
+
+- (UIBarButtonItem *)sentCaptionsButton
+{
+    if (!_sentCaptionsButton){
+        _sentCaptionsButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] style:UIBarButtonItemStylePlain target:self action:@selector(showSentCaptionsScreen)];
+        [_sentCaptionsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+        [_sentCaptionsButton setTintColor:[UIColor greenColor]];
+        
+    }
+    return  _sentCaptionsButton;
+}
 
 
 @end

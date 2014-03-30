@@ -2,7 +2,7 @@
 //  User.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/23/14.
+//  Created by CJ Ogbuehi on 3/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -28,8 +28,8 @@
 @dynamic timestamp;
 @dynamic username;
 @dynamic picks;
-@dynamic recipient_challenges;
-@dynamic sent_challenges;
 @dynamic received_challenges;
+@dynamic recipient_challenge;
+@dynamic sent_challenges;
 
 @end

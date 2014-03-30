@@ -2,7 +2,7 @@
 //  Challenge.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/29/14.
+//  Created by CJ Ogbuehi on 3/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSString * thumbnail_path;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSNumber * sentPick;
+@property (nonatomic, retain) NSNumber * shared;
 @property (nonatomic, retain) NSSet *picks;
 @property (nonatomic, retain) NSSet *recipients;
 @property (nonatomic, retain) User *sender;

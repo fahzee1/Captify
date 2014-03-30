@@ -142,6 +142,7 @@
         return [results firstObject];
     }
     else{
+        NSLog(@"theres no user %@ created",username);
         return nil;
     }
 

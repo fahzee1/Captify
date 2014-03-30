@@ -186,6 +186,7 @@
     if ([shareVc isKindOfClass:[ShareViewController class]]){
         if (self.finalImage){
             ((ShareViewController *)shareVc).shareImage = self.finalImage;
+            ((ShareViewController *)shareVc).myChallenge = self.myChallenge;
         }
         [self.navigationController pushViewController:shareVc animated:YES];
         
@@ -471,13 +472,6 @@
 
 
 
-- (NSArray *)data
-{
-    NSSet *picks = self.myChallenge.picks;
-    _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
-    
-    return _data;
-}
 
 
 # pragma -mark Color picker delegate
@@ -820,6 +814,15 @@
     return  _nextButton;
 }
 
+
+
+- (NSArray *)data
+{
+    NSSet *picks = self.myChallenge.picks;
+    _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+    
+    return _data;
+}
 
 
 - (UIView *)imageControls

@@ -2,7 +2,7 @@
 //  User.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/23/14.
+//  Created by CJ Ogbuehi on 3/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -26,13 +26,23 @@
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * username;
-@property (nonatomic, retain) ChallengePicks *picks;
-@property (nonatomic, retain) Challenge *recipient_challenges;
+@property (nonatomic, retain) NSSet *picks;
+@property (nonatomic, retain) NSSet *received_challenges;
+@property (nonatomic, retain) Challenge *recipient_challenge;
 @property (nonatomic, retain) NSSet *sent_challenges;
-@property (nonatomic, retain) ReceivedChallenge *received_challenges;
 @end
 
 @interface User (CoreDataGeneratedAccessors)
+
+- (void)addPicksObject:(ChallengePicks *)value;
+- (void)removePicksObject:(ChallengePicks *)value;
+- (void)addPicks:(NSSet *)values;
+- (void)removePicks:(NSSet *)values;
+
+- (void)addReceived_challengesObject:(ReceivedChallenge *)value;
+- (void)removeReceived_challengesObject:(ReceivedChallenge *)value;
+- (void)addReceived_challenges:(NSSet *)values;
+- (void)removeReceived_challenges:(NSSet *)values;
 
 - (void)addSent_challengesObject:(Challenge *)value;
 - (void)removeSent_challengesObject:(Challenge *)value;
