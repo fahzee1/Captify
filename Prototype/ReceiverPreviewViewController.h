@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Challenge+Utils.h"
+#import "User+Utils.h"
 
 @interface ReceiverPreviewViewController : UIViewController
 
@@ -18,6 +20,9 @@
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSString *caption;
 @property (strong, nonatomic) NSString *challengeName;
+
+@property (nonatomic, retain)Challenge *myChallenge;
+@property (nonatomic, retain)User *myUser;
 
 
 @end

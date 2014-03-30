@@ -9,7 +9,7 @@
 #import "ChallengePicks.h"
 @class User;
 
-typedef void (^CreatePickUpdateBlock) (BOOL wasSuccessful, NSString *message);
+typedef void (^CreatePickUpdateBlock) (BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id);
 
 @interface ChallengePicks (Utils)
 

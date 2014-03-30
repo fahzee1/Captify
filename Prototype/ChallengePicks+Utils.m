@@ -68,7 +68,6 @@
             pick.is_chosen = [params valueForKey:@"is_chosen"];
             pick.player = user;
             pick.pick_id = [params valueForKey:@"pick_id"];
-        
             
             NSError *error;
             if (![pick.managedObjectContext save:&error]){
@@ -145,7 +144,6 @@
 + (void)sendCreatePickRequestWithParams:(NSDictionary *)params
                                   block:(CreatePickUpdateBlock)block
 {
-#warning send username, challenge id and answer to this method to create pick
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
     [client POST:AwesomeAPIChallengeCreatePickString parameters:params
@@ -154,14 +152,14 @@
              int code = [[responseObject valueForKey:@"code"] intValue];
              if (code == 1){
                  if (block){
-                     block(YES,@"Success");
+                     block(YES, NO, @"Success",responseObject[@"pick_id"]);
                  }
                  return;
              }
              
              if (code == -10){
                  if (block){
-                     block(NO,@"Fail");
+                     block(NO, NO, @"Fail",nil);
                  }
              }
         
@@ -170,7 +168,7 @@
              [client stopNetworkActivity];
              NSLog(@"%@",error);
              if (block){
-                 block(NO,error.localizedDescription);
+                 block(NO, YES, error.localizedDescription, nil);
              }
         
         }];

@@ -23,6 +23,7 @@
 #import "ChallengePicks+Utils.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
+#import <MessageUI/MessageUI.h>
 
 /*
  mark challenge as done when complete
@@ -34,7 +35,7 @@
  */
 
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *data;
 @property BOOL shareToFacebook;
@@ -54,7 +55,10 @@
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
+@property (strong, nonatomic)UIButton *makeButton;
 @property BOOL pendingRequest;
+@property BOOL makeButtonVisible;
+@property int errorCount;
 
 @end
 
@@ -77,7 +81,7 @@
     //self.navigationItem.rightBarButtonItem = nextButton;
     
     self.navigationItem.title = NSLocalizedString(@"All Captions", @"All captions to showing on final screen");
-    
+    self.makeButtonVisible = YES;
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.finalCaptionLabel.hidden = YES;
@@ -203,7 +207,7 @@
     
     [press requireGestureRecognizerToFail:controls];
     
-    self.finalCaptionLabel.text = self.selectedCaption;
+    self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
     self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
     if ([self.finalCaptionLabel.text length] > 15){
         self.finalCaptionLabel.numberOfLines = 0;
@@ -383,7 +387,9 @@
                                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                           otherButtonTitles:NSLocalizedString(@"Make Caption", nil), nil];
     self.makeCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [(UITextField *)[self.makeCaptionAlert textFieldAtIndex:0] setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
     [self.makeCaptionAlert show];
+
 }
 
 
@@ -403,6 +409,7 @@
     [self setupFinalLabel];
     
 }
+
 
 - (void)captionFontChanged
 {
@@ -513,21 +520,107 @@
 {
     // if user chooses caption. Hide caption select buttons
     // and add caption to the image
-    if ([alertView textFieldAtIndex:0].delegate == self){
-        [alertView textFieldAtIndex:0].delegate = nil;
-    }
-    
+
     if (alertView == self.makeCaptionAlert){
+        if ([alertView textFieldAtIndex:0].delegate == self){
+            [alertView textFieldAtIndex:0].delegate = nil;
+        }
+
         if (buttonIndex == 1){
             NSString *caption = [alertView textFieldAtIndex:0].text;
             if ([caption length] > 0){
                 [self.finalCaptionLabel stopGlowing];
                 self.selectedCaption = caption;
                 self.hideSelectButtons = YES;
-                [self.myTable reloadData];
                 [self setupFinalLabel];
+                
+                double delayInSeconds = 2.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    NSString *message = [NSString stringWithFormat:@"Are you sure you want the caption \"%@\"? If so this challenge will be closed.",self.selectedCaption];
+                    self.confirmCaptionAlert = [[UIAlertView alloc]
+                                                initWithTitle:@"confirm"
+                                                message:message
+                                                delegate:self
+                                                cancelButtonTitle:@"NO"
+                                                otherButtonTitles:@"YES", nil];
+                    [self.confirmCaptionAlert show];
+                });
             }
         }
+    }
+    
+    else if (alertView == self.confirmCaptionAlert){
+        if (buttonIndex == 1){
+            self.makeButtonVisible = NO;
+            NSDictionary *params = @{@"username": self.myUser.username,
+                                     @"challenge_id":self.myChallenge.challenge_id,
+                                     @"answer":self.selectedCaption,
+                                     @"iMade":[NSNumber numberWithBool:YES]};
+            [ChallengePicks sendCreatePickRequestWithParams:params
+                                                      block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
+                                                          if (wasSuccessful){
+                                                              
+                                                              
+                                                              NSDictionary *params2 = @{@"player": self.myUser.username,
+                                                                                        @"context":self.myUser.managedObjectContext,
+                                                                                        @"is_chosen":[NSNumber numberWithBool:NO],
+                                                                                        @"answer":self.selectedCaption,
+                                                                                        @"pick_id":pick_id,
+                                                                                        @"pick_chosen":[NSNumber numberWithBool:YES]};
+                                                              ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
+                                                              if (pick){
+                                                                  NSError *error;
+                                                                  [self.myChallenge addPicksObject:pick];
+                                                                  self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
+                                                                  if (![self.myChallenge.managedObjectContext save:&error]){
+                                                                      NSLog(@"%@",error);
+                                                                  }
+                                                              }
+                                                              
+                                                              
+                                                              
+                                                          }
+                                                          else{
+                                                              if (fail){
+                                                                  [self showAlertWithTitle:@"Error" message:message];
+                                                                  
+                                                              }
+                                                              else{
+                                                                  if (self.errorCount < 3){
+                                                                      [self showAlertWithTitle:@"Error" message:@"There was an error sending your caption. Try again."];
+                                                                      
+                                                                  }
+                                                                  else{
+                                                                      [self showAlertWithTitle:@"Bug" message:@"This might be a bug. Developer has been notified."];
+                                                                      MFMailComposeViewController *tempMailCompose = [[MFMailComposeViewController alloc] init];
+                                                                      
+                                                                      if ([MFMailComposeViewController canSendMail])
+                                                                      {
+#warning set correct email for live app
+                                                                          tempMailCompose.mailComposeDelegate = self;
+                                                                          [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                                                                          [tempMailCompose setSubject:@"Theres a freaking bug!"];
+                                                                          [tempMailCompose setMessageBody:[NSString stringWithFormat:@"I tried to send %@ a caption and I keep getting error alerts! Get this fixed now!",self.myChallenge.sender.username] isHTML:NO];
+                                                                          [self presentViewController:tempMailCompose animated:YES completion:^{
+                                                                          }];
+                                                                      }
+                                                                      
+                                                                      
+                                                                  }
+                                                                  
+                                                                  
+                                                                  self.errorCount += 1;
+                                                              }
+                                                          }
+
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [self.myTable reloadData];
+                                                          });
+
+                                                      }];
+            
+            }
     }
 }
 
@@ -569,12 +662,25 @@
 
     else if  (self.hideSelectButtons || self.hideSelectButtonsMax){
         NSString *string;
-        if (count == 1){
-            string = [NSString stringWithFormat:@"%lu caption has been sent to this challenge!", (unsigned long)count];
+        
+        if (self.hideSelectButtonsMax){
+            if (count == 1){
+                string = [NSString stringWithFormat:@"%lu caption was sent to this challenge!", (unsigned long)count];
+            }
+            else{
+                string = [NSString stringWithFormat:@"%lu captions were sent to this challenge!", (unsigned long)count];
+                
+            }
+
         }
         else{
-           string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)count];
+            if (count == 1){
+                string = [NSString stringWithFormat:@"%lu caption has been sent to this challenge!", (unsigned long)count];
+            }
+            else{
+               string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)count];
 
+            }
         }
         title = NSLocalizedString(string, nil);
     }
@@ -596,11 +702,13 @@
     titleLablel.font = [UIFont boldSystemFontOfSize:12];
     
     if (!self.hideSelectButtonsMax){
-        UIButton *makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
-        makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
-        [makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
-        [makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
-        [container addSubview:makeButton];
+        if (self.makeButtonVisible){        
+            self.makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
+            self.makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+            [self.makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
+            [self.makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+            [container addSubview:self.makeButton];
+        }
     }
     
     [container addSubview:titleLablel];
@@ -646,15 +754,22 @@
                 username = [pick.player.username capitalizedString];
             }
             else{
-                username = @"User23";
+                username = @"User";
             }
             
             
             if ([pick.is_chosen intValue] == 1){
+#warning show caption badge here
                 captionLabel.text = @"this one was selected.. show trophy badge";
             }
             else{
-                 captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+                NSString *me = [self.myUser.username capitalizedString];
+                if ([username isEqualToString:me]){
+                    captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
+                }
+                else{
+                    captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+                }
             }
 
         
@@ -716,6 +831,27 @@
     return _imageControls;
 }
 
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
+
+#pragma -mark Mail delegate
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+}
 
 
 

@@ -113,7 +113,7 @@
          self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     }
     
-    self.challengeNameLabel.text = self.name;
+    self.challengeNameLabel.text = [self.name capitalizedString];
     self.challengeNameLabel.textAlignment = NSTextAlignmentCenter;
     self.challengeNameLabel.numberOfLines = 0;
     [self.challengeNameLabel sizeToFit];
@@ -238,6 +238,8 @@
                     finalVcGo.image = self.challengeImage.image;
                     finalVcGo.challengeName = self.name;
                     finalVcGo.caption = self.answer;
+                    finalVcGo.myChallenge = self.myChallenge;
+                    finalVcGo.myUser = self.myUser;
                     [self.navigationController pushViewController:finalVc animated:YES];
                 }
                 

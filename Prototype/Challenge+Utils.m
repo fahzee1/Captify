@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "User+Utils.h"
 
+
 @implementation Challenge (Utils)
 
 - (void)awakeFromInsert
@@ -22,6 +23,7 @@
     self.timestamp = [NSDate date];
     self.success = [NSNumber numberWithBool:NO];
     self.active = [NSNumber numberWithBool:YES];
+    self.sentPick = [NSNumber numberWithBool:NO];
     
 
 }

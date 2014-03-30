@@ -207,11 +207,15 @@
         [sender getCorrectProfilePicWithImageView:KimageView];
         
         
-        // check if challenge is active or not
+        // check if challenge is active or not or if pick was sent
         // if active show animating green filled circle, if not ahow circle outline
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         [activeLabel setTextColor:[UIColor greenColor]];
-        if ([challenge.active intValue] == 1){
+        
+        int active = [challenge.active intValue];
+        int sentPick = [challenge.sentPick intValue];
+        
+        if (active && !sentPick){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
             [activeLabel setTextColor:[UIColor greenColor]];
@@ -250,7 +254,10 @@
     
     // check if active
     Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
-    if ([challenge.active intValue] == 1){
+    int active = [challenge.active intValue];
+    int sentPick = [challenge.sentPick intValue];
+
+    if (active && !sentPick){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
         if ([vc isKindOfClass:[ChallengeViewController class]]){
             ((ChallengeViewController *)vc).myChallenge = challenge;

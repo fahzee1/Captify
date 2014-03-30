@@ -175,12 +175,14 @@
         
         Challenge *challenge = [self.data objectAtIndex:indexPath.row];
         User *sender = challenge.sender;
-        
-        if ([challenge.active intValue] == 0){
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        int active = [challenge.active intValue];
+        int sentPick = [challenge.sentPick intValue];
+
+        if (active && !sentPick){
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else{
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
         myLabel.text = [challenge.name capitalizedString];
@@ -202,7 +204,8 @@
         // show green active circle
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         [activeLabel setTextColor:[UIColor greenColor]];
-        if ([challenge.active intValue] == 1){
+        
+        if (active && !sentPick){
             
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
             [activeLabel setTextColor:[UIColor greenColor]];
@@ -240,7 +243,10 @@
     Challenge *challenge = [self.data objectAtIndex:indexPath.row];
     // check if active
     
-    if ([challenge.active intValue] == 1){
+    int active = [challenge.active intValue];
+    int sentPick = [challenge.sentPick intValue];
+
+    if (active && !sentPick){
         
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){

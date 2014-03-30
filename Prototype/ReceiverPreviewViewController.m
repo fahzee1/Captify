@@ -9,10 +9,12 @@
 #import "ReceiverPreviewViewController.h"
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
+#import "ChallengePicks+Utils.h"
+#import <MessageUI/MessageUI.h>
 
-@interface ReceiverPreviewViewController ()
+@interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-
+@property int errorCount;
 @end
 
 @implementation ReceiverPreviewViewController
@@ -51,24 +53,31 @@
 
 - (void)setupOutlets
 {
+    self.errorCount = 3;
     self.previewImage.image = self.image;
     
     CGRect captionRect = self.previewCaption.frame;
     CGRect nameRect = self.previewChallengeName.frame;
     
-
-    self.previewCaption.text = self.caption;
+    self.previewCaption.text = [self.caption capitalizedString];
     self.previewCaption.textAlignment = NSTextAlignmentCenter;
     self.previewCaption.font = [UIFont fontWithName:@"Chalkduster" size:25];
-    self.previewCaption.frame = CGRectMake(captionRect.origin.x, captionRect.origin.y, 300, 100);
     self.previewCaption.numberOfLines = 0;
     [self.previewCaption sizeToFit];
+    self.previewCaption.frame = CGRectMake(captionRect.origin.x, captionRect.origin.y, 300, 100);
     
-    self.previewChallengeName.text = self.challengeName;
+    
+    if ([self.challengeName length] > 35){
+        self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+    }
+    else{
+        self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    }
+    self.previewChallengeName.text = [self.challengeName capitalizedString];
     self.previewChallengeName.textAlignment = NSTextAlignmentCenter;
-    self.previewChallengeName.frame = CGRectMake(nameRect.origin.x, nameRect.origin.y, 300, 100);
     self.previewChallengeName.numberOfLines = 0;
     [self.previewChallengeName sizeToFit];
+    self.previewChallengeName.frame = CGRectMake(nameRect.origin.x, nameRect.origin.y, 300, 50);
     
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
     press.minimumPressDuration = 0.1;
@@ -114,7 +123,70 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)sendRecieverPick:(UIButton *)sender {
+- (IBAction)sendRecieverPick:(UIButton *)sender
+{
+    NSDictionary *params = @{@"username": self.myUser.username,
+                             @"challenge_id":self.myChallenge.challenge_id,
+                             @"answer":self.previewCaption.text};
+    
+    [ChallengePicks sendCreatePickRequestWithParams:params
+                                              block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
+                                                  if (wasSuccessful){
+                                                      
+                                                      
+                                                      NSDictionary *params2 = @{@"player": self.myUser.username,
+                                                                                @"context":self.myUser.managedObjectContext,
+                                                                                @"is_chosen":[NSNumber numberWithBool:NO],
+                                                                                @"answer":self.previewCaption.text,
+                                                                                @"pick_id":pick_id,
+                                                                                @"pick_chosen":[NSNumber numberWithBool:YES]};
+                                                      ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
+                                                      if (pick){
+                                                          NSError *error;
+                                                          [self.myChallenge addPicksObject:pick];
+                                                          self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
+                                                          if (![self.myChallenge.managedObjectContext save:&error]){
+                                                              NSLog(@"%@",error);
+                                                          }
+                                                      }
+                                                      
+                                                      [self.navigationController popToRootViewControllerAnimated:YES];
+
+                                                      
+                                                  }
+                                                  else{
+                                                      if (fail){
+                                                            [self showAlertWithTitle:@"Error" message:message];
+                                                          
+                                                      }
+                                                      else{
+                                                          if (self.errorCount < 3){
+                                                              [self showAlertWithTitle:@"Error" message:@"There was an error sending your caption. Try again."];
+                                                              
+                                                          }
+                                                          else{
+                                                              [self showAlertWithTitle:@"Bug" message:@"This might be a bug. Developer has been notified."];
+                                                              MFMailComposeViewController *tempMailCompose = [[MFMailComposeViewController alloc] init];
+                                                              
+                                                              if ([MFMailComposeViewController canSendMail])
+                                                              {
+#warning set correct email for live app
+                                                                  tempMailCompose.mailComposeDelegate = self;
+                                                                  [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                                                                  [tempMailCompose setSubject:@"Theres a freaking bug!"];
+                                                                  [tempMailCompose setMessageBody:[NSString stringWithFormat:@"I tried to send %@ a caption and I keep getting error alerts! Get this fixed now!",self.myChallenge.sender.username] isHTML:NO];
+                                                                  [self presentViewController:tempMailCompose animated:YES completion:^{
+                                                                  }];
+                                                              }
+                                                              
+                                                              
+                                                          }
+
+                                                          
+                                                           self.errorCount += 1;
+                                                      }
+                                                  }
+                                              }];
     
     
 }
@@ -148,6 +220,27 @@
     }
 }
 
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
+
+#pragma -mark Mail delegate
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+}
 
 
 

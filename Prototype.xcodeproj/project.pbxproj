@@ -271,7 +271,8 @@
 		1191604718DBEBD300C25E36 /* UploaderAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604618DBEBD300C25E36 /* UploaderAPIClient.m */; };
 		1191605018DF4C5C00C25E36 /* ReceivedChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */; };
 		1191605318DF4C5D00C25E36 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605218DF4C5D00C25E36 /* User.m */; };
-		1191605618DF4DB900C25E36 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605518DF4DB900C25E36 /* Challenge.m */; };
+		1191605818E788FC00C25E36 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1191605718E788FC00C25E36 /* MessageUI.framework */; };
+		1191605B18E793C300C25E36 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1191605A18E793C300C25E36 /* Challenge.m */; };
 		119711CB18ADAAC3008AD895 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CA18ADAAC3008AD895 /* MenuViewController.m */; };
 		119711CF18ADABFF008AD895 /* TWTSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711CE18ADABFF008AD895 /* TWTSideMenuViewController.m */; };
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
@@ -835,8 +836,9 @@
 		1191604F18DF4C5C00C25E36 /* ReceivedChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceivedChallenge.m; sourceTree = "<group>"; };
 		1191605118DF4C5D00C25E36 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		1191605218DF4C5D00C25E36 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		1191605418DF4DB900C25E36 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		1191605518DF4DB900C25E36 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
+		1191605718E788FC00C25E36 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		1191605918E793C300C25E36 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		1191605A18E793C300C25E36 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		119711C918ADAAC3008AD895 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		119711CA18ADAAC3008AD895 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		119711CD18ADABFF008AD895 /* TWTSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTSideMenuViewController.h; sourceTree = "<group>"; };
@@ -910,6 +912,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1191605818E788FC00C25E36 /* MessageUI.framework in Frameworks */,
 				11FA2F4318D793DE000F6DB9 /* AddressBook.framework in Frameworks */,
 				110B087D18CF896900EC850F /* Social.framework in Frameworks */,
 				110B087B18CF867300EC850F /* Accounts.framework in Frameworks */,
@@ -965,6 +968,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1191605718E788FC00C25E36 /* MessageUI.framework */,
 				11FA2F4218D793DE000F6DB9 /* AddressBook.framework */,
 				110B087C18CF896900EC850F /* Social.framework */,
 				110B087A18CF867300EC850F /* Accounts.framework */,
@@ -1040,8 +1044,8 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				1191605418DF4DB900C25E36 /* Challenge.h */,
-				1191605518DF4DB900C25E36 /* Challenge.m */,
+				1191605918E793C300C25E36 /* Challenge.h */,
+				1191605A18E793C300C25E36 /* Challenge.m */,
 				1191605118DF4C5D00C25E36 /* User.h */,
 				1191605218DF4C5D00C25E36 /* User.m */,
 				117C2EFD18E4D5D1007B7464 /* ChallengePicks.h */,
@@ -2084,6 +2088,7 @@
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */,
 				11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */,
+				1191605B18E793C300C25E36 /* Challenge.m in Sources */,
 				1153E1B418A9DF4800AD950E /* GPUImageScreenBlendFilter.m in Sources */,
 				11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,
@@ -2149,7 +2154,6 @@
 				1153E16918A9DF4800AD950E /* GPUImageFASTCornerDetectionFilter.m in Sources */,
 				1153E1C718A9DF4800AD950E /* GPUImageThreeInputFilter.m in Sources */,
 				117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */,
-				1191605618DF4DB900C25E36 /* Challenge.m in Sources */,
 				1184FE1618BD053800FDEAE0 /* TMMemoryCache.m in Sources */,
 				1153E14218A9DF4800AD950E /* GPUImage3x3TextureSamplingFilter.m in Sources */,
 				1153E15818A9DF4800AD950E /* GPUImageColorPackingFilter.m in Sources */,
