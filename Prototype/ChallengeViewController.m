@@ -10,6 +10,7 @@
 #import "AnswerFieldView.h"
 #import "AppDelegate.h"
 #import "Challenge+Utils.h"
+#import "ChallengePicks+Utils.h"
 #import "AwesomeAPICLient.h"
 #import "CJPopup.h"
 #import "ReceiverPreviewViewController.h"
@@ -18,10 +19,12 @@
 #import "User.h"
 #import "UIImageView+WebCache.h"
 #import "FAImageView.h"
+#import "HistoryDetailCell.h"
+#import "NSDate+TimeAgo.h"
 
 #define TEST 1
 
-@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
+@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (strong, nonatomic)CJPopup *successPop;
 @property (strong, nonatomic)CJPopup *failPop;
@@ -31,7 +34,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *captionField;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) NSArray *data;
-@property (strong, nonatomic) UIBarButtonItem *sentCaptionsButton;
+@property (weak, nonatomic) IBOutlet UITableView *myTable;
+@property (strong, nonatomic)UIBarButtonItem *nextButton;
 
 @end
 
@@ -52,6 +56,8 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     self.scrollView.delegate = self;
     self.captionField.delegate = self;
+    self.myTable.dataSource = self;
+    self.myTable.delegate = self;
     self.captionField.returnKeyType = UIReturnKeyDone;
     [self setupStylesAndMore];
     
@@ -61,6 +67,8 @@
     
     [self setupTopLabel];
     
+    self.navigationItem.rightBarButtonItem = self.nextButton;
+    
     if (self.mediaURL){
         [self.challengeImage setImageWithURL:self.mediaURL placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
     }
@@ -68,7 +76,9 @@
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
-     NSLog(@"%@", self.data);
+    if ([self.data count] == 0){
+        [self.myTable removeFromSuperview];
+    }
    
 }
 
@@ -76,10 +86,12 @@
 {
     [super viewDidAppear:animated];
     
-    double delayInSeconds = 1.0;
+    double delayInSeconds = 4.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-          [self.captionField becomeFirstResponder];
+        if (!self.captionField.isFirstResponder){
+            [self.captionField becomeFirstResponder];
+        }
     });
 }
 
@@ -104,6 +116,10 @@
     
 }
 
+- (void)showPreviewScreen
+{
+    [self textFieldShouldReturn:self.captionField];
+}
 
 - (void)setupStylesAndMore
 {
@@ -125,7 +141,6 @@
     CGRect frame = self.challengeNameLabel.frame;
     self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
     
-    self.navigationItem.rightBarButtonItem = self.sentCaptionsButton;
     
     
     
@@ -188,11 +203,6 @@
     
 }
 
-
-- (void)showSentCaptionsScreen
-{
-    
-}
 
 
 - (void)showAlertWithTitle:(NSString *)title
@@ -271,6 +281,91 @@
     
 }
 
+#pragma -mark Uitableview delegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Sent captions";
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.data count];
+}
+
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"SentCaptionCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
+    
+    if ([pick isKindOfClass:[ChallengePicks class]]){
+        
+        if ([cell isKindOfClass:[HistoryDetailCell class]]){
+            UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
+            UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
+            UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
+            
+            [pick.player getCorrectProfilePicWithImageView:imageView];
+            
+            if (pick.player.facebook_user){
+                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
+                NSURL * fbUrl = [NSURL URLWithString:fbString];
+                [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                
+            }
+            
+            else{
+                imageView.image = nil;
+                FAImageView *imageView2 = (FAImageView *)imageView;
+                [imageView2 setDefaultIconIdentifier:@"fa-user"];
+                
+            }
+            
+            
+            NSString *username;
+            if (pick.player.username){
+                username = [pick.player.username capitalizedString];
+            }
+            else{
+                username = @"User";
+            }
+            
+            
+            NSString *me = [self.myUser.username capitalizedString];
+            if ([username isEqualToString:me]){
+                captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
+            }
+            else{
+                captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+            }
+        
+            
+            // set width and height so "sizeToFit" uses those constraints
+            
+            captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
+            captionLabel.numberOfLines = 0;
+            [captionLabel sizeToFit];
+            
+            dateLabel.text = [pick.timestamp timeAgo];
+            
+            
+        }
+    }
+    return cell;
+
+    
+}
+
 #pragma -mark UIscrollview delegate
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
@@ -292,17 +387,18 @@
 }
 
 
-
-- (UIBarButtonItem *)sentCaptionsButton
+- (UIBarButtonItem *)nextButton
 {
-    if (!_sentCaptionsButton){
-        _sentCaptionsButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] style:UIBarButtonItemStylePlain target:self action:@selector(showSentCaptionsScreen)];
-        [_sentCaptionsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
-        [_sentCaptionsButton setTintColor:[UIColor greenColor]];
+    if (!_nextButton){
+        _nextButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-right"] style:UIBarButtonItemStylePlain target:self action:@selector(showPreviewScreen)];
+        [_nextButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+        [_nextButton setTintColor:[UIColor greenColor]];
         
     }
-    return  _sentCaptionsButton;
+    return  _nextButton;
 }
+
+
 
 
 @end

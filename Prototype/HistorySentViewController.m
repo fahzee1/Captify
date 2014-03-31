@@ -178,6 +178,8 @@
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
         int shared = [challenge.shared intValue];
+        
+        NSLog(@"%@ shared:%@ active:%@ sp:%@",challenge.name,challenge.shared,challenge.active,challenge.sentPick);
 
         if (active && !sentPick && !shared){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -206,7 +208,7 @@
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
         [activeLabel setTextColor:[UIColor greenColor]];
         
-        if (active && !sentPick){
+        if (active && !sentPick && !shared){
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
             [activeLabel setTextColor:[UIColor greenColor]];
             if (![activeLabel.layer animationForKey:@"historyActive"]){
@@ -265,7 +267,7 @@
     int sentPick = [challenge.sentPick intValue];
     int shared = [challenge.shared intValue];
 
-    if (active && !sentPick){
+    if (active && !sentPick && !shared){
 
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){

@@ -251,6 +251,7 @@
     }
     
     self.myChallenge.shared = [NSNumber numberWithBool:YES];
+    self.myChallenge.active = [NSNumber numberWithBool:NO];
     NSError *error;
     if (![self.myChallenge.managedObjectContext save:&error]){
         NSLog(@"%@",error);
