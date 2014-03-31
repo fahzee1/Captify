@@ -20,7 +20,6 @@
 #import "UIView+Glow.h"
 #import "NEOColorPickerViewController.h"
 #import "CMPopTipView.h"
-#import "ChallengePicks+Utils.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
 #import <MessageUI/MessageUI.h>
@@ -52,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *captionColor;
 @property (weak, nonatomic) IBOutlet UIStepper *captionFontStepper;
 @property (weak, nonatomic) IBOutlet UIButton *captionDoneButton;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
@@ -104,18 +105,30 @@
         self.hideSelectButtons = NO;
     }
     
-    
-    
-    if (self.mediaURL){
-        [self.myImageView setImageWithURL:self.mediaURL placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-    }
-    
+    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
+    [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
+    [self.retryButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
+    self.retryButton.hidden = YES;
+    [self.myImageView addSubview:self.retryButton];
+    self.myImageView.userInteractionEnabled = YES;
+
+    [self downloadImage];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (self.myPick.is_chosen){
+        // show success screen
+        // mark it as being displayed
+        // also mark on challenge that this
+        NSLog(@"show success screen here");
+        
+    }
     [self fetchUpdates];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,6 +188,36 @@
         self.pendingRequest = NO;
         
     }
+}
+
+
+
+
+- (void)downloadImage
+{
+    
+    if (self.mediaURL){
+        self.retryButton.hidden = YES;
+        self.progressView.hidden = NO;
+        self.progressView.progress = 0.f;
+        [self.myImageView setImageWithURL:self.mediaURL
+                         placeholderImage:[UIImage imageNamed:@"profile-placeholder"]
+                                  options:0
+                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                     int percent = receivedSize / expectedSize;
+                                     self.progressView.progress = (float)percent;
+                                     
+                                 }
+                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    self.progressView.hidden = YES;
+                                    if (!image){
+                                        self.retryButton.hidden = NO;
+                
+                                    }
+                                }];
+        
+    }
+
 }
 
 - (void)showShareScreen
@@ -765,6 +808,15 @@
                     captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
                 }
             }
+            
+            if ([pick.is_chosen intValue] == 1 && [pick.player.username isEqualToString:self.myUser.username]){
+                if ([pick.first_open intValue] == 1){
+                    [self showAlertWithTitle:@"Congrats" message:@"Your caption was selected!"];
+                    // mark first_open to no now
+#warning mark first_open to no now
+                    // mark challenge also 
+                }
+            }
 
         
             // set width and height so "sizeToFit" uses those constraints
@@ -823,6 +875,20 @@
     
     return _data;
 }
+
+
+- (ChallengePicks *)myPick
+{
+    if (!_myPick){
+        NSArray *picks = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
+        if (picks){
+            _myPick = [picks firstObject];
+        }
+    }
+    
+    return _myPick;
+}
+
 
 
 - (UIView *)imageControls

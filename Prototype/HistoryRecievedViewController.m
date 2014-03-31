@@ -21,6 +21,7 @@
 #import "ChallengeViewController.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
+#import "Notifications.h"
 
 
 @interface HistoryRecievedViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -29,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property BOOL pendingRequest;
 @property (strong, nonatomic) NSMutableArray *picksList;
+@property (strong,nonatomic) Notifications *notifications;
 
 
 @end
@@ -78,7 +80,7 @@
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"lastRecievedFetch"];
         NSMutableDictionary *params =[@{@"username": self.myUser.username} mutableCopy];
         if (lastFetch){
-            params[@"date"] = [Challenge dateStringFromDate:lastFetch];
+            params[@"date-r"] = [Challenge dateStringFromDate:lastFetch];
         }
 
         [User fetchUserBlobWithParams:params
@@ -126,6 +128,9 @@
                                             
                                             
                                             if (challenge){
+                                                //increment notifications
+                                                //[self.notifications addOneNotifToView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+                                                
                                                 // create challenge picks to add to challenge
                                                 for (id results in ch[@"results"]){
                                                     // create picks
@@ -214,6 +219,18 @@
         
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
+        int firstOpen = [challenge.first_open intValue];
+        
+        if (firstOpen){
+            // add 'new' view to cell
+            UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(cell.contentView.bounds.size.width -30,
+                                                                  cell.contentView.bounds.size.height -70, 100, 50)];
+            l.text = NSLocalizedString(@"NEW", nil);
+            l.textColor = [[UIColor greenColor] colorWithAlphaComponent:0.6];
+            l.font = [UIFont boldSystemFontOfSize:14];
+            
+            [cell.contentView addSubview:l];
+        }
         
         if (active && !sentPick){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -239,6 +256,20 @@
             
         }
         
+        /*
+        NSArray *allPicks = [challenge.picks allObjects];
+        NSArray *pick = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
+        if (pick && [pick isKindOfClass:[ChallengePicks class]]){
+            if (((ChallengePicks *)pick).is_chosen || ((ChallengePicks *)pick).challenge.is_chosen){
+#warning show trophy here if selected caption is mines
+                NSLog(@"should show badge");
+            }
+            
+        }
+         */
+        
+
+        
         
         
     }
@@ -256,6 +287,13 @@
     Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
     int active = [challenge.active intValue];
     int sentPick = [challenge.sentPick intValue];
+    int firstOpen = [challenge.first_open intValue];
+    
+    if (firstOpen){
+        [self.notifications removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+        challenge.first_open = [NSNumber numberWithBool:NO];
+        
+    }
 
     if (active && !sentPick){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
@@ -278,10 +316,28 @@
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
             ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
             
+            NSArray *allPicks = [challenge.picks allObjects];
+            NSArray *pick = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
+            if (pick && [pick isKindOfClass:[ChallengePicks class]]){
+                ((ChallengePicks *)pick).challenge.is_chosen = [NSNumber numberWithBool:YES];
+                ((HistoryDetailViewController *)vc).myPick = (ChallengePicks *)pick;
+            }
+            
+
             [self.navigationController pushViewController:vc animated:YES];
         }
 
     }
+    
+    NSError *error;
+    if (![challenge.managedObjectContext save:&error]){
+        NSLog(@"%@",error);
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.myTable reloadData];
+    });
+
     
 }
 
@@ -308,6 +364,14 @@
     return _myUser;
 }
 
+- (Notifications *)notifications
+{
+    if (!_notifications){
+        _notifications = [[Notifications alloc] init];
+    }
+    
+    return _notifications;
+}
 
 
 

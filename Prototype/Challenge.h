@@ -2,7 +2,7 @@
 //  Challenge.h
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/30/14.
+//  Created by CJ Ogbuehi on 3/31/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -22,12 +22,13 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * recipients_count;
 @property (nonatomic, retain) NSString * selected_phrase;
+@property (nonatomic, retain) NSNumber * sentPick;
+@property (nonatomic, retain) NSNumber * shared;
 @property (nonatomic, retain) NSNumber * success;
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSString * thumbnail_path;
 @property (nonatomic, retain) NSDate * timestamp;
-@property (nonatomic, retain) NSNumber * sentPick;
-@property (nonatomic, retain) NSNumber * shared;
+@property (nonatomic, retain) NSNumber * first_open;
 @property (nonatomic, retain) NSSet *picks;
 @property (nonatomic, retain) NSSet *recipients;
 @property (nonatomic, retain) User *sender;

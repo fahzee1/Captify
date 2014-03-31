@@ -25,6 +25,7 @@
     self.active = [NSNumber numberWithBool:YES];
     self.sentPick = [NSNumber numberWithBool:NO];
     self.shared = [NSNumber numberWithBool:NO];
+    self.first_open = [NSNumber numberWithBool:YES];
     
 
 }

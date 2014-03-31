@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 #import "Challenge.h"
+#import "ChallengePicks+Utils.h"
 
 @interface HistoryDetailViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
@@ -20,4 +21,6 @@
 @property (nonatomic, retain)User *myUser;
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (nonatomic, strong)NSURL *mediaURL;
+@property (strong, nonatomic)ChallengePicks *myPick;
+
 @end

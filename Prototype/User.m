@@ -2,14 +2,13 @@
 //  User.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/30/14.
+//  Created by CJ Ogbuehi on 3/31/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
 #import "User.h"
 #import "Challenge.h"
 #import "ChallengePicks.h"
-#import "ReceivedChallenge.h"
 
 
 @implementation User
@@ -28,8 +27,7 @@
 @dynamic timestamp;
 @dynamic username;
 @dynamic picks;
-@dynamic received_challenges;
-@dynamic recipient_challenge;
 @dynamic sent_challenges;
+@dynamic recipient_challenge;
 
 @end

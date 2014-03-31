@@ -21,6 +21,8 @@
 #import "FAImageView.h"
 #import "HistoryDetailCell.h"
 #import "NSDate+TimeAgo.h"
+#import "UIFont+FontAwesome.h"
+#import "NSString+FontAwesome.h"
 
 #define TEST 1
 
@@ -35,6 +37,8 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) NSArray *data;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
 
 @end
@@ -69,10 +73,15 @@
     
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
-    if (self.mediaURL){
-        [self.challengeImage setImageWithURL:self.mediaURL placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-    }
+    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
+    [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
+    [self.retryButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
+    self.retryButton.hidden = YES;
+    [self.challengeImage addSubview:self.retryButton];
+    self.challengeImage.userInteractionEnabled = YES;
 
+    [self downloadImage];
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
@@ -115,6 +124,36 @@
     
     
 }
+
+
+- (void)downloadImage
+{
+    
+    if (self.mediaURL){
+        self.retryButton.hidden = YES;
+        self.progressView.hidden = NO;
+        self.progressView.progress = 0.f;
+        [self.challengeImage setImageWithURL:self.mediaURL
+                         placeholderImage:[UIImage imageNamed:@"profile-placeholder"]
+                                  options:0
+                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                     int percent = receivedSize / expectedSize;
+                                     self.progressView.progress = (float)percent;
+                                     
+                                 }
+                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    self.progressView.hidden = YES;
+                                    if (!image){
+                                        self.retryButton.hidden = NO;
+                                        
+                                    }
+                                }];
+        
+    }
+    
+}
+
+
 
 - (void)showPreviewScreen
 {

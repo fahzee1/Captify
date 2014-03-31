@@ -10,6 +10,7 @@
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
 #import "TWTSideMenuViewController.h"
+#import "Notifications.h"
 
 @interface HistoryContainerViewController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentControl;
@@ -54,6 +55,10 @@
     vc.view.frame = self.myContainerView.bounds;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
+    
+    //Notifications *n = [[Notifications alloc] init];
+    //[n addOneNotifToView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+    //[n removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
 
 }
 

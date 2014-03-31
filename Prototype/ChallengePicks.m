@@ -2,13 +2,12 @@
 //  ChallengePicks.m
 //  Prototype
 //
-//  Created by CJ Ogbuehi on 3/30/14.
+//  Created by CJ Ogbuehi on 3/31/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
 #import "ChallengePicks.h"
 #import "Challenge.h"
-#import "ReceivedChallenge.h"
 #import "User.h"
 
 
@@ -18,8 +17,8 @@
 @dynamic is_chosen;
 @dynamic pick_id;
 @dynamic timestamp;
-@dynamic challenge;
+@dynamic first_open;
 @dynamic player;
-@dynamic received_challenge;
+@dynamic challenge;
 
 @end

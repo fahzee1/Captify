@@ -18,11 +18,13 @@
 #import "UIFont+FontAwesome.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
+#import "Notifications.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) NSArray *data;
 @property BOOL pendingRequest;
+@property (strong, nonatomic) Notifications *notifications;
 
 @end
 
@@ -110,6 +112,9 @@
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                             
                                             if (challenge){
+                                                // increment notifications
+                                                //[self.notifications addOneNotifToView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+                                                
                                                 // create challenge picks to add to challenge
                                                 for (id results in ch[@"results"]){
                                                     // create picks
@@ -178,8 +183,20 @@
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
         int shared = [challenge.shared intValue];
+        int firstOpen = [challenge.first_open intValue];
         
-        NSLog(@"%@ shared:%@ active:%@ sp:%@",challenge.name,challenge.shared,challenge.active,challenge.sentPick);
+        if (firstOpen){
+            // add 'new' view to cell
+            UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(cell.contentView.bounds.size.width -30,
+                                                                   cell.contentView.bounds.size.height -70, 100, 50)];
+            l.text = NSLocalizedString(@"NEW", nil);
+            l.textColor = [[UIColor greenColor] colorWithAlphaComponent:0.6];
+            l.font = [UIFont boldSystemFontOfSize:14];
+            
+            [cell.contentView addSubview:l];
+        }
+        
+
 
         if (active && !sentPick && !shared){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -266,6 +283,16 @@
     int active = [challenge.active intValue];
     int sentPick = [challenge.sentPick intValue];
     int shared = [challenge.shared intValue];
+    int firstOpen = [challenge.first_open intValue];
+    
+    if (firstOpen){
+        [self.notifications removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+        challenge.first_open = [NSNumber numberWithBool:NO];
+        NSError *error;
+        if (![challenge.managedObjectContext save:&error]){
+            NSLog(@"%@",error);
+        }
+    }
 
     if (active && !sentPick && !shared){
 
@@ -324,6 +351,16 @@
     _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
                                                     sent:YES];
     return _data;
+}
+
+
+- (Notifications *)notifications
+{
+    if (!_notifications){
+        _notifications = [[Notifications alloc] init];
+    }
+    
+    return _notifications;
 }
 
 
