@@ -43,6 +43,13 @@
     return @"Challenge";
 }
 
+
++ (NSString *)fetchedHistoryKey
+{
+    return @"lastChallengeFetch";
+}
+
+
 + (NSString *)baseUrl
 {
     return [[AwesomeAPICLient sharedClient].baseURL absoluteString];

@@ -17,6 +17,8 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 
 + (NSString *)name;
 
++ (NSString *)fetchedHistoryKey;
+
 + (NSString *)baseUrl;
 
 + (NSString *)dateStringFromDate:(NSDate *)date;

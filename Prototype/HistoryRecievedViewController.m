@@ -76,11 +76,11 @@
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
-        NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:@"lastRecievedFetch"];
-        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"lastRecievedFetch"];
+        NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:[Challenge fetchedHistoryKey]];
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:[Challenge fetchedHistoryKey]];
         NSMutableDictionary *params =[@{@"username": self.myUser.username} mutableCopy];
         if (lastFetch){
-            params[@"date-r"] = [Challenge dateStringFromDate:lastFetch];
+            params[@"date"] = [Challenge dateStringFromDate:lastFetch];
         }
 
         [User fetchUserBlobWithParams:params
