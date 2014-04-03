@@ -10,6 +10,7 @@
 #import "AwesomeAPICLient.h"
 #import "AppDelegate.h"
 #import "User+Utils.h"
+#import "JDStatusBarNotification.h"
 
 
 @implementation Challenge (Utils)
@@ -260,6 +261,10 @@
                         [client stopNetworkActivity];
                         NSLog(@"definitely not all good here");
                         challenge.sync_status = [NSNumber numberWithBool:YES];
+                        [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                                   dismissAfter:2.0
+                                                      styleName:JDStatusBarStyleError];
+
                         
 
                     } autoRetry:5];
@@ -279,38 +284,35 @@
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    if ([client connected]){
-        [client startNetworkActivity];
-        return [client POST:AwesomeAPIChallengeFetchString
-                 parameters:params
-                    success:^(NSURLSessionDataTask *task, id responseObject) {
-                        [client stopNetworkActivity];
-                        int code = [[responseObject valueForKey:@"code"] intValue];
-                        if (code == 1){
-                             NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-                            NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
-                                                     @"answer": [responseObject valueForKey:@"answer"],
-                                                     @"hint": [responseObject valueForKey:@"hint"],
-                                                     @"challenge_id": [responseObject valueForKey:@"challenge_id"],
-                                                     @"sender": [responseObject valueForKeyPath:@"sender.username"]};
-                            
-                            Challenge *ch = [self GetOrCreateChallengeWithParams:params
-                                          inManagedObjectContext:context
-                                                      skipCreate:NO];
-                            if (ch){
-                                ch = nil;
-                            }
+    [client startNetworkActivity];
+    return [client POST:AwesomeAPIChallengeFetchString
+             parameters:params
+                success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [client stopNetworkActivity];
+                    int code = [[responseObject valueForKey:@"code"] intValue];
+                    if (code == 1){
+                         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                        NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
+                                                 @"answer": [responseObject valueForKey:@"answer"],
+                                                 @"hint": [responseObject valueForKey:@"hint"],
+                                                 @"challenge_id": [responseObject valueForKey:@"challenge_id"],
+                                                 @"sender": [responseObject valueForKeyPath:@"sender.username"]};
+                        
+                        Challenge *ch = [self GetOrCreateChallengeWithParams:params
+                                      inManagedObjectContext:context
+                                                  skipCreate:NO];
+                        if (ch){
+                            ch = nil;
                         }
                     }
-                    failure:^(NSURLSessionDataTask *task, NSError *error) {
-                        [client stopNetworkActivity];
-                        NSLog(@"failure fetching challenge");
-                    } autoRetry:5];
-    }
-    else{
-        [Challenge showAlertWithTitle:@"Error" message:@"No internet connection detected"];
-        return nil;
-    }
+                }
+                failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    [client stopNetworkActivity];
+                    [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                               dismissAfter:2.0
+                                                  styleName:JDStatusBarStyleError];
+
+                } autoRetry:5];
 }
 
 
@@ -433,6 +435,10 @@
                  }
              } failure:^(NSURLSessionDataTask *task, NSError *error) {
                  [client stopNetworkActivity];
+                 [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                            dismissAfter:2.0
+                                               styleName:JDStatusBarStyleError];
+
                  NSLog(@"error %@",error);
              }];
     }
@@ -468,6 +474,10 @@
          }
          failure:^(NSURLSessionDataTask *task, NSError *error) {
              [client stopNetworkActivity];
+             [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                        dismissAfter:2.0
+                                           styleName:JDStatusBarStyleError];
+
              NSLog(@"%@",error);
              if (block){
                  block(NO, error.localizedDescription);
@@ -503,7 +513,9 @@
         }
          failure:^(NSURLSessionDataTask *task, NSError *error) {
              [client stopNetworkActivity];
-             [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+             [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                        dismissAfter:2.0
+                                           styleName:JDStatusBarStyleError];
              if (block){
                  block(NO,YES,error.localizedDescription,nil);
              }

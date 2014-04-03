@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Challenge.h"
+#import "Challenge+Utils.h"
+#import "ChallengePicks+Utils.h"
 
 @interface ShareViewController : UIViewController
 
@@ -18,4 +19,6 @@
 
 
 @property (nonatomic, retain)Challenge *myChallenge;
+@property (nonatomic, retain)ChallengePicks *myPick;
+
 @end

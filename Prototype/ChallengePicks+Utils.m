@@ -9,6 +9,7 @@
 #import "ChallengePicks+Utils.h"
 #import "User+Utils.h"
 #import "AwesomeAPICLient.h"
+#import "JDStatusBarNotification.h"
 
 @implementation ChallengePicks (Utils)
 
@@ -170,6 +171,10 @@
              NSLog(@"%@",error);
              if (block){
                  block(NO, YES, error.localizedDescription, nil);
+                 [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                            dismissAfter:2.0
+                                               styleName:JDStatusBarStyleError];
+
              }
         
         }];

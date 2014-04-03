@@ -14,6 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "FAImageView.h"
 #import "UIFont+FontAwesome.h"
+#import "JDStatusBarNotification.h"
 
 
 @implementation User (Utils)
@@ -294,6 +295,10 @@
                                  if (block){
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          block(NO,error,nil,YES);
+                                         [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                                                    dismissAfter:2.0
+                                                                       styleName:JDStatusBarStyleError];
+
                                      });
                                  }
                                  
@@ -384,6 +389,10 @@
                                  if (block){
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          block(NO,error, nil, YES);
+                                         [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                                                    dismissAfter:2.0
+                                                                       styleName:JDStatusBarStyleError];
+
                                      });
                                  }
 
@@ -479,6 +488,10 @@
                                              if (block){
                                                  dispatch_async(dispatch_get_main_queue(), ^{
                                                      block(NO,error, nil, YES);
+                                                     [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                                                                dismissAfter:2.0
+                                                                                   styleName:JDStatusBarStyleError];
+
                                                  });
                                              }
 
@@ -535,7 +548,10 @@
            autoRetry:3];
     }
     else{
-        [User showAlertWithTitle:@"Error" message:@"No internet connection detected"];
+        [JDStatusBarNotification showWithStatus:@"No internet connection detected"
+                                   dismissAfter:2.0
+                                      styleName:JDStatusBarStyleError];
+
     }
 
 }
@@ -591,7 +607,10 @@
         [client stopNetworkActivity];
         if (block){
             block(NO,nil,error.localizedDescription);
-            [User showAlertWithTitle:@"Error" message:error.localizedDescription];
+            [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                       dismissAfter:2.0
+                                          styleName:JDStatusBarStyleError];
+
         }
     }];
         
@@ -623,7 +642,9 @@
         [client stopNetworkActivity];
         if (block){
             block(NO,nil,error.localizedDescription);
-            [User showAlertWithTitle:@"Error" message:error.localizedDescription];
+            [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                       dismissAfter:2.0
+                                          styleName:JDStatusBarStyleError];
         }
     }];
 }

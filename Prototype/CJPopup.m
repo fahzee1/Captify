@@ -194,6 +194,54 @@
 
 }
 
+- (void) showSuccessBlur2WithImage:(UIImage *)image sender:(NSString *)sender
+{
+    self.blurFilter = [GPUImageiOSBlurFilter new];
+    self.blurFilter.blurRadiusInPixels = 1.0f;
+    UIImage *blurredImage = [self.blurFilter imageByFilteringImage:image];
+    UIImageView *bIV = [[UIImageView alloc] initWithImage:blurredImage];
+    bIV.frame = [UIScreen mainScreen].bounds;
+    bIV.userInteractionEnabled = YES;
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.windowLevel = UIWindowLevelAlert;
+    self.window.backgroundColor = [UIColor clearColor];
+    
+    self.center = CGPointMake(CGRectGetMidX(self.window.bounds), CGRectGetMidY(self.window.bounds));
+    
+    
+    UILabel *title = [[UILabel alloc] init];
+    title.text = NSLocalizedString(@"Success", nil);
+    title.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:50];
+    title.frame = CGRectMake(60, 50, 300, 100);
+    title.textColor = [UIColor whiteColor];
+    
+    
+    UILabel *message = [[UILabel alloc] init];
+    message.text = [NSString stringWithFormat:@"%@ %@",sender,NSLocalizedString(@"selected your caption!", nil)];
+    message.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:35];
+    message.frame = CGRectMake(30, 200, 300, 300);
+    message.numberOfLines = 0;
+    [message sizeToFit];
+    message.textColor = [UIColor whiteColor];
+
+    [bIV addSubview:message];
+    [bIV addSubview:title];
+    [self addSubview:bIV];
+    
+    [self.window addSubview:self];
+    [self.window makeKeyAndVisible];
+    
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self hide];
+    });
+
+
+}
+
+
 
 - (void)showFailBlurWithImage:(UIImage *)image
 {

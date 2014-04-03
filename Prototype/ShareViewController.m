@@ -250,14 +250,26 @@
         }
     }
     
-    self.myChallenge.shared = [NSNumber numberWithBool:YES];
-    self.myChallenge.active = [NSNumber numberWithBool:NO];
-    NSError *error;
-    if (![self.myChallenge.managedObjectContext save:&error]){
-        NSLog(@"%@",error);
-    }
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    NSDictionary *params = @{@"challenge_id": self.myChallenge.challenge_id,
+                             @"pick_id":self.myPick.pick_id};
+    [Challenge updateChallengeWithParams:params
+                                   block:^(BOOL wasSuccessful, NSString *message) {
+                                       if (wasSuccessful){
+                                           
+                                           self.myChallenge.shared = [NSNumber numberWithBool:YES];
+                                           self.myChallenge.active = [NSNumber numberWithBool:NO];
+                                           NSError *error;
+                                           if (![self.myChallenge.managedObjectContext save:&error]){
+                                               NSLog(@"%@",error);
+                                           }
+                                           
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                                [self.navigationController popToRootViewControllerAnimated:YES];
+                                           });
+
+                                       }
+                                   }];
     
     
     

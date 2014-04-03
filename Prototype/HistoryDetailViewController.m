@@ -22,6 +22,7 @@
 #import "CMPopTipView.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
+#import "CJPopup.h"
 #import <MessageUI/MessageUI.h>
 
 /*
@@ -40,8 +41,10 @@
 @property BOOL shareToFacebook;
 @property BOOL shareContainerOnScreen;
 @property CGPoint priorPoint;
+@property CGPoint currentPoint;
 @property NSString *selectedCaption;
 @property NSString *selectedUsername;
+@property ChallengePicks *selectedPick;
 @property (weak, nonatomic) IBOutlet UILabel *finalCaptionLabel;
 @property UIImageView *finalContainerScreen;
 @property (strong, nonatomic)UIImage *finalImage;
@@ -100,6 +103,15 @@
     self.captionFontStepper.maximumValue = 45;
    
     self.topLabel.text = self.myChallenge.name;
+    self.topLabel.textAlignment = NSTextAlignmentCenter;
+    self.topLabel.numberOfLines = 0;
+    [self.topLabel sizeToFit];
+    self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
+                                     self.topLabel.frame.origin.y,
+                                     [UIScreen mainScreen].bounds.size.width,
+                                     self.topLabel.frame.size.height);
+
+    
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
@@ -121,10 +133,21 @@
     [super viewDidAppear:animated];
     
     if (self.myPick.is_chosen){
+        if ([self.myPick.first_open intValue] == 1){
+            UIImage *image = [self.view snapshotView:self.view];
+            CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
+            [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
+            
+            self.myPick.first_open = [NSNumber numberWithBool:NO];
+            NSError *error;
+            if (![self.myPick.managedObjectContext save:&error]){
+                NSLog(@"%@",error);
+            }
+    
+        }
         // show success screen
         // mark it as being displayed
         // also mark on challenge that this
-        NSLog(@"show success screen here");
         
     }
     [self fetchUpdates];
@@ -230,6 +253,7 @@
         if (self.finalImage){
             ((ShareViewController *)shareVc).shareImage = self.finalImage;
             ((ShareViewController *)shareVc).myChallenge = self.myChallenge;
+            ((ShareViewController *)shareVc).myPick = self.selectedPick;
         }
         [self.navigationController pushViewController:shareVc animated:YES];
         
@@ -402,12 +426,12 @@
         case UIGestureRecognizerStateChanged:
         {
             view.center = point;
-            
         }
             break;
         case UIGestureRecognizerStateEnded:
         {
             //[self captionStoppedDragging];
+            self.currentPoint = point;
         }
             break;
             
@@ -443,6 +467,7 @@
     NSIndexPath *indexPath = [self.myTable indexPathForRowAtPoint:buttonPosition];
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
     if (indexPath != nil){
+        self.selectedPick = pick;
         self.selectedCaption = pick.answer;
         self.selectedUsername = pick.player.username;
     }
@@ -459,9 +484,15 @@
 {
     [self.finalCaptionLabel stopGlowing];
     
-    CGRect labelFrame = self.finalCaptionLabel.frame;
-    self.finalCaptionLabel.frame = CGRectMake(labelFrame.origin.x, labelFrame.origin.y, 500, 200);
-
+    CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
+    CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
+    if (!CGPointEqualToPoint(self.currentPoint, CGPointZero)){
+        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
+    }
+    else{
+        self.finalCaptionLabel.frame = CGRectMake(width/2, height/2,CGRectGetMaxX(self.myImageView.frame), 200);
+    }
+    self.finalCaptionLabel.center = self.myImageView.center;
     self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionFontStepper.value];
     self.captionFontValue.text = [NSString stringWithFormat:@"%d", (int)self.captionFontStepper.value];
     
@@ -795,29 +826,14 @@
             }
             
             
-            if ([pick.is_chosen intValue] == 1){
-#warning show caption badge here
-                captionLabel.text = @"this one was selected.. show trophy badge";
+            NSString *me = [self.myUser.username capitalizedString];
+            if ([username isEqualToString:me]){
+                captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
             }
             else{
-                NSString *me = [self.myUser.username capitalizedString];
-                if ([username isEqualToString:me]){
-                    captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
-                }
-                else{
-                    captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
-                }
+                captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
             }
-            
-            if ([pick.is_chosen intValue] == 1 && [pick.player.username isEqualToString:self.myUser.username]){
-                if ([pick.first_open intValue] == 1){
-                    [self showAlertWithTitle:@"Congrats" message:@"Your caption was selected!"];
-                    // mark first_open to no now
-#warning mark first_open to no now
-                    // mark challenge also 
-                }
-            }
-
+    
         
             // set width and height so "sizeToFit" uses those constraints
           
@@ -832,13 +848,24 @@
             
             [selectButton addTarget:self action:@selector(selectedCaption:) forControlEvents:UIControlEventTouchUpInside];
             
-          
+            selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
+            [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
+            
             if (self.hideSelectButtonsMax){
-                selectButton.hidden = YES;
+                if ([pick.is_chosen intValue] == 1){
+                    #warning add trophy icon to selected caption
+                    //[selectButton setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
+                    selectButton.userInteractionEnabled = NO;
+                    selectButton.hidden = NO;
+                    selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
+                    [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
+                }
+                else{
+                    selectButton.hidden = YES;
+                }
           }
             
 
-#warning add trophy icon to selected caption
            
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
@@ -880,7 +907,8 @@
 - (ChallengePicks *)myPick
 {
     if (!_myPick){
-        NSArray *picks = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
+        NSArray *allPicks = [self.myChallenge.picks allObjects];
+        NSArray *picks = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
         if (picks){
             _myPick = [picks firstObject];
         }

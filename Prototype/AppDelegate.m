@@ -16,6 +16,7 @@
 #import "GoHomeTransition.h"
 #import "SocialFriends.h"
 #import "TMCache.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate()
 @property(strong,nonatomic)UIViewController *menuVC;
@@ -31,6 +32,10 @@
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
+                  clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
+    
+    
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     [self setupViewControllers];
     
@@ -305,7 +310,15 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    
+    
+    PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+    [currentOnstallation setDeviceTokenFromData:deviceToken];
+    [currentOnstallation saveInBackground];
+    
+    
     //const void *devTokenBytes = [deviceToken bytes];
+    /*
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:[self stringWithDeviceToken:deviceToken] forKey:@"deviceToken"];
     
@@ -321,6 +334,7 @@
         [defaults setBool:YES forKey:@"firstToken"];
         [self sendServerDeviceToken:[self stringWithDeviceToken:deviceToken]];
     }
+     */
 }
 
 
@@ -348,11 +362,16 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    
+    [PFPush handlePush:userInfo];
+    
+    /*
     // get data from  [userInfo objectForKey:@"key of data"];
     // give it to controller that needs it
     UILocalNotification *localNotif = [userInfo objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     // download data then remove badge 
     application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber -1;
+     */
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

@@ -51,7 +51,6 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
-    
     [self fetchUpdates];
 }
 
