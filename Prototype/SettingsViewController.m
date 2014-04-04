@@ -12,10 +12,22 @@
 #import "HomeViewController.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
+#import <MessageUI/MessageUI.h>
+#import "User+Utils.h"
+#import "AppDelegate.h"
 
-@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
+@property (strong, nonatomic) User *myUser;
 
+@property (weak, nonatomic) IBOutlet UITextField *editUsernameField;
+@property (weak, nonatomic) IBOutlet UITextField *editEmailField;
+
+@property (weak, nonatomic) IBOutlet UITextField *editPhoneField;
+@property (strong, nonatomic) IBOutlet UIView *editView;
+
+@property (strong, nonatomic) UIView *editScreen;
 
 @end
 
@@ -45,6 +57,20 @@
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
+    
+  }
+
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (self.myUser.managedObjectContext.hasChanges){
+        NSError *error;
+        if (![self.myUser.managedObjectContext save:&error]){
+            NSLog(@"%@",error);
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,7 +85,74 @@
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
+- (void)setupEditScreen
+{
+    self.editUsernameField.delegate = self;
+    self.editPhoneField.delegate = self;
+    self.editEmailField.delegate = self;
+    
+    self.editUsernameField.text = self.myUser.username;
+    self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:@"No # provided";
+    self.editEmailField.text = self.myUser.email;
+    
+    [self.view addSubview:self.editScreen];
 
+
+}
+
+- (void)showEditScreen
+{
+    self.editScreen.frame = CGRectMake(7, 0, self.editScreen.frame.size.width, self.editScreen.frame.size.height);
+    [self setupEditScreen];
+    [self.editUsernameField becomeFirstResponder];
+    
+}
+
+
+- (void)destoryEditScreen
+{
+    [self.editScreen removeFromSuperview];
+}
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+#warning update data on server and in core data and also update tableview
+    [textField resignFirstResponder];
+    
+    NSString *name = self.editUsernameField.text;
+    NSString *phone = self.editPhoneField.text;
+    NSString *email = self.editEmailField.text;
+    
+    NSDictionary *params = @{@"username": self.myUser.username,
+                             @"new_username": name,
+                             @"phone": phone,
+                             @"email": email};
+    
+    [User sendProfileUpdatewithParams:params
+                                block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                    if (wasSuccessful){
+                                        int changes = [[data valueForKey:@"changes"] intValue];
+                                        if (changes){
+                                            self.myUser.username = data[@"username"];
+                                            self.myUser.email = data[@"email"];
+                                            self.myUser.phone_number = data[@"phone_number"];
+                                            [self.myTable reloadData];
+                                            [self destoryEditScreen];
+                                            
+                                        }
+                                        else{
+                                            [self destoryEditScreen];
+                                        }
+                                    }
+                                    else{
+                                        [self showAlertWithTitle:@"Error" message:message];
+                                    }
+                                }];
+    
+    return YES;
+}
 
 
 #pragma mark - Table view data source
@@ -86,17 +179,38 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"path %@",[indexPath description]);
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     switch (indexPath.section) {
         case 0:
         {
             // Profile section
+            if (indexPath.row == 4){
+                [self showEditScreen];
+            }
         }
             break;
         case 1:
         {
             // Support section
+            if (indexPath.row == 0){
+                // Terms of service
+                
+            }
+            
+            if (indexPath.row == 1){
+                // contact
+                MFMailComposeViewController *tempMailCompose = [[MFMailComposeViewController alloc] init];
+                if ([MFMailComposeViewController canSendMail]){
+#warning set correct email for live app
+                    tempMailCompose.mailComposeDelegate = self;
+                    [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                    [tempMailCompose setSubject:@"I have a question"];
+                    [self presentViewController:tempMailCompose animated:YES completion:^{
+                    }];
+                }
+
+            }
         }
             break;
             
@@ -131,6 +245,59 @@
     }
 }
 
+
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    switch (indexPath.section) {
+        case 0:
+        {
+            if (indexPath.row == 0){
+                // username
+                cell.detailTextLabel.text = self.myUser.username;
+            }
+            
+            if (indexPath.row == 1){
+                // pic
+                UIView *image = [cell viewWithTag:3000];
+                if (image){
+                    if ([image isKindOfClass:[UIImageView class]]){
+                        [self.myUser getCorrectProfilePicWithImageView:(UIImageView *)image];
+
+                    }
+                }
+                
+            }
+            
+            if (indexPath.row == 2){
+                // email
+                cell.detailTextLabel.text = self.myUser.email;
+            }
+            
+            if (indexPath.row == 3){
+                // phone
+                if (self.myUser.phone_number){
+                    cell.detailTextLabel.text = self.myUser.phone_number;
+                }
+                else{
+                    cell.detailTextLabel.text = @"No # provided";
+                }
+            }
+            
+            if (indexPath.row == 4){
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+
+    
+}
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,5 +383,53 @@
 }
 
  */
+
+#pragma -mark Mail delegate
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+}
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+
+- (UIView *)editScreen
+{
+    if (!_editScreen){
+        _editScreen = [[[NSBundle mainBundle] loadNibNamed:@"settingsEdit" owner:self options:nil]lastObject];
+    }
+    
+    return _editScreen;
+}
+
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
+
 
 @end

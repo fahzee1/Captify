@@ -31,12 +31,14 @@
         <relationship name="player" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="picks" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="facebook_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="facebook_user" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="is_contactFriend" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_friend" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="phone_number" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pic_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="private" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="score" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -49,8 +51,8 @@
         <relationship name="sent_challenges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Challenge" inverseName="sender" inverseEntity="Challenge" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Challenge" positionX="682" positionY="44" width="128" height="313"/>
-        <element name="User" positionX="225" positionY="-40" width="128" height="283"/>
-        <element name="ChallengePicks" positionX="459" positionY="-81" width="128" height="133"/>
+        <element name="Challenge" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ChallengePicks" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

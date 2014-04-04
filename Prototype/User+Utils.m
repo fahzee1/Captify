@@ -26,6 +26,7 @@
     // put defaults here
 
     self.timestamp = [NSDate date];
+    self.phone_number = nil;
     
 }
 
@@ -116,6 +117,7 @@
     user.username = [params valueForKey:@"username"];
     user.facebook_user = [params valueForKey:@"facebook_user"];
     user.facebook_id = [params valueForKey:@"facebook_id"];
+    user.email = [params valueForKey:@"email"];
     user.private = [NSNumber numberWithBool:NO];
     user.super_user = [NSNumber numberWithBool:NO];
     user.is_friend = [NSNumber numberWithBool:YES];
@@ -182,6 +184,7 @@
         user.username = [params valueForKey:@"username"];
         user.facebook_user = [params valueForKey:@"facebook_user"];
         user.private = [params valueForKey:@"privacy"];
+        user.email = [params valueForKey:@"email"];
         user.super_user = [NSNumber numberWithBool:YES];
         user.facebook_id = [params valueForKey:@"fbook_id"];
         user.is_friend = [NSNumber numberWithBool:NO];
@@ -322,6 +325,8 @@
                                  if ([[responseObject valueForKey:@"code"] intValue] == 1){
                                      // get params from response
                                      NSString *username = [responseObject valueForKeyPath:@"username"];
+                                     NSString *email = [responseObject valueForKeyPath:@"user.email"];
+                                     NSString *phone_number = [responseObject valueForKeyPath:@"phone_number"];
                                      NSNumber *score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"]intValue]];
                                      NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
                                      NSNumber *privacy = [NSNumber numberWithInt:0];
@@ -335,7 +340,9 @@
                                                                 @"facebook_user":facebook,
                                                                 @"privacy":privacy,
                                                                 @"super_user":super_user,
-                                                                @"timestamp":date};
+                                                                @"timestamp":date,
+                                                                @"email":email,
+                                                                @"phone_number":phone_number};
                                      
                                      User *user = nil;
                                      if (context){
@@ -414,6 +421,8 @@
                                              // things went well
                                              if ([[responseObject valueForKey:@"code"] intValue] == 1){
                                                  NSString *username = [responseObject valueForKeyPath:@"user.username"];
+                                                 NSString *email = [responseObject valueForKeyPath:@"user.email"];
+                                                 NSString *phone_number = [responseObject valueForKeyPath:@"phone_number"];
                                                  NSNumber *score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"]intValue]];
                                                  NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
                                                  NSNumber *privacy = [NSNumber numberWithInt:0];
@@ -426,7 +435,9 @@
                                                                             @"facebook_user":facebook,
                                                                             @"privacy":privacy,
                                                                             @"super_user":super_user,
-                                                                            @"fbook_id":facebook_id};
+                                                                            @"fbook_id":facebook_id,
+                                                                            @"email":email,
+                                                                            @"phone_number":phone_number};
                                                  User *user = nil;
                                                  if (context){
                                                       user = [self GetOrCreateUserWithParams:gcParams
@@ -649,6 +660,42 @@
     }];
 }
 
+
++ (void)sendProfileUpdatewithParams:(NSDictionary *)params
+                              block:(BlobFetchBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPISettingsString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             
+             if (code == 1){
+                 NSDictionary *data = @{@"username": responseObject[@"username"],
+                                        @"email":responseObject[@"email"],
+                                        @"phone":responseObject[@"phone"]};
+                 if (block){
+                     block(YES,data,@"Success");
+                 }
+             }
+             
+             if (code == -1){
+                 if (block){
+                     block(NO,nil,responseObject[@"message"]);
+                 }
+             }
+      
+        }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             if (block){
+                 block(NO,nil,error.localizedDescription);
+             }
+      
+        }];
+
+}
 
 + (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message

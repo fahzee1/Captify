@@ -419,9 +419,9 @@
         
     }
     if (status == FBSessionStateClosed || status == FBSessionStateClosedLoginFailed){
-        NSLog(@"%u",status);
-         NSLog(@"%u",FBSessionStateClosed);
-         NSLog(@"%u",FBSessionStateClosedLoginFailed);
+        if (status == FBSessionStateClosedLoginFailed){
+            [self showMessage:@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook" withTitle:@"Error"];
+        }
         //if the session is closed
         NSLog(@"Session closed");
         //show user logged out view

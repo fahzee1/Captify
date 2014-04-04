@@ -61,4 +61,7 @@ typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 + (void)fetchMediaBlobWithParams:(NSDictionary *)params
                            block:(BlobFetchBlock)block;
 
++ (void)sendProfileUpdatewithParams:(NSDictionary *)params
+                              block:(BlobFetchBlock)block;
+
 @end

@@ -1,8 +1,8 @@
 //
 //  User.m
-//  Prototype
+//  Captify
 //
-//  Created by CJ Ogbuehi on 3/31/14.
+//  Created by CJ Ogbuehi on 4/4/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -26,8 +26,10 @@
 @dynamic sync_status;
 @dynamic timestamp;
 @dynamic username;
+@dynamic email;
+@dynamic phone_number;
 @dynamic picks;
-@dynamic sent_challenges;
 @dynamic recipient_challenge;
+@dynamic sent_challenges;
 
 @end

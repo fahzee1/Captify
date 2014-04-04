@@ -1,8 +1,8 @@
 //
 //  User.h
-//  Prototype
+//  Captify
 //
-//  Created by CJ Ogbuehi on 3/31/14.
+//  Created by CJ Ogbuehi on 4/4/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -26,9 +26,11 @@
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * username;
+@property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSString * phone_number;
 @property (nonatomic, retain) NSSet *picks;
-@property (nonatomic, retain) NSSet *sent_challenges;
 @property (nonatomic, retain) Challenge *recipient_challenge;
+@property (nonatomic, retain) NSSet *sent_challenges;
 @end
 
 @interface User (CoreDataGeneratedAccessors)

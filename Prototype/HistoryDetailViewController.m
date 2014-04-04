@@ -50,10 +50,19 @@
 @property (strong, nonatomic)UIImage *finalImage;
 @property (strong, nonatomic)UIView *imageControls;
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
-@property (weak, nonatomic) IBOutlet UILabel *captionFontValue;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *captionSizeTitle;
+@property (weak, nonatomic) IBOutlet UILabel *captionSizeValue;
 @property (weak, nonatomic) IBOutlet UIButton *captionColor;
-@property (weak, nonatomic) IBOutlet UIStepper *captionFontStepper;
+
+@property (weak, nonatomic) IBOutlet UILabel *captionColorTitle;
+@property (weak, nonatomic) IBOutlet UIStepper *captionSizeStepper;
 @property (weak, nonatomic) IBOutlet UIButton *captionDoneButton;
+@property (weak, nonatomic) IBOutlet UIButton *captionRotateButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *captionRotateReverseButton;
+@property (weak, nonatomic) IBOutlet UILabel *captionRotateTitle;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (strong,nonatomic)CMPopTipView *toolTip;
@@ -98,9 +107,9 @@
     self.imageControls.hidden = YES;
     [self.view addSubview:self.imageControls];
     
-    self.captionFontStepper.value = 25;
-    self.captionFontStepper.minimumValue = 8;
-    self.captionFontStepper.maximumValue = 45;
+    self.captionSizeStepper.value = 25;
+    self.captionSizeStepper.minimumValue = 8;
+    self.captionSizeStepper.maximumValue = 45;
    
     self.topLabel.text = self.myChallenge.name;
     self.topLabel.textAlignment = NSTextAlignmentCenter;
@@ -112,6 +121,7 @@
                                      self.topLabel.frame.size.height);
 
     
+    self.currentPoint = self.finalCaptionLabel.center;
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
@@ -281,6 +291,8 @@
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
     }
+     
+    
     self.finalCaptionLabel.textAlignment = NSTextAlignmentCenter;
     self.finalCaptionLabel.alpha = 0;
     [self.finalCaptionLabel addGestureRecognizer:press];
@@ -332,12 +344,25 @@
     self.captionColor.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     [self.captionColor setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil"] forState:UIControlStateNormal];
     [self.captionColor setTitleColor:self.finalCaptionLabel.textColor forState:UIControlStateNormal];
+    self.captionColorTitle.textColor = self.finalCaptionLabel.textColor;
     
-    self.captionFontStepper.tintColor = [UIColor whiteColor];
-    self.captionFontValue .textColor = [UIColor whiteColor];
     
-    self.captionFontStepper.value = 25;
-    [self.captionFontStepper addTarget:self action:@selector(captionFontChanged) forControlEvents:UIControlEventValueChanged];
+    self.captionRotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    [self.captionRotateButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-repeat"] forState:UIControlStateNormal];
+    [self.captionRotateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.captionRotateReverseButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    [self.captionRotateReverseButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-undo"] forState:UIControlStateNormal];
+    [self.captionRotateReverseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    self.captionRotateTitle.textColor = [UIColor whiteColor];
+    
+    
+    
+    self.captionSizeTitle.textColor = [UIColor whiteColor];
+    self.captionSizeStepper.tintColor = [UIColor whiteColor];
+    self.captionSizeValue .textColor = [UIColor whiteColor];
+    self.captionSizeStepper.value = 25;
+    [self.captionSizeStepper addTarget:self action:@selector(captionSizeChanged) forControlEvents:UIControlEventValueChanged];
     
     
     
@@ -379,6 +404,83 @@
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:colorPicker];
     [self presentViewController:navVC animated:YES completion:nil];
 }
+
+
+- (IBAction)tappedRotate:(UIButton *)sender {
+    static int attempts = 0;
+
+    //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
+    
+    
+    if (!attempts){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+    }
+    
+    if (attempts == 1){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+    }
+    
+    if (attempts == 2){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+    }
+    
+    if (attempts == 3){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+    }
+    
+    
+    if (attempts == 4){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    }
+    
+    attempts += 1;
+    
+    if (attempts > 4){
+        attempts = 0;
+    }
+
+    
+    
+}
+
+- (IBAction)tappedReverseRotate:(UIButton *)sender {
+    
+    static int attempts = 0;
+    
+    //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
+    
+    
+    if (!attempts){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+    }
+    
+    if (attempts == 1){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
+    }
+    
+    if (attempts == 2){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+    }
+    
+    if (attempts == 3){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+    }
+    
+    
+    if (attempts == 4){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    }
+    
+    attempts += 1;
+    
+    if (attempts > 4){
+        attempts = 0;
+    }
+
+}
+
+
+
 
 - (void)tappedCaption:(UITapGestureRecognizer *)gesture
 {
@@ -480,21 +582,18 @@
 }
 
 
-- (void)captionFontChanged
+- (void)captionSizeChanged
 {
     [self.finalCaptionLabel stopGlowing];
     
-    CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
-    CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
-    if (!CGPointEqualToPoint(self.currentPoint, CGPointZero)){
-        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
-    }
-    else{
-        self.finalCaptionLabel.frame = CGRectMake(width/2, height/2,CGRectGetMaxX(self.myImageView.frame), 200);
-    }
-    self.finalCaptionLabel.center = self.myImageView.center;
-    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionFontStepper.value];
-    self.captionFontValue.text = [NSString stringWithFormat:@"%d", (int)self.captionFontStepper.value];
+    
+    //CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
+    //CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
+    
+    self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
+    self.finalCaptionLabel.center = self.currentPoint;
+    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionSizeStepper.value];
+    self.captionSizeValue.text = [NSString stringWithFormat:@"%d pt", (int)self.captionSizeStepper.value];
     
 
 }
@@ -554,6 +653,7 @@
 {
     self.finalCaptionLabel.textColor = color;
     [self.captionColor setTitleColor:color forState:UIControlStateNormal];
+    self.captionColorTitle.textColor = color;
     self.imageControls.hidden = YES;
     [controller dismissViewControllerAnimated:YES completion:nil];
 }

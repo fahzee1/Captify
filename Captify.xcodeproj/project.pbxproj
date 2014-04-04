@@ -52,9 +52,10 @@
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
 		1126C09118E9C4D100838484 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C09018E9C4D100838484 /* Notifications.m */; };
-		1126C0A318EA0DC700838484 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A218EA0DC700838484 /* User.m */; };
 		1126C0A618EA0E3D00838484 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A518EA0E3D00838484 /* Challenge.m */; };
 		1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A818EA0E3E00838484 /* ChallengePicks.m */; };
+		1128443618EF273F0056D517 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128443518EF273F0056D517 /* User.m */; };
+		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
@@ -414,12 +415,13 @@
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		1126C08F18E9C4D100838484 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		1126C09018E9C4D100838484 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
-		1126C0A118EA0DC700838484 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		1126C0A218EA0DC700838484 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1126C0A418EA0E3D00838484 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
 		1126C0A518EA0E3D00838484 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		1126C0A718EA0E3E00838484 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
 		1126C0A818EA0E3E00838484 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
+		1128443418EF273F0056D517 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1128443518EF273F0056D517 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		1128443718EF2F520056D517 /* settingsEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = settingsEdit.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
@@ -1079,12 +1081,12 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
+				1128443418EF273F0056D517 /* User.h */,
+				1128443518EF273F0056D517 /* User.m */,
 				1126C0A718EA0E3E00838484 /* ChallengePicks.h */,
 				1126C0A818EA0E3E00838484 /* ChallengePicks.m */,
 				1126C0A418EA0E3D00838484 /* Challenge.h */,
 				1126C0A518EA0E3D00838484 /* Challenge.m */,
-				1126C0A118EA0DC700838484 /* User.h */,
-				1126C0A218EA0DC700838484 /* User.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
 				11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */,
@@ -1297,10 +1299,11 @@
 				11BC442618C46A7B0052D98F /* HistoryDetailCell.m */,
 				11C8E8D218C9277F00FE6B5E /* CJFilterView.h */,
 				11C8E8D318C9277F00FE6B5E /* CJFilterView.m */,
-				1121284618C5A8AF0033E026 /* shareControls.xib */,
-				11C8E8D518C930E900FE6B5E /* filterControls.xib */,
 				1108021618CA7A640014BAD8 /* HistorySentCell.h */,
 				1108021718CA7A640014BAD8 /* HistorySentCell.m */,
+				1121284618C5A8AF0033E026 /* shareControls.xib */,
+				11C8E8D518C930E900FE6B5E /* filterControls.xib */,
+				1128443718EF2F520056D517 /* settingsEdit.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1950,6 +1953,7 @@
 				11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
+				1128443818EF2F520056D517 /* settingsEdit.xib in Resources */,
 				11ABFCA318C7D28300639A20 /* colorPicker.bundle in Resources */,
 				11ABFCAD18C7D28300639A20 /* NEOColorPickerViewController.xib in Resources */,
 				11ABFCAB18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib in Resources */,
@@ -2001,7 +2005,6 @@
 				1153E18218A9DF4800AD950E /* GPUImageKuwaharaRadius3Filter.m in Sources */,
 				116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */,
 				1153E1A218A9DF4800AD950E /* GPUImagePerlinNoiseFilter.m in Sources */,
-				1126C0A318EA0DC700838484 /* User.m in Sources */,
 				1153E18A18A9DF4800AD950E /* GPUImageLookupFilter.m in Sources */,
 				11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */,
 				1153E1B518A9DF4800AD950E /* GPUImageSepiaFilter.m in Sources */,
@@ -2128,6 +2131,7 @@
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
+				1128443618EF273F0056D517 /* User.m in Sources */,
 				113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */,
 				1153E18B18A9DF4800AD950E /* GPUImageLowPassFilter.m in Sources */,
 				1153E19218A9DF4800AD950E /* GPUImageMissEtikateFilter.m in Sources */,
