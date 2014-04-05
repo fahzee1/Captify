@@ -15,7 +15,8 @@
 #import <MessageUI/MessageUI.h>
 #import "User+Utils.h"
 #import "AppDelegate.h"
-
+#import "AwesomeAPICLient.h"
+#import "MBProgressHUD.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *editUsernameField;
 @property (weak, nonatomic) IBOutlet UITextField *editEmailField;
 
+@property (weak, nonatomic) IBOutlet UIButton *editDoneButton;
 @property (weak, nonatomic) IBOutlet UITextField *editPhoneField;
 @property (strong, nonatomic) IBOutlet UIView *editView;
 
@@ -61,17 +63,13 @@
   }
 
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
-    
-    if (self.myUser.managedObjectContext.hasChanges){
-        NSError *error;
-        if (![self.myUser.managedObjectContext save:&error]){
-            NSLog(@"%@",error);
-        }
-    }
+    [self.editUsernameField resignFirstResponder];
+    [self.editEmailField resignFirstResponder];
+    [self.editPhoneField resignFirstResponder];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -95,6 +93,10 @@
     self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:@"No # provided";
     self.editEmailField.text = self.myUser.email;
     
+    self.editDoneButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.editDoneButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
+    
+    
     [self.view addSubview:self.editScreen];
 
 
@@ -115,11 +117,34 @@
 }
 
 
+- (IBAction)tappedEditDone:(UIButton *)sender {
+    
+    UITextField *field;
+    
+    if (self.editUsernameField.isFirstResponder){
+        field = self.editUsernameField;
+    }
+    else if (self.editEmailField.isFirstResponder){
+        field = self.editEmailField;
+    }
+    
+    else if (self.editPhoneField.isFirstResponder){
+        field = self.editPhoneField;
+    }
+    
+    [self textFieldShouldReturn:field];
+
+}
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-#warning update data on server and in core data and also update tableview
     [textField resignFirstResponder];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.editScreen animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Updating";
     
     NSString *name = self.editUsernameField.text;
     NSString *phone = self.editPhoneField.text;
@@ -132,14 +157,33 @@
     
     [User sendProfileUpdatewithParams:params
                                 block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                      [hud hide:YES];
                                     if (wasSuccessful){
                                         int changes = [[data valueForKey:@"changes"] intValue];
                                         if (changes){
                                             self.myUser.username = data[@"username"];
                                             self.myUser.email = data[@"email"];
-                                            self.myUser.phone_number = data[@"phone_number"];
-                                            [self.myTable reloadData];
-                                            [self destoryEditScreen];
+                                            self.myUser.phone_number = data[@"phone"];
+                                            
+                                            
+                                            NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",data[@"username"],[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
+                                            [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
+                                            [[NSUserDefaults standardUserDefaults] setValue:data[@"username"] forKey:@"username"];
+
+                                            dispatch_queue_t settingsQueue = dispatch_queue_create("com.Captify.Settings", NULL);
+                                            dispatch_async(settingsQueue, ^{
+                                                NSError *e;
+                                                if (![self.myUser.managedObjectContext save:&e]){
+                                                    NSLog(@"%@",e);
+                                                }
+                                                
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [self.myTable reloadData];
+                                                    [self destoryEditScreen];
+                                                });
+
+                                            });
+                                            
                                             
                                         }
                                         else{

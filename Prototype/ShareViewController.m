@@ -12,6 +12,7 @@
 #import "UIColor+HexValue.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SocialFriends.h"
+#import "MBProgressHUD.h"
 
 @interface ShareViewController ()
 
@@ -205,6 +206,10 @@
     [self saveImage];
     
 
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Saving/Sharing";
+    
     if (self.shareFacebook){
         NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
         if (!albumID){
@@ -238,6 +243,7 @@
     
     if (self.shareFacebook){
         if (!self.fbSuccess){
+            [hud hide:YES];
             [self showAlertWithTitle:@"Facebook Error!" message:@"There was an error sharing your photo to Facebook."];
             return;
         }
@@ -245,6 +251,7 @@
     
     if (self.shareTwitter){
         if (!self.twSuccess){
+            [hud hide:YES];
             [self showAlertWithTitle:@"Twitter Error!" message:@"There was an error sharing your photo to Twitter."];
             return;
         }
@@ -255,6 +262,7 @@
                              @"pick_id":self.myPick.pick_id};
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *message) {
+                                       [hud hide:YES];
                                        if (wasSuccessful){
                                            
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];

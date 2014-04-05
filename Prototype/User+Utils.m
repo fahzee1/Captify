@@ -674,7 +674,8 @@
              if (code == 1){
                  NSDictionary *data = @{@"username": responseObject[@"username"],
                                         @"email":responseObject[@"email"],
-                                        @"phone":responseObject[@"phone"]};
+                                        @"phone":responseObject[@"phone"],
+                                        @"changes":responseObject[@"changes"]};
                  if (block){
                      block(YES,data,@"Success");
                  }

@@ -7,17 +7,17 @@
 //
 
 #import "AwesomeAPICLient.h"
+#import "AppDelegate.h"
 
 
 @implementation AwesomeAPICLient
 
 + (instancetype)sharedClient
 {
-    
     static AwesomeAPICLient *client = nil;
     
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-     NSString *apiString = [defaults valueForKey:@"apiString"];
+    NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",[AwesomeAPICLient myUser].username,[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
+    [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
     
     if (apiString){
         static dispatch_once_t onceToken;
@@ -37,6 +37,7 @@
 
     }
     
+    [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
     return client;
 }
 
@@ -94,6 +95,15 @@
 }
 
 
++ (User *)myUser
+{
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+        NSError *error;
+        return  (id) [context existingObjectWithID:superuserID error:&error];
+
+}
 
 
 

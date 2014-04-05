@@ -17,6 +17,8 @@
 #import "SocialFriends.h"
 #import "TMCache.h"
 #import <Parse/Parse.h>
+#import <CrashReporter/CrashReporter.h>
+
 
 @interface AppDelegate()
 @property(strong,nonatomic)UIViewController *menuVC;
@@ -122,9 +124,57 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    NSError *error;
+    
+    if ([crashReporter hasPendingCrashReport]){
+        [self handleCrashReport];
+    }
+    
+    if (![crashReporter enableCrashReporterAndReturnError:&error]){
+        NSLog(@"Could not enable crash reporter");
+    }
+    
     // Override point for customization after application launch.
     
     return YES;
+}
+
+- (void)handleCrashReport
+{
+    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    NSData *crashData;
+    NSError *error;
+   
+    // Try loading the crash report
+    crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+    if (crashData == nil) {
+        NSLog(@"Could not load crash report: %@", error);
+        [self finish];
+    }
+    
+    // We could send the report from here, but we'll just print out
+    // some debugging info instead
+    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
+    if (report == nil) {
+        NSLog(@"Could not parse crash report");
+        [self finish];
+    }
+    
+    NSLog(@"Crashed on %@", report.systemInfo.timestamp);
+    NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
+        report.signalInfo.code, report.signalInfo.address);
+    
+    // Purge the report
+    finish:
+    [crashReporter purgePendingCrashReport];
+    return;
+}
+
+- (void)finish
+{
+    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    [crashReporter purgePendingCrashReport];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -11,6 +11,7 @@
 #import "TWTSideMenuViewController.h"
 #import "ChallengePicks+Utils.h"
 #import <MessageUI/MessageUI.h>
+#import "MBProgressHUD.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -129,8 +130,13 @@
                              @"challenge_id":self.myChallenge.challenge_id,
                              @"answer":self.previewCaption.text};
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Sending";
+    
     [ChallengePicks sendCreatePickRequestWithParams:params
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
+                                                  [hud hide:YES];
                                                   if (wasSuccessful){
                                                       
                                                       

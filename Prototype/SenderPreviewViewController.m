@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "UploaderAPIClient.h"
 #import "UIImageView+WebCache.h"
-
+#import "MBProgressHUD.h"
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -196,6 +196,9 @@
         apiParams[@"media"] = media;
     }
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Sending";
     
     
     [Challenge sendCreateChallengeRequestWithParams:apiParams
@@ -217,12 +220,14 @@
                                                       
                                                       Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                                       if (challenge){
+                                                          [hud hide:YES];
                                                           [self notifyDelegateAndGoHome];
                                                       }
 
                                                       
                                                   }
                                                   else{
+                                                      [hud hide:YES];
                                                       if (fail){
                                                           // 500
                                                           if (message){

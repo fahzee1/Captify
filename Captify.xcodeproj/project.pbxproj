@@ -57,6 +57,9 @@
 		1128443618EF273F0056D517 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128443518EF273F0056D517 /* User.m */; };
 		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
+		112EB2AC18EFABF000252AC1 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EB2AB18EFABF000252AC1 /* Parse.framework */; };
+		112EB2AE18EFE13900252AC1 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EB2AD18EFE13900252AC1 /* CrashReporter.framework */; };
+		112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
@@ -282,7 +285,6 @@
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
 		119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 119711DC18ADF8C9008AD895 /* Overlay.xib */; };
 		119711E018AE0203008AD895 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711DF18AE0203008AD895 /* OverlayView.m */; };
-		11A8524F18EDE4B200557A5B /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8524E18EDE4B200557A5B /* Parse.framework */; };
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
@@ -424,6 +426,10 @@
 		1128443718EF2F520056D517 /* settingsEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = settingsEdit.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
+		112EB2AB18EFABF000252AC1 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		112EB2AD18EFE13900252AC1 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		112EB2AF18EFE9B200252AC1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
 		113FF14A18E1F3A8005D5A82 /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
@@ -865,7 +871,6 @@
 		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
 		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
-		11A8524E18EDE4B200557A5B /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -940,6 +945,7 @@
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
+				112EB2AE18EFE13900252AC1 /* CrashReporter.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */,
@@ -954,10 +960,10 @@
 				1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */,
 				1153DFE418A9DEEE00AD950E /* CoreVideo.framework in Frameworks */,
 				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
-				11A8524F18EDE4B200557A5B /* Parse.framework in Frameworks */,
 				11C8E8D118C8FA7600FE6B5E /* FacebookSDK.framework in Frameworks */,
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
+				112EB2AC18EFABF000252AC1 /* Parse.framework in Frameworks */,
 				110730F11876640F0065D77F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -997,12 +1003,13 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				112EB2AD18EFE13900252AC1 /* CrashReporter.framework */,
+				112EB2AB18EFABF000252AC1 /* Parse.framework */,
 				11A8525818EDE53000557A5B /* SystemConfiguration.framework */,
 				11A8525618EDE52700557A5B /* StoreKit.framework */,
 				11A8525418EDE50300557A5B /* libz.dylib */,
 				11A8525218EDE4F700557A5B /* CoreLocation.framework */,
 				11A8525018EDE4EA00557A5B /* CFNetwork.framework */,
-				11A8524E18EDE4B200557A5B /* Parse.framework */,
 				1191605718E788FC00C25E36 /* MessageUI.framework */,
 				11FA2F4218D793DE000F6DB9 /* AddressBook.framework */,
 				110B087C18CF896900EC850F /* Social.framework */,
@@ -1110,6 +1117,8 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				112EB2AF18EFE9B200252AC1 /* MBProgressHUD.h */,
+				112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */,
 				1144E3D718EC6F0600DBCF3B /* JDStatusBarNotification */,
 				11ABFCAF18C7DA9200639A20 /* CMPopTipView */,
 				11ABFC8F18C7D28300639A20 /* color-picker */,
@@ -1978,6 +1987,7 @@
 				1153E16718A9DF4800AD950E /* GPUImageExposureFilter.m in Sources */,
 				1108021218CA57880014BAD8 /* HistoryContainerViewController.m in Sources */,
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
+				112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
 				1153E1CD18A9DF4800AD950E /* GPUImageToonFilter.m in Sources */,
 				1153E1AD18A9DF4800AD950E /* GPUImageRGBClosingFilter.m in Sources */,
@@ -2390,6 +2400,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
 					/Users/cjogbuehi/Documents/FacebookSDK,
+					/Users/cjogbuehi/iphone/Captify,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
@@ -2410,6 +2421,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
 					/Users/cjogbuehi/Documents/FacebookSDK,
+					/Users/cjogbuehi/iphone/Captify,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
