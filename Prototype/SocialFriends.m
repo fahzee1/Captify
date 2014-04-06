@@ -105,6 +105,37 @@
 }
 
 
+- (void)sendFriendMessgaeWithID:(NSString *)userID
+                          block:(FacebookFriendInvite)block
+{
+    if (FBSession.activeSession.isOpen){
+        [FBWebDialogs presentDialogModallyWithSession:FBSession.activeSession
+                                               dialog:@"send"
+                                           parameters:@{@"to": userID}
+                                              handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                  if (!error){
+                                                      if (block){
+                                                          block(YES, result);
+                                                      }
+                                                      
+                                                  }
+                                                  else{
+                                                      if (block){
+                                                          block(NO,result);
+                                                      }
+
+                                                  }
+                                              }];
+    }
+    else{
+        if (block){
+            block(NO,FBWebDialogResultDialogNotCompleted);
+        }
+
+    }
+}
+
+
 - (void)inviteFriendWithID:(NSString *)userID
                      title:(NSString *)title
                    message:(NSString *)message
@@ -299,17 +330,11 @@
                              @"caption":caption,
                              @"name":name};
     
-    NSDictionary *params2 = @{@"source": image};
     
    FBRequest *request = [FBRequest requestWithGraphPath:@"me/feed"
                          parameters:params1
                          HTTPMethod:@"POST"];
     
-    NSString *albumPath = [NSString stringWithFormat:@"%@/photos",albumId];
-    FBRequest *albumRequest = [FBRequest requestWithGraphPath:albumPath
-                                                   parameters:params2
-                                                   HTTPMethod:@"POST"];
-
     // first publish to feed
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (error){
@@ -328,6 +353,16 @@
         
         
     }];
+    
+    
+    NSDictionary *params2 = @{@"source": image};
+    
+    NSString *albumPath = [NSString stringWithFormat:@"%@/photos",albumId];
+    FBRequest *albumRequest = [FBRequest requestWithGraphPath:albumPath
+                                                   parameters:params2
+                                                   HTTPMethod:@"POST"];
+    
+
     
     // second save to photo album
     [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

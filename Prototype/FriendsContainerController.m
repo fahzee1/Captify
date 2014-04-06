@@ -442,19 +442,22 @@
 
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
-    // send friend invite request when tapped
-    if (![friendPicker.selection count] == 0){
-        NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
-        NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
-       [self.friend inviteFriendWithID:friendID
-                                 title:@"Invite"
-                               message:[NSString stringWithFormat:@"Hey %@ you should try this app",name]
-                                 block:^(BOOL wasSuccessful, FBWebDialogResult result) {
-                                     if (wasSuccessful){
-                                         NSLog(@"success");
-                                     }
-                                 }];
+    NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
+    if (friendPicker == self.friendPickerController){
+        // send friend invite request when tapped
+        if (![friendPicker.selection count] == 0){
+            NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
+           [self.friend inviteFriendWithID:friendID
+                                     title:@"Invite"
+                                   message:[NSString stringWithFormat:@"Hey %@ you should try this app",name]
+                                     block:^(BOOL wasSuccessful, FBWebDialogResult result) {
+                                         if (wasSuccessful){
+                                             NSLog(@"success");
+                                         }
+                                     }];
+        }
     }
+    
 }
 
 

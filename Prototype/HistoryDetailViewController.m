@@ -228,7 +228,7 @@
 
 - (void)downloadImage
 {
-    
+    NSLog(@"url is %@",self.mediaURL);
     if (self.mediaURL){
         self.retryButton.hidden = YES;
         self.progressView.hidden = NO;

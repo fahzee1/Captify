@@ -16,6 +16,7 @@
 #import "UploaderAPIClient.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
+#import "ParseNotifications.h"
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
@@ -206,8 +207,6 @@
                                                   if (wasSuccessful){
                                                       NSUInteger count = [self.selectedFriends[@"friends"] count];
                                                       NSString *media_url = [data valueForKey:@"media"];
-                                                      NSString *baseUrlString = [Challenge baseUrl];
-                                                      NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
                                                       
                                                       
                                                       NSDictionary *params = @{@"sender":self.myUser.username,
@@ -216,11 +215,19 @@
                                                                                @"recipients_count":[NSNumber numberWithInteger:count],
                                                                                @"challenge_name":self.name,
                                                                                @"challenge_id":challenge_id,
-                                                                               @"media_url":fullMediaUrl};
+                                                                               @"media_url":media_url};
                                                       
                                                       Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                                       if (challenge){
                                                           [hud hide:YES];
+                                                          // send notification
+                                                          ParseNotifications *p = [[ParseNotifications alloc] init];
+                                                          [p sendNotification:[NSString stringWithFormat:@"%@ sent you a caption challenge!",self.myUser.username]
+                                                                    toFriends:self.selectedFriends[@"friends"]
+                                                                     withData:params
+                                                                        block:nil];
+                                                          
+                                                          
                                                           [self notifyDelegateAndGoHome];
                                                       }
 

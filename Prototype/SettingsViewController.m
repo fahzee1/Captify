@@ -262,9 +262,6 @@
         {
             // Actions
             if (indexPath.row == 0){
-                NSLog(@"pressed clear something");
-            }
-            else if (indexPath.row == 1){
                // logout
                 if (FBSession.activeSession.state == FBSessionStateOpen
                     || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
@@ -334,6 +331,13 @@
             }
         }
             break;
+            
+        case 2:
+        {
+            if (indexPath.row == 0){
+                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+        }
             
         default:
             break;

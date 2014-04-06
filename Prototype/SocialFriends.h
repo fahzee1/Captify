@@ -31,6 +31,9 @@ typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
 - (void)onlyFriendsUsingApp:(FacebookFriendFetch)block;
 
 
+- (void)sendFriendMessgaeWithID:(NSString *)userID
+                          block:(FacebookFriendInvite)block;
+
 - (void)inviteFriendWithID:(NSString *)userID
                      title:(NSString *)title
                    message:(NSString *)message

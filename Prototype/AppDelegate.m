@@ -16,8 +16,10 @@
 #import "GoHomeTransition.h"
 #import "SocialFriends.h"
 #import "TMCache.h"
+#import "HistoryContainerViewController.h"
 #import <Parse/Parse.h>
 #import <CrashReporter/CrashReporter.h>
+
 
 
 @interface AppDelegate()
@@ -34,16 +36,9 @@
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
-                  clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
-    
     
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
-    [self setupViewControllers];
     
-    
-    
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound)];
     
     // both local and remote notifcations are called from here when app is
     // is not in the foreground
@@ -124,6 +119,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
+                  clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
+    
+
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
+     UIRemoteNotificationTypeAlert|
+     UIRemoteNotificationTypeSound];
+    
+    
     PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSError *error;
     
@@ -135,7 +139,15 @@
         NSLog(@"Could not enable crash reporter");
     }
     
-    // Override point for customization after application launch.
+   
+    // Extract the notification data
+    NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (notificationPayload){
+        [self handlePushNotificationPayload:notificationPayload];
+    }
+    else{
+        [self setupHomeViewControllers];
+    }
     
     return YES;
 }
@@ -364,6 +376,7 @@
     
     PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
     [currentOnstallation setDeviceTokenFromData:deviceToken];
+    [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
     [currentOnstallation saveInBackground];
     
     
@@ -413,6 +426,8 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
+    
+    NSLog(@"%@",userInfo);
     [PFPush handlePush:userInfo];
     
     /*
@@ -426,7 +441,8 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    
+ 
+    [self handlePushNotificationPayload:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -470,6 +486,7 @@
     }
     if (status == FBSessionStateClosed || status == FBSessionStateClosedLoginFailed){
         if (status == FBSessionStateClosedLoginFailed){
+            NSLog(@"%@",error);
             [self showMessage:@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook" withTitle:@"Error"];
         }
         //if the session is closed
@@ -615,7 +632,7 @@
 }
 
 
-- (void)setupViewControllers
+- (void)setupHomeViewControllers
 {
     UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
     MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
@@ -628,6 +645,23 @@
     self.window.rootViewController = self.sideVC;
 
 }
+
+
+- (void)setupHistoryViewControllers
+{
+    UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
+    self.mainVC = (HistoryContainerViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
+    self.menuVC = menuVc;
+    self.sideVC = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuVC mainViewController:self.mainVC];
+    self.sideVC.shadowColor = [UIColor blackColor];
+    self.sideVC.edgeOffset = UIOffsetMake(18.0f, 0.0f);
+    self.sideVC.zoomScale = 0.6643f;//0.5643f;
+    self.window.rootViewController = self.sideVC;
+    
+}
+
+
 
 - (void)fetchFacebookFriends
 {
@@ -667,6 +701,32 @@
     });
     
 
+}
+
+- (void)handlePushNotificationPayload:(NSDictionary *)payload
+{
+    NSLog(@"handle payload %@",payload);
+    int type = [[payload valueForKey:@"type"] intValue];
+    switch (type) {
+        case 100:
+        {
+            [self setupHistoryViewControllers];
+        }
+            break;
+        case 200:
+        {
+            
+        }
+            break;
+        case 300:
+        {
+            
+        }
+            break;
+        default:
+            [self setupHomeViewControllers];
+            break;
+    }
 }
 
 @end

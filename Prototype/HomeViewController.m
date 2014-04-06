@@ -98,7 +98,7 @@
 {
     [super viewDidLoad];
 
-    NSLog(@"handle settings phone problem...");
+    
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         //User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
         //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
