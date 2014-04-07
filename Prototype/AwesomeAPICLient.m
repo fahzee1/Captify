@@ -16,26 +16,21 @@
 {
     static AwesomeAPICLient *client = nil;
     
-    NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",[AwesomeAPICLient myUser].username,[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
-    [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
     
-    if (apiString){
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
-            client.responseSerializer = [AFJSONResponseSerializer serializer];
-            client.requestSerializer = [AFJSONRequestSerializer serializer];
-            [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-            client.apiKeyFound = YES;
-        });
+    NSString *apiString;
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+        apiString =  [NSString stringWithFormat:@"ApiKey %@:%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"],[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
+         [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
     }
-    else{
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         client = [[AwesomeAPICLient alloc] initWithBaseURL:[NSURL URLWithString:AwesomeAPIBaseUrlString]];
         client.responseSerializer = [AFJSONResponseSerializer serializer];
         client.requestSerializer = [AFJSONRequestSerializer serializer];
-        client.apiKeyFound = NO;
-
-    }
+        [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
+        client.apiKeyFound = YES;
+    });
     
     [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
     return client;

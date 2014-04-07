@@ -19,7 +19,8 @@
 #import "HistoryContainerViewController.h"
 #import <Parse/Parse.h>
 #import <CrashReporter/CrashReporter.h>
-
+#import "ParseNotifications.h"
+#import "JDStatusBarNotification.h"
 
 
 @interface AppDelegate()
@@ -119,6 +120,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
     [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
                   clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
     
@@ -143,7 +145,7 @@
     // Extract the notification data
     NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (notificationPayload){
-        [self handlePushNotificationPayload:notificationPayload];
+        [self handlePushNotificationPayload:notificationPayload isForeground:NO];
     }
     else{
         [self setupHomeViewControllers];
@@ -376,7 +378,6 @@
     
     PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
     [currentOnstallation setDeviceTokenFromData:deviceToken];
-    [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
     [currentOnstallation saveInBackground];
     
     
@@ -442,7 +443,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
  
-    [self handlePushNotificationPayload:userInfo];
+    [self handlePushNotificationPayload:userInfo isForeground:YES];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -704,25 +705,46 @@
 }
 
 - (void)handlePushNotificationPayload:(NSDictionary *)payload
+                         isForeground:(BOOL)isF
 {
     NSLog(@"handle payload %@",payload);
-    int type = [[payload valueForKey:@"type"] intValue];
+    int type = [payload[@"type"] intValue];
     switch (type) {
-        case 100:
+        case ParseNotificationCreateChallenge:
         {
+            NSString *challenge_name;
+            if (payload[@"challenge"]){
+                challenge_name = payload[@"challenge"];
+                ParseNotifications *p = [ParseNotifications new];
+                [p addChannelWithChallengeName:challenge_name];
+                
+                if (isF){
+                    [JDStatusBarNotification showWithStatus:payload[@"aps"][@"alert"]
+                                               dismissAfter:2.0
+                                                  styleName:JDStatusBarStyleSuccess];
+                }
+
+            }
+            
             [self setupHistoryViewControllers];
         }
             break;
-        case 200:
+        case ParseNotificationSendCaptionPick:
         {
             
         }
             break;
-        case 300:
+        case ParseNotificationSenderChoseCaption:
         {
             
         }
             break;
+        case ParseNotificationNotifySelectedCaptionSender:
+        {
+            
+        }
+            break;
+
         default:
             [self setupHomeViewControllers];
             break;

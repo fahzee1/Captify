@@ -168,7 +168,6 @@
     // create challenge in backend
     // then in core data
     // then show history screen
-#warning show progress hud here
     
     
     NSString *challenge_id = [Challenge createChallengeIDWithUser:self.myUser.username];
@@ -182,7 +181,7 @@
         // create challenge in backend
     
     TICK;
-    NSData *mediaData = [UIImageJPEGRepresentation(self.image, 0.9) base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSData *mediaData = [UIImageJPEGRepresentation(self.image, 0.3) base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     TOCK;
     
     NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
@@ -222,10 +221,18 @@
                                                           [hud hide:YES];
                                                           // send notification
                                                           ParseNotifications *p = [[ParseNotifications alloc] init];
-                                                          [p sendNotification:[NSString stringWithFormat:@"%@ sent you a caption challenge!",self.myUser.username]
+                                                          
+                                                          [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
                                                                     toFriends:self.selectedFriends[@"friends"]
                                                                      withData:params
+                                                             notificationType:ParseNotificationCreateChallenge
                                                                         block:nil];
+                                                           /*
+                                                          [p sendTestNotification:@"Cj you should see this"
+                                                                         withData:@{@"challenge_name": self.name}
+                                                                 notificationType:ParseNotificationCreateChallenge
+                                                                            block:nil];
+                                                            */
                                                           
                                                           
                                                           [self notifyDelegateAndGoHome];

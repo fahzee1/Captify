@@ -15,7 +15,7 @@
 #import "HomeViewController.h"
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
-
+#import "MBProgressHUD.h"
 
 @interface SignUpViewController ()<UITextFieldDelegate>
 
@@ -125,78 +125,79 @@
                         button:(UIButton *)sender
 {
     NSString *fbook = fb? @"yes":@"no";
-    if ([[AwesomeAPICLient sharedClient] connected]){
-        NSDictionary *params = @{@"username": self.usernameField.text,
-                                 @"password": self.passwordField.text,
-                                 @"email": self.emailField.text,
-                                 @"fbook_user": fbook};
-        
-        NSURLSessionDataTask *task = [User registerWithParams:params
-                                                     callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                         if (wasSuccessful){
-                                                             // data here will be the managed object context to pass to homeview controller
-                                                             // if needed
-                                                             
-                                                             // save password in keychain
-                                                             [SSKeychain setPassword:self.passwordField.text
-                                                                          forService:@"login"
-                                                                             account:self.usernameField.text];
-                                                             
-                                                             // show home screen
-                                                             AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-                                                             UIViewController *rootVc = delegate.window.rootViewController;
-                                                             UIViewController *home;
-                                                             if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
-                                                                 home = ((TWTSideMenuViewController *)rootVc).mainViewController;
-                                                                 if ([home isKindOfClass:[UINavigationController class]]){
-                                                                     home = ((UINavigationController *)home).viewControllers[0];
-                                                                 }
-                                                             }
-                                                             else{
-                                                                 home = ((UINavigationController *)rootVc).topViewController;
-                                                             }
-                                                             if(user){
-                                                                 if ([home respondsToSelector:@selector(setMyUser:)]){
-                                                                     ((HomeViewController *)home).myUser = user;
-                                                                 }
-                                                             }
-                                                             if ([home respondsToSelector:@selector(setGoToLogin:)]){
-                                                                 ((HomeViewController *)home).goToLogin = NO;
-                                                             }
-                                                             [self.navigationController popToViewController:home animated:YES];
+    NSDictionary *params = @{@"username": self.usernameField.text,
+                             @"password": self.passwordField.text,
+                             @"email": self.emailField.text,
+                             @"fbook_user": fbook};
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Signing In";
+    
 
-                                                         }
-                                                         else if (!wasSuccessful && !failure){
-                                                             [self alertErrorWithType:SignUpError
-                                                                             andField:nil
-                                                                           andMessage:[data valueForKey:@"message"]];
-                                                             sender.hidden = NO;
-                                                             
+    NSURLSessionDataTask *task = [User registerWithParams:params
+                                                 callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                     [hud hide:YES];
+                                                     if (wasSuccessful){
+                                                         // data here will be the managed object context to pass to homeview controller
+                                                         // if needed
+                                                         
+                                                         // save password in keychain
+                                                         [SSKeychain setPassword:self.passwordField.text
+                                                                      forService:@"login"
+                                                                         account:self.usernameField.text];
+                                                         
+                                                         // show home screen
+                                                         AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+                                                         UIViewController *rootVc = delegate.window.rootViewController;
+                                                         UIViewController *home;
+                                                         if ([rootVc isKindOfClass:[TWTSideMenuViewController class]]){
+                                                             home = ((TWTSideMenuViewController *)rootVc).mainViewController;
+                                                             if ([home isKindOfClass:[UINavigationController class]]){
+                                                                 home = ((UINavigationController *)home).viewControllers[0];
+                                                             }
                                                          }
                                                          else{
-                                                             // failure alert handled by "show alertviewfortaskwitherror..
-                                                             sender.hidden = NO;
-                                                             
+                                                             home = ((UINavigationController *)rootVc).topViewController;
                                                          }
+                                                         if(user){
+                                                             if ([home respondsToSelector:@selector(setMyUser:)]){
+                                                                 ((HomeViewController *)home).myUser = user;
+                                                             }
+                                                         }
+                                                         if ([home respondsToSelector:@selector(setGoToLogin:)]){
+                                                             ((HomeViewController *)home).goToLogin = NO;
+                                                         }
+                                                         [self.navigationController popToViewController:home animated:YES];
+
+                                                     }
+                                                     else if (!wasSuccessful && !failure){
+                                                         [self alertErrorWithType:SignUpError
+                                                                         andField:nil
+                                                                       andMessage:[data valueForKey:@"message"]];
+                                                         sender.hidden = NO;
                                                          
-                                                     }];
-        // If FAILURE, show alert
-        [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-        
-        // Show and start spinning activity indicator
-        UIActivityIndicatorView *spinner = self.activitySpinner;
-        spinner.hidden = NO;
-        [spinner setAnimatingWithStateOfTask:task];
-        // Hide login button
-        sender.hidden = YES;
-        
-        // if no internet connection, alert no connection
-    }else{
-        [self alertErrorWithType:SignUpError andField:nil andMessage:@"No internet connection!"];
-    }
- 
+                                                     }
+                                                     else{
+                                                         // failure alert handled by "show alertviewfortaskwitherror..
+                                                         sender.hidden = NO;
+                                                         
+                                                     }
+                                                     
+                                                 }];
+    // If FAILURE, show alert
+    [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     
+    // Show and start spinning activity indicator
+    UIActivityIndicatorView *spinner = self.activitySpinner;
+    spinner.hidden = NO;
+    [spinner setAnimatingWithStateOfTask:task];
+    // Hide login button
+    sender.hidden = YES;
+    
+    // if no internet connection, alert no connection
 }
+
 
 
 - (void)alertErrorWithType:(NSUInteger)type

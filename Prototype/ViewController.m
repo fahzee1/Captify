@@ -14,6 +14,7 @@
 #import "AwesomeAPICLient.h"
 #import "UIAlertView+AFNetworking.h"
 #import "UIColor+HexValue.h"
+#import "MBProgressHUD.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
@@ -27,7 +28,7 @@
 {
     [super viewDidLoad];
     [self setupButtonStyles];
-    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    //[[AwesomeAPICLient sharedClient] startMonitoringConnection];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -78,7 +79,10 @@
         //if the session state is not any of the two "open" states when the button is clicked
     }else{
         
-    
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = @"Logging In";
+        
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"user_friends",@"user_photos"]
@@ -111,7 +115,8 @@
                                                   
                                                 // show homescreen call back handled in delegate
                                                 NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                          
+                                                    
+                                                    [hud hide:YES];
                                                     if (wasSuccessful){
                                                               [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
                                                               [[NSUserDefaults standardUserDefaults] synchronize];

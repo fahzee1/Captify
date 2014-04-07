@@ -11,12 +11,32 @@
 
 typedef void (^ParseNotifBlock) (BOOL wasSuccessful);
 
+typedef enum {
+    ParseNotificationCreateChallenge = 100,
+    ParseNotificationSendCaptionPick,
+    ParseNotificationSenderChoseCaption,
+    ParseNotificationNotifySelectedCaptionSender
+    
+    
+} ParseNotificationTypes;
+
+
 @interface ParseNotifications : NSObject
 
+- (NSString *)formatChannelNameForParse:(NSString *)name;
+
+- (void)addChannelWithChallengeName:(NSString *)name;
+
+- (void)removeChannelWithChallengeName:(NSString *)name;
 
 - (void)sendNotification:(NSString *)message
                toFriends:(NSArray *)friends
                 withData:(NSDictionary *) data
+        notificationType:(ParseNotificationTypes)type
                    block:(ParseNotifBlock)block;
 
+- (void)sendTestNotification:(NSString *)message
+                withData:(NSDictionary *)data
+        notificationType:(ParseNotificationTypes)type
+                       block:(ParseNotifBlock)block;
 @end

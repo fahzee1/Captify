@@ -12,6 +12,7 @@
 #import "ChallengePicks+Utils.h"
 #import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
+#import "ParseNotifications.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -155,6 +156,13 @@
                                                               NSLog(@"%@",error);
                                                           }
                                                       }
+                                                      
+                                                      ParseNotifications *p = [ParseNotifications new];
+                                                      [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+                                                                toFriends:@[self.myChallenge.sender.username]
+                                                                 withData:@{@"challenge_name": self.myChallenge.name}
+                                                         notificationType:ParseNotificationSendCaptionPick
+                                                                    block:nil];
                                                       
                                                       [self.navigationController popToRootViewControllerAnimated:YES];
 

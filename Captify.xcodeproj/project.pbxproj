@@ -59,7 +59,6 @@
 		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		112EB2AC18EFABF000252AC1 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EB2AB18EFABF000252AC1 /* Parse.framework */; };
-		112EB2AE18EFE13900252AC1 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EB2AD18EFE13900252AC1 /* CrashReporter.framework */; };
 		112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
@@ -242,6 +241,7 @@
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
 		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
+		11684A2418F2668200F60662 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11684A2318F2668200F60662 /* CrashReporter.framework */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
@@ -430,7 +430,6 @@
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		112EB2AB18EFABF000252AC1 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		112EB2AD18EFE13900252AC1 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
 		112EB2AF18EFE9B200252AC1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
@@ -791,6 +790,7 @@
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
 		11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
 		11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
+		11684A2318F2668200F60662 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
 		116A0E6B18AD22AF00CF1399 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		116A0E6C18AD22AF00CF1399 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
@@ -948,7 +948,7 @@
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
-				112EB2AE18EFE13900252AC1 /* CrashReporter.framework in Frameworks */,
+				11684A2418F2668200F60662 /* CrashReporter.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */,
@@ -1006,7 +1006,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				112EB2AD18EFE13900252AC1 /* CrashReporter.framework */,
+				11684A2318F2668200F60662 /* CrashReporter.framework */,
 				112EB2AB18EFABF000252AC1 /* Parse.framework */,
 				11A8525818EDE53000557A5B /* SystemConfiguration.framework */,
 				11A8525618EDE52700557A5B /* StoreKit.framework */,

@@ -33,6 +33,7 @@
 #import "CMPopTipView.h"
 #import "HistoryContainerViewController.h"
 #import "TestDataCreator.h"
+#import <Parse/Parse.h>
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -100,9 +101,9 @@
 
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
-        //User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-        //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
-        //User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
         
         /*
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
@@ -117,6 +118,11 @@
     }
     
     
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+          PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+          [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+      }
+
     
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;

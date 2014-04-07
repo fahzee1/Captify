@@ -1,7 +1,7 @@
 /*
  * Author: Landon Fuller <landonf@plausible.coop>
  *
- * Copyright (c) 2012 Plausible Labs Cooperative, Inc.
+ * Copyright (c) 2012-2013 Plausible Labs Cooperative, Inc.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -45,16 +45,19 @@
 #define PLNS_impl(prefix, symbol) PLNS_impl2(prefix, symbol)
 #define PLNS(symbol) PLNS_impl(PLCRASHREPORTER_PREFIX, symbol)
 
+#define PLCrashMachExceptionServer          PLNS(PLCrashMachExceptionServer)
 #define PLCrashReport                       PLNS(PLCrashReport)
 #define PLCrashReportApplicationInfo        PLNS(PLCrashReportApplicationInfo)
 #define PLCrashReportBinaryImageInfo        PLNS(PLCrashReportBinaryImageInfo)
 #define PLCrashReportExceptionInfo          PLNS(PLCrashReportExceptionInfo)
+#define PLCrashReportMachExceptionInfo      PLNS(PLCrashReportMachExceptionInfo)
 #define PLCrashReportMachineInfo            PLNS(PLCrashReportMachineInfo)
 #define PLCrashReportProcessInfo            PLNS(PLCrashReportProcessInfo)
 #define PLCrashReportProcessorInfo          PLNS(PLCrashReportProcessorInfo)
 #define PLCrashReportRegisterInfo           PLNS(PLCrashReportRegisterInfo)
 #define PLCrashReportSignalInfo             PLNS(PLCrashReportSignalInfo)
 #define PLCrashReportStackFrameInfo         PLNS(PLCrashReportStackFrameInfo)
+#define PLCrashReportSymbolInfo             PLNS(PLCrashReportSymbolInfo)
 #define PLCrashReportSystemInfo             PLNS(PLCrashReportSystemInfo)
 #define PLCrashReportTextFormatter          PLNS(PLCrashReportTextFormatter)
 #define PLCrashReportThreadInfo             PLNS(PLCrashReportThreadInfo)
@@ -64,5 +67,14 @@
 #define PLCrashReportHostOperatingSystem    PLNS(PLCrashReportHostOperatingSystem)
 #define PLCrashReporterErrorDomain          PLNS(PLCrashReporterErrorDomain)
 #define PLCrashReporterException            PLNS(PLCrashReporterException)
+#define PLCrashHostInfo                     PLNS(PLCrashHostInfo)
+#define PLCrashMachExceptionPort            PLNS(PLCrashMachExceptionPort)
+#define PLCrashMachExceptionPortSet         PLNS(PLCrashMachExceptionPortSet)
+#define PLCrashProcessInfo                  PLNS(PLCrashProcessInfo)
+#define PLCrashReporterConfig               PLNS(PLCrashReporterConfig)
+#define PLCrashUncaughtExceptionHandler     PLNS(PLCrashUncaughtExceptionHandler)
+#define PLCrashMachExceptionForward         PLNS(PLCrashMachExceptionForward)
+#define PLCrashSignalHandlerForward         PLNS(PLCrashSignalHandlerForward)
+#define plcrash_signal_handler              PLNS(plcrash_signal_handler)
 
 #endif

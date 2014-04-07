@@ -137,7 +137,7 @@
                          placeholderImage:[UIImage imageNamed:@"profile-placeholder"]
                                   options:0
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                     int percent = receivedSize / expectedSize;
+                                     long percent = receivedSize / expectedSize;
                                      self.progressView.progress = (float)percent;
                                      
                                  }
