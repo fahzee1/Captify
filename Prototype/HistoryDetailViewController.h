@@ -23,4 +23,5 @@
 @property (nonatomic, strong)NSURL *mediaURL;
 @property (strong, nonatomic)ChallengePicks *myPick;
 
+
 @end

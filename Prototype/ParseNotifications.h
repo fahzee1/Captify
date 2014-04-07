@@ -25,9 +25,19 @@ typedef enum {
 
 - (NSString *)formatChannelNameForParse:(NSString *)name;
 
+- (BOOL)checkForChannelAndRemove:(NSString *)name;
+
 - (void)addChannelWithChallengeName:(NSString *)name;
 
 - (void)removeChannelWithChallengeName:(NSString *)name;
+
+- (void)sendNotification:(NSString *)message
+               toFriend:(NSString *)friend
+                withData:(NSDictionary *) data
+        notificationType:(ParseNotificationTypes)type
+                   block:(ParseNotifBlock)block;
+
+
 
 - (void)sendNotification:(NSString *)message
                toFriends:(NSArray *)friends
@@ -39,4 +49,11 @@ typedef enum {
                 withData:(NSDictionary *)data
         notificationType:(ParseNotificationTypes)type
                        block:(ParseNotifBlock)block;
+
+
+- (void)sendNotification:(NSString *)message
+               toChannel:(NSString *)channel
+                withData:(NSDictionary *)data
+        notificationType:(ParseNotificationTypes)type
+                   block:(ParseNotifBlock)block;
 @end

@@ -101,10 +101,13 @@
     }
     
     
-    if (block){
-        block(YES,numbersList);
-    }
-}
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (block){
+            block(YES,numbersList);
+        }
+
+    });
+  }
 
 
 - (NSURLSessionDataTask *)requestFriendsFromContactsList:(NSDictionary *)params

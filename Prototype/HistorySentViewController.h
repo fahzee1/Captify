@@ -13,4 +13,6 @@
 
 @property (nonatomic, retain)User *myUser;
 
+
+- (void)fetchUpdates;
 @end

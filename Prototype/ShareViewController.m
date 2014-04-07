@@ -13,6 +13,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SocialFriends.h"
 #import "MBProgressHUD.h"
+#import "ParseNotifications.h"
 
 @interface ShareViewController ()
 
@@ -200,6 +201,30 @@
     }];
 }
 
+
+- (void)notifyFriends
+{
+    
+    ParseNotifications *p = [ParseNotifications new];
+    
+    // notify all receipients of challenge
+    [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",self.myChallenge.sender.username]
+              toChannel:self.myChallenge.name
+               withData:@{@"challenge_name": self.myChallenge.name}
+       notificationType:ParseNotificationSenderChoseCaption
+                  block:nil];
+    
+    // notify chosen captions sender
+    [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",self.myChallenge.sender.username]
+               toFriend:self.myPick.player.username
+               withData:@{@"challenge_name": self.myChallenge.name}
+       notificationType:ParseNotificationNotifySelectedCaptionSender
+                  block:nil];
+    
+
+}
+
+
 - (IBAction)tappedShare:(UIButton *)sender {
     // after share show success overlay or alert or something
     // then pop to root
@@ -271,6 +296,8 @@
                                            if (![self.myChallenge.managedObjectContext save:&error]){
                                                NSLog(@"%@",error);
                                            }
+                                           
+                                           [self notifyFriends];
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                 [self.navigationController popToRootViewControllerAnimated:YES];

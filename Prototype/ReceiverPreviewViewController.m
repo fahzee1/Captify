@@ -16,6 +16,8 @@
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIView *captionContainerView;
+
 @property int errorCount;
 @end
 
@@ -110,6 +112,8 @@
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.sendButton.layer.cornerRadius = 20.0f;
     
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:@"#f39c12"];
+    
     
 
 }
@@ -154,18 +158,22 @@
                                                           self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
                                                           if (![self.myChallenge.managedObjectContext save:&error]){
                                                               NSLog(@"%@",error);
+                                                              return;
                                                           }
+                                                          
+                                                          
+                                                          ParseNotifications *p = [ParseNotifications new];
+                                                          
+                                                          [p addChannelWithChallengeName:self.myChallenge.name];
+                                                          [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+                                                                    toFriends:@[self.myChallenge.sender.username]
+                                                                     withData:@{@"challenge_name": self.myChallenge.name}
+                                                             notificationType:ParseNotificationSendCaptionPick
+                                                                        block:nil];
+                                                          
+                                                          [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }
                                                       
-                                                      ParseNotifications *p = [ParseNotifications new];
-                                                      [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
-                                                                toFriends:@[self.myChallenge.sender.username]
-                                                                 withData:@{@"challenge_name": self.myChallenge.name}
-                                                         notificationType:ParseNotificationSendCaptionPick
-                                                                    block:nil];
-                                                      
-                                                      [self.navigationController popToRootViewControllerAnimated:YES];
-
                                                       
                                                   }
                                                   else{

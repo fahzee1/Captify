@@ -51,6 +51,8 @@
     [super viewDidLoad];
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
+    
+    
 
 }
 
@@ -133,8 +135,6 @@
                                             
                                             
                                             if (challenge){
-                                                //increment notifications
-                                                //[self.notifications addOneNotifToView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
                                                 
                                                 // create challenge picks to add to challenge
                                                 for (id results in ch[@"results"]){
@@ -320,6 +320,7 @@
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
             ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+           
             
             NSArray *allPicks = [challenge.picks allObjects];
             NSArray *pick = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];

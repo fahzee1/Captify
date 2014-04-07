@@ -180,6 +180,8 @@
     CGRect frame = self.challengeNameLabel.frame;
     self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
     
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:@"#f39c12"];
+    
     
     
     

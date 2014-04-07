@@ -52,6 +52,8 @@
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
+		1124520018F2EEF7006373B6 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112451FF18F2EEF7006373B6 /* CrashReporter.framework */; };
+		1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */; };
 		1126C09118E9C4D100838484 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C09018E9C4D100838484 /* Notifications.m */; };
 		1126C0A618EA0E3D00838484 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A518EA0E3D00838484 /* Challenge.m */; };
 		1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A818EA0E3E00838484 /* ChallengePicks.m */; };
@@ -241,7 +243,6 @@
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
 		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
-		11684A2418F2668200F60662 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11684A2318F2668200F60662 /* CrashReporter.framework */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 116F0C5F189C03E300C1C430 /* AnswerFieldView.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
@@ -418,6 +419,8 @@
 		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		112451FF18F2EEF7006373B6 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "leaguegothic-regular-webfont.ttf"; path = "../leaguegothic-regular-webfont.ttf"; sourceTree = "<group>"; };
 		1126C08F18E9C4D100838484 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		1126C09018E9C4D100838484 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		1126C0A418EA0E3D00838484 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
@@ -790,7 +793,6 @@
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
 		11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
 		11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
-		11684A2318F2668200F60662 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
 		116A0E6B18AD22AF00CF1399 /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		116A0E6C18AD22AF00CF1399 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		116F0C5E189C03E300C1C430 /* AnswerFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerFieldView.h; sourceTree = "<group>"; };
@@ -948,7 +950,7 @@
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
-				11684A2418F2668200F60662 /* CrashReporter.framework in Frameworks */,
+				1124520018F2EEF7006373B6 /* CrashReporter.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */,
@@ -1006,7 +1008,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				11684A2318F2668200F60662 /* CrashReporter.framework */,
+				112451FF18F2EEF7006373B6 /* CrashReporter.framework */,
 				112EB2AB18EFABF000252AC1 /* Parse.framework */,
 				11A8525818EDE53000557A5B /* SystemConfiguration.framework */,
 				11A8525618EDE52700557A5B /* StoreKit.framework */,
@@ -1059,6 +1061,7 @@
 		110730F71876640F0065D77F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */,
 				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				110730F81876640F0065D77F /* Captify-Info.plist */,
 				110730F91876640F0065D77F /* InfoPlist.strings */,
@@ -1955,6 +1958,7 @@
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				11ABFCA918C7D28300639A20 /* NEOColorPickerHSLViewController.xib in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
+				1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */,
 				11ABFCA618C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib in Resources */,
 				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
@@ -2409,6 +2413,7 @@
 					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
 					/Users/cjogbuehi/Documents/FacebookSDK,
 					/Users/cjogbuehi/iphone/Captify,
+					/Users/cjogbuehi/ios/Captify,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
@@ -2431,6 +2436,7 @@
 					"/Users/cjogbuehi/ios/prototype-words/prototype-words",
 					/Users/cjogbuehi/Documents/FacebookSDK,
 					/Users/cjogbuehi/iphone/Captify,
+					/Users/cjogbuehi/ios/Captify,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";

@@ -23,6 +23,7 @@
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
 #import "CJPopup.h"
+#import "ParseNotifications.h"
 #import <MessageUI/MessageUI.h>
 
 /*
@@ -63,6 +64,11 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *captionRotateReverseButton;
 @property (weak, nonatomic) IBOutlet UILabel *captionRotateTitle;
+@property (weak, nonatomic) IBOutlet UILabel *captionAlphaTitle;
+@property (weak, nonatomic) IBOutlet UILabel *captionAlphaValue;
+@property (weak, nonatomic) IBOutlet UISlider *captionAlphaSlider;
+
+
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (strong,nonatomic)CMPopTipView *toolTip;
@@ -71,6 +77,7 @@
 @property (strong, nonatomic)UIButton *makeButton;
 @property BOOL pendingRequest;
 @property BOOL makeButtonVisible;
+@property BOOL captionMoved;
 @property int errorCount;
 
 @end
@@ -107,11 +114,21 @@
     self.imageControls.hidden = YES;
     [self.view addSubview:self.imageControls];
     
-    self.captionSizeStepper.value = 25;
+    self.captionSizeStepper.value = 35;
     self.captionSizeStepper.minimumValue = 8;
-    self.captionSizeStepper.maximumValue = 45;
+    self.captionSizeStepper.maximumValue = 100;
+    
+    self.captionAlphaSlider.value = 1.0;
+    self.captionAlphaSlider.maximumValue = 1.0;
+    self.captionAlphaSlider.minimumValue = 0.2;
    
-    self.topLabel.text = self.myChallenge.name;
+    self.topLabel.text = [self.myChallenge.name capitalizedString];
+    if ([self.myChallenge.name length] > 30){
+        self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+    }
+    else{
+        self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    }
     self.topLabel.textAlignment = NSTextAlignmentCenter;
     self.topLabel.numberOfLines = 0;
     [self.topLabel sizeToFit];
@@ -122,6 +139,7 @@
 
     
     self.currentPoint = self.finalCaptionLabel.center;
+    self.priorPoint = self.finalCaptionLabel.center;
     
     if (!self.hideSelectButtons){
         self.hideSelectButtons = NO;
@@ -135,6 +153,7 @@
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
 
+    
     [self downloadImage];
 }
 
@@ -170,6 +189,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (NSString *)myFontName
+{
+    return @"LeagueGothic-Regular";
+}
 
 - (void)fetchUpdates
 {
@@ -228,7 +252,6 @@
 
 - (void)downloadImage
 {
-    NSLog(@"url is %@",self.mediaURL);
     if (self.mediaURL){
         self.retryButton.hidden = YES;
         self.progressView.hidden = NO;
@@ -237,14 +260,19 @@
                          placeholderImage:[UIImage imageNamed:@"profile-placeholder"]
                                   options:0
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                     int percent = receivedSize / expectedSize;
-                                     self.progressView.progress = (float)percent;
+                                    self.progressView.hidden = NO;
+                                    long percent = receivedSize / expectedSize;
+                                    self.progressView.progress = (float)percent;
                                      
                                  }
                                 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                                     self.progressView.hidden = YES;
                                     if (!image){
-                                        self.retryButton.hidden = NO;
+                                        double delayInSeconds = 2.0;
+                                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                             self.retryButton.hidden = NO;
+                                        });
                 
                                     }
                                 }];
@@ -270,12 +298,15 @@
     }
 }
 
-
+- (void)reset
+{
+    self.captionMoved = NO;
+}
 
 
 - (void)setupFinalLabel
 {
-
+    [self reset];
     
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
     press.minimumPressDuration = 0.1;
@@ -285,8 +316,12 @@
     
     [press requireGestureRecognizerToFail:controls];
     
+
+    if (!CGPointEqualToPoint(self.finalCaptionLabel.center, self.priorPoint)){
+        self.finalCaptionLabel.center = self.priorPoint;
+    }
     self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
-    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
+    self.finalCaptionLabel.font = [UIFont fontWithName:[self myFontName] size:35];
     if ([self.finalCaptionLabel.text length] > 15){
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
@@ -316,11 +351,14 @@
                          self.toolTip.textColor = [UIColor whiteColor];
                          self.toolTip.hasGradientBackground = NO;
                          self.toolTip.preferredPointDirection = PointDirectionDown;
+                         self.toolTip.dismissTapAnywhere = YES;
                          self.toolTip.hasShadow = NO;
                          self.toolTip.has3DStyle = NO;
                          self.toolTip.borderWidth = 0;
+                         [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
                          [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
-                         [self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
+                         
+                         //[self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
                          
                          
                          
@@ -356,6 +394,10 @@
 
     self.captionRotateTitle.textColor = [UIColor whiteColor];
     
+    
+    self.captionAlphaTitle.textColor = [UIColor whiteColor];
+    self.captionAlphaValue.textColor = [UIColor whiteColor];
+    self.captionAlphaSlider.tintColor = [UIColor whiteColor];
     
     
     self.captionSizeTitle.textColor = [UIColor whiteColor];
@@ -407,6 +449,7 @@
 
 
 - (IBAction)tappedRotate:(UIButton *)sender {
+    [self.finalCaptionLabel stopGlowing];
     static int attempts = 0;
 
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
@@ -444,7 +487,7 @@
 }
 
 - (IBAction)tappedReverseRotate:(UIButton *)sender {
-    
+    [self.finalCaptionLabel stopGlowing];
     static int attempts = 0;
     
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
@@ -527,6 +570,7 @@
             break;
         case UIGestureRecognizerStateChanged:
         {
+            self.captionMoved = YES;
             view.center = point;
         }
             break;
@@ -549,6 +593,11 @@
     [self showAlertWithTextField];
 }
 
+- (IBAction)captionAlphaChanged:(UISlider *)sender {
+    
+    self.finalCaptionLabel.alpha = sender.value;
+    self.captionAlphaValue.text = [NSString stringWithFormat:@"%.1f",sender.value];
+}
 
 - (void)showAlertWithTextField
 {
@@ -584,6 +633,7 @@
 
 - (void)captionSizeChanged
 {
+    
     [self.finalCaptionLabel stopGlowing];
     
     
@@ -591,8 +641,13 @@
     //CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
     
     self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
-    self.finalCaptionLabel.center = self.currentPoint;
-    self.finalCaptionLabel.font = [UIFont fontWithName:@"Chalkduster" size:self.captionSizeStepper.value];
+    if (self.captionMoved){
+        self.finalCaptionLabel.center = self.currentPoint;
+    }
+    else{
+        self.finalCaptionLabel.center = self.priorPoint;
+    }
+    self.finalCaptionLabel.font = [UIFont fontWithName:[self myFontName] size:self.captionSizeStepper.value];
     self.captionSizeValue.text = [NSString stringWithFormat:@"%d pt", (int)self.captionSizeStepper.value];
     
 
@@ -823,7 +878,7 @@
     container.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
     
     NSString *title;
-    int count = [self.data count];
+    NSUInteger count = [self.data count];
     if (count == 0){
         title = NSLocalizedString(@"No captions received yet!", @"Nothing received yet");
     }
@@ -953,8 +1008,6 @@
             
             if (self.hideSelectButtonsMax){
                 if ([pick.is_chosen intValue] == 1){
-                    #warning add trophy icon to selected caption
-                    //[selectButton setBackgroundImage:[UIImage imageNamed:@"profile-placeholder"] forState:UIControlStateNormal];
                     selectButton.userInteractionEnabled = NO;
                     selectButton.hidden = NO;
                     selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];

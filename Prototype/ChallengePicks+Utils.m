@@ -61,7 +61,7 @@
     // check if exists first
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ChallengePicks name]];
     request.predicate = [NSPredicate predicateWithFormat:@"pick_id = %@",[params valueForKey:@"pick_id"]];
-    int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
+    NSUInteger exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
         if (user){
            pick = [NSEntityDescription insertNewObjectForEntityForName:[ChallengePicks name] inManagedObjectContext:user.managedObjectContext];

@@ -70,7 +70,7 @@ typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
 // the methods below are used as phone number formatters
 typedef void (^SendPhoneNumberBlock) (BOOL wasSuccessful);
 
-+ (int)getLength:(NSString*)mobileNumber;
++ (NSUInteger)getLength:(NSString*)mobileNumber;
 + (NSString *)formatNumber:(NSString *)mobileNumber;
 
 + (void)sendPhoneNumber:(NSString *)number

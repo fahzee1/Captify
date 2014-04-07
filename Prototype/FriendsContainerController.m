@@ -19,6 +19,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "Contacts.h"
 #import "AppDelegate.h"
+#import "UIColor+HexValue.h"
 #import "User+Utils.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
@@ -61,7 +62,8 @@
     
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#f39c12"]} forState:UIControlStateNormal];
     
    
     self.navigationItem.leftBarButtonItem = button;

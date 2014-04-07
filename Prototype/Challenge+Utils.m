@@ -356,7 +356,7 @@
                   
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
-    int exist = [user.managedObjectContext countForFetchRequest:request error:&error];
+    NSUInteger exist = [user.managedObjectContext countForFetchRequest:request error:&error];
     if (exist == 0){
         if (user){
             challenge = [NSEntityDescription insertNewObjectForEntityForName:[Challenge name] inManagedObjectContext:user.managedObjectContext];
@@ -418,7 +418,6 @@
     [client startNetworkActivity];
     return [client POST:AwesomeAPIChallengeCreateString
              parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-#warning make correct image names
                  NSString *filename = @"test.jpg";
                  NSString *name = @"test";
                  [formData appendPartWithFileData:image name:name fileName:filename mimeType:@"image/jpeg"];

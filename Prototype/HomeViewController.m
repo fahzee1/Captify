@@ -101,9 +101,12 @@
 
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
-        User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
-        User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        //User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        //User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        
+         
+
         
         /*
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
@@ -274,18 +277,17 @@
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    [self.topMenuButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.topMenuButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"] forState:UIControlStateNormal];
 
-    
 
     
     self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
-    [self.flashButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.flashButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"] forState:UIControlStateNormal];
     
     self.rotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.rotateButton setTitle:[NSString stringWithFormat:@"%@ %@",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"],[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"]] forState:UIControlStateNormal];
-    [self.rotateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.rotateButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"]  forState:UIControlStateNormal];
     
     self.cameraOptionsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.cameraOptionsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
@@ -913,7 +915,7 @@
 {
     if (textField == self.makePhoneTextField){
         
-        int length = [SocialFriends getLength:textField.text];
+        NSUInteger length = [SocialFriends getLength:textField.text];
         if (length == 10){
             if (range.length == 0){
                 return NO;

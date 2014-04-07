@@ -44,10 +44,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"starring"]];
+    
+    
     for (id view in self.view.subviews){
         if ([view isKindOfClass:[UIButton class]]){
             UIButton *button = (UIButton *)view;
-            button.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
+            button.layer.backgroundColor = [[UIColor colorWithHexString:@"#f39c12"] CGColor];
             button.layer.cornerRadius = 6.0f;
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];

@@ -147,7 +147,7 @@
                             message:@"Come up with something catchy"
                               block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                   if (wasSuccessful){
-                                      NSLog(@"%u",result);
+                                      NSLog(@"%lu",result);
                                   }
                               }];
 }

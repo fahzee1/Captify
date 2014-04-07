@@ -600,7 +600,7 @@
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     
     
-    int length = [mobileNumber length];
+    NSUInteger length = [mobileNumber length];
     if(length > 10)
     {
         mobileNumber = [mobileNumber substringFromIndex: length-10];
@@ -612,7 +612,7 @@
 }
 
 
-+ (int)getLength:(NSString *)mobileNumber
++ (NSUInteger)getLength:(NSString *)mobileNumber
 {
     
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
@@ -621,7 +621,7 @@
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     
-    int length = [mobileNumber length];
+    NSUInteger length = [mobileNumber length];
     
     return length;
     

@@ -17,10 +17,12 @@
 #import "SocialFriends.h"
 #import "TMCache.h"
 #import "HistoryContainerViewController.h"
+#import "HistoryRecievedViewController.h"
 #import <Parse/Parse.h>
-#import <CrashReporter/CrashReporter.h>
 #import "ParseNotifications.h"
 #import "JDStatusBarNotification.h"
+#import <CrashReporter/CrashReporter.h>
+
 
 
 @interface AppDelegate()
@@ -156,6 +158,7 @@
 
 - (void)handleCrashReport
 {
+    
     PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSData *crashData;
     NSError *error;
@@ -375,10 +378,11 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     
-    
-    PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
-    [currentOnstallation setDeviceTokenFromData:deviceToken];
-    [currentOnstallation saveInBackground];
+    if (deviceToken){
+        PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+        [currentOnstallation setDeviceTokenFromData:deviceToken];
+        [currentOnstallation saveInBackground];
+    }
     
     
     //const void *devTokenBytes = [deviceToken bytes];
@@ -718,6 +722,12 @@
                 ParseNotifications *p = [ParseNotifications new];
                 [p addChannelWithChallengeName:challenge_name];
                 
+                UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+
+                UIViewController *receivedHistory = (HistoryRecievedViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"recievedHistory"];
+                [((HistoryRecievedViewController *)receivedHistory) fetchUpdates];
+                
+                
                 if (isF){
                     [JDStatusBarNotification showWithStatus:payload[@"aps"][@"alert"]
                                                dismissAfter:2.0
@@ -736,7 +746,12 @@
             break;
         case ParseNotificationSenderChoseCaption:
         {
-            
+            NSString *challenge_name;
+            if (payload[@"challenge"]){
+                challenge_name = payload[@"challenge"];
+                ParseNotifications *p = [ParseNotifications new];
+                [p checkForChannelAndRemove:challenge_name];
+            }
         }
             break;
         case ParseNotificationNotifySelectedCaptionSender:

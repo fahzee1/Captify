@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "AwesomeAPICLient.h"
 #import "MBProgressHUD.h"
+#import "UIColor+HexValue.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
@@ -57,7 +58,9 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
+    
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#f39c12"]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
     
   }

@@ -43,6 +43,7 @@
 	<string>We would like to use your contacts to find all of your friends using this app!</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>leaguegothic-regular-webfont.ttf</string>
 		<string>fontawesome-webfont.ttf</string>
 	</array>
 	<key>UIApplicationExitsOnSuspend</key>
