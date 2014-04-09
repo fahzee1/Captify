@@ -63,9 +63,10 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
 
 + (NSString *)createChallengeIDWithUser:(NSString *)user;
 
-+ (void)saveImage:(UIImage *)image
-         filename:(NSString *)name;
++ (NSString *)saveImage:(NSData *)image
+               filename:(NSString *)name;
 
 + (UIImage *)loadImagewithFileName:(NSString *)name;
+
 
 @end

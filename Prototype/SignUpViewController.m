@@ -132,7 +132,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Signing In";
+    hud.labelText = NSLocalizedString(@"Signing In", nil);
     
 
     NSURLSessionDataTask *task = [User registerWithParams:params

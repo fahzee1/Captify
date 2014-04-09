@@ -45,6 +45,8 @@
     self.navigationItem.leftBarButtonItem = button;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
     
+    [self.mySegmentControl setTitle:NSLocalizedString(@"Received", nil) forSegmentAtIndex:0];
+    [self.mySegmentControl setTitle:NSLocalizedString(@"Sent", nil) forSegmentAtIndex:0];
 
     // we're comming from senderpreview screen right
     // after creating challenge so show sent screen
@@ -59,6 +61,7 @@
     vc.view.frame = self.myContainerView.bounds;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
+    
     
     self.sideMenuViewController.delegate = self;
    

@@ -32,7 +32,7 @@
 @property (strong, nonatomic)IBOutlet UIButton *bottomSendButton;
 @property CGPoint scrollStart;
 @property (strong, nonatomic)NSArray *sections;
-
+@property NSString *localMediaName;
 
 
 
@@ -190,17 +190,31 @@
                                 @"recipients":self.selectedFriends[@"friends"],
                                 @"challenge_id":challenge_id,
                                } mutableCopy];
-
+    
+    NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
     if (mediaData){
+        NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
         NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
         apiParams[@"media"] = media;
+        apiParams[@"media_name"] = mediaName;
     }
+    
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Sending";
+    hud.labelText = NSLocalizedString(@"Sending", nil);
     
-    
+    /*
+    dispatch_queue_t saveQ = dispatch_queue_create("com.Captify.saveImage", nil);
+    dispatch_async(saveQ, ^{
+        NSString *localMediaName = [Challenge saveImage:mediaData filename:mediaName];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.localMediaName = localMediaName;
+        });
+    });
+     */
+   
+    NSString *localMediaName = [Challenge saveImage:mediaData filename:mediaName];
     [Challenge sendCreateChallengeRequestWithParams:apiParams
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
                                                   if (wasSuccessful){
@@ -214,7 +228,8 @@
                                                                                @"recipients_count":[NSNumber numberWithInteger:count],
                                                                                @"challenge_name":self.name,
                                                                                @"challenge_id":challenge_id,
-                                                                               @"media_url":media_url};
+                                                                               @"media_url":media_url,
+                                                                               @"local_media_url":localMediaName};
                                                       
                                                       Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                                       if (challenge){

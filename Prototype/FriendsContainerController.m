@@ -70,7 +70,6 @@
     self.navigationItem.leftBarButtonItem = button;
     self.navigationItem.title = NSLocalizedString(@"Friends", nil);
     
-    [self.mySegmentedControl setTitle:NSLocalizedString(@"Facebook", nil) forSegmentAtIndex:0];
     [self.mySegmentedControl setTitle:NSLocalizedString(@"Contacts", nil) forSegmentAtIndex:1];
     [self.mySegmentedControl setTitle:NSLocalizedString(@"Invite", nil) forSegmentAtIndex:2];
     [self.mySegmentedControl setTitle:NSLocalizedString(@"Search", nil) forSegmentAtIndex:3];

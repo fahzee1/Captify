@@ -1,8 +1,8 @@
 //
 //  Challenge.m
-//  Prototype
+//  Captify
 //
-//  Created by CJ Ogbuehi on 3/31/14.
+//  Created by CJ Ogbuehi on 4/9/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @dynamic active;
 @dynamic challenge_id;
 @dynamic fields_count;
+@dynamic first_open;
 @dynamic image_path;
 @dynamic is_chosen;
 @dynamic is_deleted;
@@ -28,7 +29,7 @@
 @dynamic sync_status;
 @dynamic thumbnail_path;
 @dynamic timestamp;
-@dynamic first_open;
+@dynamic local_image_path;
 @dynamic picks;
 @dynamic recipients;
 @dynamic sender;

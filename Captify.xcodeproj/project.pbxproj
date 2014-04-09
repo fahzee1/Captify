@@ -55,7 +55,6 @@
 		1124520018F2EEF7006373B6 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112451FF18F2EEF7006373B6 /* CrashReporter.framework */; };
 		1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */; };
 		1126C09118E9C4D100838484 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C09018E9C4D100838484 /* Notifications.m */; };
-		1126C0A618EA0E3D00838484 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A518EA0E3D00838484 /* Challenge.m */; };
 		1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A818EA0E3E00838484 /* ChallengePicks.m */; };
 		1128443618EF273F0056D517 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128443518EF273F0056D517 /* User.m */; };
 		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
@@ -330,6 +329,7 @@
 		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
 		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
 		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
+		11DF517218F5BBCE008A3B0D /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DF517118F5BBCE008A3B0D /* Challenge.m */; };
 		11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */; };
 		11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */; };
 		11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FA2F4018D79380000F6DB9 /* Contacts.m */; };
@@ -427,11 +427,9 @@
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
 		112451FF18F2EEF7006373B6 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
-		1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "leaguegothic-regular-webfont.ttf"; path = "../leaguegothic-regular-webfont.ttf"; sourceTree = "<group>"; };
+		1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "leaguegothic-regular-webfont.ttf"; path = "../../../leaguegothic-regular-webfont.ttf"; sourceTree = "<group>"; };
 		1126C08F18E9C4D100838484 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		1126C09018E9C4D100838484 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
-		1126C0A418EA0E3D00838484 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		1126C0A518EA0E3D00838484 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		1126C0A718EA0E3E00838484 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
 		1126C0A818EA0E3E00838484 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
 		1128443418EF273F0056D517 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -883,13 +881,13 @@
 		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
 		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
-		119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
-		119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Reg.otf"; sourceTree = "<group>"; };
-		119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Sbold.otf"; sourceTree = "<group>"; };
-		119BAED918F4FC1C00678A63 /* GoodDog.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GoodDog.otf; sourceTree = "<group>"; };
-		119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lemondrop Bold.ttf"; sourceTree = "<group>"; };
-		119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lemondrop.ttf; sourceTree = "<group>"; };
-		119BAEDF18F4FD2F00678A63 /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "American Captain.otf"; sourceTree = "<group>"; };
+		119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Bold.otf"; path = "../../ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Reg.otf"; path = "../../ProximaNova-Reg.otf"; sourceTree = "<group>"; };
+		119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Sbold.otf"; path = "../../ProximaNova-Sbold.otf"; sourceTree = "<group>"; };
+		119BAED918F4FC1C00678A63 /* GoodDog.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = GoodDog.otf; path = ../../GoodDog.otf; sourceTree = "<group>"; };
+		119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lemondrop Bold.ttf"; path = "../../Lemondrop Bold.ttf"; sourceTree = "<group>"; };
+		119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Lemondrop.ttf; path = ../../Lemondrop.ttf; sourceTree = "<group>"; };
+		119BAEDF18F4FD2F00678A63 /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "American Captain.otf"; path = "../../American Captain.otf"; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -935,7 +933,7 @@
 		11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+TimeAgo.m"; sourceTree = "<group>"; };
 		11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NSDateTimeAgo.bundle; sourceTree = "<group>"; };
 		11DC6B6018B7090A00C129D6 /* cameraControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cameraControls.xib; sourceTree = "<group>"; };
-		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fontawesome-webfont.ttf"; path = "../../fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		11DC6B6418B717AA00C129D6 /* FAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAImageView.h; sourceTree = "<group>"; };
 		11DC6B6518B717AA00C129D6 /* FAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAImageView.m; sourceTree = "<group>"; };
 		11DC6B6618B717AA00C129D6 /* NSString+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FontAwesome.h"; sourceTree = "<group>"; };
@@ -943,6 +941,8 @@
 		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
 		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
+		11DF517018F5BBCE008A3B0D /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		11DF517118F5BBCE008A3B0D /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11DFE7AA18E0A0B700066E62 /* TestDataCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDataCreator.h; sourceTree = "<group>"; };
 		11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestDataCreator.m; sourceTree = "<group>"; };
 		11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChallengePicks+Utils.h"; sourceTree = "<group>"; };
@@ -1007,6 +1007,7 @@
 				11073118187664100065D77F /* CaptifyTests */,
 				110730EF1876640E0065D77F /* Frameworks */,
 				110730EE1876640E0065D77F /* Products */,
+				11DF518518F5F1ED008A3B0D /* Resources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1075,15 +1076,6 @@
 		110730F71876640F0065D77F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				119BAEDF18F4FD2F00678A63 /* American Captain.otf */,
-				119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */,
-				119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */,
-				119BAED918F4FC1C00678A63 /* GoodDog.otf */,
-				119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */,
-				119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */,
-				119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */,
-				1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */,
-				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				110730F81876640F0065D77F /* Captify-Info.plist */,
 				110730F91876640F0065D77F /* InfoPlist.strings */,
 				110730FC1876640F0065D77F /* main.m */,
@@ -1115,12 +1107,12 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
+				11DF517018F5BBCE008A3B0D /* Challenge.h */,
+				11DF517118F5BBCE008A3B0D /* Challenge.m */,
 				1128443418EF273F0056D517 /* User.h */,
 				1128443518EF273F0056D517 /* User.m */,
 				1126C0A718EA0E3E00838484 /* ChallengePicks.h */,
 				1126C0A818EA0E3E00838484 /* ChallengePicks.m */,
-				1126C0A418EA0E3D00838484 /* Challenge.h */,
-				1126C0A518EA0E3D00838484 /* Challenge.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
 				1186B1BC188E38920082F35F /* User+Utils.m */,
 				11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */,
@@ -1892,6 +1884,31 @@
 			path = CMPopTipView;
 			sourceTree = "<group>";
 		};
+		11DF518518F5F1ED008A3B0D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11DF518618F5F1ED008A3B0D /* Fonts */,
+			);
+			name = Resources;
+			path = Prototype/Resources;
+			sourceTree = "<group>";
+		};
+		11DF518618F5F1ED008A3B0D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				119BAEDF18F4FD2F00678A63 /* American Captain.otf */,
+				119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */,
+				119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */,
+				119BAED918F4FC1C00678A63 /* GoodDog.otf */,
+				119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */,
+				119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */,
+				119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */,
+				1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */,
+				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2073,6 +2090,7 @@
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				1153E18C18A9DF4800AD950E /* GPUImageLuminanceRangeFilter.m in Sources */,
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
+				11DF517218F5BBCE008A3B0D /* Challenge.m in Sources */,
 				11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
@@ -2190,7 +2208,6 @@
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */,
 				11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */,
-				1126C0A618EA0E3D00838484 /* Challenge.m in Sources */,
 				1153E1B418A9DF4800AD950E /* GPUImageScreenBlendFilter.m in Sources */,
 				11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */,
 				1107316718863B2E0065D77F /* UIWebView+AFNetworking.m in Sources */,

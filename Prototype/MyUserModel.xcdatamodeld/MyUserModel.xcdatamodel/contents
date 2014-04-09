@@ -8,6 +8,7 @@
         <attribute name="image_path" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="is_chosen" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_deleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="local_image_path" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recipients_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="selected_phrase" optional="YES" attributeType="String" syncable="YES"/>

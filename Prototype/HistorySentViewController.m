@@ -301,9 +301,10 @@
 
     if (active && !sentPick && !shared){
 
+        
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.image_path];
+            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.local_image_path];
             ((HistoryDetailViewController *)vc).image = challenge_image;
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
@@ -317,7 +318,7 @@
         
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
         if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.image_path];
+            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.local_image_path];
             ((HistoryDetailViewController *)vc).image = challenge_image;
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;

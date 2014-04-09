@@ -78,6 +78,7 @@
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
+        
         NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:[Challenge fetchedHistoryKey]];
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:[Challenge fetchedHistoryKey]];
         NSMutableDictionary *params =[@{@"username": self.myUser.username} mutableCopy];

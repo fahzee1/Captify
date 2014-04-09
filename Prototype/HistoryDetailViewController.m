@@ -153,8 +153,13 @@
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
 
+    if (!self.image){
+        [self downloadImage];
+    }
+    else{
+        self.myImageView.image = self.image;
+    }
     
-    [self downloadImage];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -179,6 +184,7 @@
         // also mark on challenge that this
         
     }
+    
     [self fetchUpdates];
     
 }

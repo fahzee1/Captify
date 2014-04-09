@@ -597,67 +597,73 @@
                           block:(BlobFetchBlock)block
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPIFetchString parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-        [client stopNetworkActivity];
-        int code = [[responseObject valueForKey:@"code"] intValue];
-        if (code == 1){
-            NSLog(@"success");
-            if (block){
-                block(YES,responseObject,@"success");
+    BOOL busy = [AwesomeAPICLient requestInProgress:client];
+    if (! busy){
+        [client startNetworkActivity];
+        [client POST:AwesomeAPIFetchString parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+            [client stopNetworkActivity];
+            int code = [[responseObject valueForKey:@"code"] intValue];
+            if (code == 1){
+                NSLog(@"success");
+                if (block){
+                    block(YES,responseObject,@"success");
+                }
             }
-        }
-        
-        else if (code == -10){
-            NSLog(@"success but not quite");
-            if (block){
-                block(NO,nil,[responseObject valueForKey:@"message"]);
+            
+            else if (code == -10){
+                NSLog(@"success but not quite");
+                if (block){
+                    block(NO,nil,[responseObject valueForKey:@"message"]);
+                }
             }
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [client stopNetworkActivity];
-        if (block){
-            block(NO,nil,error.localizedDescription);
-            [JDStatusBarNotification showWithStatus:error.localizedDescription
-                                       dismissAfter:2.0
-                                          styleName:JDStatusBarStyleError];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [client stopNetworkActivity];
+            if (block){
+                block(NO,nil,error.localizedDescription);
+                [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                           dismissAfter:2.0
+                                              styleName:JDStatusBarStyleError];
 
-        }
-    }];
-        
+            }
+        }];
+    }
+    
 }
 
 + (void)fetchMediaBlobWithParams:(NSDictionary *)params
                           block:(BlobFetchBlock)block
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPIChallengeMediaString parameters:params
-         success:^(NSURLSessionDataTask *task, id responseObject) {
-             [client stopNetworkActivity];
-             int code = [[responseObject valueForKey:@"code"] intValue];
-             if (code == 1){
-                 NSLog(@"success");
-                 if (block){
-                     block(YES,responseObject,@"success");
+    BOOL busy = [AwesomeAPICLient requestInProgress:client];
+    if (!busy){
+        [client startNetworkActivity];
+        [client POST:AwesomeAPIChallengeMediaString parameters:params
+             success:^(NSURLSessionDataTask *task, id responseObject) {
+                 [client stopNetworkActivity];
+                 int code = [[responseObject valueForKey:@"code"] intValue];
+                 if (code == 1){
+                     NSLog(@"success");
+                     if (block){
+                         block(YES,responseObject,@"success");
+                     }
                  }
-             }
-             else if (code == -10){
-                 NSLog(@"success but not really");
-                 if (block){
-                     block(NO,nil,[responseObject valueForKey:@"message"]);
+                 else if (code == -10){
+                     NSLog(@"success but not really");
+                     if (block){
+                         block(NO,nil,[responseObject valueForKey:@"message"]);
+                     }
                  }
-             }
-             
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [client stopNetworkActivity];
-        if (block){
-            block(NO,nil,error.localizedDescription);
-            [JDStatusBarNotification showWithStatus:error.localizedDescription
-                                       dismissAfter:2.0
-                                          styleName:JDStatusBarStyleError];
-        }
-    }];
+                 
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [client stopNetworkActivity];
+            if (block){
+                block(NO,nil,error.localizedDescription);
+                [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                           dismissAfter:2.0
+                                              styleName:JDStatusBarStyleError];
+            }
+        }];
+    }
 }
 
 

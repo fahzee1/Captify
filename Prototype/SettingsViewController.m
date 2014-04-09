@@ -65,6 +65,8 @@
     self.navigationItem.leftBarButtonItem = button;
     
     self.sideMenuViewController.delegate = self;
+    
+    self.navigationItem.title = NSLocalizedString(@"Settings", nil);
   }
 
 
@@ -342,7 +344,23 @@
             }
             
             if (indexPath.row == 4){
+                // Edit profile button
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.textLabel.text = NSLocalizedString(@"Edit Profile", nil);
+            }
+        }
+            break;
+            
+        case 1:
+        {
+            if (indexPath.row == 0){
+                // TOS
+                cell.textLabel.text = NSLocalizedString(@"Terms of Service", nil);
+            }
+            
+            else if (indexPath.row == 1){
+                // Contact
+                cell.textLabel.text = NSLocalizedString(@"Contact", nil);
             }
         }
             break;
@@ -350,7 +368,8 @@
         case 2:
         {
             if (indexPath.row == 0){
-                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.textLabel.text = NSLocalizedString(@"Log Out",nil);
             }
         }
             

@@ -95,7 +95,7 @@
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = @"Logging In";
+        hud.labelText =  NSLocalizedString(@"Logging In", nil);
         
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session

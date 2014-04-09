@@ -129,7 +129,7 @@
     // if we're connected to the internet, login
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Logging In";
+    hud.labelText = NSLocalizedString(@"Logging In", nil);
     
     NSDictionary *params = @{@"username": self.usernameField.text,
                              @"password": self.passwordField.text};

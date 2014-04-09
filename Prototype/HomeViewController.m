@@ -104,7 +104,6 @@
         //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
         //User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
         
-         
 
         
         /*
@@ -360,7 +359,8 @@
 
 - (void)showTooltip
 {
-    self.toolTip = [[CMPopTipView alloc] initWithMessage:@"Tap once to take picture. Tap Twice for photo library"];
+    self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap once to take picture. Tap Twice for photo library", nil)];
+
     self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     self.toolTip.textColor = [UIColor whiteColor];
     self.toolTip.hasGradientBackground = NO;

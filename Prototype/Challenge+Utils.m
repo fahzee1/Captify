@@ -367,8 +367,10 @@
             challenge.challenge_id = [params valueForKey:@"challenge_id"];
             
             NSString *media_url = [params valueForKey:@"media_url"];
+            NSString *local_url = [params valueForKey:@"local_media_url"];
             NSNumber *active = [params valueForKey:@"active"];
             challenge.image_path = media_url ? media_url : NULL;
+            challenge.local_image_path = local_url ? local_url : NULL;
             challenge.active = active ? active : [NSNumber numberWithBool:YES];
 
             
@@ -525,29 +527,41 @@
 
 
 
-+ (void)saveImage:(UIImage *)image
-         filename:(NSString *)name
++ (NSString *)saveImage:(NSData *)image
+               filename:(NSString *)name
 {
     // filename can be /test/another/test.jpg
     if (image != nil)
     {
+        NSError *e;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
-        NSData* data = UIImageJPEGRepresentation(image, 0.9);
-        [data writeToFile:path atomically:YES];
+        NSString *challengeDirectory = [documentsDirectory stringByAppendingPathComponent:@"challenges"];
+        
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:challengeDirectory withIntermediateDirectories:YES attributes:nil error:&e]){
+            NSLog(@"%@",e);
+        }
+        
+        
+        NSString* path = [challengeDirectory stringByAppendingPathComponent:name];
+        if (![image writeToFile:path options:0 error:&e]){
+            NSLog(@"%@",e);
+            
+            return nil;
+        }
+        
+        
+        return path;
     }
+    
+    return nil;
 }
 
 
 + (UIImage *)loadImagewithFileName:(NSString *)name
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                         NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
-    UIImage* image = [UIImage imageWithContentsOfFile:path];
+    UIImage* image = [UIImage imageWithContentsOfFile:name];
     return image;
 }
 

@@ -39,6 +39,8 @@
     
     [super viewDidLoad];
     
+    self.navigationItem.title = NSLocalizedString(@"Preview", nil);
+    
     [self.previewImage addSubview:self.previewCaption];
     self.previewImage.clipsToBounds = YES;
 
@@ -110,6 +112,7 @@
     self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
     self.sendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.sendButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
     self.sendButton.layer.cornerRadius = 20.0f;
     
     self.captionContainerView.backgroundColor = [UIColor colorWithHexString:@"#f39c12"];
@@ -137,7 +140,7 @@
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Sending";
+    hud.labelText = NSLocalizedString(@"Sending", nil);
     
     [ChallengePicks sendCreatePickRequestWithParams:params
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {

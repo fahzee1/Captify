@@ -90,6 +90,18 @@
 }
 
 
+
++ (void)cancelCurrentRequest:(AwesomeAPICLient *)client
+{
+    [client invalidateSessionCancelingTasks:YES];
+}
+
++ (BOOL)requestInProgress:(AwesomeAPICLient *)client
+{
+    return ([client.tasks count] > 0) ? YES:NO;
+}
+
+
 + (User *)myUser
 {
         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
