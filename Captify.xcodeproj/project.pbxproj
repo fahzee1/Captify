@@ -287,6 +287,13 @@
 		119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711D418ADE5EF008AD895 /* SettingsViewController.m */; };
 		119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 119711DC18ADF8C9008AD895 /* Overlay.xib */; };
 		119711E018AE0203008AD895 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119711DF18AE0203008AD895 /* OverlayView.m */; };
+		119BAED618F4FB3F00678A63 /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */; };
+		119BAED718F4FB3F00678A63 /* ProximaNova-Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */; };
+		119BAED818F4FB3F00678A63 /* ProximaNova-Sbold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */; };
+		119BAEDA18F4FC1C00678A63 /* GoodDog.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAED918F4FC1C00678A63 /* GoodDog.otf */; };
+		119BAEDD18F4FC9900678A63 /* Lemondrop Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */; };
+		119BAEDE18F4FC9900678A63 /* Lemondrop.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */; };
+		119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDF18F4FD2F00678A63 /* American Captain.otf */; };
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
@@ -876,6 +883,13 @@
 		119711DC18ADF8C9008AD895 /* Overlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Overlay.xib; sourceTree = "<group>"; };
 		119711DE18AE0203008AD895 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		119711DF18AE0203008AD895 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Reg.otf"; sourceTree = "<group>"; };
+		119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Sbold.otf"; sourceTree = "<group>"; };
+		119BAED918F4FC1C00678A63 /* GoodDog.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GoodDog.otf; sourceTree = "<group>"; };
+		119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lemondrop Bold.ttf"; sourceTree = "<group>"; };
+		119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lemondrop.ttf; sourceTree = "<group>"; };
+		119BAEDF18F4FD2F00678A63 /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "American Captain.otf"; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1061,6 +1075,13 @@
 		110730F71876640F0065D77F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				119BAEDF18F4FD2F00678A63 /* American Captain.otf */,
+				119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */,
+				119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */,
+				119BAED918F4FC1C00678A63 /* GoodDog.otf */,
+				119BAED318F4FB3F00678A63 /* ProximaNova-Bold.otf */,
+				119BAED418F4FB3F00678A63 /* ProximaNova-Reg.otf */,
+				119BAED518F4FB3F00678A63 /* ProximaNova-Sbold.otf */,
 				1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */,
 				11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */,
 				110730F81876640F0065D77F /* Captify-Info.plist */,
@@ -1957,12 +1978,16 @@
 			files = (
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				11ABFCA918C7D28300639A20 /* NEOColorPickerHSLViewController.xib in Resources */,
+				119BAEDE18F4FC9900678A63 /* Lemondrop.ttf in Resources */,
 				11073107187664100065D77F /* Main_iPad.storyboard in Resources */,
+				119BAEDD18F4FC9900678A63 /* Lemondrop Bold.ttf in Resources */,
 				1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */,
 				11ABFCA618C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib in Resources */,
+				119BAEDA18F4FC1C00678A63 /* GoodDog.otf in Resources */,
 				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */,
+				119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
 				11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */,
@@ -1971,9 +1996,12 @@
 				1121284718C5A8AF0033E026 /* shareControls.xib in Resources */,
 				11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */,
 				119711DD18ADF8C9008AD895 /* Overlay.xib in Resources */,
+				119BAED718F4FB3F00678A63 /* ProximaNova-Reg.otf in Resources */,
+				119BAED818F4FB3F00678A63 /* ProximaNova-Sbold.otf in Resources */,
 				110730FB1876640F0065D77F /* InfoPlist.strings in Resources */,
 				1128443818EF2F520056D517 /* settingsEdit.xib in Resources */,
 				11ABFCA318C7D28300639A20 /* colorPicker.bundle in Resources */,
+				119BAED618F4FB3F00678A63 /* ProximaNova-Bold.otf in Resources */,
 				11ABFCAD18C7D28300639A20 /* NEOColorPickerViewController.xib in Resources */,
 				11ABFCAB18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib in Resources */,
 			);

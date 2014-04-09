@@ -19,4 +19,6 @@
 
 @property (weak)id <MenuDelegate>delegate;
 
+- (void)setupColors;
+
 @end

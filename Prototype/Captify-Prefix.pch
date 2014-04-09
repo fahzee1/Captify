@@ -24,3 +24,11 @@
 
 #define TICK NSDate *startTime = [NSDate date]
 #define TOCK NSLog(@"Elapsed Time: %f", -[startTime timeIntervalSinceNow])
+
+
+// fonts
+// AmericanCaptain
+// Lemondrop and  Lemondrop-Bold
+// GoodDog
+// ProximaNova-Semibold, ProximaNova-Regular, ProximaNova-Bold
+// LeagueGothic-Regular

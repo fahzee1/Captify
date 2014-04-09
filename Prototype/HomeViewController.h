@@ -14,6 +14,13 @@
 #import "OverlayView.h"
 
 
+@protocol showingMenu <NSObject>
+
+@optional
+- (void)showingMenuFromHome;
+
+@end
+
 @interface HomeViewController : UIViewController
 
 

@@ -21,6 +21,7 @@
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
 #import "User+Utils.h"
+#import "MenuViewController.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
@@ -63,7 +64,7 @@
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#f39c12"]} forState:UIControlStateNormal];
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
     
    
     self.navigationItem.leftBarButtonItem = button;
@@ -356,7 +357,15 @@
 {
     if ([self.currentController isKindOfClass:[SearchFriendsViewController class]]){
         [((SearchFriendsViewController *)self.currentController) slideDownKeyboard];
+        
     }
+    
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) setupColors];
+    }
+    
+
 }
 
 #pragma -mark FBFRIENDS delegate
@@ -461,8 +470,6 @@
     }
     
 }
-
-
 
 
 

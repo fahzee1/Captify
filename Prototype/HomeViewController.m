@@ -41,7 +41,7 @@
 #define ONEFIELD_TAG 1990
 #define PHONE_LIMIT 12
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate, TWTSideMenuViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *snapPicButton;
 @property CGRect firstFrame;
@@ -82,7 +82,6 @@
 @end
 
 @implementation HomeViewController
-
 
 
 
@@ -156,6 +155,8 @@
         [self performSegueWithIdentifier:@"segueToLogin" sender:self];
         return;
     }
+    
+    self.sideMenuViewController.delegate = self;
     
     
 }
@@ -277,17 +278,17 @@
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    [self.topMenuButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"] forState:UIControlStateNormal];
+    [self.topMenuButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"] forState:UIControlStateNormal];
 
 
     
     self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
-    [self.flashButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"] forState:UIControlStateNormal];
+    [self.flashButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"] forState:UIControlStateNormal];
     
     self.rotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.rotateButton setTitle:[NSString stringWithFormat:@"%@ %@",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"],[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"]] forState:UIControlStateNormal];
-    [self.rotateButton setTitleColor:[UIColor colorWithHexString:@"#f39c12"]  forState:UIControlStateNormal];
+    [self.rotateButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"]  forState:UIControlStateNormal];
     
     self.cameraOptionsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.cameraOptionsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
@@ -996,6 +997,14 @@
 }
 
 
+#pragma -mark twtsidemenu delegate
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sideMenuViewController
+{
+    UIViewController *menu =  self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) setupColors];
+    }
+}
 
 #pragma -mark UIImagepickercontroller delegate
 

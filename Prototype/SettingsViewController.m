@@ -18,8 +18,9 @@
 #import "AwesomeAPICLient.h"
 #import "MBProgressHUD.h"
 #import "UIColor+HexValue.h"
+#import "MenuViewController.h"
 
-@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
+@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) User *myUser;
 
@@ -60,9 +61,10 @@
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#f39c12"]} forState:UIControlStateNormal];
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
     
+    self.sideMenuViewController.delegate = self;
   }
 
 
@@ -85,6 +87,16 @@
 {
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
+
+
+- (void)slideDownKeyboard
+{
+    [self.editUsernameField resignFirstResponder];
+    [self.editEmailField resignFirstResponder];
+    [self.editPhoneField resignFirstResponder];
+    
+}
+
 
 - (void)setupEditScreen
 {
@@ -482,5 +494,13 @@
 }
 
 
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sideMenuViewController
+{
+    [self slideDownKeyboard];
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) setupColors];
+    }
+}
 
 @end

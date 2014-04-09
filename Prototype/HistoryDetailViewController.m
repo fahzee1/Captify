@@ -124,10 +124,10 @@
    
     self.topLabel.text = [self.myChallenge.name capitalizedString];
     if ([self.myChallenge.name length] > 30){
-        self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+        self.topLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:15];
     }
     else{
-        self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+        self.topLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:17];
     }
     self.topLabel.textAlignment = NSTextAlignmentCenter;
     self.topLabel.numberOfLines = 0;
@@ -192,7 +192,7 @@
 
 - (NSString *)myFontName
 {
-    return @"LeagueGothic-Regular";
+    return @"GoodDog";//@"LeagueGothic-Regular";
 }
 
 - (void)fetchUpdates
@@ -595,6 +595,7 @@
 
 - (IBAction)captionAlphaChanged:(UISlider *)sender {
     
+    [self.finalCaptionLabel stopGlowing];
     self.finalCaptionLabel.alpha = sender.value;
     self.captionAlphaValue.text = [NSString stringWithFormat:@"%.1f",sender.value];
 }
@@ -805,6 +806,7 @@
                                                               
                                                           }
                                                           else{
+                                                              self.makeButtonVisible = YES;
                                                               if (fail){
                                                                   [self showAlertWithTitle:@"Error" message:message];
                                                                   

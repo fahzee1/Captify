@@ -12,8 +12,9 @@
 #import "TWTSideMenuViewController.h"
 #import "Notifications.h"
 #import "UIColor+HexValue.h"
+#import "MenuViewController.h"
 
-@interface HistoryContainerViewController ()
+@interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 
@@ -40,9 +41,10 @@
   
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#f39c12"]} forState:UIControlStateNormal];
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
+    
 
     // we're comming from senderpreview screen right
     // after creating challenge so show sent screen
@@ -58,9 +60,10 @@
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
     
-    //Notifications *n = [[Notifications alloc] init];
-    //[n addOneNotifToView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
-    //[n removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
+    self.sideMenuViewController.delegate = self;
+   
+    
+    
 
 }
 
@@ -122,9 +125,12 @@
 }
 
 
-- (void)fetchSentChallengePicks
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sideMenuViewController
 {
-    
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) setupColors];
+    }
 }
 
 
