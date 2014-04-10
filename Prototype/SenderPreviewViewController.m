@@ -170,7 +170,7 @@
     // then show history screen
     
     
-    NSString *challenge_id = [Challenge createChallengeIDWithUser:self.myUser.username];
+    NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser.username stringByReplacingOccurrencesOfString:@"." withString:@"-"]];
     /*
     [Challenge saveImage:thumbnail filename:thumbnail_path];
     [Challenge saveImage:self.image filename:image_path];
@@ -180,8 +180,9 @@
     
         // create challenge in backend
     
+    NSData *imageData = UIImageJPEGRepresentation(self.image, 0.1);
     TICK;
-    NSData *mediaData = [UIImageJPEGRepresentation(self.image, 0.3) base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     TOCK;
     
     NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
@@ -204,23 +205,15 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = NSLocalizedString(@"Sending", nil);
     
-    /*
-    dispatch_queue_t saveQ = dispatch_queue_create("com.Captify.saveImage", nil);
-    dispatch_async(saveQ, ^{
-        NSString *localMediaName = [Challenge saveImage:mediaData filename:mediaName];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.localMediaName = localMediaName;
-        });
-    });
-     */
-   
-    NSString *localMediaName = [Challenge saveImage:mediaData filename:mediaName];
+
     [Challenge sendCreateChallengeRequestWithParams:apiParams
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
                                                   if (wasSuccessful){
                                                       NSUInteger count = [self.selectedFriends[@"friends"] count];
                                                       NSString *media_url = [data valueForKey:@"media"];
                                                       
+                                                      // save image locally in documents directory
+                                                      NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
                                                       
                                                       NSDictionary *params = @{@"sender":self.myUser.username,
                                                                                @"context":self.myUser.managedObjectContext,
@@ -234,6 +227,7 @@
                                                       Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                                       if (challenge){
                                                           [hud hide:YES];
+                                                          
                                                           // send notification
                                                           ParseNotifications *p = [[ParseNotifications alloc] init];
                                                           

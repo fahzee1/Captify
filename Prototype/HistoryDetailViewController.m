@@ -153,10 +153,12 @@
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
 
+    
     if (!self.image){
         [self downloadImage];
     }
     else{
+        self.progressView.hidden = YES;
         self.myImageView.image = self.image;
     }
     

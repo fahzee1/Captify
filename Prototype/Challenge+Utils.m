@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "User+Utils.h"
 #import "JDStatusBarNotification.h"
+#import "NSData+Format.h"
 
 
 @implementation Challenge (Utils)
@@ -561,9 +562,10 @@
 
 + (UIImage *)loadImagewithFileName:(NSString *)name
 {
-    UIImage* image = [UIImage imageWithContentsOfFile:name];
-    return image;
+    return [UIImage imageWithContentsOfFile:name];
 }
+
+
 
 
 + (NSString *)createChallengeIDWithUser:(NSString *)user

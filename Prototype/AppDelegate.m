@@ -123,7 +123,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"#fff8da"]];
+    
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#e46e1b"]}];
     [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
                   clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];

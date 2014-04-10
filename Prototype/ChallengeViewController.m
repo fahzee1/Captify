@@ -128,7 +128,7 @@
 
 - (void)downloadImage
 {
-    
+    NSLog(@"%@",self.mediaURL);
     if (self.mediaURL){
         self.retryButton.hidden = YES;
         self.progressView.hidden = NO;
@@ -144,7 +144,11 @@
                                 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                                     self.progressView.hidden = YES;
                                     if (!image){
-                                        self.retryButton.hidden = NO;
+                                        double delayInSeconds = 2.0;
+                                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                             self.retryButton.hidden = NO;
+                                        });
                                         
                                     }
                                 }];

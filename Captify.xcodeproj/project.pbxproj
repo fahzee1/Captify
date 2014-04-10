@@ -293,6 +293,7 @@
 		119BAEDD18F4FC9900678A63 /* Lemondrop Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */; };
 		119BAEDE18F4FC9900678A63 /* Lemondrop.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */; };
 		119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDF18F4FD2F00678A63 /* American Captain.otf */; };
+		119BAEE318F639B500678A63 /* NSData+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BAEE218F639B500678A63 /* NSData+Format.m */; };
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
@@ -888,6 +889,8 @@
 		119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lemondrop Bold.ttf"; path = "../../Lemondrop Bold.ttf"; sourceTree = "<group>"; };
 		119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Lemondrop.ttf; path = ../../Lemondrop.ttf; sourceTree = "<group>"; };
 		119BAEDF18F4FD2F00678A63 /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "American Captain.otf"; path = "../../American Captain.otf"; sourceTree = "<group>"; };
+		119BAEE118F639B500678A63 /* NSData+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Format.h"; sourceTree = "<group>"; };
+		119BAEE218F639B500678A63 /* NSData+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Format.m"; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1334,6 +1337,8 @@
 				1121284618C5A8AF0033E026 /* shareControls.xib */,
 				11C8E8D518C930E900FE6B5E /* filterControls.xib */,
 				1128443718EF2F520056D517 /* settingsEdit.xib */,
+				119BAEE118F639B500678A63 /* NSData+Format.h */,
+				119BAEE218F639B500678A63 /* NSData+Format.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2294,6 +2299,7 @@
 				1153E14D18A9DF4800AD950E /* GPUImageBulgeDistortionFilter.m in Sources */,
 				1153E1C518A9DF4800AD950E /* GPUImageTextureInput.m in Sources */,
 				1153E15318A9DF4800AD950E /* GPUImageColorBlendFilter.m in Sources */,
+				119BAEE318F639B500678A63 /* NSData+Format.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
 				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */,

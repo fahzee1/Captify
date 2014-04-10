@@ -13,6 +13,8 @@
 #import "Notifications.h"
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
+#import "HistoryRecievedViewController.h"
+#import "HistorySentViewController.h"
 
 @interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentControl;
@@ -39,14 +41,19 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
   
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
-    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                      NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
-    self.navigationItem.leftBarButtonItem = button;
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(reloadHistory)];
+    [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
+    
+    self.navigationItem.rightBarButtonItem = rightButton;
+    self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
     
     [self.mySegmentControl setTitle:NSLocalizedString(@"Received", nil) forSegmentAtIndex:0];
-    [self.mySegmentControl setTitle:NSLocalizedString(@"Sent", nil) forSegmentAtIndex:0];
+    [self.mySegmentControl setTitle:NSLocalizedString(@"Sent", nil) forSegmentAtIndex:1];
 
     // we're comming from senderpreview screen right
     // after creating challenge so show sent screen
@@ -135,6 +142,18 @@
         [((MenuViewController *)menu) setupColors];
     }
 }
+
+
+- (void)reloadHistory
+{
+   UIViewController *vcR = [self.storyboard instantiateViewControllerWithIdentifier:@"recievedHistory"];
+    UIViewController *vcS = [self.storyboard instantiateViewControllerWithIdentifier:@"sentHistory"];
+    if ([vcR isKindOfClass:[HistoryRecievedViewController class]] && [vcS isKindOfClass:[HistorySentViewController class]]){
+        [((HistoryRecievedViewController *)vcR) fetchUpdates];
+        [((HistorySentViewController *)vcS) fetchUpdates];
+    }
+}
+
 
 
 @end

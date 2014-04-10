@@ -116,12 +116,7 @@
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
     
-                                            NSString *baseUrlString = [[AwesomeAPICLient sharedClient].baseURL absoluteString];
-                                            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
                                             
-
-
-        
                                             NSDictionary *params = @{@"sender": sender_name,
                                                                      @"context": self.myUser.managedObjectContext,
                                                                      @"recipients": recipients,
@@ -129,7 +124,7 @@
                                                                      @"challenge_name":name,
                                                                      @"active":active,
                                                                      @"challenge_id":challenge_id,
-                                                                     @"media_url":fullMediaUrl
+                                                                     @"media_url":media_url
                                                                      };
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
