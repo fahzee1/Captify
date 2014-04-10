@@ -45,7 +45,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"skulls"]];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#343432"];
 
     if (!self.currentScreen){
         self.currentScreen = [NSNumber numberWithInt:HomeTag];
