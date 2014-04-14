@@ -25,6 +25,14 @@
 #define TICK NSDate *startTime = [NSDate date]
 #define TOCK NSLog(@"Elapsed Time: %f", -[startTime timeIntervalSinceNow])
 
+// colors
+
+#define CAPTIFY_ORANGE @"#ffaf03"
+#define CAPTIFY_DARK_GREY @"#343432"
+#define CAPTIFY_LIGHT_GREY @"#515151"
+#define CAPTIFY_LIGHT_BLUE @"#69c9d0"
+#define CAPTIFY_DARK_BLUE @"#4698aa"
+
 
 // fonts
 // AmericanCaptain

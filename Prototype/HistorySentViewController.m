@@ -19,6 +19,7 @@
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
 #import "Notifications.h"
+#import "UIColor+HexValue.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
@@ -45,7 +46,28 @@
 	// Do any additional setup after loading the view.
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
-    //self.data = [[NSArray alloc] initWithObjects:@"'Guess what happened next'\r by joe_bryant22",@"'The silver bullets shoots first' \rby quiver_hut",@"'I think I look good, what about you?'\r by dSanders21",@"' I got the juice' \r by theCantoon",@"' Its the loving by the moon' \r by darkness",@"'Fruits and veggies'\r by fruity_cup",@"'Lets get guapo' \r by d_rose",@"' The trinity' \r by splacca",@"'Yolo' \r by on_fire",@"'IAm' \r by IAM", nil];
+    self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
+    
+    if ([self.data count] == 0){
+
+        UIView *view = [[UIView alloc] initWithFrame:self.myTable.frame];
+        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:20];
+        errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(20, 50, 300, 100);
+        
+        [view addSubview:errorLabel];
+        [self.myTable addSubview:view];
+    }
+    
+
 
 }
 
@@ -101,9 +123,6 @@
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
                                             
-                                            NSString *baseUrlString = [[AwesomeAPICLient sharedClient].baseURL absoluteString];
-                                            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
-                                            
                                             NSDictionary *params = @{@"sender": self.myUser.username,
                                                                      @"context": self.myUser.managedObjectContext,
                                                                      @"recipients": recipients,
@@ -111,7 +130,7 @@
                                                                      @"challenge_name":name,
                                                                      @"active":active,
                                                                      @"challenge_id":challenge_id,
-                                                                     @"media_url":fullMediaUrl
+                                                                     @"media_url":media_url
                                                                      };
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
@@ -164,13 +183,32 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self.data count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.data count];
+    if ([self.data count] == 0){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+    
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -178,10 +216,16 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if ([cell isKindOfClass:[HistorySentCell class]]){
         UILabel *myLabel = ((HistorySentCell *)cell).myCaptionLabel;
-        UIImageView *myImageView = ((HistorySentCell *)cell).myImageVew;
         UILabel *numberOfFriends = ((HistorySentCell *)cell).sentToLabel;
         UILabel *dateLabel = ((HistorySentCell *)cell).myDateLabel;
         UILabel *activeLabel = ((HistorySentCell *)cell).activeLabel;
+        UIImageView *myImageView = ((HistorySentCell *)cell).myImageVew;
+        myImageView.layer.masksToBounds = YES;
+        myImageView.layer.cornerRadius = 30;
+        myImageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        myImageView.layer.borderWidth = 3;
+        
+
         
         Challenge *challenge = [self.data objectAtIndex:indexPath.row];
         User *sender = challenge.sender;
@@ -204,18 +248,22 @@
 
 
         if (active && !sentPick && !shared){
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
         else{
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
         myLabel.text = [challenge.name capitalizedString];
+        myLabel.textColor = [UIColor whiteColor];
+        myLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
 
         dateLabel.text = [challenge.timestamp timeAgo];
+        dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        dateLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
         
         [sender getCorrectProfilePicWithImageView:myImageView];
         
@@ -225,6 +273,9 @@
         else{
             numberOfFriends.text = [NSString stringWithFormat:@"%@ friends playing",[challenge.recipients_count stringValue]];
         }
+        
+        numberOfFriends.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        numberOfFriends.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
         
         // show green active circle
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
@@ -269,6 +320,12 @@
             [activeLabel setTextColor:[UIColor redColor]];
             
         }
+        
+        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+        cell.layer.borderWidth = 2;
+        cell.layer.cornerRadius = 10;
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
 
         
 

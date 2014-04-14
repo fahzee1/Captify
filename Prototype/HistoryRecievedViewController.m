@@ -51,6 +51,25 @@
     [super viewDidLoad];
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
+    self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+    if ([self.cData count] == 0){
+        
+        UIView *view = [[UIView alloc] initWithFrame:self.myTable.frame];
+        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:20];
+        errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(20, 50, 300, 100);
+        
+        [view addSubview:errorLabel];
+        [self.myTable addSubview:view];
+    }
     
     
 
@@ -178,12 +197,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self.cData count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.cData count];
+    if ([self.cData count] == 0){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
 }
 
 
@@ -195,13 +232,19 @@
         
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
         UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
-        UIImageView *KimageView =  ((HistoryReceivedCell *)cell).historyImageView;
+        UIImageView *myImageView =  ((HistoryReceivedCell *)cell).historyImageView;
         UILabel *dateLabel = ((HistoryReceivedCell *)cell).dateLabel;
+        myImageView.layer.masksToBounds = YES;
+        myImageView.layer.cornerRadius = 30;
+        myImageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        myImageView.layer.borderWidth = 3;
         
         Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
         User *sender = challenge.sender;
         
-        titleLabel.text = [[NSString stringWithFormat:@"%@ \r \rby %@",challenge.name,sender.username] capitalizedString];
+        titleLabel.text = [[NSString stringWithFormat:@"%@",challenge.name] capitalizedString];
+        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
         //titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
@@ -209,8 +252,10 @@
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
         
         dateLabel.text = [challenge.timestamp timeAgo];
+        dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        dateLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
         
-        [sender getCorrectProfilePicWithImageView:KimageView];
+        [sender getCorrectProfilePicWithImageView:myImageView];
         
         
         // check if challenge is active or not or if pick was sent
@@ -256,6 +301,13 @@
             [activeLabel setTextColor:[UIColor redColor]];
             
         }
+        
+        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+        cell.layer.borderWidth = 2;
+        cell.layer.cornerRadius = 10;
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+        
         
         /*
         NSArray *allPicks = [challenge.picks allObjects];

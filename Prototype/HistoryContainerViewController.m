@@ -15,6 +15,9 @@
 #import "MenuViewController.h"
 #import "HistoryRecievedViewController.h"
 #import "HistorySentViewController.h"
+#import "FUISegmentedControl.h"
+#import "UIFont+FlatUI.h"
+#import "UIColor+FlatUI.h"
 
 @interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentControl;
@@ -43,17 +46,33 @@
   
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(reloadHistory)];
     [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
+                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     
     self.navigationItem.rightBarButtonItem = rightButton;
     self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
     
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    
     [self.mySegmentControl setTitle:NSLocalizedString(@"Received", nil) forSegmentAtIndex:0];
     [self.mySegmentControl setTitle:NSLocalizedString(@"Sent", nil) forSegmentAtIndex:1];
+    
+    FUISegmentedControl *control = (FUISegmentedControl *)self.mySegmentControl;
+    if ([control isKindOfClass:[FUISegmentedControl class]]){
+        control.selectedFont = [UIFont fontWithName:@"ProximaNova-Bold" size:16];
+        control.selectedFontColor = [UIColor cloudsColor];
+        control.deselectedFont = [UIFont fontWithName:@"ProximaNova-Bold" size:16];
+        control.deselectedFontColor = [UIColor cloudsColor];
+        control.selectedColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        control.deselectedColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        control.dividerColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        control.cornerRadius = 5.0;
+
+    }
+    
 
     // we're comming from senderpreview screen right
     // after creating challenge so show sent screen
@@ -82,6 +101,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 
 - (IBAction)segementChanged:(UISegmentedControl *)sender {

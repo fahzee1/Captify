@@ -12,6 +12,8 @@
 #import "TMCache.h"
 #import "SocialFriends.h"
 #import "FriendsContainerController.h"
+#import "UIFont+FontAwesome.h"
+#import "NSString+FontAwesome.h"
 
 #define HomeTag 1000
 #define HistoryTag 1001
@@ -45,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#343432"];
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
     if (!self.currentScreen){
         self.currentScreen = [NSNumber numberWithInt:HomeTag];
@@ -71,20 +73,32 @@
 
 - (void)setupStyles
 {
-    [self.menuCamera setTitle:NSLocalizedString(@"Home", @"Home button in menu") forState:UIControlStateNormal];
-    [self.menuHistory setTitle:NSLocalizedString(@"History", @"History button in menu") forState:UIControlStateNormal];
-    [self.menuFriends setTitle:NSLocalizedString(@"Friends", @"Friends button in menu") forState:UIControlStateNormal];
-    [self.menuSettings setTitle:NSLocalizedString(@"Settings", @"Settings button in menu") forState:UIControlStateNormal];
+    self.menuCamera.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    self.menuHistory.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    self.menuFriends.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    self.menuSettings.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    
+
+    [self.menuCamera setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Home", @"Home button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"]] forState:UIControlStateNormal];
+
+    [self.menuFriends setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Friends", @"Friends button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]] forState:UIControlStateNormal];
+
+    [self.menuHistory setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ History", @"History button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"]] forState:UIControlStateNormal];
+
+    [self.menuSettings setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Settings", @"Settings button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"]] forState:UIControlStateNormal];
+ 
     
     [self.menuCamera setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuHistory setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuFriends setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuSettings setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
+    /*
     self.menuCamera.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
     self.menuHistory.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
     self.menuFriends.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
     self.menuSettings.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
+     */
     
     self.menuCamera.layer.cornerRadius = 6.0f;
     self.menuHistory.layer.cornerRadius = 6.0f;

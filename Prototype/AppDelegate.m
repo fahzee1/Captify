@@ -123,8 +123,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [[UISegmentedControl appearance] setTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                              NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateNormal];
+    /*
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                              NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateDisabled];
+     */
+   
     
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#e46e1b"]}];
     [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
                   clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
     

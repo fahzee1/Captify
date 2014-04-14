@@ -277,7 +277,7 @@
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    [self.topMenuButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"] forState:UIControlStateNormal];
+    [self.topMenuButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
 
 
     

@@ -61,7 +61,7 @@
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#e46e1b"]} forState:UIControlStateNormal];
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = button;
     
     self.sideMenuViewController.delegate = self;
