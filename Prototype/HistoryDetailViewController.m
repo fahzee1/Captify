@@ -25,6 +25,7 @@
 #import "CJPopup.h"
 #import "ParseNotifications.h"
 #import <MessageUI/MessageUI.h>
+#import "FUIAlertView.h"
 
 /*
  mark challenge as done when complete
@@ -100,7 +101,13 @@
     
     //self.navigationItem.rightBarButtonItem = nextButton;
     
-    self.navigationItem.title = NSLocalizedString(@"All Captions", @"All captions to showing on final screen");
+    self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"] style:UIBarButtonItemStylePlain target:self action:@selector(popToHistory)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
+
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.makeButtonVisible = YES;
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
@@ -121,13 +128,21 @@
     self.captionAlphaSlider.value = 1.0;
     self.captionAlphaSlider.maximumValue = 1.0;
     self.captionAlphaSlider.minimumValue = 0.2;
+    
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
    
     self.topLabel.text = [self.myChallenge.name capitalizedString];
+    self.topLabel.textColor = [UIColor whiteColor];
+    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+    self.topLabel.layer.borderWidth = 2;
+    self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    self.topLabel.layer.cornerRadius = 5;
     if ([self.myChallenge.name length] > 30){
-        self.topLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:15];
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
     }
     else{
-        self.topLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:17];
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     }
     self.topLabel.textAlignment = NSTextAlignmentCenter;
     self.topLabel.numberOfLines = 0;
@@ -136,6 +151,11 @@
                                      self.topLabel.frame.origin.y,
                                      [UIScreen mainScreen].bounds.size.width,
                                      self.topLabel.frame.size.height);
+    
+    CGRect labelFrame = self.topLabel.frame;
+    labelFrame.size.height += 10;
+    self.topLabel.frame = labelFrame;
+    
 
     
     self.currentPoint = self.finalCaptionLabel.center;
@@ -201,6 +221,11 @@
 - (NSString *)myFontName
 {
     return @"GoodDog";//@"LeagueGothic-Regular";
+}
+
+- (void)popToHistory
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)fetchUpdates
@@ -868,85 +893,91 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self.data count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.data count];
+    return 1;
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 35;
+    if (section == 0){
+        return 35;
+    }
+    else{
+        return 5;
+    }
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+}
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(100, 0.0, 100, 60)];
-    container.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5f];
-    
-    NSString *title;
-    NSUInteger count = [self.data count];
-    if (count == 0){
-        title = NSLocalizedString(@"No captions received yet!", @"Nothing received yet");
-    }
-
-    else if  (self.hideSelectButtons || self.hideSelectButtonsMax){
-        NSString *string;
+    UIView *container;
+    if (section == 0){
+        container = [[UIView alloc] initWithFrame:CGRectMake(100, 0.0, 100, 60)];
+        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         
-        if (self.hideSelectButtonsMax){
-            if (count == 1){
-                string = [NSString stringWithFormat:@"%lu caption was sent to this challenge!", (unsigned long)count];
+        NSString *title;
+        NSUInteger count = [self.data count];
+        if (count == 0){
+            title = NSLocalizedString(@"No captions received yet", @"Nothing received yet");
+        }
+
+        else if  (self.hideSelectButtons || self.hideSelectButtonsMax){
+            NSString *string;
+            
+            if (self.hideSelectButtonsMax){
+                if (count == 1){
+                    string = [NSString stringWithFormat:@"%lu caption sent", (unsigned long)count];
+                }
+                else{
+                    string = [NSString stringWithFormat:@"%lu captions sent", (unsigned long)count];
+                    
+                }
+
             }
             else{
-                string = [NSString stringWithFormat:@"%lu captions were sent to this challenge!", (unsigned long)count];
-                
+                string = [NSString stringWithFormat:@" Choose your favorite caption"];
             }
-
+            title = NSLocalizedString(string, nil);
         }
         else{
-            if (count == 1){
-                string = [NSString stringWithFormat:@"%lu caption has been sent to this challenge!", (unsigned long)count];
-            }
-            else{
-               string = [NSString stringWithFormat:@"%lu captions have been sent to this challenge!", (unsigned long)count];
+            NSString *string = [NSString stringWithFormat:@" Choose your favorite caption"];
+            title = NSLocalizedString(string, nil);
+        }
 
+        UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, 300, 50)];
+        titleLablel.text = title;
+        titleLablel.numberOfLines = 0;
+        [titleLablel sizeToFit];
+        titleLablel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:15];
+        titleLablel.textColor = [UIColor whiteColor];
+        
+        if (!self.hideSelectButtonsMax){
+            if (self.makeButtonVisible){        
+                self.makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
+                self.makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+                [self.makeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+                [self.makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
+                [self.makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+                [container addSubview:self.makeButton];
             }
         }
-        title = NSLocalizedString(string, nil);
+        
+        [container addSubview:titleLablel];
     }
-    else{
-        NSString *string;
-        if (count == 1){
-            string = [NSString stringWithFormat:@" Choose from %lu caption!", (unsigned long)count];
-        }
-        else{
-            string = [NSString stringWithFormat:@" Choose from %lu captions!", (unsigned long)count];
-        }
-        title = NSLocalizedString(string, nil);
-    }
-
-    UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, 300, 50)];
-    titleLablel.text = title;
-    titleLablel.numberOfLines = 0;
-    [titleLablel sizeToFit];
-    titleLablel.font = [UIFont boldSystemFontOfSize:12];
-    
-    if (!self.hideSelectButtonsMax){
-        if (self.makeButtonVisible){        
-            self.makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
-            self.makeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
-            [self.makeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
-            [self.makeButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
-            [container addSubview:self.makeButton];
-        }
-    }
-    
-    [container addSubview:titleLablel];
-    
     return container;
+    
 
 }
 
@@ -955,15 +986,27 @@
     static NSString *cellIdentifier = @"historyDetailCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderWidth = 2;
+    cell.layer.cornerRadius = 10;
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     
     if ([pick isKindOfClass:[ChallengePicks class]]){
         
         if ([cell isKindOfClass:[HistoryDetailCell class]]){
             UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
+            UILabel *usernameLabel = ((HistoryDetailCell *)cell).myUsername;
             UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
+            imageView.layer.masksToBounds = YES;
+            imageView.layer.cornerRadius = 30;
+            imageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+            imageView.layer.borderWidth = 3;
+            imageView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
             
             [pick.player getCorrectProfilePicWithImageView:imageView];
             
@@ -993,21 +1036,32 @@
             
             NSString *me = [self.myUser.username capitalizedString];
             if ([username isEqualToString:me]){
-                captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
+                usernameLabel.text = [@"You" capitalizedString];
             }
             else{
-                captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
+                usernameLabel.text = [pick.player.username capitalizedString];
             }
+            
+            usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 176, 50);
+            usernameLabel.textColor = [UIColor whiteColor];
+            usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
+            usernameLabel.numberOfLines = 0;
+            [usernameLabel sizeToFit];
     
+             captionLabel.text = [NSString stringWithFormat:@"\"%@\"",pick.answer];
         
             // set width and height so "sizeToFit" uses those constraints
           
             captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
-
+            captionLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            captionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
             captionLabel.numberOfLines = 0;
             [captionLabel sizeToFit];
             
             dateLabel.text = [pick.timestamp timeAgo];
+            dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:11];
+            
         
             
             
@@ -1015,20 +1069,22 @@
             
             selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
             [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
+            [selectButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             
             if (self.hideSelectButtonsMax){
                 if ([pick.is_chosen intValue] == 1){
                     selectButton.userInteractionEnabled = NO;
-                    selectButton.hidden = NO;
-                    selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
-                    [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
+                    selectButton.hidden = YES;
+                    cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+                    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+                    //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
+                    //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
                 }
                 else{
                     selectButton.hidden = YES;
                 }
           }
             
-
            
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];

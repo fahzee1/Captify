@@ -214,6 +214,11 @@
 {
     static NSString *cellIdentifier = @"historySentCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderWidth = 2;
+    cell.layer.cornerRadius = 10;
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
     if ([cell isKindOfClass:[HistorySentCell class]]){
         UILabel *myLabel = ((HistorySentCell *)cell).myCaptionLabel;
         UILabel *numberOfFriends = ((HistorySentCell *)cell).sentToLabel;
@@ -227,24 +232,11 @@
         
 
         
-        Challenge *challenge = [self.data objectAtIndex:indexPath.row];
+        Challenge *challenge = [self.data objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
         int shared = [challenge.shared intValue];
-        int firstOpen = [challenge.first_open intValue];
-        
-        if (firstOpen){
-            // add 'new' view to cell
-            UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(cell.contentView.bounds.size.width -30,
-                                                                   cell.contentView.bounds.size.height -70, 100, 50)];
-            l.text = NSLocalizedString(@"NEW", nil);
-            l.textColor = [[UIColor greenColor] colorWithAlphaComponent:0.6];
-            l.font = [UIFont boldSystemFontOfSize:14];
-            
-            [cell.contentView addSubview:l];
-        }
-        
 
 
         if (active && !sentPick && !shared){
@@ -279,11 +271,11 @@
         
         // show green active circle
         activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-        [activeLabel setTextColor:[UIColor greenColor]];
+        activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        activeLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"];
         
         if (active && !sentPick && !shared){
-            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
-            [activeLabel setTextColor:[UIColor greenColor]];
+            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
             if (![activeLabel.layer animationForKey:@"historyActive"]){
                 
                 
@@ -292,14 +284,14 @@
                 colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
                 colorPulse.toValue = [NSNumber numberWithFloat:0.1];
                 colorPulse.autoreverses = YES;
-                colorPulse.duration = 0.8;
+                colorPulse.duration = 1.0;
                 colorPulse.repeatCount = FLT_MAX;
                 [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
         }
         else if (!shared) {
-            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
-            [activeLabel setTextColor:[UIColor greenColor]];
+            activeLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"];
+            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
             if (![activeLabel.layer animationForKey:@"historyActive"]){
                 
                 
@@ -316,17 +308,12 @@
         }
     
         else{
-            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
-            [activeLabel setTextColor:[UIColor redColor]];
+    
+            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+          
+
             
         }
-        
-        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-        cell.layer.borderWidth = 2;
-        cell.layer.cornerRadius = 10;
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-
-
         
 
         
@@ -337,9 +324,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // go to detail screen or go to challenge screen
     
-    Challenge *challenge = [self.data objectAtIndex:indexPath.row];
+    Challenge *challenge = [self.data objectAtIndex:indexPath.section];
     // check if active
     
     int active = [challenge.active intValue];
@@ -385,6 +373,25 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
 
+    }
+    
+    else{
+        
+        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+        if ([vc isKindOfClass:[HistoryDetailViewController class]]){
+            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.local_image_path];
+            ((HistoryDetailViewController *)vc).image = challenge_image;
+            ((HistoryDetailViewController *)vc).myChallenge = challenge;
+            ((HistoryDetailViewController *)vc).myUser = self.myUser;
+            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
+            ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
+            NSLog(@"%@ is image path",challenge.image_path);
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+
+        
     }
 
 

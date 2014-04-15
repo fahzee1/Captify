@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myInstagramLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myTwitterLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myMessageLabel;
+
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (weak, nonatomic) IBOutlet UILabel *facebookDisplayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
@@ -51,6 +53,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToDetail)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
     self.shareFacebook = NO;
     self.shareInstagram = NO;
     [self setupShareStyles];
@@ -64,23 +72,32 @@
 }
 
 
+- (void)popToDetail
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)setupShareStyles
 {
     [self.myShareButton setTitle:NSLocalizedString(@"Save", nil) forState:UIControlStateNormal];
     self.shareImageView.image = self.shareImage;
     
-    self.shareContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.shareContainer.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.shareContainer.layer.cornerRadius = 10;
     
-    self.myShareButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
+    self.myShareButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    self.myShareButton.layer.cornerRadius = 10;
     [self.myShareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
     tapFB.numberOfTapsRequired = 1;
     tapFB.numberOfTouchesRequired = 1;
     
-    self.myFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
-    self.myFacebookLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
+    self.myFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myFacebookLabel.text = [NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
     self.myFacebookLabel.textColor = [UIColor whiteColor];
+    self.myFacebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.myFacebookLabel.layer.cornerRadius = 5;
     self.myFacebookLabel.userInteractionEnabled = YES;
     [self.myFacebookLabel addGestureRecognizer:tapFB];
     
@@ -89,19 +106,33 @@
     tapIG.numberOfTapsRequired = 1;
     tapIG.numberOfTouchesRequired = 1;
     
-    self.myInstagramLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
-    self.myInstagramLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-instagram"];
+    self.myInstagramLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myInstagramLabel.text = [NSString stringWithFormat:@"%@   Instagram",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-instagram"]];
     self.myInstagramLabel.textColor = [UIColor whiteColor];
+    self.myInstagramLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.myInstagramLabel.layer.cornerRadius = 5;
     self.myInstagramLabel.userInteractionEnabled = YES;
     [self.myInstagramLabel addGestureRecognizer:tapIG];
     
     
     UITapGestureRecognizer *tapTw = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedTwitter)];
-    self.myTwitterLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
-    self.myTwitterLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"];
+    self.myTwitterLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myTwitterLabel.text = [NSString stringWithFormat:@"%@   Twitter",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
     self.myTwitterLabel.textColor = [UIColor whiteColor];
+    self.myTwitterLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.myTwitterLabel.layer.cornerRadius = 5;
     self.myTwitterLabel.userInteractionEnabled = YES;
     [self.myTwitterLabel addGestureRecognizer:tapTw];
+    
+    UITapGestureRecognizer *tapM = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedMessage)];
+    self.myMessageLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myMessageLabel.text = [NSString stringWithFormat:@"%@   Message",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-comment"]];
+    self.myMessageLabel.textColor = [UIColor whiteColor];
+    self.myMessageLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.myMessageLabel.layer.cornerRadius = 5;
+    self.myMessageLabel.userInteractionEnabled = YES;
+    [self.myMessageLabel addGestureRecognizer:tapM];
+
     
 }
 
@@ -190,6 +221,11 @@
         }
 
     }
+}
+
+- (void)tappedMessage
+{
+
 }
 
 - (void)testPost

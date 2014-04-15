@@ -228,6 +228,12 @@
 {
     static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderWidth = 2;
+    cell.layer.cornerRadius = 10;
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+
     if (cell && [cell isKindOfClass:[HistoryReceivedCell class]]){
         
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
@@ -239,17 +245,17 @@
         myImageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
         myImageView.layer.borderWidth = 3;
         
-        Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
+        Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         
         titleLabel.text = [[NSString stringWithFormat:@"%@",challenge.name] capitalizedString];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
-        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
+        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
         //titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
-        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 200, titleLabel.frame.size.height);
+        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
         
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
@@ -265,19 +271,7 @@
         
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
-        int firstOpen = [challenge.first_open intValue];
-        
-        if (firstOpen){
-            // add 'new' view to cell
-            UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(cell.contentView.bounds.size.width -30,
-                                                                  cell.contentView.bounds.size.height -70, 100, 50)];
-            l.text = NSLocalizedString(@"NEW", nil);
-            l.textColor = [[UIColor greenColor] colorWithAlphaComponent:0.6];
-            l.font = [UIFont boldSystemFontOfSize:14];
-            
-            [cell.contentView addSubview:l];
-        }
-        
+                
         if (active && !sentPick){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
@@ -302,11 +296,6 @@
             
         }
         
-        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-        cell.layer.borderWidth = 2;
-        cell.layer.cornerRadius = 10;
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    
         
         
         /*
@@ -337,7 +326,7 @@
     // go to detail screen or go to challenge screen
     
     // check if active
-    Challenge *challenge = [self.cData objectAtIndex:indexPath.row];
+    Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
     int active = [challenge.active intValue];
     int sentPick = [challenge.sentPick intValue];
     int firstOpen = [challenge.first_open intValue];

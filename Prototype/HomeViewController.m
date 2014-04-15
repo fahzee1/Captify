@@ -269,9 +269,9 @@
      
     
     
-    self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:70];
-    self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-dot-circle-o"];
-    self.snapPicButton.textColor =[UIColor colorWithHexString:@"#3498db"];
+    self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:45];
+    self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"];
+    self.snapPicButton.textColor =[UIColor colorWithHexString:CAPTIFY_ORANGE];
     
     
     
@@ -283,15 +283,15 @@
     
     self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
-    [self.flashButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"] forState:UIControlStateNormal];
+    [self.flashButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
     self.rotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.rotateButton setTitle:[NSString stringWithFormat:@"%@ %@",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"],[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"]] forState:UIControlStateNormal];
-    [self.rotateButton setTitleColor:[UIColor colorWithHexString:@"#e46e1b"]  forState:UIControlStateNormal];
+    [self.rotateButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]  forState:UIControlStateNormal];
     
     self.cameraOptionsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
-    [self.cameraOptionsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
-    [self.cameraOptionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.cameraOptionsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cog"] forState:UIControlStateNormal];
+    [self.cameraOptionsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
     self.cameraOptionsContainerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     self.cameraOptionsContainerView.layer.cornerRadius = 10.0f;
@@ -407,11 +407,10 @@
 - (IBAction)tappedCameraOptions:(UIButton *)sender {
     if (self.cameraOptionsContainerView.hidden){
         self.cameraOptionsContainerView.hidden = NO;
-       [self.cameraOptionsButton setTitleColor:[UIColor colorWithHexString:@"#bdc3c7"] forState:UIControlStateNormal];
+        
     }
     else{
         self.cameraOptionsContainerView.hidden = YES;
-        [self.cameraOptionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
 
 }

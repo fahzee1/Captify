@@ -17,4 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *mySelectButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *myUsername;
+
 @end
