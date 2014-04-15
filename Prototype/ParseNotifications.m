@@ -22,7 +22,7 @@
     BOOL removed;
     for (id channel in channels){
         if ([name isEqualToString:channel]){
-            [self removeChannelWithChallengeName:name];
+            [self removeChannelWithChallengeID:name];
             removed = YES;
         }
     }
@@ -36,7 +36,7 @@
     return [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
 }
 
-- (void)addChannelWithChallengeName:(NSString *)name
+- (void)addChannelWithChallengeID:(NSString *)name
 {
     
     NSString *newName = [self formatChannelNameForParse:name];
@@ -47,7 +47,7 @@
 
 
 
-- (void)removeChannelWithChallengeName:(NSString *)name
+- (void)removeChannelWithChallengeID:(NSString *)name
 {
     NSString *newName = [self formatChannelNameForParse:name];
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
@@ -75,8 +75,8 @@
                                       @"badge": @"Increment",
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
-    if (data[@"challenge_name"]){
-        payload[@"challenge"] = data[@"challenge_name"];
+    if (data[@"challenge_id"]){
+        payload[@"challenge"] = data[@"challenge_id"];
     }
     
     
@@ -126,8 +126,8 @@
                               @"badge": @"Increment",
                               @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
-    if (data[@"challenge_name"]){
-        payload[@"challenge"] = data[@"challenge_name"];
+    if (data[@"challenge_id"]){
+        payload[@"challenge"] = data[@"challenge_id"];
     }
     
     
@@ -173,8 +173,8 @@
                                       @"badge": @"Increment",
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
-    if (data[@"challenge_name"]){
-        payload[@"challenge"] = data[@"challenge_name"];
+    if (data[@"challenge_id"]){
+        payload[@"challenge"] = data[@"challenge_id"];
     }
     
     [push setData:payload];
@@ -215,8 +215,8 @@
                                       @"badge": @"Increment",
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
-    if (data[@"challenge_name"]){
-        payload[@"challenge"] = data[@"challenge_name"];
+    if (data[@"challenge_id"]){
+        payload[@"challenge"] = data[@"challenge_id"];
     }
 
     [push setData:payload];

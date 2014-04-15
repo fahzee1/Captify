@@ -167,10 +167,10 @@
                                                           
                                                           ParseNotifications *p = [ParseNotifications new];
                                                           
-                                                          [p addChannelWithChallengeName:self.myChallenge.name];
+                                                          [p addChannelWithChallengeID:self.myChallenge.challenge_id];
                                                           [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
                                                                     toFriends:@[self.myChallenge.sender.username]
-                                                                     withData:@{@"challenge_name": self.myChallenge.name}
+                                                                     withData:@{@"challenge_id": self.myChallenge.challenge_id}
                                                              notificationType:ParseNotificationSendCaptionPick
                                                                         block:nil];
                                                           

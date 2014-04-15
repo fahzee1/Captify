@@ -14,8 +14,9 @@
 #import "SocialFriends.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
+#import <MessageUI/MessageUI.h>
 
-@interface ShareViewController ()
+@interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
@@ -225,6 +226,21 @@
 
 - (void)tappedMessage
 {
+    if(![MFMessageComposeViewController canSendText]) {
+        [self showAlertWithTitle:@"Error" message:@"Your device doesn't support SMS!"];
+        return;
+    }
+    
+    MFMessageComposeViewController *composer = [[MFMessageComposeViewController alloc] init];
+    composer.messageComposeDelegate = self;
+    composer.body = NSLocalizedString(@"Check out my pic from Captify!", nil);
+    
+    if ([MFMessageComposeViewController canSendAttachments]){
+        NSData *attachment = UIImageJPEGRepresentation(self.shareImage, 0.1);
+        [composer addAttachmentData:attachment typeIdentifier:@"public.data" filename:[NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id]];
+        [self presentViewController:composer animated:YES completion:nil];
+    }
+    
 
 }
 
@@ -245,15 +261,15 @@
     
     // notify all receipients of challenge
     [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",self.myChallenge.sender.username]
-              toChannel:self.myChallenge.name
-               withData:@{@"challenge_name": self.myChallenge.name}
+              toChannel:self.myChallenge.challenge_id
+               withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSenderChoseCaption
                   block:nil];
     
     // notify chosen captions sender
     [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",self.myChallenge.sender.username]
                toFriend:self.myPick.player.username
-               withData:@{@"challenge_name": self.myChallenge.name}
+               withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationNotifySelectedCaptionSender
                   block:nil];
     
@@ -340,6 +356,9 @@
                                            });
 
                                        }
+                                       else{
+                                           [self showAlertWithTitle:@"Error" message:@"There was an error updating your challenge. Try again"];
+                                       }
                                    }];
     
     
@@ -367,6 +386,31 @@
     [a show];
 }
 
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            [self showAlertWithTitle:@"Error" message:@"Failed to send SMS"];
+        }
+            break;
+        case MessageComposeResultSent:
+        {
+            
+        }
+            
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSLog(@"leave this screen if success");
+    }];
+}
 
 
 @end

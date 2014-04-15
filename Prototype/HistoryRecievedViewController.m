@@ -248,14 +248,25 @@
         Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         
-        titleLabel.text = [[NSString stringWithFormat:@"%@",challenge.name] capitalizedString];
+        if ([challenge.name length] >= 25){
+            NSString *newString = [[challenge.name capitalizedString] substringToIndex:24];
+            titleLabel.text = [NSString stringWithFormat:@"%@...",newString];
+        }
+        else{
+            titleLabel.text = [challenge.name capitalizedString];
+        }
+
+       
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
+            
+        /*
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
         //titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
+         */
         
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];

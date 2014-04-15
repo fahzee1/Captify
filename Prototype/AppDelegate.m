@@ -727,11 +727,11 @@
     switch (type) {
         case ParseNotificationCreateChallenge:
         {
-            NSString *challenge_name;
+            NSString *challenge_id;
             if (payload[@"challenge"]){
-                challenge_name = payload[@"challenge"];
+                challenge_id = payload[@"challenge"];
                 ParseNotifications *p = [ParseNotifications new];
-                [p addChannelWithChallengeName:challenge_name];
+                [p addChannelWithChallengeID:challenge_id];
                 
                 UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
 
@@ -757,11 +757,11 @@
             break;
         case ParseNotificationSenderChoseCaption:
         {
-            NSString *challenge_name;
+            NSString *challenge_id;
             if (payload[@"challenge"]){
-                challenge_name = payload[@"challenge"];
+                challenge_id = payload[@"challenge"];
                 ParseNotifications *p = [ParseNotifications new];
-                [p checkForChannelAndRemove:challenge_name];
+                [p checkForChannelAndRemove:challenge_id];
             }
         }
             break;

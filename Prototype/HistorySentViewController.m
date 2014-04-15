@@ -246,12 +246,21 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        myLabel.text = [challenge.name capitalizedString];
+        if ([challenge.name length] >= 25){
+            NSString *newString = [[challenge.name capitalizedString] substringToIndex:24];
+            myLabel.text = [NSString stringWithFormat:@"%@...",newString];
+        }
+        else{
+            myLabel.text = [challenge.name capitalizedString];
+        }
         myLabel.textColor = [UIColor whiteColor];
         myLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
+        
+        /*
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
+         */
 
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];

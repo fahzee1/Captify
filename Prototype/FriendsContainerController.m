@@ -23,7 +23,7 @@
 #import "User+Utils.h"
 #import "MenuViewController.h"
 
-@interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate>
+@interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 @property (strong,nonatomic)UIViewController *currentController;
@@ -303,7 +303,7 @@
 
         
     }
-    
+     _friendPickerController.tableView.delegate = self;
     return  _friendPickerController;
 }
 
@@ -315,10 +315,16 @@
         _appFriendPickerController.delegate = self;
         _appFriendPickerController.allowsMultipleSelection = NO;
         _appFriendPickerController.fieldsForRequest = fields;
+        
+        // styles
         //[_appFriendPickerController configureUsingCachedDescriptor:self.appCacheDescriptor];
         
         
     }
+    _appFriendPickerController.tableView.delegate = self;
+    _appFriendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _appFriendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    _appFriendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     return  _appFriendPickerController;
 }
@@ -347,6 +353,23 @@
         
     }
     return _myUser;
+}
+
+
+#pragma -mark FBTableView delegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.appFriendPickerController.tableView){
+        // show user using app screen
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        cell.layer.borderWidth = 2;
+        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+        cell.layer.cornerRadius = 5;
+        cell.textLabel.textColor = [UIColor whiteColor];
+    }
+    else if (tableView == self.friendPickerController.tableView){
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
 }
 
 
@@ -385,6 +408,7 @@
                                   }];
     }
     
+    [self.friendPickerController clearSelection];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -469,6 +493,7 @@
     }
     
 }
+
 
 
 

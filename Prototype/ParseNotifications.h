@@ -27,9 +27,9 @@ typedef enum {
 
 - (BOOL)checkForChannelAndRemove:(NSString *)name;
 
-- (void)addChannelWithChallengeName:(NSString *)name;
+- (void)addChannelWithChallengeID:(NSString *)name;
 
-- (void)removeChannelWithChallengeName:(NSString *)name;
+- (void)removeChannelWithChallengeID:(NSString *)name;
 
 - (void)sendNotification:(NSString *)message
                toFriend:(NSString *)friend
