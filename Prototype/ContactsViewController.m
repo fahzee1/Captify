@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "TWTSideMenuViewController.h"
 #import "FAImageView.h"
+#import "UIColor+HexValue.h"
 
 
 #define test 0
@@ -47,9 +48,9 @@
     // if any create them in core data and then refresh table
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
-    
-    self.data = [NSArray arrayWithObjects:@"apples",@"bannas",@"chips", @"dogs",@"apllsl",@"yolo",@"spagetti",@"finally",@"zappo",@"zebra",@"appspkksksksss", nil];
+
     
     
     
@@ -192,16 +193,19 @@
     if (tableView == self.myTable){
         
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+        cell.layer.borderWidth = 2;
+        cell.layer.cornerRadius = 10;
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        
         NSArray *sectionArray;
         if (test){
                 sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
             
             ((FriendCell *)cell).myFriendScore.text = @"176";
             ((FriendCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
-            ((FriendCell *)cell).myFriendPic.image = nil;
-            FAImageView *imageView = ((FAImageView *)((FriendCell *)cell).myFriendPic);
-            [imageView setDefaultIconIdentifier:@"fa-user"];
-        
+            ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+            
             
         }
         // not testing
@@ -211,11 +215,12 @@
             
             User *user = [sectionArray objectAtIndex:indexPath.row];
             if ([user isKindOfClass:[User class]]){
-                ((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
-                ((FriendCell *)cell).myFriendUsername.text = user.username;
-                ((FriendCell *)cell).myFriendPic.image = nil;
-                FAImageView *imageView = ((FAImageView *)((FriendCell *)cell).myFriendPic);
-                [imageView setDefaultIconIdentifier:@"fa-user"];
+                //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
+                UILabel *username = ((FriendCell *)cell).myFriendUsername;
+                username.text = [user.username capitalizedString];
+                username.textColor = [UIColor whiteColor];
+                username.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+                ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
 
             }
 

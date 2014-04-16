@@ -13,6 +13,8 @@
 #import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
+#import "UIFont+FontAwesome.h"
+#import "NSString+FontAwesome.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -38,7 +40,11 @@
     // for challenge name/title
     
     [super viewDidLoad];
-    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToChallenge)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
+
     self.navigationItem.title = NSLocalizedString(@"Preview", nil);
     
     [self.previewImage addSubview:self.previewCaption];
@@ -74,16 +80,19 @@
     
     
     if ([self.challengeName length] > 35){
-        self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+        self.previewChallengeName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     }
     else{
-        self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+        self.previewChallengeName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
     }
     self.previewChallengeName.text = [self.challengeName capitalizedString];
+    self.previewChallengeName.layer.borderWidth = 2;
+    self.previewChallengeName.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+    self.previewChallengeName.layer.cornerRadius = 5;
     self.previewChallengeName.textAlignment = NSTextAlignmentCenter;
     self.previewChallengeName.numberOfLines = 0;
     [self.previewChallengeName sizeToFit];
-    self.previewChallengeName.frame = CGRectMake(nameRect.origin.x, nameRect.origin.y, 300, 50);
+    self.previewChallengeName.frame = CGRectMake(nameRect.origin.x, nameRect.origin.y, self.previewChallengeName.superview.bounds.size.width, 50);
     
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
     press.minimumPressDuration = 0.1;
@@ -91,6 +100,8 @@
     [self.previewCaption addGestureRecognizer:press];
     self.previewCaption.userInteractionEnabled = YES;
     self.previewImage.userInteractionEnabled = YES;
+    
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
 
     
     
@@ -99,6 +110,8 @@
 }
 - (void)setupColors
 {
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
        // title of challege
     self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     self.previewChallengeName.textColor = [UIColor whiteColor];
@@ -109,16 +122,23 @@
     self.previewCaption.textColor = [UIColor colorWithHexString:@"#3498db"];
     
     // the send button
-    self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
-    self.sendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
+    self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    self.sendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:20];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.sendButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
-    self.sendButton.layer.cornerRadius = 20.0f;
+    self.sendButton.layer.cornerRadius = 10;
     
     self.captionContainerView.backgroundColor = [UIColor colorWithHexString:@"#f39c12"];
+    self.captionContainerView.layer.cornerRadius = 5;
     
     
 
+}
+
+
+- (void)popToChallenge
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)showMenu

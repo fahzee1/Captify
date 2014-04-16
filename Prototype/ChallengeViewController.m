@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
+@property (strong, nonatomic)UIBarButtonItem *backButton;
 
 @end
 
@@ -57,6 +58,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    //self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"] style:UIBarButtonItemStylePlain target:self action:@selector(popToHistory)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = self.backButton;
+    self.navigationItem.rightBarButtonItem = self.nextButton;
+    
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     self.scrollView.delegate = self;
     self.captionField.delegate = self;
@@ -71,7 +80,6 @@
     
     [self setupTopLabel];
     
-    self.navigationItem.rightBarButtonItem = self.nextButton;
     
     self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
     [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
@@ -125,6 +133,10 @@
     
 }
 
+- (void)popToHistory
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)downloadImage
 {
@@ -170,21 +182,34 @@
     //self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.challengeNameLabel.textColor = [UIColor whiteColor];
     if ([self.name length] > 35){
-         self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:15];
+         self.challengeNameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     }
     else{
-         self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+         self.challengeNameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
     }
     
     self.challengeNameLabel.text = [self.name capitalizedString];
+    self.challengeNameLabel.layer.borderWidth = 2;
+    self.challengeNameLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+    self.challengeNameLabel.layer.cornerRadius = 5;
+
     self.challengeNameLabel.textAlignment = NSTextAlignmentCenter;
     self.challengeNameLabel.numberOfLines = 0;
     [self.challengeNameLabel sizeToFit];
     
     CGRect frame = self.challengeNameLabel.frame;
-    self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, 300, 40);
+    self.challengeNameLabel.frame = CGRectMake(frame.origin.x, frame.origin.y, self.challengeNameLabel.superview.bounds.size.width, 40);
     
-    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:@"#f39c12"];
+    
+    self.captionField.backgroundColor = [UIColor whiteColor];
+    self.captionField.borderStyle = UITextBorderStyleNone;
+    self.captionField.placeholder = NSLocalizedString(@"Enter caption here", nil);
+    
+    
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.captionContainerView.layer.cornerRadius = 5;
+    
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     
     
@@ -210,18 +235,21 @@
         }
         
         else{
-            image.image = nil;
-            FAImageView *imageView2 = (FAImageView *)image;
-            [imageView2 setDefaultIconIdentifier:@"fa-user"];
+            image.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+          
             
         }
 
-     
-        image.frame = navFrameBase;
-        UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-        friendName.text = self.sender;
         image.layer.masksToBounds = YES;
         image.layer.cornerRadius = 15.0f;
+        image.frame = navFrameBase;
+        
+        UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
+        friendName.text = [self.sender capitalizedString];
+        friendName.textColor = [UIColor whiteColor];
+        friendName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+
+        
         [view addSubview:image];
         [view addSubview:friendName];
         view.userInteractionEnabled = NO;
@@ -330,19 +358,28 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self.data count];
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"Sent captions";
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.data count];
+    return 1;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+}
+
 
 
 
@@ -350,17 +387,27 @@
 {
     static NSString *cellIdentifier = @"SentCaptionCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderWidth = 2;
+    cell.layer.cornerRadius = 10;
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    ChallengePicks *pick = [self.data objectAtIndex:indexPath.row];
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     
     if ([pick isKindOfClass:[ChallengePicks class]]){
         
         if ([cell isKindOfClass:[HistoryDetailCell class]]){
             UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
+            UILabel *usernameLabel = ((HistoryDetailCell *)cell).myUsername;
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
             
             [pick.player getCorrectProfilePicWithImageView:imageView];
+            imageView.layer.masksToBounds = YES;
+            imageView.layer.cornerRadius = 30;
+
             
             if (pick.player.facebook_user){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
@@ -370,9 +417,7 @@
             }
             
             else{
-                imageView.image = nil;
-                FAImageView *imageView2 = (FAImageView *)imageView;
-                [imageView2 setDefaultIconIdentifier:@"fa-user"];
+                imageView.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
                 
             }
             
@@ -385,23 +430,26 @@
                 username = @"User";
             }
             
+            usernameLabel.text = username;
+            usernameLabel.textColor = [UIColor whiteColor];
+            usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+
             
-            NSString *me = [self.myUser.username capitalizedString];
-            if ([username isEqualToString:me]){
-                captionLabel.text = [NSString stringWithFormat:@"You said \r \r \"%@\"",pick.answer];
-            }
-            else{
-                captionLabel.text = [NSString stringWithFormat:@"%@ said \r \r \"%@\"",username,pick.answer];
-            }
+            captionLabel.text =[NSString stringWithFormat:@"\"%@\"",[pick.answer capitalizedString]];
         
             
             // set width and height so "sizeToFit" uses those constraints
-            
+            captionLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            captionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
             captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
             captionLabel.numberOfLines = 0;
             [captionLabel sizeToFit];
             
             dateLabel.text = [pick.timestamp timeAgo];
+            dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
+
+            
             
             
         }
@@ -427,7 +475,6 @@
 {
     NSSet *picks = self.myChallenge.picks;
     _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
-    
     return _data;
 }
 
@@ -436,11 +483,22 @@
 {
     if (!_nextButton){
         _nextButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-right"] style:UIBarButtonItemStylePlain target:self action:@selector(showPreviewScreen)];
-        [_nextButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25]} forState:UIControlStateNormal];
-        [_nextButton setTintColor:[UIColor greenColor]];
+        [_nextButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                              NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
         
     }
     return  _nextButton;
+}
+
+- (UIBarButtonItem *)backButton
+{
+    if (!_backButton){
+        _backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"] style:UIBarButtonItemStylePlain target:self action:@selector(popToHistory)];
+        [_backButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                             NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    }
+    
+    return _backButton;
 }
 
 

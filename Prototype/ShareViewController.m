@@ -14,6 +14,7 @@
 #import "SocialFriends.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
+#import "MGInstagram.h"
 #import <MessageUI/MessageUI.h>
 
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
@@ -32,6 +33,7 @@
 @property (strong,nonatomic)SocialFriends *friends;
 @property  BOOL fbSuccess;
 @property BOOL twSuccess;
+@property BOOL igSuccess;
 
 
 @property BOOL shareFacebook;
@@ -269,10 +271,12 @@
     
     // notify chosen captions sender
     [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",self.myChallenge.sender.username]
-               toFriend:self.myPick.player.username
+               toFriend:@"cj.ogbuehi"  // this should be self.myPick.player.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationNotifySelectedCaptionSender
                   block:nil];
+    
+#warning send this notification to the player not myself
     
 
 }
@@ -295,8 +299,8 @@
         }
         
         [self.friends postImageToFacebookFeed:self.shareImage
-                              message:@"Or nah?"
-                              caption:@"Or nah?"
+                              message:self.selectedCaption
+                                caption:self.selectedCaption
                                  name:@"A name"
                               albumID:albumID
                                  facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
@@ -310,7 +314,7 @@
     
     if (self.shareTwitter){
         [self.friends postImageToTwitterFeed:self.shareImage
-                                     caption:@"..."
+                                     caption:self.selectedCaption
                                        block:^(BOOL wasSuccessful) {
                                            if (wasSuccessful){
                                                NSLog(@"post to twitter success");
@@ -319,10 +323,24 @@
                                         }];
     }
     
+    if (self.shareInstagram){
+        if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
+            [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
+            [MGInstagram postImage:self.shareImage
+                       withCaption:self.selectedCaption
+                            inView:self.view];
+        }
+        else
+        {
+            NSLog(@"Error Instagram is either not installed or image is incorrect size");
+        }
+    }
+    
     if (self.shareFacebook){
         if (!self.fbSuccess){
             [self.hud hide:YES];
-            [self showAlertWithTitle:@"Facebook Error!" message:@"There was an error sharing your photo to Facebook."];
+            [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
+                             message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
             return;
         }
     }
@@ -330,10 +348,22 @@
     if (self.shareTwitter){
         if (!self.twSuccess){
             [self.hud hide:YES];
-            [self showAlertWithTitle:@"Twitter Error!" message:@"There was an error sharing your photo to Twitter."];
+            [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
+                             message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
             return;
         }
     }
+    
+    if (self.shareInstagram){
+        if (!self.igSuccess){
+            [self.hud hide:YES];
+            [self showAlertWithTitle:NSLocalizedString(@"Instagram Error!", nil)
+                             message:NSLocalizedString(@"There was an error sharing your photo to Instagram", nil)];
+            return;
+        }
+    }
+    
+   
     
     [self updateChallengeOnBackend];
     

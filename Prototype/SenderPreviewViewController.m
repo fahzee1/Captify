@@ -17,11 +17,12 @@
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()
+@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
@@ -37,7 +38,8 @@
 @property CGPoint scrollStart;
 @property (strong, nonatomic)NSArray *sections;
 @property NSString *localMediaName;
-
+@property (strong,nonatomic) UIViewController *contactsScreen;
+@property (strong,nonatomic) FBFriendPickerViewController *facebookScreen;
 
 
 
@@ -185,12 +187,14 @@
 
 - (void)tappedFB
 {
-    NSLog(@"need to show facebook friends list");
+    [self presentViewController:self.facebookScreen animated:YES completion:nil];
 }
 
 - (void)tappedContacts
 {
-    NSLog(@"need to show contacts list");
+  
+    [self presentViewController:self.contactsScreen animated:YES completion:nil];
+
 }
 
 - (UIImage *)createThumbnailWithSize:(CGSize)size
@@ -294,21 +298,9 @@
                                                           [hud hide:YES];
                                                           
                                                           // send notification
-                                                          ParseNotifications *p = [[ParseNotifications alloc] init];
+                                                          [self notifyFriendsWithParams:params];
                                                           
-                                                          [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
-                                                                    toFriends:self.selectedFriends[@"friends"]
-                                                                     withData:params
-                                                             notificationType:ParseNotificationCreateChallenge
-                                                                        block:nil];
-                                                           /*
-                                                          [p sendTestNotification:@"Cj you should see this"
-                                                                         withData:@{@"challenge_name": self.name}
-                                                                 notificationType:ParseNotificationCreateChallenge
-                                                                            block:nil];
-                                                            */
-                                                          
-                                                          
+                                                          // leave screen
                                                           [self notifyDelegateAndGoHome];
                                                       }
 
@@ -338,6 +330,27 @@
     
         NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
     
+}
+
+- (void)notifyFriendsWithParams:(NSDictionary *)params
+{
+    ParseNotifications *p = [[ParseNotifications alloc] init];
+    
+    [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
+              toFriends:self.selectedFriends[@"friends"]
+               withData:params
+       notificationType:ParseNotificationCreateChallenge
+                  block:nil];
+    
+    [p addChannelWithChallengeID:params[@"challenge_id"]];
+    /*
+     [p sendTestNotification:@"Cj you should see this"
+     withData:@{@"challenge_name": self.name}
+     notificationType:ParseNotificationCreateChallenge
+     block:nil];
+     */
+    
+
 }
 
 
@@ -602,6 +615,110 @@
    
 }
 
+
+#pragma -mark FBFRIENDS delegate
+
+
+- (void)facebookViewControllerDoneWasPressed:(id)sender
+{
+
+    [self.facebookScreen clearSelection];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)facebookViewControllerCancelWasPressed:(id)sender{
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
+{
+    if (friendPicker == self.facebookScreen){
+        BOOL installed = [user objectForKey:@"installed"] != nil;
+        return installed;
+    }
+    else{
+        return YES;
+    }
+}
+
+- (void)friendPickerViewController:(FBFriendPickerViewController *)friendPicker handleError:(NSError *)error
+{
+    [self alertErrorWithTitle:nil andMessage:error.localizedDescription];
+    
+}
+
+- (void)friendPickerViewControllerDataDidChange:(FBFriendPickerViewController *)friendPicker
+{
+    // check to see if the rows in each section are empty
+    // to show correct message
+    
+    if (friendPicker == self.facebookScreen){
+        BOOL empty = YES;
+        NSInteger sectionCount = [friendPicker.tableView numberOfSections];
+        for (NSInteger i = 0; i < sectionCount; i++){
+            if (![friendPicker.tableView numberOfRowsInSection:i] == 0){
+                empty = NO;
+            }
+        }
+        
+        if (empty){
+            // add subview with error message
+            UILabel *faceLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 150, 150)];
+            UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+            
+            faceLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:60];
+            faceLabel.textColor = [UIColor redColor];
+            faceLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"];
+            faceLabel.center = CGPointMake(200 , 100);
+            
+            textLabel.text = @"None of your facebook friends are using the app, you should invite them!";
+            textLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
+            textLabel.center = CGPointMake(170, 230);
+            textLabel.numberOfLines = 0;
+            [textLabel sizeToFit];
+            
+            [friendPicker.tableView addSubview:faceLabel];
+            [friendPicker.tableView addSubview:textLabel];
+            
+        }
+    }
+    
+    
+}
+
+- (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
+{
+   
+    if (![friendPicker.selection count] == 0){
+        NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
+        
+        // add/remove friend from selected list
+        if ([self.selectedFriends[@"friends"] containsObject:name]){
+            
+            // remove friends from list and their positions
+            [self.selectedFriends[@"friends"] removeObject:name];
+            
+            
+        }
+        else{
+            // add user to selected list
+            
+            [self.selectedFriends[@"friends"] addObject:name];
+            
+            
+            
+        }
+
+    }
+
+    
+  
+
+}
+
+
 - (User *)myUser
 {
     if (!_myUser){
@@ -615,6 +732,52 @@
         
     }
     return _myUser;
+}
+
+- (UIViewController *)contactsScreen
+{
+    if (!_contactsScreen){
+        _contactsScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"contactFriendsRoot"];
+    }
+    
+    return _contactsScreen;
+}
+
+- (FBFriendPickerViewController *)facebookScreen
+{
+    if (!_facebookScreen){
+        NSSet *fields = [NSSet setWithObjects:@"installed", nil];
+        _facebookScreen = [[FBFriendPickerViewController alloc] init];
+        _facebookScreen.title = @"Facebook Friends";
+        _facebookScreen.delegate = self;
+        _facebookScreen.allowsMultipleSelection = YES;
+        _facebookScreen.fieldsForRequest = fields;
+    }
+    
+    return _facebookScreen;
+}
+
+
+- (void)alertErrorWithTitle:(NSString *)title
+                 andMessage:(NSString *)message
+{
+    if (!title){
+        title = @"Error";
+    }
+    
+    if (!message){
+        message = @"There was an error with your connection";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+    
 }
 
 

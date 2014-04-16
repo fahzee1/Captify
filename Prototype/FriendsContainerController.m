@@ -241,10 +241,15 @@
 
         
     }
-    _friendPickerController.tableView.delegate = self;
+    //_friendPickerController.tableView.delegate = self;
     _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    if ([_friendPickerController.tableView respondsToSelector:@selector(setSectionIndexColor:)]){
+        _friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        _friendPickerController.tableView.sectionIndexColor = [UIColor whiteColor];
+        _friendPickerController.tableView.sectionIndexTrackingBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
     return  _friendPickerController;
 }
 
@@ -300,18 +305,22 @@
 #pragma -mark FBTableView delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.appFriendPickerController.tableView){
-        // show user using app screen
+    if (tableView == self.friendPickerController.tableView){
         cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         cell.layer.borderWidth = 2;
         cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
         cell.layer.cornerRadius = 5;
         cell.textLabel.textColor = [UIColor whiteColor];
     }
-    else if (tableView == self.friendPickerController.tableView){
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    }
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+}
+
+
+
 
 
 #pragma -mark side menu delegate

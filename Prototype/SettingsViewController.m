@@ -20,6 +20,13 @@
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
 
+
+#define SETTINGS_PHONE_DEFAULT @"No # provided"
+#define SETTINGS_PHOTO 3000
+#define SETTINGS_PHOTO_LABEL 4000
+#define SETTINGS_EDIT_BUTTON 5000
+#define SETTINGS_LOGOUT 6000
+
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) User *myUser;
@@ -51,6 +58,8 @@
     [super viewDidLoad];
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myTable.separatorStyle = UITableViewCellSelectionStyleNone;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -117,21 +126,21 @@
     self.editEmailField.layer.cornerRadius = 4;
     
     self.editUsernameField.text = self.myUser.username;
-    self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:@"No # provided";
+    self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:SETTINGS_PHONE_DEFAULT;
     self.editEmailField.text = self.myUser.email;
     
     self.editDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.editDoneButton.layer.cornerRadius = 10;
 
     
-    [self.view addSubview:self.editScreen];
+    [self.view.window addSubview:self.editScreen];
 
 
 }
 
 - (void)showEditScreen
 {
-    self.editScreen.frame = CGRectMake(7, 0, self.editScreen.frame.size.width, self.editScreen.frame.size.height);
+    self.editScreen.frame = CGRectMake(7, 66, self.editScreen.frame.size.width, self.editScreen.frame.size.height);
     [self setupEditScreen];
     [self.editUsernameField becomeFirstResponder];
     
@@ -177,50 +186,68 @@
     NSString *phone = self.editPhoneField.text;
     NSString *email = self.editEmailField.text;
     
-    NSDictionary *params = @{@"username": self.myUser.username,
-                             @"new_username": name,
-                             @"phone": phone,
-                             @"email": email};
     
-    [User sendProfileUpdatewithParams:params
-                                block:^(BOOL wasSuccessful, id data, NSString *message) {
-                                      [hud hide:YES];
-                                    if (wasSuccessful){
-                                        int changes = [[data valueForKey:@"changes"] intValue];
-                                        if (changes){
-                                            self.myUser.username = data[@"username"];
-                                            self.myUser.email = data[@"email"];
-                                            self.myUser.phone_number = data[@"phone"];
-                                            
-                                            
-                                            NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",data[@"username"],[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
-                                            [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
-                                            [[NSUserDefaults standardUserDefaults] setValue:data[@"username"] forKey:@"username"];
+    BOOL change;
+    if (![name isEqualToString:self.myUser.username]){
+        change = YES;
+    }
+    
+    if (![phone isEqualToString:self.myUser.phone_number] || ![phone isEqualToString:SETTINGS_PHONE_DEFAULT]){
+        change = YES;
+    }
+    
+    if (![email isEqualToString:self.myUser.email]){
+        change = YES;
+    }
 
-                                            dispatch_queue_t settingsQueue = dispatch_queue_create("com.Captify.Settings", NULL);
-                                            dispatch_async(settingsQueue, ^{
-                                                NSError *e;
-                                                if (![self.myUser.managedObjectContext save:&e]){
-                                                    NSLog(@"%@",e);
-                                                }
+    
+    if (change){
+        NSDictionary *params = @{@"username": self.myUser.username,
+                                 @"new_username": name,
+                                 @"phone": phone,
+                                 @"email": email};
+        
+        [User sendProfileUpdatewithParams:params
+                                    block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                          [hud hide:YES];
+                                        if (wasSuccessful){
+                                            int changes = [[data valueForKey:@"changes"] intValue];
+                                            if (changes){
+                                                self.myUser.username = data[@"username"];
+                                                self.myUser.email = data[@"email"];
+                                                self.myUser.phone_number = data[@"phone"];
                                                 
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    [self.myTable reloadData];
-                                                    [self destoryEditScreen];
-                                                });
+                                                
+                                                NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",data[@"username"],[[NSUserDefaults standardUserDefaults] valueForKey:@"api_key" ]];
+                                                [[NSUserDefaults standardUserDefaults] setValue:apiString forKey:@"apiString"];
+                                                [[NSUserDefaults standardUserDefaults] setValue:data[@"username"] forKey:@"username"];
 
-                                            });
-                                            
-                                            
+                                                dispatch_queue_t settingsQueue = dispatch_queue_create("com.Captify.Settings", NULL);
+                                                dispatch_async(settingsQueue, ^{
+                                                    NSError *e;
+                                                    if (![self.myUser.managedObjectContext save:&e]){
+                                                        NSLog(@"%@",e);
+                                                    }
+                                                    
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [self.myTable reloadData];
+                                                        [self destoryEditScreen];
+                                                    });
+
+                                                });
+                                                
+                                                
+                                            }
+                                            else{
+                                                [self destoryEditScreen];
+                                            }
                                         }
-                                        else{
-                                            [self destoryEditScreen];
-                                        }
-                                    }
-                                    else{
-                                        [self showAlertWithTitle:@"Error" message:message];
-                                    }
-                                }];
+                                    }];
+    }
+    // no changes
+    else{
+         [self destoryEditScreen];
+    }
     
     return YES;
 }
@@ -314,10 +341,49 @@
 }
 
 
+- (void)setupTableStylesWithCell:(UITableViewCell *)cell
+{
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderWidth = 1;
+    cell.layer.cornerRadius = 10;
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    
+    UIView *photoLabel = [cell viewWithTag:SETTINGS_PHOTO_LABEL];
+    if ([photoLabel isKindOfClass:[UILabel class]]){
+        UILabel *photoL = (UILabel *)photoLabel;
+        photoL.textColor = [UIColor whiteColor];
+        photoL.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    }
+    
+    UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
+    if ([editButton isKindOfClass:[UILabel class]]){
+        UILabel* editB = (UILabel *)editButton;
+        editB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor] ;
+        editB.textColor = [UIColor whiteColor];
+        editB.layer.cornerRadius = 5;
+        editB.text = NSLocalizedString(@"Edit Profile", nil);
+    }
+    
+    UIView *logoutButton = [cell viewWithTag:SETTINGS_LOGOUT];
+    if ([logoutButton isKindOfClass:[UILabel class]]){
+        UILabel* logoutB = (UILabel *)logoutButton;
+        logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor] ;
+        logoutB.textColor = [UIColor whiteColor];
+        logoutB.layer.cornerRadius = 5;
+        logoutB.text = NSLocalizedString(@"Log Out", nil);
+    }
+
+
+}
+
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self setupTableStylesWithCell:cell];
+    
     switch (indexPath.section) {
         case 0:
         {
@@ -328,10 +394,12 @@
             
             if (indexPath.row == 1){
                 // pic
-                UIView *image = [cell viewWithTag:3000];
+                UIView *image = [cell viewWithTag:SETTINGS_PHOTO];
                 if (image){
                     if ([image isKindOfClass:[UIImageView class]]){
                         [self.myUser getCorrectProfilePicWithImageView:(UIImageView *)image];
+                        ((UIImageView *)image).layer.masksToBounds = YES;
+                        ((UIImageView *)image).layer.cornerRadius = 20;
 
                     }
                 }
@@ -355,8 +423,7 @@
             
             if (indexPath.row == 4){
                 // Edit profile button
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.textLabel.text = NSLocalizedString(@"Edit Profile", nil);
+                cell.layer.borderWidth = 0;
             }
         }
             break;
@@ -377,9 +444,10 @@
             
         case 2:
         {
+            // logout
             if (indexPath.row == 0){
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.textLabel.text = NSLocalizedString(@"Log Out",nil);
+                //cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.layer.borderWidth = 0;
             }
         }
             

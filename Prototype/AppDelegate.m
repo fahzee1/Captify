@@ -62,6 +62,7 @@
         
     }
     
+     application.applicationIconBadgeNumber = 0;
     
     [self createAlbumAfterTime:60.0 * 5];
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
@@ -503,7 +504,7 @@
     if (status == FBSessionStateClosed || status == FBSessionStateClosedLoginFailed){
         if (status == FBSessionStateClosedLoginFailed){
             NSLog(@"%@",error);
-            [self showMessage:@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook" withTitle:@"Error"];
+            [self showMessage:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook", nil) withTitle:NSLocalizedString(@"Error", nil)];
         }
         //if the session is closed
         NSLog(@"Session closed");
@@ -723,6 +724,14 @@
                          isForeground:(BOOL)isF
 {
     NSLog(@"handle payload %@",payload);
+    
+    if (isF){
+        [JDStatusBarNotification showWithStatus:payload[@"aps"][@"alert"]
+                                   dismissAfter:2.0
+                                      styleName:JDStatusBarStyleSuccess];
+    }
+
+    
     int type = [payload[@"type"] intValue];
     switch (type) {
         case ParseNotificationCreateChallenge:
@@ -739,15 +748,8 @@
                 [((HistoryRecievedViewController *)receivedHistory) fetchUpdates];
                 
                 
-                if (isF){
-                    [JDStatusBarNotification showWithStatus:payload[@"aps"][@"alert"]
-                                               dismissAfter:2.0
-                                                  styleName:JDStatusBarStyleSuccess];
-                }
-
             }
             
-            [self setupHistoryViewControllers];
         }
             break;
         case ParseNotificationSendCaptionPick:
@@ -775,6 +777,9 @@
             [self setupHomeViewControllers];
             break;
     }
+    
+    
+        [self setupHistoryViewControllers];
 }
 
 @end

@@ -701,6 +701,11 @@
              [client stopNetworkActivity];
              if (block){
                  block(NO,nil,error.localizedDescription);
+                 [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                            dismissAfter:2.0
+                                               styleName:JDStatusBarStyleError];
+                 
+
              }
       
         }];

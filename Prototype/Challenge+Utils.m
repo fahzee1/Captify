@@ -405,7 +405,7 @@
         if (![challenge.managedObjectContext save:&error]){
             NSLog(@"%@",error);
         }
-        return nil;
+        return challenge;
     }
 
     
