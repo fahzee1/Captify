@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "starring.png"
+      "filename" : "active-history-screen.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "starring_@2X.png"
+      "filename" : "active-history-screen-1.png"
     }
   ],
   "info" : {

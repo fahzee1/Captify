@@ -237,13 +237,15 @@
     if (cell && [cell isKindOfClass:[HistoryReceivedCell class]]){
         
         UILabel *titleLabel = ((HistoryReceivedCell *)cell).historyTitleLabel;
-        UILabel *activeLabel = ((HistoryReceivedCell *)cell).activeLabel;
+        UIButton *activeButton = ((HistoryReceivedCell *)cell).activeButton;
         UIImageView *myImageView =  ((HistoryReceivedCell *)cell).historyImageView;
         UILabel *dateLabel = ((HistoryReceivedCell *)cell).dateLabel;
+        UILabel *usernameLabel = ((HistoryReceivedCell *)cell).myUsername;
+        
+        activeButton.userInteractionEnabled = NO;
+        
         myImageView.layer.masksToBounds = YES;
         myImageView.layer.cornerRadius = 30;
-        myImageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        myImageView.layer.borderWidth = 3;
         
         Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
@@ -258,7 +260,7 @@
 
        
         titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
+        titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
             
         /*
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
@@ -268,26 +270,29 @@
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
          */
         
+        usernameLabel.text = sender.username;
+        usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+        
+        
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        dateLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
+        dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
         
         [sender getCorrectProfilePicWithImageView:myImageView];
         
         
         // check if challenge is active or not or if pick was sent
         // if active show animating green filled circle, if not ahow circle outline
-        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-        [activeLabel setTextColor:[UIColor greenColor]];
+   
         
         int active = [challenge.active intValue];
         int sentPick = [challenge.sentPick intValue];
                 
         if (active && !sentPick){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"]];
-            [activeLabel setTextColor:[UIColor greenColor]];
-            if (![activeLabel.layer animationForKey:@"historyActive"]){
+            /*
+            if (![activeButton.layer animationForKey:@"historyActive"]){
                 
                 
                 CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
@@ -297,13 +302,13 @@
                 colorPulse.autoreverses = YES;
                 colorPulse.duration = 0.8;
                 colorPulse.repeatCount = FLT_MAX;
-                [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
+                [activeButton.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
+             */
         }
         else{
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            [activeLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
-            [activeLabel setTextColor:[UIColor redColor]];
+            [activeButton setImage:[UIImage imageNamed:CAPTIFY_INACTIVE_HISTORY] forState:UIControlStateNormal];
             
         }
         

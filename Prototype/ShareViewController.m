@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *myMessageLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
+@property (strong,nonatomic)MBProgressHUD *hud;
 @property (weak, nonatomic) IBOutlet UILabel *facebookDisplayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *twitterDisplayLabel;
@@ -283,9 +284,9 @@
     [self saveImage];
     
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Saving/Sharing";
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.mode = MBProgressHUDModeIndeterminate;
+    self.hud.labelText = @"Saving/Sharing";
     
     if (self.shareFacebook){
         NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
@@ -320,7 +321,7 @@
     
     if (self.shareFacebook){
         if (!self.fbSuccess){
-            [hud hide:YES];
+            [self.hud hide:YES];
             [self showAlertWithTitle:@"Facebook Error!" message:@"There was an error sharing your photo to Facebook."];
             return;
         }
@@ -328,18 +329,24 @@
     
     if (self.shareTwitter){
         if (!self.twSuccess){
-            [hud hide:YES];
+            [self.hud hide:YES];
             [self showAlertWithTitle:@"Twitter Error!" message:@"There was an error sharing your photo to Twitter."];
             return;
         }
     }
     
+    [self updateChallengeOnBackend];
+    
+}
+
+- (void)updateChallengeOnBackend
+{
     
     NSDictionary *params = @{@"challenge_id": self.myChallenge.challenge_id,
                              @"pick_id":self.myPick.pick_id};
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *message) {
-                                       [hud hide:YES];
+                                       [self.hud hide:YES];
                                        if (wasSuccessful){
                                            
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];
@@ -352,16 +359,15 @@
                                            [self notifyFriends];
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                [self.navigationController popToRootViewControllerAnimated:YES];
+                                               [self.navigationController popToRootViewControllerAnimated:YES];
                                            });
-
+                                           
                                        }
                                        else{
                                            [self showAlertWithTitle:@"Error" message:@"There was an error updating your challenge. Try again"];
                                        }
                                    }];
-    
-    
+
     
 }
 
@@ -400,7 +406,11 @@
             break;
         case MessageComposeResultSent:
         {
-            
+            [self saveImage];
+            self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            self.hud.mode = MBProgressHUDModeIndeterminate;
+            self.hud.labelText = @"Updating";
+
         }
             
         default:
@@ -408,7 +418,9 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:^{
-        NSLog(@"leave this screen if success");
+        if (result == MessageComposeResultSent){
+             [self updateChallengeOnBackend];
+        }
     }];
 }
 

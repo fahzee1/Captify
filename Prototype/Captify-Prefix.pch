@@ -25,6 +25,11 @@
 #define TICK NSDate *startTime = [NSDate date]
 #define TOCK NSLog(@"Elapsed Time: %f", -[startTime timeIntervalSinceNow])
 
+//images
+#define CAPTIFY_ACTIVE_HISTORY @"active-history-screen"
+#define CAPTIFY_INACTIVE_HISTORY @"inactive-history-screen"
+#define CAPTIFY_CONTACT_PIC @"USER_ICON"
+
 // colors
 
 #define CAPTIFY_ORANGE @"#ffcd04"

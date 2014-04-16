@@ -13,8 +13,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *historyTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *historyImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *activeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *activeButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myUsername;
 
 @end

@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface HistorySentCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *activeLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *activeButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *myImageVew;
 @property (weak, nonatomic) IBOutlet UILabel *myDateLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *myCaptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myUsername;
 
 @property (weak, nonatomic) IBOutlet UILabel *sentToLabel;
 @end

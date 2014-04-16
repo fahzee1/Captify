@@ -24,7 +24,6 @@
 #import "MenuViewController.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate,UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
 @property (strong,nonatomic)UIViewController *currentController;
 @property (strong, nonatomic) FBFriendPickerViewController *friendPickerController;
@@ -55,7 +54,13 @@
 	// Do any additional setup after loading the view.
     self.sideMenuViewController.delegate = self;
     
-    UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentedControl.selectedSegmentIndex];
+    self.cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
+    [self.cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+
+    
+    UIViewController *vc = self.friendPickerController;
+    [self.friendPickerController loadData];
+    [self.friendPickerController clearSelection];
     [self addChildViewController:vc];
     vc.view.frame = self.myContainerView.bounds;
     [self.myContainerView addSubview:vc.view];
@@ -68,17 +73,8 @@
     
    
     self.navigationItem.leftBarButtonItem = button;
-    self.navigationItem.title = NSLocalizedString(@"Friends", nil);
+    self.navigationItem.title = NSLocalizedString(@"Invite", nil);
     
-    [self.mySegmentedControl setTitle:NSLocalizedString(@"Contacts", nil) forSegmentAtIndex:1];
-    [self.mySegmentedControl setTitle:NSLocalizedString(@"Invite", nil) forSegmentAtIndex:2];
-    [self.mySegmentedControl setTitle:NSLocalizedString(@"Search", nil) forSegmentAtIndex:3];
-    
-    self.cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
-    [self.cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
-    
-    self.appCacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
-    [self.appCacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
     
     
     // fetch contacts from phone and
@@ -154,64 +150,6 @@
      [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
-- (IBAction)segmentChanged:(UISegmentedControl *)sender {
-    UIViewController *vc = [self viewControllerForSegmentIndex:sender.selectedSegmentIndex];
-    
-    [self addChildViewController:vc];
-    [self transitionFromViewController:self.currentController
-                      toViewController:vc
-                              duration:0
-                               options:UIViewAnimationOptionTransitionNone
-                            animations:^{
-                                [self.currentController.view removeFromSuperview];
-                                vc.view.frame = self.myContainerView.bounds;
-                                [self.myContainerView addSubview:vc.view];
-                            } completion:^(BOOL finished) {
-                                [vc didMoveToParentViewController:self];
-                                [self.currentController removeFromParentViewController];
-                                self.currentController = vc;
-                            }];
-    
-}
-
-
-- (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {
-    UIViewController *vc;
-    switch (index) {
-        case 0:
-        {
-            vc = self.appFriendPickerController;
-            
-            [self.appFriendPickerController loadData];
-            [self.appFriendPickerController clearSelection];
-        }
-
-            break;
-        case 1:
-        {
-            vc = [self.storyboard instantiateViewControllerWithIdentifier:@"contactFriends"];
-        }
-            break;
-        case 2:
-        {
-            vc = self.friendPickerController;
-            
-            [self.friendPickerController loadData];
-            [self.friendPickerController clearSelection];
-        }
-            break;
-            
-        case 3:
-        {
-    
-            vc =  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"searchFriends"];
-        }
-            break;
-        default:
-            break;
-    }
-    return vc;
-}
 
 
 
@@ -303,7 +241,10 @@
 
         
     }
-     _friendPickerController.tableView.delegate = self;
+    _friendPickerController.tableView.delegate = self;
+    _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     return  _friendPickerController;
 }
 
@@ -313,7 +254,7 @@
         _appFriendPickerController = [[FBFriendPickerViewController alloc] init];
         _appFriendPickerController.title = @"Facebook Friends";
         _appFriendPickerController.delegate = self;
-        _appFriendPickerController.allowsMultipleSelection = NO;
+        _appFriendPickerController.allowsMultipleSelection = YES;
         _appFriendPickerController.fieldsForRequest = fields;
         
         // styles

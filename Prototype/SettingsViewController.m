@@ -102,17 +102,27 @@
 
 - (void)setupEditScreen
 {
+    self.editView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    
     self.editUsernameField.delegate = self;
     self.editPhoneField.delegate = self;
     self.editEmailField.delegate = self;
+    
+    self.editUsernameField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.editPhoneField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.editEmailField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+    self.editUsernameField.layer.cornerRadius = 4;
+    self.editPhoneField.layer.cornerRadius = 4;
+    self.editEmailField.layer.cornerRadius = 4;
     
     self.editUsernameField.text = self.myUser.username;
     self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:@"No # provided";
     self.editEmailField.text = self.myUser.email;
     
-    self.editDoneButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
-    [self.editDoneButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
-    
+    self.editDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.editDoneButton.layer.cornerRadius = 10;
+
     
     [self.view addSubview:self.editScreen];
 

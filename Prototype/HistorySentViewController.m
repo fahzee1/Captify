@@ -223,23 +223,22 @@
         UILabel *myLabel = ((HistorySentCell *)cell).myCaptionLabel;
         UILabel *numberOfFriends = ((HistorySentCell *)cell).sentToLabel;
         UILabel *dateLabel = ((HistorySentCell *)cell).myDateLabel;
-        UILabel *activeLabel = ((HistorySentCell *)cell).activeLabel;
+        UIButton *activeButton = ((HistorySentCell *)cell).activeButton;
         UIImageView *myImageView = ((HistorySentCell *)cell).myImageVew;
+        UILabel *usernameLabel = ((HistorySentCell *)cell).myUsername;
+    
+        activeButton.userInteractionEnabled = NO;
+        
         myImageView.layer.masksToBounds = YES;
         myImageView.layer.cornerRadius = 30;
-        myImageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        myImageView.layer.borderWidth = 3;
-        
 
-        
         Challenge *challenge = [self.data objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         int active = [challenge.active intValue];
-        int sentPick = [challenge.sentPick intValue];
+        //int sentPick = [challenge.sentPick intValue];
         int shared = [challenge.shared intValue];
 
-
-        if (active && !sentPick && !shared){
+        if (active && !shared){
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
         else{
@@ -261,6 +260,11 @@
         myLabel.numberOfLines = 0;
         [myLabel sizeToFit];
          */
+        
+        usernameLabel.text = sender.username;
+        usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+
 
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
@@ -279,15 +283,10 @@
         numberOfFriends.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
         
         // show green active circle
-        activeLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-        activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-        activeLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"];
         
-        if (active && !sentPick && !shared){
-            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-            if (![activeLabel.layer animationForKey:@"historyActive"]){
-                
-                
+        if (active && !shared){
+            /*
+            if (![activeButton.layer animationForKey:@"historyActive"]){
                 CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
                 colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
@@ -295,33 +294,13 @@
                 colorPulse.autoreverses = YES;
                 colorPulse.duration = 1.0;
                 colorPulse.repeatCount = FLT_MAX;
-                [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
+                [activeButton.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
+             */
         }
-        else if (!shared) {
-            activeLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"];
-            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-            if (![activeLabel.layer animationForKey:@"historyActive"]){
-                
-                
-                CABasicAnimation *colorPulse = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                colorPulse.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                colorPulse.fromValue = [NSNumber numberWithFloat:1.0];
-                colorPulse.toValue = [NSNumber numberWithFloat:0.1];
-                colorPulse.autoreverses = YES;
-                colorPulse.duration = 0.8;
-                colorPulse.repeatCount = FLT_MAX;
-                [activeLabel.layer addAnimation:colorPulse forKey:@"historyActive"];
-            }
-
-        }
-    
         else{
-    
-            activeLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-          
-
-            
+            [activeButton setImage:[UIImage imageNamed:CAPTIFY_INACTIVE_HISTORY] forState:UIControlStateNormal];
+        
         }
         
 
@@ -340,7 +319,6 @@
     // check if active
     
     int active = [challenge.active intValue];
-    int sentPick = [challenge.sentPick intValue];
     int shared = [challenge.shared intValue];
     int firstOpen = [challenge.first_open intValue];
     
@@ -353,7 +331,7 @@
         }
     }
 
-    if (active && !sentPick && !shared){
+    if (active && !shared){
 
         
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
@@ -368,22 +346,6 @@
              [self.navigationController pushViewController:vc animated:YES];
         }
     }
-    else if (!shared){
-        
-        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
-        if ([vc isKindOfClass:[HistoryDetailViewController class]]){
-            UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.local_image_path];
-            ((HistoryDetailViewController *)vc).image = challenge_image;
-            ((HistoryDetailViewController *)vc).myChallenge = challenge;
-            ((HistoryDetailViewController *)vc).myUser = self.myUser;
-            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
-            NSLog(@"%@ is image path",challenge.image_path);
-            
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-
-    }
-    
     else{
         
         UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];

@@ -62,9 +62,12 @@
     }
     
     else{
+        iV.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+        /*
         iV.image = nil;
         FAImageView *imageView2 = (FAImageView *)iV;
         [imageView2 setDefaultIconIdentifier:@"fa-user"];
+         */
 
     }
 }

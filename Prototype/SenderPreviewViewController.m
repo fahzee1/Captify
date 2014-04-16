@@ -21,10 +21,14 @@
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()<UIScrollViewDelegate,UITableViewDelegate, UITableViewDataSource>
+@interface SenderPreviewViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
+@property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
 
-@property (weak, nonatomic) IBOutlet UITableView *friendsTable;
+@property (weak, nonatomic) IBOutlet UILabel *contactsLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
 @property (strong, nonatomic)NSMutableDictionary *selectedFriends;
 @property (strong, nonatomic)NSMutableDictionary *selectedPositions;
 @property (strong, nonatomic) NSArray *friendsArray;
@@ -53,10 +57,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToPreview)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationController.navigationBarHidden = NO;
     self.navigationItem.title = NSLocalizedString(@"Preview", nil);
-    self.friendsTable.delegate = self;
-    self.friendsTable.dataSource = self;
     
     [self setupStyles];
     
@@ -90,36 +96,86 @@
 
 - (void)dealloc
 {
-    if (self.friendsTable.delegate == self){
-        self.friendsTable.delegate = nil;
-    }
-    
-    if (self.friendsTable.dataSource == self){
-        self.friendsTable.dataSource = nil;
-    }
 
-    
+
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)popToPreview
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)setupStyles
 {
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
-    
-    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     self.topLabel.textColor = [UIColor whiteColor];
-    self.topLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+    self.topLabel.layer.borderWidth = 2;
+    self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    self.topLabel.layer.cornerRadius = 5;
+    if ([self.name length] > 30){
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    }
+    else{
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+    }
+    self.topLabel.textAlignment = NSTextAlignmentCenter;
+    self.topLabel.numberOfLines = 0;
+    [self.topLabel sizeToFit];
+    self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
+                                     self.topLabel.frame.origin.y,
+                                     [UIScreen mainScreen].bounds.size.width,
+                                     self.topLabel.frame.size.height);
+    
+    CGRect labelFrame = self.topLabel.frame;
+    labelFrame.size.height += 10;
+    self.topLabel.frame = labelFrame;
+    
+
+    self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.selectedContainerView.layer.cornerRadius = 5;
+    self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    
+    
+    UITapGestureRecognizer *tapC = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedContacts)];
+    tapC.numberOfTapsRequired = 1;
+    tapC.numberOfTouchesRequired = 1;
+
+    self.contactsLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.contactsLabel.textColor = [UIColor whiteColor];
+    self.contactsLabel.layer.cornerRadius = 5;
+    self.contactsLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.contactsLabel.text = [NSString stringWithFormat:@"%@   Contacts",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
+    self.contactsLabel.userInteractionEnabled = YES;
+    [self.contactsLabel addGestureRecognizer:tapC];
+    
+    
+    UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
+    tapFB.numberOfTapsRequired = 1;
+    tapFB.numberOfTouchesRequired = 1;
+
+    self.facebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.facebookLabel.textColor = [UIColor whiteColor];
+    self.facebookLabel.layer.cornerRadius = 5;
+    self.facebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.facebookLabel.text = [NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    self.facebookLabel.userInteractionEnabled = YES;
+    [self.facebookLabel addGestureRecognizer:tapFB];
     
     
     // the bottom send button
     [self.bottomSendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.bottomSendButton.layer.opacity = 0.6f;
     self.bottomSendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
-    self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#2ecc71"] CGColor];
+    self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    self.bottomSendButton.layer.cornerRadius = 5;
     self.bottomSendButton.userInteractionEnabled = NO;
     [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -127,6 +183,15 @@
 
 }
 
+- (void)tappedFB
+{
+    NSLog(@"need to show facebook friends list");
+}
+
+- (void)tappedContacts
+{
+    NSLog(@"need to show contacts list");
+}
 
 - (UIImage *)createThumbnailWithSize:(CGSize)size
 {
@@ -269,49 +334,6 @@
                                                   }
                                               }];
     
-    /*
-    [self sendCreateChallengeRequest:apiParams image:UIImageJPEGRepresentation(self.image, 1) block:^(BOOL wasSuccessful,BOOL fail, NSString *message, id data) {
-        if (wasSuccessful){
-            NSUInteger count = [self.selectedFriends[@"friends"] count];
-            NSString *media_url = [data valueForKey:@"media"];
-            NSString *baseUrlString = [Challenge baseUrl];
-            NSString *fullMediaUrl = [baseUrlString stringByAppendingString:media_url];
-            
-
-            NSDictionary *params = @{@"sender":self.myUser.username,
-                                     @"context":self.myUser.managedObjectContext,
-                                     @"recipients":self.selectedFriends[@"friends"],
-                                     @"recipients_count":[NSNumber numberWithInteger:count],
-                                     @"challenge_name":self.name,
-                                     @"challenge_id":challenge_id,
-                                     @"media_url":fullMediaUrl};
-
-            Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
-            if (challenge){
-                [self notifyDelegateAndGoHome];
-            }
-            
-            
-        }
-        else{
-            if (fail){
-                // 500
-                if (message){
-                    [self showAlertWithMessage:message];
-                }
-                else{
-                    [self showAlertWithMessage:@"There was an error sending your request"];
-                }
-            }
-            else{
-                // 200 but error
-                 [self showAlertWithMessage:@"There was an error sending your request"];
-            }
-    
-        }
-    }];
-    
-    */
     
     
         NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
@@ -384,26 +406,6 @@
     [a show];
 }
 
-#pragma -mark UIscrollview delegate
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    if (scrollView == self.friendsTable){
-
-        CGRect frame = self.friendsTable.frame;
-        self.friendsTable.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - self.bottomSendButton.frame.size.height);
-        [self.view addSubview:self.bottomSendButton];
-    }
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    if (scrollView == self.friendsTable){
-        [self.bottomSendButton removeFromSuperview];
-        CGRect frame = self.friendsTable.frame;
-        self.friendsTable.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height + self.bottomSendButton.frame.size.height);
-    }
-
-}
 
 - (NSArray *)friendsArray
 {
@@ -422,6 +424,7 @@
     return _facebookFriendsArray;
 }
 
+/*
 #pragma -mark UItableview delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -535,6 +538,8 @@
     
     return cell;
 }
+ */
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

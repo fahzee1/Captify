@@ -81,7 +81,7 @@
 
     [self.menuCamera setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Home", @"Home button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"]] forState:UIControlStateNormal];
 
-    [self.menuFriends setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Friends", @"Friends button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]] forState:UIControlStateNormal];
+    [self.menuFriends setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Invite", @"Friends button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]] forState:UIControlStateNormal];
 
     [self.menuHistory setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ History", @"History button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"]] forState:UIControlStateNormal];
 
