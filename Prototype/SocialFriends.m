@@ -570,6 +570,27 @@
     
 }
 
+
++ (void)getFriendsUsernameWithID:(NSString *)ID
+                           block:(FacebookFriendUsername)block
+{
+    [FBRequestConnection startWithGraphPath:ID
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (error){
+                                  NSLog(@"%@",error.localizedDescription);
+                                  if (block){
+                                      block(NO,nil);
+                                  }
+                                  return ;
+                              }
+                              
+                              if (block){
+                                  block(YES,result[@"username"]);
+                              }
+                        }];
+}
+
+
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
 {

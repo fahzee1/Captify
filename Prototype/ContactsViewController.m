@@ -43,13 +43,24 @@
     [super viewDidLoad];
 	
 
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tappedCancel)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tappedDone)];
+
+    /*
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+     */
+    
+    self.navigationItem.title = NSLocalizedString(@"Select Friends", nil);
+    self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 
     // check server for any new friends since last check
     // if any create them in core data and then refresh table
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.sections = [NSArray arrayWithObjects:@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z", nil];
+    self.sections = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
 
     
     
@@ -77,6 +88,23 @@
 - (void)showAddFriendScreen
 {
     [self performSegueWithIdentifier:@"addFriends" sender:self];
+}
+
+
+- (void)tappedCancel
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerPressedCancel:)]){
+        [self.delegate ContactViewControllerPressedCancel:self];
+    }
+}
+
+- (void)tappedDone
+{
+#warning save selected data on selection property
+    if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerPressedDone:)]){
+        [self.delegate ContactViewControllerPressedDone:self];
+    }
+    
 }
 
 

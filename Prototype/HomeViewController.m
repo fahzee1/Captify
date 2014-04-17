@@ -867,12 +867,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    // if user chooses caption. Hide caption select buttons
-    // and add caption to the image
-    if ([alertView textFieldAtIndex:0].delegate == self){
-        [alertView textFieldAtIndex:0].delegate = nil;
-    }
-    
+        
     if (alertView == self.makePhoneAlert){
         if (buttonIndex == 0){
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"phone_never"];

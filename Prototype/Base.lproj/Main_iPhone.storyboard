@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -205,7 +205,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendCells" rowHeight="94" id="Tgu-01-yGW" customClass="FriendCell">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="94"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tgu-01-yGW" id="zvW-CU-eH1">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="93"/>
@@ -222,18 +222,10 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="176" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dg2-D9-BLp">
-                                                    <rect key="frame" x="228" y="29" width="45" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="myFriendPic" destination="fs3-62-lDe" id="jgb-dk-F6I"/>
-                                            <outlet property="myFriendScore" destination="dg2-D9-BLp" id="n3B-Uj-Cnb"/>
                                             <outlet property="myFriendUsername" destination="npq-uE-bBJ" id="04Q-C5-TKc"/>
                                         </connections>
                                     </tableViewCell>
@@ -249,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cGy-Ob-Xtq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-133" y="-2298"/>
+            <point key="canvasLocation" x="-542" y="-2283"/>
         </scene>
         <!--Facebook Friends View Controller - Add Friends-->
         <scene sceneID="Zfq-rx-Lnp">
@@ -1495,24 +1487,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xo-tp-2OK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-561" y="675"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="9BL-eP-ggv">
-            <objects>
-                <navigationController storyboardIdentifier="contactFriendsRoot" automaticallyAdjustsScrollViewInsets="NO" id="eki-EP-Qwm" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SVa-dD-ih8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="RMy-6A-qIh" kind="relationship" relationship="rootViewController" id="0DQ-X7-LKE"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="T6i-Ud-Qft" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-659" y="-2298"/>
         </scene>
     </scenes>
     <resources>

@@ -18,6 +18,7 @@ typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult resu
 typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
 typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
 typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
+typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
 
 
 @interface SocialFriends : NSObject
@@ -65,6 +66,10 @@ typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
 
 - (void)postImage:(UIImage *)image
             block:(FacebookPostStatus)block;
+
+
++ (void)getFriendsUsernameWithID:(NSString *)ID
+                           block:(FacebookFriendUsername)block;
 
 
 // the methods below are used as phone number formatters

@@ -113,12 +113,13 @@
                                               if (!error){
                                                   //NSLog(@"%@",result);
                                                   NSNumber *fbookId = [result valueForKey:@"id"];
-                                                  NSString *fbookName = [result valueForKey:@"username"];
+                                                  //NSString *fbookName = [result valueForKey:@"username"];
                                                   NSString *fbookEmail = [result valueForKey:@"email"];
                                                   NSString *password = [[NSUUID UUID] UUIDString];
                                                   NSString *fbookFirstName = [result valueForKey:@"first_name"];
                                                   NSString *fbookLastName = [result valueForKey:@"last_name"];
-                                                  NSDictionary *parms = @{@"username": fbookName,
+                                                  NSString *fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
+                                                  NSDictionary *parms = @{@"username": fbookUsername,
                                                                           @"email":fbookEmail,
                                                                           @"password":password,
                                                                           @"fbook_id":fbookId,

@@ -17,12 +17,14 @@
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
+#import "SocialFriends.h"
+#import "ContactsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate>
+@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate,ContactsControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
@@ -32,7 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
 @property (strong, nonatomic)NSMutableDictionary *selectedFriends;
 @property (strong, nonatomic)NSMutableDictionary *selectedPositions;
-@property (strong, nonatomic) NSArray *friendsArray;
+//@property (strong, nonatomic) NSArray *friendsArray;
 @property (strong, nonatomic) NSArray *facebookFriendsArray;
 @property (strong, nonatomic)IBOutlet UIButton *bottomSendButton;
 @property CGPoint scrollStart;
@@ -420,22 +422,9 @@
 }
 
 
-- (NSArray *)friendsArray
-{
-    if (!_friendsArray){
-        _friendsArray = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
-    }
-    
-    return _friendsArray;
-}
 
-- (NSArray *)facebookFriendsArray
-{
-    if (!_facebookFriendsArray){
-        _facebookFriendsArray = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:NO];
-    }
-    return _facebookFriendsArray;
-}
+
+
 
 /*
 #pragma -mark UItableview delegate
@@ -553,10 +542,11 @@
 }
  */
 
+/*
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
    // get correct type of friend
     User *friend;
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
@@ -614,26 +604,79 @@
     [tableView reloadData];
    
 }
+*/
 
+#pragma -mark Contacts delegate
+
+- (void)ContactViewControllerPressedCancel:(ContactsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)ContactViewControllerPressedDone:(ContactsViewController *)controller
+{
+    // get data here and add to seperate list?
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)ContactViewControllerDataChanged:(ContactsViewController *)controller
+{
+    // implement
+}
 
 #pragma -mark FBFRIENDS delegate
 
 
 - (void)facebookViewControllerDoneWasPressed:(id)sender
 {
+ 
+    
+    if (self.selectedFriends[@"friends"]){
+        self.selectedFriends[@"friends"] = [@[]mutableCopy];
+    }
+    for (NSDictionary *friend in self.facebookFriendsArray){
+        NSString *first = friend[@"first_name"];
+        NSString *second = friend[@"last_name"];
+        NSString *username = [NSString stringWithFormat:@"%@-%@",first,second];
+        
+        [self.selectedFriends[@"friends"] addObject:username];
+    }
+    
+    
+    //NSLog(@"%@",self.selectedFriends[@"friends"]);
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        if ([self.selectedFriends[@"friends"] count] > 0){
+            self.bottomSendButton.layer.opacity = 1.f;
+            self.bottomSendButton.userInteractionEnabled = YES;
+            int count = [self.selectedFriends[@"friends"] count];
+            if (count == 1){
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %d Friend",count] forState:UIControlStateNormal];
+            }
+            else{
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %d Friends",count] forState:UIControlStateNormal];
+            }
 
-    [self.facebookScreen clearSelection];
-    [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else{
+            [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send"] forState:UIControlStateNormal];
+            self.bottomSendButton.layer.opacity = 0.6f;
+            self.bottomSendButton.userInteractionEnabled = NO;
+        }
+    }];
 }
 
 
 - (void)facebookViewControllerCancelWasPressed:(id)sender{
     
+    [self.facebookScreen clearSelection];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
+    /*
     if (friendPicker == self.facebookScreen){
         BOOL installed = [user objectForKey:@"installed"] != nil;
         return installed;
@@ -641,6 +684,9 @@
     else{
         return YES;
     }
+     */
+     
+    return YES;
 }
 
 - (void)friendPickerViewController:(FBFriendPickerViewController *)friendPicker handleError:(NSError *)error
@@ -690,31 +736,9 @@
 
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
-   
-    if (![friendPicker.selection count] == 0){
-        NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
-        
-        // add/remove friend from selected list
-        if ([self.selectedFriends[@"friends"] containsObject:name]){
-            
-            // remove friends from list and their positions
-            [self.selectedFriends[@"friends"] removeObject:name];
-            
-            
-        }
-        else{
-            // add user to selected list
-            
-            [self.selectedFriends[@"friends"] addObject:name];
-            
-            
-            
-        }
-
-    }
-
     
-  
+    self.facebookFriendsArray = friendPicker.selection;
+    
 
 }
 
@@ -737,7 +761,11 @@
 - (UIViewController *)contactsScreen
 {
     if (!_contactsScreen){
-        _contactsScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"contactFriendsRoot"];
+        UIViewController *contactScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"contactFriends"];
+        _contactsScreen = [[UINavigationController alloc] initWithRootViewController:contactScreen];
+        if ([contactScreen isKindOfClass:[ContactsViewController class]]){
+            ((ContactsViewController *)contactScreen).delegate = self;
+        }
     }
     
     return _contactsScreen;
@@ -748,11 +776,14 @@
     if (!_facebookScreen){
         NSSet *fields = [NSSet setWithObjects:@"installed", nil];
         _facebookScreen = [[FBFriendPickerViewController alloc] init];
-        _facebookScreen.title = @"Facebook Friends";
+        _facebookScreen.title = @"Select Friends";
         _facebookScreen.delegate = self;
         _facebookScreen.allowsMultipleSelection = YES;
         _facebookScreen.fieldsForRequest = fields;
+        [_facebookScreen loadData];
+        
     }
+    
     
     return _facebookScreen;
 }

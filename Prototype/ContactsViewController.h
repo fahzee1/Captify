@@ -9,11 +9,30 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
-@interface ContactsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
+@class ContactsViewController;
 
+@protocol ContactsControllerDelegate <NSObject>
 
-@property (nonatomic, retain)User *myUser;
-@property (strong, nonatomic)NSArray *myFriends;
+- (void)ContactViewControllerPressedDone:(ContactsViewController *)controller;
+- (void)ContactViewControllerPressedCancel:(ContactsViewController *)controller;
+
+@optional;
+#warning implement this method
+- (void)ContactViewControllerDataChanged:(ContactsViewController *)controller;
 
 @end
+
+
+
+@interface ContactsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+
+@property (weak)id<ContactsControllerDelegate>delegate;
+@property (nonatomic, retain)User *myUser;
+@property (strong, nonatomic)NSArray *myFriends;
+@property (strong,nonatomic)NSArray *selection;
+
+@end
+
+
