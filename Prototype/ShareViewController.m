@@ -17,6 +17,8 @@
 #import "MGInstagram.h"
 #import <MessageUI/MessageUI.h>
 
+typedef void (^ShareToNetworksBlock) ();
+
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
@@ -205,6 +207,28 @@
         }
 
     }
+    
+    if (self.shareInstagram){
+        [self shareToFacebookAndTwitterWithBlock:^{
+            // attempts to share to the above networks if selected
+            // then show instagram option when thats done since we
+            // must leave the app for that share
+            
+            if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
+                [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
+                [MGInstagram postImage:self.shareImage
+                           withCaption:self.selectedCaption
+                                inView:self.view];
+            }
+            else
+            {
+                NSLog(@"Error Instagram is either not installed or image is incorrect size");
+                [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
+            }
+
+        }];
+    }
+
 }
 
 
@@ -282,12 +306,8 @@
 }
 
 
-- (IBAction)tappedShare:(UIButton *)sender {
-    // after share show success overlay or alert or something
-    // then pop to root
-    [self saveImage];
-    
-
+- (void)shareToFacebookAndTwitterWithBlock:(ShareToNetworksBlock)block
+{
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
     self.hud.labelText = @"Saving/Sharing";
@@ -299,17 +319,17 @@
         }
         
         [self.friends postImageToFacebookFeed:self.shareImage
-                              message:self.selectedCaption
-                                caption:self.selectedCaption
-                                 name:@"A name"
-                              albumID:albumID
+                                      message:self.selectedCaption
+                                      caption:self.selectedCaption
+                                         name:@"A name"
+                                      albumID:albumID
                                  facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
-                            feedBlock:^(BOOL wasSuccessful) {
-                                if (wasSuccessful){
-                                    NSLog(@"posting to feed was successful");
-                                    self.fbSuccess = YES;
-                                }
-                            }];
+                                    feedBlock:^(BOOL wasSuccessful) {
+                                        if (wasSuccessful){
+                                            NSLog(@"posting to feed was successful");
+                                            self.fbSuccess = YES;
+                                        }
+                                    }];
     }
     
     if (self.shareTwitter){
@@ -320,21 +340,9 @@
                                                NSLog(@"post to twitter success");
                                                self.twSuccess = YES;
                                            }
-                                        }];
+                                       }];
     }
     
-    if (self.shareInstagram){
-        if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
-            [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
-            [MGInstagram postImage:self.shareImage
-                       withCaption:self.selectedCaption
-                            inView:self.view];
-        }
-        else
-        {
-            NSLog(@"Error Instagram is either not installed or image is incorrect size");
-        }
-    }
     
     if (self.shareFacebook){
         if (!self.fbSuccess){
@@ -354,18 +362,26 @@
         }
     }
     
-    if (self.shareInstagram){
-        if (!self.igSuccess){
-            [self.hud hide:YES];
-            [self showAlertWithTitle:NSLocalizedString(@"Instagram Error!", nil)
-                             message:NSLocalizedString(@"There was an error sharing your photo to Instagram", nil)];
-            return;
-        }
+    
+    if (block){
+        block();
     }
     
-   
     
-    [self updateChallengeOnBackend];
+
+}
+
+
+- (IBAction)tappedShare:(UIButton *)sender {
+    // after share show success overlay or alert or something
+    // then pop to root
+    [self saveImage];
+    
+    [self shareToFacebookAndTwitterWithBlock:^{
+        [self updateChallengeOnBackend];
+    }];
+    
+    
     
 }
 

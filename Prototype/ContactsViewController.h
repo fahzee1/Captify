@@ -31,7 +31,7 @@
 @property (weak)id<ContactsControllerDelegate>delegate;
 @property (nonatomic, retain)User *myUser;
 @property (strong, nonatomic)NSArray *myFriends;
-@property (strong,nonatomic)NSArray *selection;
+@property (strong,nonatomic)NSMutableArray *selection;
 
 @end
 

@@ -32,9 +32,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *contactsLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
-@property (strong, nonatomic)NSMutableDictionary *selectedFriends;
-@property (strong, nonatomic)NSMutableDictionary *selectedPositions;
-//@property (strong, nonatomic) NSArray *friendsArray;
+@property (strong, nonatomic)NSMutableArray *selectedFacebookFriends;
+@property (strong, nonatomic)NSMutableArray *selectedContactFriends;
+
 @property (strong, nonatomic) NSArray *facebookFriendsArray;
 @property (strong, nonatomic)IBOutlet UIButton *bottomSendButton;
 @property CGPoint scrollStart;
@@ -76,10 +76,9 @@
     //self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
     //self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
  
-    self.selectedFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
+    self.selectedFacebookFriends = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[@[]mutableCopy],@"friends",
                                                                                [@[]mutableCopy],@"index_paths",
                                                                                nil];
-    self.selectedPositions = [[NSMutableDictionary alloc] init];
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
     
@@ -256,10 +255,11 @@
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     TOCK;
     
+    [self.selectedFacebookFriends addObjectsFromArray:self.selectedContactFriends];
     NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
                                 @"is_picture":[NSNumber numberWithBool:YES],
                                 @"name":self.name,
-                                @"recipients":self.selectedFriends[@"friends"],
+                                @"recipients":self.selectedFacebookFriends,
                                 @"challenge_id":challenge_id,
                                } mutableCopy];
     
@@ -280,15 +280,15 @@
     [Challenge sendCreateChallengeRequestWithParams:apiParams
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
                                                   if (wasSuccessful){
-                                                      NSUInteger count = [self.selectedFriends[@"friends"] count];
+                                                      NSUInteger count = [self.selectedFacebookFriends count];
                                                       NSString *media_url = [data valueForKey:@"media"];
                                                       
                                                       // save image locally in documents directory
                                                       NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
-                                                      
+    
                                                       NSDictionary *params = @{@"sender":self.myUser.username,
                                                                                @"context":self.myUser.managedObjectContext,
-                                                                               @"recipients":self.selectedFriends[@"friends"],
+                                                                               @"recipients":self.selectedFacebookFriends,
                                                                                @"recipients_count":[NSNumber numberWithInteger:count],
                                                                                @"challenge_name":self.name,
                                                                                @"challenge_id":challenge_id,
@@ -330,7 +330,7 @@
     
     
     
-        NSLog(@"send challenge to %@",[self.selectedFriends[@"friends"] description]);
+        NSLog(@"send challenge to %@",[self.selectedFacebookFriends description]);
     
 }
 
@@ -339,7 +339,7 @@
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
     [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
-              toFriends:self.selectedFriends[@"friends"]
+              toFriends:self.selectedFacebookFriends
                withData:params
        notificationType:ParseNotificationCreateChallenge
                   block:nil];
@@ -368,48 +368,6 @@
     
 }
 
-- (void)sendCreateChallengeRequest:(NSDictionary *)params
-                             image:(NSData *)image
-                             block:(SendChallengeRequestBlock)block
-{
-    UploaderAPIClient *client = [UploaderAPIClient sharedClient];
-    client.requestSerializer = [AFHTTPRequestSerializer serializer];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *apiString = [defaults valueForKey:@"apiString"];
-    [client.requestSerializer setValue:apiString forHTTPHeaderField:@"Authorization"];
-    [client startNetworkActivity];
-    [client POST:AwesomeAPIChallengeCreateString parameters:params
-        constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:image name:@"media" fileName:@"test.jpg" mimeType:@"image/jpeg"];
-       }
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     [client stopNetworkActivity];
-                     NSLog(@"%@",responseObject);
-                     
-                     if (responseObject[@"media"]){
-                         NSLog(@"true success");
-                         if (block){
-                             block(YES,NO,@"success",responseObject);
-                         }
-                     }
-                     else{
-                         [self showAlertWithMessage:@"There was an error with your request."];
-                         if (block){
-                             block(NO,NO,@"Fail",nil);
-                         }
-
-                     }
-                }
-                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     [client stopNetworkActivity];
-                     [self showAlertWithMessage:error.localizedDescription];
-                     if (block){
-                         block(NO,YES,error.localizedDescription,nil);
-                     }
-                 }];
-
-}
 
 - (void)showAlertWithMessage:(NSString *)message
 {
@@ -610,7 +568,28 @@
 
 - (void)ContactViewControllerPressedCancel:(ContactsViewController *)controller
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.selectedContactFriends = controller.selection;
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.selectedFacebookFriends addObjectsFromArray:self.selectedContactFriends];
+        if ([self.selectedFacebookFriends count] > 0){
+            self.bottomSendButton.layer.opacity = 1.f;
+            self.bottomSendButton.userInteractionEnabled = YES;
+            NSInteger count = [self.selectedFacebookFriends count];
+            if (count == 1){
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %@ Friend",[NSNumber numberWithInteger:count]] forState:UIControlStateNormal];
+            }
+            else{
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %@ Friends",[NSNumber numberWithInteger:count ]] forState:UIControlStateNormal];
+            }
+            
+        }
+        else{
+            [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send"] forState:UIControlStateNormal];
+            self.bottomSendButton.layer.opacity = 0.6f;
+            self.bottomSendButton.userInteractionEnabled = NO;
+        }
+
+    }];
 }
 
 - (void)ContactViewControllerPressedDone:(ContactsViewController *)controller
@@ -632,30 +611,31 @@
 {
  
     
-    if (self.selectedFriends[@"friends"]){
-        self.selectedFriends[@"friends"] = [@[]mutableCopy];
+    if (self.selectedFacebookFriends){
+        self.selectedFacebookFriends = [@[]mutableCopy];
     }
     for (NSDictionary *friend in self.facebookFriendsArray){
         NSString *first = friend[@"first_name"];
         NSString *second = friend[@"last_name"];
         NSString *username = [NSString stringWithFormat:@"%@-%@",first,second];
         
-        [self.selectedFriends[@"friends"] addObject:username];
+        [self.selectedFacebookFriends addObject:username];
     }
     
     
     //NSLog(@"%@",self.selectedFriends[@"friends"]);
     
     [self dismissViewControllerAnimated:YES completion:^{
-        if ([self.selectedFriends[@"friends"] count] > 0){
+        [self.selectedFacebookFriends addObjectsFromArray:self.selectedContactFriends];
+        if ([self.selectedFacebookFriends count] > 0){
             self.bottomSendButton.layer.opacity = 1.f;
             self.bottomSendButton.userInteractionEnabled = YES;
-            int count = [self.selectedFriends[@"friends"] count];
+            NSInteger count = [self.selectedFacebookFriends count];
             if (count == 1){
-                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %d Friend",count] forState:UIControlStateNormal];
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %@ Friend",[NSNumber numberWithInteger:count]] forState:UIControlStateNormal];
             }
             else{
-                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %d Friends",count] forState:UIControlStateNormal];
+                [self.bottomSendButton setTitle:[NSString stringWithFormat:@"Send to %@ Friends",[NSNumber numberWithInteger:count ]] forState:UIControlStateNormal];
             }
 
         }

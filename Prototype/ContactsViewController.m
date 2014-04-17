@@ -24,6 +24,7 @@
 @property (strong, nonatomic)NSArray *data;
 @property (strong, nonatomic) NSArray *filteredList;
 @property (strong, nonatomic) NSFetchRequest *searchFetchRequest;
+@property (strong, nonatomic) NSMutableArray *indexPaths;
 
 @end
 
@@ -199,13 +200,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.myTable){
-        NSArray *sectionArray;
-        if (test){
-            sectionArray =  [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:section]]];
-        }
-        else{
-            sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:section]]];
-        }
+        NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:section]]];
         
         return [sectionArray count];
     }
@@ -226,35 +221,28 @@
         cell.layer.cornerRadius = 10;
         cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         
-        NSArray *sectionArray;
-        if (test){
-                sectionArray = [self.data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
-            
-            ((FriendCell *)cell).myFriendScore.text = @"176";
-            ((FriendCell *)cell).myFriendUsername.text = [sectionArray objectAtIndex:indexPath.row];
+        NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+        
+        User *user = [sectionArray objectAtIndex:indexPath.row];
+        if ([user isKindOfClass:[User class]]){
+            //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
+            UILabel *username = ((FriendCell *)cell).myFriendUsername;
+            username.text = [user.username capitalizedString];
+            username.textColor = [UIColor whiteColor];
+            username.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
             ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-            
-            
+
         }
-        // not testing
+        
+        if ([self.indexPaths containsObject:indexPath]){
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
         else{
-            
-            sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
-            
-            User *user = [sectionArray objectAtIndex:indexPath.row];
-            if ([user isKindOfClass:[User class]]){
-                //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
-                UILabel *username = ((FriendCell *)cell).myFriendUsername;
-                username.text = [user.username capitalizedString];
-                username.textColor = [UIColor whiteColor];
-                username.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
-                ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-
-            }
-
-
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
-      
+        
+
+
     }
     // search table not main table
     else{
@@ -269,5 +257,46 @@
    
     return cell;
 }
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+    
+    User *user = [sectionArray objectAtIndex:indexPath.row];
+    if ([user isKindOfClass:[User class]]){
+        
+        if ([self.selection containsObject:user.username]){
+            [self.selection removeObject:user.username];
+        }
+        else{
+            [self.selection addObject:user.username];
+        }
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerDataChanged:)]){
+            [self.delegate ContactViewControllerDataChanged:self];
+        }
+    }
+    
+    if (![self.indexPaths containsObject:indexPath]){
+        [self.indexPaths addObject:indexPath];
+        
+    }
+    else{
+        [self.indexPaths removeObject:indexPath];
+    }
+
+        
+}
+
+- (NSMutableArray *)indexPaths
+{
+    if (_indexPaths){
+        _indexPaths = [[NSMutableArray alloc] init];
+    }
+    
+    return _indexPaths;
+}
+    
 
 @end

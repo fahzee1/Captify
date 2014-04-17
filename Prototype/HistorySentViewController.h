@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
+typedef void(^FetchRecentsBlock2)();
+
 @interface HistorySentViewController : UIViewController
 
 @property (nonatomic, retain)User *myUser;
 
 
-- (void)fetchUpdates;
+- (void)fetchUpdatesWithBlock:(FetchRecentsBlock2)block;
+- (void)reloadMyTable;
+
 @end

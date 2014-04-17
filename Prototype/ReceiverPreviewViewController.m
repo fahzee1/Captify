@@ -65,7 +65,7 @@
 
 - (void)setupOutlets
 {
-    self.errorCount = 3;
+    self.errorCount = 0;
     self.previewImage.image = self.image;
     
     CGRect captionRect = self.previewCaption.frame;
@@ -206,7 +206,7 @@
                                                       }
                                                       else{
                                                           if (self.errorCount < 3){
-                                                              [self showAlertWithTitle:@"Error" message:@"There was an error sending your caption. Try again."];
+                                                              [self showAlertWithTitle:@"Error" message:message];
                                                               
                                                           }
                                                           else{

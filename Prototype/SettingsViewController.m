@@ -131,6 +131,11 @@
     
     self.editDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.editDoneButton.layer.cornerRadius = 10;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
+        self.editUsernameField.userInteractionEnabled = NO;
+        self.editUsernameField.text = NSLocalizedString(@"Facebook users cant change their username", nil);
+    }
 
     
     [self.view.window addSubview:self.editScreen];

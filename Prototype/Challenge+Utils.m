@@ -112,13 +112,17 @@
         challenge.sender = user;
         challenge.challenge_id = [self createChallengeIDWithUser:[params valueForKey:@"sender"]];
         challenge.active = [NSNumber numberWithBool:YES];
-        if (![challenge.managedObjectContext save:&error]){
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            
-            [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
-            abort();
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *e;
+            if (![challenge.managedObjectContext save:&e]){
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                
+                [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+                abort();
+                
+            }
 
-        }
+        });
     }
 
     return  challenge;
@@ -383,18 +387,22 @@
             }
             
             
-            NSError *error;
-            if (![challenge.managedObjectContext save:&error]){
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *error;
+                if (![challenge.managedObjectContext save:&error]){
+                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                    [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+                    
+                    abort();
+                    
+                }
+                else{
+                    NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
+                }
 
-                abort();
-                
-            }
+            });
         }
-        else{
-            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
-        }
+
     }
     else{
         // fetch

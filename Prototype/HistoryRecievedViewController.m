@@ -81,7 +81,7 @@
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self fetchUpdates];
+        [self fetchUpdatesWithBlock:nil];
     });
 }
 
@@ -91,9 +91,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reloadMyTable
+{
+    [self.myTable reloadData];
+}
 
-
-- (void)fetchUpdates
+- (void)fetchUpdatesWithBlock:(FetchRecentsBlock)block
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
@@ -186,6 +189,10 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             [self.myTable reloadData];
                                         });
+                                    }
+                                    
+                                    if (block){
+                                        block();
                                     }
                                     
                                     

@@ -159,10 +159,18 @@
                  return;
              }
              
+             if (code == -12){
+                 if (block){
+                     block(NO,NO,responseObject[@"message"],nil);
+                 }
+                 return;
+             }
+             
              if (code == -10){
                  if (block){
-                     block(NO, NO, @"Fail",nil);
+                     block(NO, NO, @"There was an error",nil);
                  }
+                 return;
              }
         
          }

@@ -107,73 +107,11 @@
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = leftButton;
 
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.makeButtonVisible = YES;
-    self.myTable.delegate = self;
-    self.myTable.dataSource = self;
-    self.finalCaptionLabel.hidden = YES;
-    [self.myImageView addSubview:self.finalCaptionLabel];
-    self.myImageView.clipsToBounds = YES;
-    self.imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
-    self.imageControls.frame = self.myImageView.frame;
-    self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-    [self setupImageControlsStyle];
-    self.imageControls.hidden = YES;
-    [self.view addSubview:self.imageControls];
     
-    self.captionSizeStepper.value = 35;
-    self.captionSizeStepper.minimumValue = 8;
-    self.captionSizeStepper.maximumValue = 100;
+    [self setupStylesAndMore];
     
-    self.captionAlphaSlider.value = 1.0;
-    self.captionAlphaSlider.maximumValue = 1.0;
-    self.captionAlphaSlider.minimumValue = 0.2;
-    
-    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-   
-    self.topLabel.text = [self.myChallenge.name capitalizedString];
-    self.topLabel.textColor = [UIColor whiteColor];
-    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
-    self.topLabel.layer.borderWidth = 2;
-    self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-    self.topLabel.layer.cornerRadius = 5;
-    if ([self.myChallenge.name length] > 30){
-        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
-    }
-    else{
-        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
-    }
-    self.topLabel.textAlignment = NSTextAlignmentCenter;
-    self.topLabel.numberOfLines = 0;
-    [self.topLabel sizeToFit];
-    self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
-                                     self.topLabel.frame.origin.y,
-                                     [UIScreen mainScreen].bounds.size.width,
-                                     self.topLabel.frame.size.height);
-    
-    CGRect labelFrame = self.topLabel.frame;
-    labelFrame.size.height += 10;
-    self.topLabel.frame = labelFrame;
-    
-
-    
-    self.currentPoint = self.finalCaptionLabel.center;
-    self.priorPoint = self.finalCaptionLabel.center;
-    
-    if (!self.hideSelectButtons){
-        self.hideSelectButtons = NO;
-    }
-    
-    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
-    [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
-    [self.retryButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
-    self.retryButton.hidden = YES;
-    [self.myImageView addSubview:self.retryButton];
-    self.myImageView.userInteractionEnabled = YES;
-
-    
+    // we will have an image from the filesystem on view did load if
+    // we sent the challenge, if not we download it from url
     if (!self.image){
         [self downloadImage];
     }
@@ -181,6 +119,9 @@
         self.progressView.hidden = YES;
         self.myImageView.image = self.image;
     }
+    
+    // shows error message if no captions
+    [self checkForCaptions];
     
 }
 
@@ -218,10 +159,7 @@
 }
 
 
-- (NSString *)myFontName
-{
-    return @"GoodDog";//@"LeagueGothic-Regular";
-}
+
 
 - (void)popToHistory
 {
@@ -282,6 +220,107 @@
 
 
 
+- (void)setupStylesAndMore
+{
+     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+    self.makeButtonVisible = YES;
+    self.myTable.delegate = self;
+    self.myTable.dataSource = self;
+    self.finalCaptionLabel.hidden = YES;
+    [self.myImageView addSubview:self.finalCaptionLabel];
+    self.myImageView.clipsToBounds = YES;
+    
+    self.imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
+    self.imageControls.frame = self.myImageView.frame;
+    self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    [self setupImageControlsStyle];
+    self.imageControls.hidden = YES;
+    [self.view addSubview:self.imageControls];
+    
+    self.captionSizeStepper.value = 35;
+    self.captionSizeStepper.minimumValue = 8;
+    self.captionSizeStepper.maximumValue = 100;
+    
+    self.captionAlphaSlider.value = 1.0;
+    self.captionAlphaSlider.maximumValue = 1.0;
+    self.captionAlphaSlider.minimumValue = 0.2;
+    
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    self.topLabel.text = [self.myChallenge.name capitalizedString];
+    self.topLabel.textColor = [UIColor whiteColor];
+    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+    self.topLabel.layer.borderWidth = 2;
+    self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    self.topLabel.layer.cornerRadius = 5;
+    if ([self.myChallenge.name length] > 30){
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    }
+    else{
+        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+    }
+    self.topLabel.textAlignment = NSTextAlignmentCenter;
+    self.topLabel.numberOfLines = 0;
+    [self.topLabel sizeToFit];
+    self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
+                                     self.topLabel.frame.origin.y,
+                                     [UIScreen mainScreen].bounds.size.width,
+                                     self.topLabel.frame.size.height);
+    
+    CGRect labelFrame = self.topLabel.frame;
+    labelFrame.size.height += 10;
+    self.topLabel.frame = labelFrame;
+    
+    
+    
+    self.currentPoint = self.finalCaptionLabel.center;
+    self.priorPoint = self.finalCaptionLabel.center;
+    
+    if (!self.hideSelectButtons){
+        self.hideSelectButtons = NO;
+    }
+    
+    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
+    [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
+    [self.retryButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
+    self.retryButton.hidden = YES;
+    [self.myImageView addSubview:self.retryButton];
+    self.myImageView.userInteractionEnabled = YES;
+    
+}
+
+- (void)checkForCaptions
+{
+    if ([self.data count] == 0){
+        UIView *container = [[UIView alloc] initWithFrame:self.myTable.frame];
+        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        container.layer.cornerRadius = 10;
+        container.layer.masksToBounds = YES;
+        CGRect containerFrame = container.frame;
+        containerFrame.size.width -= 30;
+        containerFrame.size.height -= 30;
+        containerFrame.origin.x += 15;
+        containerFrame.origin.y += 15;
+        container.frame = containerFrame;
+        
+        CGRect bounds = container.bounds;
+        
+        UILabel *message = [[UILabel alloc] init];
+        message.textColor = [UIColor whiteColor];
+        message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+        message.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
+        message.numberOfLines = 0;
+        [message sizeToFit];
+        message.frame = CGRectMake(bounds.size.width/10, bounds.size.height/3, bounds.size.width, 40);
+        
+        [container addSubview:message];
+        
+        [self.view addSubview:container];
+    }
+}
 
 - (void)downloadImage
 {
@@ -354,7 +393,7 @@
         self.finalCaptionLabel.center = self.priorPoint;
     }
     self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
-    self.finalCaptionLabel.font = [UIFont fontWithName:[self myFontName] size:35];
+    self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
     if ([self.finalCaptionLabel.text length] > 15){
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
@@ -681,7 +720,7 @@
     else{
         self.finalCaptionLabel.center = self.priorPoint;
     }
-    self.finalCaptionLabel.font = [UIFont fontWithName:[self myFontName] size:self.captionSizeStepper.value];
+    self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:self.captionSizeStepper.value];
     self.captionSizeValue.text = [NSString stringWithFormat:@"%d pt", (int)self.captionSizeStepper.value];
     
 

@@ -73,7 +73,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
-    [self fetchUpdates];
+    [self fetchUpdatesWithBlock:nil];
 }
 
 
@@ -83,8 +83,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reloadMyTable
+{
+    [self.myTable reloadData];
+}
 
-- (void)fetchUpdates
+
+- (void)fetchUpdatesWithBlock:(FetchRecentsBlock2)block
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
@@ -172,6 +177,10 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             [self.myTable reloadData];
                                         });
+                                    }
+                                    
+                                    if (block){
+                                        block();
                                     }
                                     
                                     
