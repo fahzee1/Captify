@@ -304,6 +304,10 @@
                                          [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                                     dismissAfter:2.0
                                                                        styleName:JDStatusBarStyleError];
+                                         if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                                             [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                                         }
+
 
                                      });
                                  }
@@ -402,6 +406,10 @@
                                          [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                                     dismissAfter:2.0
                                                                        styleName:JDStatusBarStyleError];
+                                         if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                                             [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                                         }
+
 
                                      });
                                  }
@@ -505,6 +513,10 @@
                                                      [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                                                 dismissAfter:2.0
                                                                                    styleName:JDStatusBarStyleError];
+                                                     if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                                                         [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                                                     }
+
 
                                                  });
                                              }
@@ -626,6 +638,10 @@
                 [JDStatusBarNotification showWithStatus:error.localizedDescription
                                            dismissAfter:2.0
                                               styleName:JDStatusBarStyleError];
+                
+                if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                }
 
             }
         }];
@@ -664,6 +680,10 @@
                 [JDStatusBarNotification showWithStatus:error.localizedDescription
                                            dismissAfter:2.0
                                               styleName:JDStatusBarStyleError];
+                if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                }
+
             }
         }];
     }
@@ -704,6 +724,10 @@
                  [JDStatusBarNotification showWithStatus:error.localizedDescription
                                             dismissAfter:2.0
                                                styleName:JDStatusBarStyleError];
+                 if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                     [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                 }
+
                  
 
              }

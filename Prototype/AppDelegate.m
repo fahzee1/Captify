@@ -27,9 +27,12 @@
 
 
 @interface AppDelegate()
+
 @property(strong,nonatomic)UIViewController *menuVC;
 @property(strong,nonatomic)UIViewController *mainVC;
 @property(strong,nonatomic)TWTSideMenuViewController *sideVC;
+
+
 @end
 @implementation AppDelegate
 
@@ -719,6 +722,8 @@
     
 
 }
+
+
 
 - (void)handlePushNotificationPayload:(NSDictionary *)payload
                          isForeground:(BOOL)isF

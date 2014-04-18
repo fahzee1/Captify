@@ -29,13 +29,11 @@ typedef void (^ShareToNetworksBlock) ();
 
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (strong,nonatomic)MBProgressHUD *hud;
-@property (weak, nonatomic) IBOutlet UILabel *facebookDisplayLabel;
-@property (weak, nonatomic) IBOutlet UILabel *instagramDisplayLabel;
-@property (weak, nonatomic) IBOutlet UILabel *twitterDisplayLabel;
 @property (strong,nonatomic)SocialFriends *friends;
 @property  BOOL fbSuccess;
 @property BOOL twSuccess;
 @property BOOL igSuccess;
+
 
 
 @property BOOL shareFacebook;
@@ -110,8 +108,13 @@ typedef void (^ShareToNetworksBlock) ();
     tapFB.numberOfTapsRequired = 1;
     tapFB.numberOfTouchesRequired = 1;
     
-    self.myFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myFacebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     self.myFacebookLabel.text = [NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    
+    NSMutableAttributedString *fbString = [[NSMutableAttributedString alloc] initWithString:self.myFacebookLabel.text];
+    [fbString addAttribute:NSFontAttributeName value:[UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15] range:NSMakeRange(4, 8)];
+    
+    self.myFacebookLabel.attributedText = fbString;
     self.myFacebookLabel.textColor = [UIColor whiteColor];
     self.myFacebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myFacebookLabel.layer.cornerRadius = 5;
@@ -123,8 +126,12 @@ typedef void (^ShareToNetworksBlock) ();
     tapIG.numberOfTapsRequired = 1;
     tapIG.numberOfTouchesRequired = 1;
     
-    self.myInstagramLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myInstagramLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     self.myInstagramLabel.text = [NSString stringWithFormat:@"%@   Instagram",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-instagram"]];
+    NSMutableAttributedString *igString = [[NSMutableAttributedString alloc] initWithString:self.myInstagramLabel.text];
+    [igString addAttribute:NSFontAttributeName value:[UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15] range:NSMakeRange(4, 9)];
+
+    self.myInstagramLabel.attributedText = igString;
     self.myInstagramLabel.textColor = [UIColor whiteColor];
     self.myInstagramLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myInstagramLabel.layer.cornerRadius = 5;
@@ -133,8 +140,13 @@ typedef void (^ShareToNetworksBlock) ();
     
     
     UITapGestureRecognizer *tapTw = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedTwitter)];
-    self.myTwitterLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myTwitterLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     self.myTwitterLabel.text = [NSString stringWithFormat:@"%@   Twitter",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
+    
+    NSMutableAttributedString *twString = [[NSMutableAttributedString alloc] initWithString:self.myTwitterLabel.text];
+    [twString addAttribute:NSFontAttributeName value:[UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15] range:NSMakeRange(4, 7)];
+
+    self.myTwitterLabel.attributedText = twString;
     self.myTwitterLabel.textColor = [UIColor whiteColor];
     self.myTwitterLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myTwitterLabel.layer.cornerRadius = 5;
@@ -142,8 +154,13 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myTwitterLabel addGestureRecognizer:tapTw];
     
     UITapGestureRecognizer *tapM = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedMessage)];
-    self.myMessageLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
+    self.myMessageLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     self.myMessageLabel.text = [NSString stringWithFormat:@"%@   Message",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-comment"]];
+    
+    NSMutableAttributedString *msString = [[NSMutableAttributedString alloc] initWithString:self.myMessageLabel.text];
+    [msString addAttribute:NSFontAttributeName value:[UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15] range:NSMakeRange(4, 7)];
+    
+    self.myMessageLabel.attributedText = msString;
     self.myMessageLabel.textColor = [UIColor whiteColor];
     self.myMessageLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myMessageLabel.layer.cornerRadius = 5;
@@ -186,14 +203,12 @@ typedef void (^ShareToNetworksBlock) ();
     
     self.shareFacebook = !self.shareFacebook;
     if (self.shareFacebook){
-        self.myFacebookLabel.textColor = [UIColor colorWithHexString:@"#3B5998"];
-        self.facebookDisplayLabel.textColor = [UIColor colorWithHexString:@"#3B5998"];
+        self.myFacebookLabel.textColor = [UIColor colorWithHexString:CAPTIFY_FACEBOOK];
         [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
     
     }
     else{
         self.myFacebookLabel.textColor = [UIColor whiteColor];
-        self.facebookDisplayLabel.textColor = [UIColor whiteColor];
         
         if (!self.shareTwitter && !self.shareInstagram){
             [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -205,14 +220,12 @@ typedef void (^ShareToNetworksBlock) ();
 {
     self.shareInstagram = !self.shareInstagram;
     if (self.shareInstagram){
-        self.myInstagramLabel.textColor = [UIColor colorWithHexString:@"#3f729b"];
-        self.instagramDisplayLabel.textColor = [UIColor colorWithHexString:@"#3f729b"];
+        self.myInstagramLabel.textColor = [UIColor colorWithHexString:CAPTIFY_INSTAGRAM];
         [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
 
     }
     else{
         self.myInstagramLabel.textColor = [UIColor whiteColor];
-        self.instagramDisplayLabel.textColor = [UIColor whiteColor];
         if (!self.shareTwitter && !self.shareFacebook){
             [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
         }
@@ -238,6 +251,8 @@ typedef void (^ShareToNetworksBlock) ();
             {
                 NSLog(@"Error Instagram is either not installed or image is incorrect size");
                 [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
+                
+                  self.myInstagramLabel.textColor = [UIColor whiteColor];
             }
 
         }];
@@ -251,13 +266,12 @@ typedef void (^ShareToNetworksBlock) ();
     NSLog(@"tapped twitter");
     self.shareTwitter = !self.shareTwitter;
     if (self.shareTwitter){
-        self.myTwitterLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
-        self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
+        self.myTwitterLabel.textColor = [UIColor colorWithHexString:CAPTIFY_TWITTER];
+        //self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
         [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
     }
     else{
         self.myTwitterLabel.textColor = [UIColor whiteColor];
-        self.twitterDisplayLabel.textColor = [UIColor whiteColor];
         if (!self.shareInstagram && !self.shareFacebook){
             [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
         }

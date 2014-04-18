@@ -37,16 +37,40 @@
 #define CAPTIFY_LIGHT_GREY @"#515151"
 #define CAPTIFY_LIGHT_BLUE @"#69c9d0"
 #define CAPTIFY_DARK_BLUE @"#4698aa"
-
+#define CAPTIFY_FACEBOOK @"#3B5998"
+#define CAPTIFY_INSTAGRAM @"#3f729b"
+#define CAPTIFY_TWITTER @"#00aced"
 
 // fonts
 
 #define CAPTIFY_FONT_GLOBAL @"ProximaNova-Semibold"
 #define CAPTIFY_FONT_GLOBAL_BOLD @"ProximaNova-Bold"
-#define CAPTIFY_FONT_CAPTION @"GoodDog"
+#define CAPTIFY_FONT_CAPTION  @"LeagueGothic-Regular" //@"GoodDog"
+#define CAPTIFY_FONT_LEAGUE @"LeagueGothic-Regular"
+#define CAPTIFY_FONT_GOODDOG @"GoodDog"
+#define CAPTIFY_FONT_LEMONDROP @"Lemondrop-Bold"
 
 // AmericanCaptain
 // Lemondrop and  Lemondrop-Bold
 // GoodDog
 // ProximaNova-Semibold, ProximaNova-Regular, ProximaNova-Bold
 // LeagueGothic-Regular
+
+
+// size
+#define CAPTIFY_CAPTION_SIZE 35
+
+// filters
+#define CAPTIFY_FILTER_EMBOSS 0
+#define CAPTIFY_FILTER_GRAYSCALE 1
+#define CAPTIFY_FILTER_SEPIA 2
+#define CAPTIFY_FILTER_SKETCH 3
+#define CAPTIFY_FILTER_TOON 4
+#define CAPTIFY_FILTER_POSTERIZE 5
+#define CAPTIFY_FILTER_ORIGINAL 6
+
+
+
+
+
+#define CAPTIFY_UNAUTHORIZED @"Request failed: unauthorized (401)"

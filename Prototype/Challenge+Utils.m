@@ -269,6 +269,10 @@
                         [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                    dismissAfter:2.0
                                                       styleName:JDStatusBarStyleError];
+                        if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                            [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                        }
+
 
                         
 
@@ -316,6 +320,10 @@
                     [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                dismissAfter:2.0
                                                   styleName:JDStatusBarStyleError];
+                    if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                        [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                    }
+
 
                 } autoRetry:5];
 }
@@ -448,6 +456,10 @@
                  [JDStatusBarNotification showWithStatus:error.localizedDescription
                                             dismissAfter:2.0
                                                styleName:JDStatusBarStyleError];
+                 if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                     [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                 }
+
 
                  NSLog(@"error %@",error);
              }];
@@ -487,6 +499,10 @@
              [JDStatusBarNotification showWithStatus:error.localizedDescription
                                         dismissAfter:2.0
                                            styleName:JDStatusBarStyleError];
+             if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                 [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+             }
+
 
              NSLog(@"%@",error);
              if (block){
@@ -526,6 +542,10 @@
              [JDStatusBarNotification showWithStatus:error.localizedDescription
                                         dismissAfter:2.0
                                            styleName:JDStatusBarStyleError];
+             if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                 [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+             }
+
              if (block){
                  block(NO,YES,error.localizedDescription,nil);
              }

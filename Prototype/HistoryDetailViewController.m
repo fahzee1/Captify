@@ -26,6 +26,7 @@
 #import "ParseNotifications.h"
 #import <MessageUI/MessageUI.h>
 #import "FUIAlertView.h"
+#import "GPUImage.h"
 
 /*
  mark challenge as done when complete
@@ -69,6 +70,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *captionAlphaValue;
 @property (weak, nonatomic) IBOutlet UISlider *captionAlphaSlider;
 
+@property (weak, nonatomic) IBOutlet UILabel *captionFontTitle;
+@property (weak, nonatomic) IBOutlet UIButton *captionFontButton;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *captionImageFilterLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
+
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
@@ -76,10 +85,26 @@
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
 @property (strong, nonatomic)UIButton *makeButton;
+@property (strong,nonatomic)NSArray *activeFonts;
+@property (strong, nonatomic)NSString *currentFont;
+@property (strong,nonatomic)NSArray *activeFilters;
+@property (strong, nonatomic)NSString *currentFilter;
+
 @property BOOL pendingRequest;
 @property BOOL makeButtonVisible;
 @property BOOL captionMoved;
 @property int errorCount;
+
+// filters
+@property (strong ,nonatomic)GPUImageEmbossFilter *embossFilter;
+@property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
+@property (strong ,nonatomic)GPUImageSepiaFilter *sepiaFilter;
+@property (strong ,nonatomic)GPUImageSketchFilter *sketchFilter;
+@property (strong ,nonatomic)GPUImageToonFilter *toonFilter;
+@property (strong ,nonatomic)GPUImagePosterizeFilter *posterizeFilter;
+
+
+
 
 @end
 
@@ -100,6 +125,20 @@
 	// Do any additional setup after loading the view.
     
     //self.navigationItem.rightBarButtonItem = nextButton;
+    
+    self.activeFonts = [NSArray arrayWithObjects:CAPTIFY_FONT_GOODDOG,
+                                                 CAPTIFY_FONT_GLOBAL_BOLD,
+                                                 CAPTIFY_FONT_LEMONDROP,
+                                                 CAPTIFY_FONT_LEAGUE,
+                                                  nil];
+    
+    self.activeFilters = [NSArray arrayWithObjects:[NSNumber numberWithInt:CAPTIFY_FILTER_EMBOSS],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_SEPIA],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_GRAYSCALE],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_POSTERIZE],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_SKETCH],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_ORIGINAL],nil];
+    self.currentFont = CAPTIFY_FONT_CAPTION;
     
     self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"] style:UIBarButtonItemStylePlain target:self action:@selector(popToHistory)];
@@ -347,6 +386,9 @@
                                         });
                 
                                     }
+                                    else{
+                                        self.image = image;
+                                    }
                                 }];
         
     }
@@ -393,7 +435,7 @@
         self.finalCaptionLabel.center = self.priorPoint;
     }
     self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
-    self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
+    self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:CAPTIFY_CAPTION_SIZE];
     if ([self.finalCaptionLabel.text length] > 15){
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
@@ -455,6 +497,7 @@
     [self.captionColor setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil"] forState:UIControlStateNormal];
     [self.captionColor setTitleColor:self.finalCaptionLabel.textColor forState:UIControlStateNormal];
     self.captionColorTitle.textColor = self.finalCaptionLabel.textColor;
+    self.captionColorTitle.text = NSLocalizedString(@"Color", nil);
     
     
     self.captionRotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
@@ -465,6 +508,7 @@
     [self.captionRotateReverseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
     self.captionRotateTitle.textColor = [UIColor whiteColor];
+    self.captionRotateTitle.text = NSLocalizedString(@"Rotate", nil);
     
     
     self.captionAlphaTitle.textColor = [UIColor whiteColor];
@@ -473,10 +517,27 @@
     
     
     self.captionSizeTitle.textColor = [UIColor whiteColor];
+    self.captionSizeTitle.text = NSLocalizedString(@"Size", nil);
     self.captionSizeStepper.tintColor = [UIColor whiteColor];
     self.captionSizeValue .textColor = [UIColor whiteColor];
     self.captionSizeStepper.value = 25;
     [self.captionSizeStepper addTarget:self action:@selector(captionSizeChanged) forControlEvents:UIControlEventValueChanged];
+    
+    
+    self.captionFontTitle.textColor = [UIColor whiteColor];
+    self.captionFontTitle.text = NSLocalizedString(@"Font", nil);
+    self.captionFontButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.captionFontButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-font"] forState:UIControlStateNormal];
+    [self.captionFontButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.captionImageFilterLabel.textColor = [UIColor whiteColor];
+    self.captionImageFilterLabel.text = NSLocalizedString(@"Filter", nil);
+    self.captionImageFilterButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.captionImageFilterButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-picture-o"] forState:UIControlStateNormal];
+    [self.captionImageFilterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    
+    
     
     
     
@@ -507,6 +568,104 @@
     if (!self.imageControls.hidden){
          self.imageControls.hidden = YES;
     }
+}
+
+
+- (IBAction)tappedFont:(UIButton *)sender {
+    [self.finalCaptionLabel stopGlowing];
+    
+    static NSInteger fontIndex = 0;
+    NSInteger total = [self.activeFonts count];
+    
+    
+    NSString *font = [self.activeFonts objectAtIndex:fontIndex];
+    self.currentFont = font;
+    self.finalCaptionLabel.font = [UIFont fontWithName:font size:CAPTIFY_CAPTION_SIZE];
+    self.finalCaptionLabel.numberOfLines = 0;
+    [self.finalCaptionLabel sizeToFit];
+    
+    CGRect frame = self.finalCaptionLabel.frame;
+    frame.size.width = self.finalCaptionLabel.superview.bounds.size.width;
+    self.finalCaptionLabel.frame = frame;
+    
+    
+    fontIndex += 1;
+    
+    if (fontIndex >= total){
+        fontIndex = 0;
+    }
+    
+}
+
+
+- (IBAction)tappedImageFilter:(UIButton *)sender {
+    
+    static NSInteger filterIndex = 0;
+    NSInteger total = [self.activeFilters count];
+    
+    id filter = [self.activeFilters objectAtIndex:filterIndex];
+    switch ([filter intValue]) {
+        case CAPTIFY_FILTER_EMBOSS:
+        {
+            UIImage *image = [self.embossFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+        }
+            break;
+            
+        case CAPTIFY_FILTER_GRAYSCALE:
+        {
+            UIImage *image = [self.grayScaleFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+
+        }
+            break;
+        
+        case CAPTIFY_FILTER_POSTERIZE:
+        {
+            UIImage *image = [self.posterizeFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+
+        }
+            break;
+        case CAPTIFY_FILTER_SEPIA:
+        {
+            UIImage *image = [self.sepiaFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+
+        }
+            break;
+        case CAPTIFY_FILTER_SKETCH:
+        {
+            UIImage *image = [self.sketchFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+
+        }
+            break;
+        case CAPTIFY_FILTER_TOON:
+        {
+            UIImage *image = [self.toonFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+
+        }
+            
+        case CAPTIFY_FILTER_ORIGINAL:
+        {
+            self.myImageView.image = self.image;
+        }
+            break;
+        default:
+            break;
+    }
+    
+    
+    
+    filterIndex += 1;
+    
+    if (filterIndex >= total){
+        filterIndex = 0;
+    }
+
+    
 }
 
 
@@ -720,7 +879,7 @@
     else{
         self.finalCaptionLabel.center = self.priorPoint;
     }
-    self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:self.captionSizeStepper.value];
+    self.finalCaptionLabel.font = [UIFont fontWithName:self.currentFont size:self.captionSizeStepper.value];
     self.captionSizeValue.text = [NSString stringWithFormat:@"%d pt", (int)self.captionSizeStepper.value];
     
 
@@ -1183,6 +1342,63 @@
         [self setupImageControlsStyle];
     }
     return _imageControls;
+}
+
+
+- (GPUImageEmbossFilter *)embossFilter
+{
+    if (!_embossFilter){
+        _embossFilter = [GPUImageEmbossFilter new];
+        _embossFilter.intensity = 1.0;
+    }
+    return _embossFilter;
+}
+
+
+- (GPUImageGrayscaleFilter *)grayScaleFilter
+{
+    if (!_grayScaleFilter){
+        _grayScaleFilter = [GPUImageGrayscaleFilter new];
+    }
+    return  _grayScaleFilter;
+}
+
+- (GPUImageSepiaFilter *)sepiaFilter
+{
+    if (!_sepiaFilter){
+        _sepiaFilter = [GPUImageSepiaFilter new];
+        
+    }
+    return _sepiaFilter;
+}
+
+- (GPUImageSketchFilter *)sketchFilter
+{
+    if (!_sketchFilter){
+        _sketchFilter = [GPUImageSketchFilter new];
+        
+    }
+    return _sketchFilter;
+}
+
+- (GPUImageToonFilter *)toonFilter
+{
+    if (!_toonFilter){
+        _toonFilter = [GPUImageToonFilter new];
+        _toonFilter.threshold = 0.2;
+        _toonFilter.quantizationLevels = 10.0;
+        
+    }
+    return _toonFilter;
+}
+
+- (GPUImagePosterizeFilter *)posterizeFilter
+{
+    if (!_posterizeFilter){
+        _posterizeFilter = [GPUImagePosterizeFilter new];
+        _posterizeFilter.colorLevels = 10;
+    }
+    return _posterizeFilter;
 }
 
 

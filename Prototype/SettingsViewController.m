@@ -134,7 +134,7 @@
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
         self.editUsernameField.userInteractionEnabled = NO;
-        self.editUsernameField.text = NSLocalizedString(@"Facebook users cant change their username", nil);
+        self.editUsernameField.text = NSLocalizedString(@"Not allowed (Facebook)", nil);
     }
 
     
@@ -193,11 +193,13 @@
     
     
     BOOL change;
-    if (![name isEqualToString:self.myUser.username]){
-        change = YES;
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
+        if (![name isEqualToString:self.myUser.username]){
+            change = YES;
+        }
     }
     
-    if (![phone isEqualToString:self.myUser.phone_number] || ![phone isEqualToString:SETTINGS_PHONE_DEFAULT]){
+    if (![phone isEqualToString:self.myUser.phone_number] && ![phone isEqualToString:SETTINGS_PHONE_DEFAULT]){
         change = YES;
     }
     
@@ -251,6 +253,7 @@
     }
     // no changes
     else{
+        [hud hide:YES];
          [self destoryEditScreen];
     }
     

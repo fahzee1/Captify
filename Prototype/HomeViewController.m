@@ -33,6 +33,7 @@
 #import "CMPopTipView.h"
 #import "HistoryContainerViewController.h"
 #import "TestDataCreator.h"
+#import "Contacts.h"
 #import <Parse/Parse.h>
 
 
@@ -77,6 +78,7 @@
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *makePhoneAlert;
 @property (strong, nonatomic)UITextField *makePhoneTextField;
+@property (strong, nonatomic) NSArray *contactNumbers;
 @property BOOL showHistory;
 
 @end
@@ -98,6 +100,7 @@
 {
     [super viewDidLoad];
 
+    [self fetchContacts];
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         /*
@@ -385,6 +388,71 @@
         [self.toolTip dismissAnimated:YES];
     });
 
+}
+
+
+- (void)fetchContacts
+{
+    
+    // fetch contacts from phone and
+    // from backend in the background
+    double delayInSeconds = 45.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+ 
+        // get all phone numbers
+        Contacts *c = [[Contacts alloc] init];
+        [c fetchContactsWithBlock:^(BOOL done, id data) {
+            if (done){
+                NSLog(@"%@",data);
+                if ([data isKindOfClass:[NSArray class]]){
+                    self.contactNumbers = (NSArray *)data;
+                    
+                    // send numbers to backend to see if any users return
+                    NSDictionary *params = @{@"username":self.myUser.username ,
+                                             @"action":@"getCF",
+                                             @"content":self.contactNumbers};
+                    
+                    [c requestFriendsFromContactsList:params
+                                                block:^(BOOL success, id data) {
+                                                    if (success){
+                                                        for (id user in data[@"contacts"]){
+                                                            NSNumber *facebook_id;
+                                                            if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                                facebook_id = @0;
+                                                            }
+                                                            else{
+                                                                facebook_id = user[@"facebook_id"];
+                                                            }
+                                                            
+                                                            NSDictionary *params = @{@"username": user[@"username"],
+                                                                                     @"facebook_user":user[@"is_facebook"],
+                                                                                     @"facebook_id":facebook_id};
+                                                            BOOL create = [User createContactsWithParams:params
+                                                                                   inMangedObjectContext:self.myUser.managedObjectContext];
+                                                            if (create){
+                                                                NSLog(@"successfully created %@", user[@"username"]);
+                                                            }
+                                                            else
+                                                            {
+                                                                NSLog(@"failerd created %@", user[@"username"]);
+                                                            }
+                                                            
+                                                        }
+                                                        
+                                                    }
+                                                    else{
+                                                        NSLog(@"no success");
+                                                    }
+                                                }];
+                    
+                }
+            }
+        }];
+        
+    });
+    
+    
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender

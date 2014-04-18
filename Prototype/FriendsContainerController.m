@@ -17,7 +17,6 @@
 #import "UIFont+FontAwesome.h"
 #import "SearchFriendsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "Contacts.h"
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
 #import "User+Utils.h"
@@ -31,7 +30,7 @@
 @property (strong, nonatomic) SocialFriends *friend;
 @property (strong, nonatomic) FBCacheDescriptor *cacheDescriptor;
 @property (strong, nonatomic) FBCacheDescriptor *appCacheDescriptor;
-@property (strong, nonatomic) NSArray *contactNumbers;
+
 
 @end
 
@@ -62,7 +61,7 @@
     [self.friendPickerController loadData];
     [self.friendPickerController clearSelection];
     [self addChildViewController:vc];
-    vc.view.frame = self.myContainerView.bounds;
+    vc.view.frame = self.myContainerView.frame;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
     
@@ -76,65 +75,7 @@
     self.navigationItem.title = NSLocalizedString(@"Invite", nil);
     
     
-    
-    // fetch contacts from phone and
-    // from backend in the background
-    dispatch_queue_t contactQueue = dispatch_queue_create("com.cjapp.contactQueue", 0);
-    dispatch_async(contactQueue, ^{
-        // get all phone numbers
-        Contacts *c = [[Contacts alloc] init];
-        [c fetchContactsWithBlock:^(BOOL done, id data) {
-            if (done){
-                NSLog(@"%@",data);
-                if ([data isKindOfClass:[NSArray class]]){
-                    self.contactNumbers = [NSArray arrayWithArray:data];
-                    
-                    // send numbers to backend to see if any users return
-                    NSDictionary *params = @{@"username":self.myUser.username,
-                                             @"action":@"getCF",
-                                             @"content":self.contactNumbers};
-                    
-                    [c requestFriendsFromContactsList:params
-                                                block:^(BOOL success, id data) {
-                                                    if (success){
-                                                        for (id user in data[@"contacts"]){
-                                                            NSNumber *facebook_id;
-                                                            if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
-                                                                facebook_id = @0;
-                                                            }
-                                                            else{
-                                                                facebook_id = user[@"facebook_id"];
-                                                            }
-                                                            
-                                                            NSDictionary *params = @{@"username": user[@"username"],
-                                                                                     @"facebook_user":user[@"is_facebook"],
-                                                                                     @"facebook_id":facebook_id};
-                                                            BOOL create = [User createContactsWithParams:params
-                                                                                   inMangedObjectContext:self.myUser.managedObjectContext];
-                                                            if (create){
-                                                                NSLog(@"successfully created %@", user[@"username"]);
-                                                            }
-                                                            else
-                                                            {
-                                                                NSLog(@"failerd created %@", user[@"username"]);
-                                                            }
-                                                            
-                                                        }
-                                                        
-                                                    }
-                                                    else{
-                                                        NSLog(@"no success");
-                                                    }
-                                                }];
-
-                }
-            }
-        }];
-        
-        
-
-    });
-    
+       
     
 }
 
@@ -243,37 +184,21 @@
     }
     //_friendPickerController.tableView.delegate = self;
     _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    //_friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    CGRect frame =  _friendPickerController.tableView.frame;
+    frame.origin.y -= 7;
+    _friendPickerController.tableView.frame = frame;
+    
     if ([_friendPickerController.tableView respondsToSelector:@selector(setSectionIndexColor:)]){
-        _friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        _friendPickerController.tableView.sectionIndexColor = [UIColor whiteColor];
-        _friendPickerController.tableView.sectionIndexTrackingBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        //_friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        //_friendPickerController.tableView.sectionIndexColor = [UIColor whiteColor];
+        //_friendPickerController.tableView.sectionIndexTrackingBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     }
     return  _friendPickerController;
 }
 
-- (FBFriendPickerViewController *)appFriendPickerController{
-    if (!_appFriendPickerController){
-        NSSet *fields = [NSSet setWithObjects:@"installed", nil];
-        _appFriendPickerController = [[FBFriendPickerViewController alloc] init];
-        _appFriendPickerController.title = @"Facebook Friends";
-        _appFriendPickerController.delegate = self;
-        _appFriendPickerController.allowsMultipleSelection = YES;
-        _appFriendPickerController.fieldsForRequest = fields;
-        
-        // styles
-        //[_appFriendPickerController configureUsingCachedDescriptor:self.appCacheDescriptor];
-        
-        
-    }
-    _appFriendPickerController.tableView.delegate = self;
-    _appFriendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _appFriendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    _appFriendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    
-    return  _appFriendPickerController;
-}
+
 
 - (SocialFriends *)friend
 {
@@ -300,25 +225,6 @@
     }
     return _myUser;
 }
-
-
-#pragma -mark FBTableView delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (tableView == self.friendPickerController.tableView){
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-        cell.layer.borderWidth = 2;
-        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-        cell.layer.cornerRadius = 5;
-        cell.textLabel.textColor = [UIColor whiteColor];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-}
-
 
 
 
@@ -371,7 +277,7 @@
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
     if (friendPicker == self.appFriendPickerController){
-        BOOL installed = [user objectForKey:@"installed"] != nil;
+        BOOL installed = [user objectForKey:@"installed"] == nil;
         return installed;
     }
     else{
@@ -426,10 +332,10 @@
 
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
-    NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
     if (friendPicker == self.friendPickerController){
         // send friend invite request when tapped
         if (![friendPicker.selection count] == 0){
+            NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
             NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
            [self.friend inviteFriendWithID:friendID
                                      title:@"Invite"
