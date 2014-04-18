@@ -18,7 +18,6 @@
 - (void)ContactViewControllerPressedCancel:(ContactsViewController *)controller;
 
 @optional;
-#warning implement this method
 - (void)ContactViewControllerDataChanged:(ContactsViewController *)controller;
 
 @end
@@ -32,6 +31,8 @@
 @property (nonatomic, retain)User *myUser;
 @property (strong, nonatomic)NSArray *myFriends;
 @property (strong,nonatomic)NSMutableArray *selection;
+
+- (void)clearSelections;
 
 @end
 

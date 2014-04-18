@@ -91,6 +91,12 @@
     [self performSegueWithIdentifier:@"addFriends" sender:self];
 }
 
+- (void)clearSelections
+{
+    self.selection = nil;
+    self.indexPaths = nil;
+    [self.myTable reloadData]; //to clear checks
+}
 
 - (void)tappedCancel
 {
@@ -101,7 +107,6 @@
 
 - (void)tappedDone
 {
-#warning save selected data on selection property
     if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerPressedDone:)]){
         [self.delegate ContactViewControllerPressedDone:self];
     }
@@ -110,51 +115,6 @@
 
 
 
--(NSFetchRequest *)searchFetchRequest
-{
-    if(!_searchFetchRequest){
-        _searchFetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"username" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sort];
-        _searchFetchRequest.sortDescriptors = sortDescriptors;
-    
-    }
-    return _searchFetchRequest;
-}
-
-/*
-- (NSArray *)data
-{
-    if (!_data){
-        _data =[User fetchFriendsInContext:self.myUser.managedObjectContext];
-    }
-    return _data;
-}
-*/
-#pragma -mark Lazy inst
-- (User *)myUser
-{
-    if (!_myUser){
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-        if (uri){
-            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-            NSError *error;
-            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
-        }
-        
-    }
-    return _myUser;
-}
-
-- (NSArray *)myFriends
-{
-    if (!_myFriends){
-        _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
-        
-    }
-    return _myFriends;
-}
 
 #pragma -mark UITABLEVIEW delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -216,10 +176,6 @@
     if (tableView == self.myTable){
         
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-        cell.layer.borderWidth = 2;
-        cell.layer.cornerRadius = 10;
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         
         NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
         
@@ -228,9 +184,7 @@
             //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
             UILabel *username = ((FriendCell *)cell).myFriendUsername;
             username.text = [user.username capitalizedString];
-            username.textColor = [UIColor whiteColor];
-            username.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
-            ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+            //((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
 
         }
         
@@ -261,6 +215,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
     
     User *user = [sectionArray objectAtIndex:indexPath.row];
@@ -278,6 +233,7 @@
         }
     }
     
+    
     if (![self.indexPaths containsObject:indexPath]){
         [self.indexPaths addObject:indexPath];
         
@@ -285,18 +241,67 @@
     else{
         [self.indexPaths removeObject:indexPath];
     }
+    
+    [self.myTable reloadData];
 
         
 }
 
 - (NSMutableArray *)indexPaths
 {
-    if (_indexPaths){
+    if (!_indexPaths){
         _indexPaths = [[NSMutableArray alloc] init];
     }
     
     return _indexPaths;
 }
+
+
+
+-(NSFetchRequest *)searchFetchRequest
+{
+    if(!_searchFetchRequest){
+        _searchFetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"username" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sort];
+        _searchFetchRequest.sortDescriptors = sortDescriptors;
+        
+    }
+    return _searchFetchRequest;
+}
+
+#pragma -mark Lazy inst
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+- (NSArray *)myFriends
+{
+    if (!_myFriends){
+        _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
+        
+    }
+    return _myFriends;
+}
+
+- (NSMutableArray *)selection
+{
+    if (!_selection){
+        _selection = [[NSMutableArray alloc] init];
+    }
     
+    return _selection;
+}
 
 @end

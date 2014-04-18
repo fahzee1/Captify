@@ -745,7 +745,7 @@
                 UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
 
                 UIViewController *receivedHistory = (HistoryRecievedViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"recievedHistory"];
-                [((HistoryRecievedViewController *)receivedHistory) fetchUpdates];
+                [((HistoryRecievedViewController *)receivedHistory) fetchUpdatesWithBlock:nil];
                 
                 
             }
@@ -762,8 +762,12 @@
             NSString *challenge_id;
             if (payload[@"challenge"]){
                 challenge_id = payload[@"challenge"];
-                ParseNotifications *p = [ParseNotifications new];
-                [p checkForChannelAndRemove:challenge_id];
+                if ([challenge_id isKindOfClass:[NSString class]]){
+                    NSString *channel = [((NSString *)challenge_id) stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+                    ParseNotifications *p = [ParseNotifications new];
+                    [p checkForChannelAndRemove:channel];
+                }
+               
             }
         }
             break;

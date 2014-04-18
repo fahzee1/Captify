@@ -171,7 +171,7 @@
     UIViewController *vcS = [self.storyboard instantiateViewControllerWithIdentifier:@"sentHistory"];
     if ([vcR isKindOfClass:[HistoryRecievedViewController class]] && [vcS isKindOfClass:[HistorySentViewController class]]){
         [((HistoryRecievedViewController *)vcR) fetchUpdatesWithBlock:^{
-              [((HistorySentViewController *)vcS) fetchUpdates];
+              [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:nil];
         }];
     }
 }

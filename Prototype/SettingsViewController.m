@@ -328,8 +328,10 @@
                     //the session state handler in the app delegate will be called automatically
                     [FBSession.activeSession closeAndClearTokenInformation];
                 }
-                
-                [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"logged"];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setBool:NO forKey:@"logged"];
+                [defaults setBool:NO forKey:@"facebook_user"];
+                [defaults setBool:NO forKey:@"phone_never"];
                 
                 HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
                 home.goToLogin = YES;

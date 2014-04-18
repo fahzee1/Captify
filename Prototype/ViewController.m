@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self setupButtonStyles];
     
     
@@ -109,7 +110,7 @@
                                           
                                           //get username
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                    
+                                              [hud hide:YES];
                                               if (!error){
                                                   //NSLog(@"%@",result);
                                                   NSNumber *fbookId = [result valueForKey:@"id"];

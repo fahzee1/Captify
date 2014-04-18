@@ -19,7 +19,7 @@
 
 typedef void (^ShareToNetworksBlock) ();
 
-@interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
+@interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
@@ -41,6 +41,8 @@ typedef void (^ShareToNetworksBlock) ();
 @property BOOL shareFacebook;
 @property BOOL shareInstagram;
 @property BOOL shareTwitter;
+
+@property BOOL haveNotified;
 
 @end
 
@@ -69,6 +71,15 @@ typedef void (^ShareToNetworksBlock) ();
     self.shareInstagram = NO;
     [self setupShareStyles];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@"check if this challenge is acive.. if not shoot back to history");
+    if (!self.myChallenge.active){
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -214,11 +225,14 @@ typedef void (^ShareToNetworksBlock) ();
             // then show instagram option when thats done since we
             // must leave the app for that share
             
+            [self.hud hide:YES];
+            
             if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
                 [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
                 [MGInstagram postImage:self.shareImage
                            withCaption:self.selectedCaption
-                                inView:self.view];
+                                inView:self.view
+                              delegate:self];
             }
             else
             {
@@ -286,9 +300,10 @@ typedef void (^ShareToNetworksBlock) ();
     
     ParseNotifications *p = [ParseNotifications new];
     
+    NSString *channel = [self.myChallenge.challenge_id stringByReplacingOccurrencesOfString:@"." withString:@"-"];
     // notify all receipients of challenge
     [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",self.myChallenge.sender.username]
-              toChannel:self.myChallenge.challenge_id
+              toChannel:channel
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSenderChoseCaption
                   block:nil];
@@ -402,7 +417,10 @@ typedef void (^ShareToNetworksBlock) ();
                                                NSLog(@"%@",error);
                                            }
                                            
-                                           [self notifyFriends];
+                                           if (!self.haveNotified){
+                                               [self notifyFriends];
+                                               self.haveNotified = YES;
+                                           }
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                [self.navigationController popToRootViewControllerAnimated:YES];
@@ -439,6 +457,33 @@ typedef void (^ShareToNetworksBlock) ();
 }
 
 
+
+#pragma -mark Documents (share to IG) delegate
+-(void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
+{
+    if (!self.haveNotified){
+        [self notifyFriends];
+        self.haveNotified = YES;
+    }
+
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        self.myChallenge.active = [NSNumber numberWithBool:NO];
+        self.myChallenge.shared = [NSNumber numberWithBool:YES];
+        NSError *error;
+        if(![self.myChallenge.managedObjectContext save:&error]){
+            NSLog(@"%@",error);
+            
+        }
+
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    });
+    
+}
+
+
+#pragma -mark Message delegate
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     switch (result) {

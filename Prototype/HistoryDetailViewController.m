@@ -1040,11 +1040,6 @@
             UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
-            imageView.layer.masksToBounds = YES;
-            imageView.layer.cornerRadius = 30;
-            imageView.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-            imageView.layer.borderWidth = 3;
-            imageView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
             
             [pick.player getCorrectProfilePicWithImageView:imageView];
