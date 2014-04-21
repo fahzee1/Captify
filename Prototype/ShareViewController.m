@@ -102,7 +102,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     self.myShareButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.myShareButton.layer.cornerRadius = 10;
-    [self.myShareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.myShareButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     
     UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
     tapFB.numberOfTapsRequired = 1;

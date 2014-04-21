@@ -335,7 +335,7 @@
 {
     if ([self.data count] == 0){
         UIView *container = [[UIView alloc] initWithFrame:self.myTable.frame];
-        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
         container.layer.cornerRadius = 10;
         container.layer.masksToBounds = YES;
         CGRect containerFrame = container.frame;
@@ -1203,7 +1203,7 @@
             
             [pick.player getCorrectProfilePicWithImageView:imageView];
             
-            if (pick.player.facebook_user){
+            if ([pick.player.facebook_user intValue] == 1){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];

@@ -72,8 +72,9 @@
     CGRect nameRect = self.previewChallengeName.frame;
     
     self.previewCaption.text = [self.caption capitalizedString];
+    self.previewCaption.textColor = [UIColor whiteColor];
     self.previewCaption.textAlignment = NSTextAlignmentCenter;
-    self.previewCaption.font = [UIFont fontWithName:@"Chalkduster" size:25];
+    self.previewCaption.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
     self.previewCaption.numberOfLines = 0;
     [self.previewCaption sizeToFit];
     self.previewCaption.frame = CGRectMake(captionRect.origin.x, captionRect.origin.y, 300, 100);
@@ -123,8 +124,8 @@
     
     // the send button
     self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-    self.sendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:20];
-    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.sendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:35];
+    [self.sendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     [self.sendButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
     self.sendButton.layer.cornerRadius = 10;
     

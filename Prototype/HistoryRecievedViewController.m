@@ -257,8 +257,8 @@
         Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         
-        if ([challenge.name length] >= 25){
-            NSString *newString = [[challenge.name capitalizedString] substringToIndex:24];
+        if ([challenge.name length] >= 16){
+            NSString *newString = [[challenge.name capitalizedString] substringToIndex:15];
             titleLabel.text = [NSString stringWithFormat:@"%@...",newString];
         }
         else{

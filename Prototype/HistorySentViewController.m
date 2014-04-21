@@ -254,8 +254,8 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
-        if ([challenge.name length] >= 25){
-            NSString *newString = [[challenge.name capitalizedString] substringToIndex:24];
+        if ([challenge.name length] >= 16){
+            NSString *newString = [[challenge.name capitalizedString] substringToIndex:15];
             myLabel.text = [NSString stringWithFormat:@"%@...",newString];
         }
         else{

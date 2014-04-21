@@ -172,9 +172,9 @@
     
     
     // the bottom send button
-    [self.bottomSendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.bottomSendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     self.bottomSendButton.layer.opacity = 0.6f;
-    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:25];
+    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:35];
     self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.bottomSendButton.layer.cornerRadius = 5;
     self.bottomSendButton.userInteractionEnabled = NO;
