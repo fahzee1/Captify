@@ -85,6 +85,12 @@
     });
 }
 
+
+- (void)dealloc
+{
+    self.cData = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -277,7 +283,7 @@
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
          */
         
-        usernameLabel.text = sender.username;
+        usernameLabel.text = [sender.username capitalizedString];
         usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
         

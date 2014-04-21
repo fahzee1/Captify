@@ -79,6 +79,13 @@
     
 }
 
+- (void)dealloc
+{
+    self.friend = nil;
+    self.myUser = nil;
+    self.friendPickerController = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -170,64 +177,6 @@
 }
 
 
-- (FBFriendPickerViewController *)friendPickerController
-{
-
-    if (!_friendPickerController){
-        _friendPickerController = [[FBFriendPickerViewController alloc] init];
-        _friendPickerController.title = @"Invite Friend";
-        _friendPickerController.delegate = self;
-        _friendPickerController.allowsMultipleSelection = NO;
-        [_friendPickerController configureUsingCachedDescriptor:self.cacheDescriptor];
-
-        
-    }
-    //_friendPickerController.tableView.delegate = self;
-    _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //_friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    CGRect frame =  _friendPickerController.tableView.frame;
-    frame.origin.y -= 7;
-    _friendPickerController.tableView.frame = frame;
-    
-    if ([_friendPickerController.tableView respondsToSelector:@selector(setSectionIndexColor:)]){
-        //_friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        //_friendPickerController.tableView.sectionIndexColor = [UIColor whiteColor];
-        //_friendPickerController.tableView.sectionIndexTrackingBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    }
-    return  _friendPickerController;
-}
-
-
-
-- (SocialFriends *)friend
-{
-    if (!_friend){
-        _friend = [[SocialFriends alloc] init];
-    }
-    
-    return _friend;
-}
-
-
-#pragma -mark Lazy inst
-- (User *)myUser
-{
-    if (!_myUser){
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
-        if (uri){
-            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-            NSError *error;
-            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
-        }
-        
-    }
-    return _myUser;
-}
-
-
-
 
 #pragma -mark side menu delegate
 
@@ -265,12 +214,15 @@
     }
     
     [self.friendPickerController clearSelection];
+    [self.friendPickerController updateView];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)facebookViewControllerCancelWasPressed:(id)sender{
     
+    [self.friendPickerController clearSelection];
+    [self.friendPickerController updateView];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -339,16 +291,75 @@
             NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
            [self.friend inviteFriendWithID:friendID
                                      title:@"Invite"
-                                   message:[NSString stringWithFormat:@"Hey %@ you should try this app",name]
+                                   message:[NSString stringWithFormat:@"Hey %@ send me a caption on Captify!",name]
                                      block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                          if (wasSuccessful){
                                              NSLog(@"success");
                                          }
+                                        [friendPicker clearSelection];
                                      }];
         }
     }
     
 }
+
+
+- (FBFriendPickerViewController *)friendPickerController
+{
+    
+    if (!_friendPickerController){
+        _friendPickerController = [[FBFriendPickerViewController alloc] init];
+        _friendPickerController.title = @"Invite Friend";
+        _friendPickerController.delegate = self;
+        _friendPickerController.allowsMultipleSelection = NO;
+        [_friendPickerController configureUsingCachedDescriptor:self.cacheDescriptor];
+        
+        
+    }
+    //_friendPickerController.tableView.delegate = self;
+    _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //_friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    CGRect frame =  _friendPickerController.tableView.frame;
+    frame.origin.y -= 7;
+    _friendPickerController.tableView.frame = frame;
+    
+    if ([_friendPickerController.tableView respondsToSelector:@selector(setSectionIndexColor:)]){
+        //_friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        //_friendPickerController.tableView.sectionIndexColor = [UIColor whiteColor];
+        //_friendPickerController.tableView.sectionIndexTrackingBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
+    return  _friendPickerController;
+}
+
+
+
+- (SocialFriends *)friend
+{
+    if (!_friend){
+        _friend = [[SocialFriends alloc] init];
+    }
+    
+    return _friend;
+}
+
+
+#pragma -mark Lazy inst
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
 
 
 

@@ -76,6 +76,10 @@
     [self fetchUpdatesWithBlock:nil];
 }
 
+- (void)dealloc
+{
+    self.data = nil;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -270,7 +274,7 @@
         [myLabel sizeToFit];
          */
         
-        usernameLabel.text = sender.username;
+        usernameLabel.text = NSLocalizedString(@"You", @"referring to the superuser"); //sender.username;
         usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
 

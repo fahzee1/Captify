@@ -102,6 +102,9 @@
 @property (strong ,nonatomic)GPUImageSketchFilter *sketchFilter;
 @property (strong ,nonatomic)GPUImageToonFilter *toonFilter;
 @property (strong ,nonatomic)GPUImagePosterizeFilter *posterizeFilter;
+@property (strong ,nonatomic)GPUImageAmatorkaFilter *amatoraFilter;
+@property (strong ,nonatomic)GPUImageMissEtikateFilter *etikateFilter;
+@property (strong ,nonatomic)GPUImageHistogramFilter *histogramFilter;
 
 
 
@@ -137,7 +140,9 @@
                                                    [NSNumber numberWithInt:CAPTIFY_FILTER_GRAYSCALE],
                                                    [NSNumber numberWithInt:CAPTIFY_FILTER_POSTERIZE],
                                                    [NSNumber numberWithInt:CAPTIFY_FILTER_SKETCH],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_ORIGINAL],nil];
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_ORIGINAL],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_AMATORKA],
+                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_MISS_ETIKATE],nil];
     self.currentFont = CAPTIFY_FONT_CAPTION;
     
     self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
@@ -195,6 +200,19 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    self.embossFilter = nil;
+    self.grayScaleFilter = nil;
+    self.sepiaFilter = nil;
+    self.sketchFilter = nil;
+    self.toonFilter = nil;
+    self.posterizeFilter = nil;
+    self.amatoraFilter = nil;
+    self.etikateFilter = nil;
+    self.histogramFilter = nil;
+    
+    self.imageControls = nil;
+
 }
 
 
@@ -270,7 +288,6 @@
     [self.myImageView addSubview:self.finalCaptionLabel];
     self.myImageView.clipsToBounds = YES;
     
-    self.imageControls = [[[NSBundle mainBundle] loadNibNamed:@"shareControls" owner:self options:nil]lastObject];
     self.imageControls.frame = self.myImageView.frame;
     self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     [self setupImageControlsStyle];
@@ -460,17 +477,26 @@
 
                          [self showNextButton];
                         
-                         self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Press and hold for edit options or drag caption", nil)];
-                         self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-                         self.toolTip.textColor = [UIColor whiteColor];
-                         self.toolTip.hasGradientBackground = NO;
-                         self.toolTip.preferredPointDirection = PointDirectionDown;
-                         self.toolTip.dismissTapAnywhere = YES;
-                         self.toolTip.hasShadow = NO;
-                         self.toolTip.has3DStyle = NO;
-                         self.toolTip.borderWidth = 0;
-                         [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
-                         [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
+                         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                         int count = [[defaults valueForKey:@"challengeToolTip"] intValue];
+                         
+                         if (count < 2){
+                             self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Press and hold for edit options or drag caption", nil)];
+                             self.toolTip.backgroundColor = [UIColor whiteColor];
+                             self.toolTip.textColor = [UIColor blackColor];
+                             self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+                             self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+                             self.toolTip.hasGradientBackground = NO;
+                             self.toolTip.preferredPointDirection = PointDirectionDown;
+                             self.toolTip.dismissTapAnywhere = YES;
+                             self.toolTip.hasShadow = NO;
+                             self.toolTip.has3DStyle = NO;
+                             self.toolTip.borderWidth = 0;
+                             [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
+                             [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
+                             
+                             [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"challengeToolTip"];
+                         }
                          
                          //[self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
                          
@@ -653,7 +679,22 @@
             self.myImageView.image = self.image;
         }
             break;
-        default:
+            
+        case CAPTIFY_FILTER_AMATORKA:
+        {
+            UIImage *image = [self.amatoraFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+        }
+            break;
+            
+        case CAPTIFY_FILTER_MISS_ETIKATE:
+        {
+            UIImage *image = [self.etikateFilter imageByFilteringImage:self.image];
+            self.myImageView.image = image;
+        }
+            break;
+            
+       default:
             break;
     }
     
@@ -1199,7 +1240,8 @@
             UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;
             UILabel *dateLabel = ((HistoryDetailCell *)cell).myDateLabel;
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
-
+            imageView.layer.masksToBounds = YES;
+            imageView.layer.cornerRadius = 30;
             
             [pick.player getCorrectProfilePicWithImageView:imageView];
             
@@ -1399,6 +1441,33 @@
         _posterizeFilter.colorLevels = 10;
     }
     return _posterizeFilter;
+}
+
+- (GPUImageAmatorkaFilter *)amatoraFilter
+{
+    if (!_amatoraFilter){
+        _amatoraFilter = [GPUImageAmatorkaFilter new];
+       
+    }
+    return _amatoraFilter;
+}
+
+- (GPUImageMissEtikateFilter *)etikateFilter
+{
+    if (!_etikateFilter){
+        _etikateFilter = [GPUImageMissEtikateFilter new];
+
+    }
+    return _etikateFilter;
+}
+
+- (GPUImageHistogramFilter *)histogramFilter
+{
+    if (!_histogramFilter){
+        _histogramFilter = [GPUImageHistogramFilter new];
+        _histogramFilter.downsamplingFactor = 16;
+    }
+    return _histogramFilter;
 }
 
 

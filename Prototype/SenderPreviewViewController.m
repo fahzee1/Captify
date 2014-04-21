@@ -665,7 +665,9 @@
         return YES;
     }
      */
-     
+    
+#warning uncomment this to make sure only friends using app are shown.. mauybe show button to invite if none
+    
     return YES;
 }
 
@@ -718,6 +720,7 @@
 {
     
     self.facebookFriendsArray = friendPicker.selection;
+    [friendPicker clearSelection];
     
 
 }

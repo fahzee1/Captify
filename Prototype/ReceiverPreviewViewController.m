@@ -124,7 +124,7 @@
     
     // the send button
     self.sendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-    self.sendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:35];
+    self.sendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
     [self.sendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     [self.sendButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
     self.sendButton.layer.cornerRadius = 10;

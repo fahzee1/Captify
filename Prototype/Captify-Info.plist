@@ -40,7 +40,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>We would like to use your contacts to find all of your friends using this app!</string>
+	<string>Captify would like to use your contacts to find all of your friends using this app!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>American Captain.otf</string>
@@ -66,8 +66,13 @@
 	<string>Main_iPad</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
+		<string></string>
+		<string>still-camera</string>
+		<string>sms</string>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackTranslucent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

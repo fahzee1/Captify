@@ -96,6 +96,11 @@
 
 }
 
+- (void)dealloc
+{
+    self.currentController = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -174,6 +179,17 @@
               [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:nil];
         }];
     }
+}
+
+
+- (UIViewController *)currentController
+{
+    if (!_currentController){
+        UIViewController *vc = [self viewControllerForSegmentIndex:self.mySegmentControl.selectedSegmentIndex];
+        _currentController = vc;
+    }
+    
+    return _currentController;
 }
 
 

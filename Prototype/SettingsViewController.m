@@ -22,6 +22,7 @@
 
 
 #define SETTINGS_PHONE_DEFAULT @"No # provided"
+#define SETTINGS_INVITE 2000
 #define SETTINGS_PHOTO 3000
 #define SETTINGS_PHOTO_LABEL 4000
 #define SETTINGS_EDIT_BUTTON 5000
@@ -147,14 +148,28 @@
 {
     self.editScreen.frame = CGRectMake(7, 66, self.editScreen.frame.size.width, self.editScreen.frame.size.height);
     [self setupEditScreen];
-    [self.editUsernameField becomeFirstResponder];
+    if (self.editUsernameField.isUserInteractionEnabled){
+        [self.editUsernameField becomeFirstResponder];
+    }
+    else{
+        [self.editEmailField becomeFirstResponder];
+    }
     
 }
 
 
 - (void)destoryEditScreen
 {
-    [self.editScreen removeFromSuperview];
+    [UIView animateWithDuration:0.8
+                     animations:^{
+                         self.editScreen.alpha = 0;
+                     } completion:^(BOOL finished) {
+                         
+                        [self.editScreen removeFromSuperview];
+                         self.editScreen.alpha = 1;
+
+                     }];
+
 }
 
 
@@ -265,15 +280,15 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0){
+    if (section == 1){
         return NSLocalizedString(@"Profile", nil);
     }
     
-    else if (section == 1){
+    else if (section == 2){
         return NSLocalizedString(@"Support", @"If a user needs help");
     }
     
-    else if (section == 2){
+    else if (section == 3){
         return  NSLocalizedString(@"Actions", nil);
     }
     
@@ -290,13 +305,52 @@
     switch (indexPath.section) {
         case 0:
         {
+            if (indexPath.row == 0){
+                // invite friends
+                
+                UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
+                if (cell){
+                    UIView *inviteButton = [cell viewWithTag:SETTINGS_INVITE];
+                    if ([inviteButton isKindOfClass:[UILabel class]]){
+                        UILabel *inviteB = (UILabel *)inviteButton;
+                        inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+                        inviteB.textColor = [UIColor whiteColor];
+                        
+                    }
+                }
+                
+
+                UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
+                [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
+            }
+        }
+        case 1:
+        {
             // Profile section
             if (indexPath.row == 4){
-                [self showEditScreen];
+                
+                UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
+                if (cell){
+                    UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
+                    if ([editButton isKindOfClass:[UILabel class]]){
+                        UILabel *editB = (UILabel *)editButton;
+                        editB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+                        
+                        
+                        
+                        [self showEditScreen];
+                        
+                        
+                        editB.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+                    }
+                }
+
+                
+                
             }
         }
             break;
-        case 1:
+        case 2:
         {
             // Support section
             if (indexPath.row == 0){
@@ -320,11 +374,23 @@
         }
             break;
             
-        case 2:
+        case 3:
         {
             // Actions
             if (indexPath.row == 0){
                // logout
+                
+                UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
+                if (cell){
+                    UIView *logoutButton = [cell viewWithTag:SETTINGS_LOGOUT];
+                    if ([logoutButton isKindOfClass:[UILabel class]]){
+                        UILabel *logoutB = (UILabel *)logoutButton;
+                        logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+                        
+                    }
+                }
+
+                
                 if (FBSession.activeSession.state == FBSessionStateOpen
                     || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
                     //close the session and remove the access token from the cache.
@@ -335,7 +401,8 @@
                 [defaults setBool:NO forKey:@"logged"];
                 [defaults setBool:NO forKey:@"facebook_user"];
                 [defaults setBool:NO forKey:@"phone_never"];
-                
+                [defaults setValue:[NSNumber numberWithInt:0] forKey:@"challengeToolTip"];
+                [defaults setValue:[NSNumber numberWithInt:0] forKey:@"homeToolTip"];
                 HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
                 home.goToLogin = YES;
                 UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
@@ -359,13 +426,13 @@
     cell.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    cell.textLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     
     UIView *photoLabel = [cell viewWithTag:SETTINGS_PHOTO_LABEL];
     if ([photoLabel isKindOfClass:[UILabel class]]){
         UILabel *photoL = (UILabel *)photoLabel;
         photoL.textColor = [UIColor whiteColor];
-        photoL.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+        photoL.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     }
     
     UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
@@ -375,6 +442,7 @@
         editB.textColor = [UIColor whiteColor];
         editB.layer.cornerRadius = 5;
         editB.text = NSLocalizedString(@"Edit Profile", nil);
+        editB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     }
     
     UIView *logoutButton = [cell viewWithTag:SETTINGS_LOGOUT];
@@ -384,6 +452,18 @@
         logoutB.textColor = [UIColor whiteColor];
         logoutB.layer.cornerRadius = 5;
         logoutB.text = NSLocalizedString(@"Log Out", nil);
+        logoutB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    }
+    
+    UIView *inviteButton = [cell viewWithTag:SETTINGS_INVITE];
+    if ([inviteButton isKindOfClass:[UILabel class]]){
+        UILabel *inviteB = (UILabel *)inviteButton;
+        inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        inviteB.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        inviteB.text = NSLocalizedString(@"Invite Friends!", nil);
+        inviteB.layer.cornerRadius = 20;
+        inviteB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        
     }
 
 
@@ -396,6 +476,14 @@
     
     switch (indexPath.section) {
         case 0:
+        {
+            if (indexPath.row == 0){
+                // invite friends
+                 cell.layer.borderWidth = 0;
+            }
+        }
+            break;
+        case 1:
         {
             if (indexPath.row == 0){
                 // username
@@ -438,7 +526,7 @@
         }
             break;
             
-        case 1:
+        case 2:
         {
             if (indexPath.row == 0){
                 // TOS
@@ -452,7 +540,7 @@
         }
             break;
             
-        case 2:
+        case 3:
         {
             // logout
             if (indexPath.row == 0){
@@ -472,7 +560,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (indexPath.section == 0){
+        // invite friends
+        return 80.0;
+    }
     return 50.0;
 }
 

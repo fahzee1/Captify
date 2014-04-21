@@ -372,21 +372,29 @@
 
 - (void)showTooltip
 {
-    self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap once to take picture. Tap Twice for photo library", nil)];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    int count = [[defaults valueForKey:@"homeToolTip"] intValue];
+    if (count < 2){
+        self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap once to take picture. Tap Twice for photo library", nil)];
 
-    self.toolTip.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    self.toolTip.textColor = [UIColor whiteColor];
-    self.toolTip.hasGradientBackground = NO;
-    self.toolTip.preferredPointDirection = PointDirectionDown;
-    self.toolTip.hasShadow = NO;
-    self.toolTip.has3DStyle = NO;
-    self.toolTip.borderWidth = 0;
-    [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
-    double delayInSeconds = 7.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.toolTip dismissAnimated:YES];
-    });
+        self.toolTip.backgroundColor = [UIColor whiteColor];
+        self.toolTip.hasGradientBackground = NO;
+        self.toolTip.preferredPointDirection = PointDirectionDown;
+        self.toolTip.hasShadow = NO;
+        self.toolTip.has3DStyle = NO;
+        self.toolTip.borderWidth = 0;
+        self.toolTip.textColor = [UIColor blackColor];
+        self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+        self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+        [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
+        double delayInSeconds = 7.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.toolTip dismissAnimated:YES];
+        });
+        
+        [defaults setValue:[NSNumber numberWithInt:count + 1] forKey:@"homeToolTip"];
+    }
 
 }
 
