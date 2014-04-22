@@ -100,7 +100,7 @@
     }
 }
 
-+ (BOOL)createContactsWithParams:(NSDictionary *)params
++ (BOOL)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context
 {
     NSError *error;
@@ -134,6 +134,9 @@
     return YES;
 
 }
+
+
+
 
 + (User *)getUserWithUsername:(NSString *)username
                     inContext:(NSManagedObjectContext *)context

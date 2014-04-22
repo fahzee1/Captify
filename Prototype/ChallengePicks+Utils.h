@@ -19,6 +19,7 @@ typedef void (^CreatePickUpdateBlock) (BOOL wasSuccessful, BOOL fail, NSString *
 + (NSString *)dateStringFromDate:(NSDate *)date;
 
 + (ChallengePicks *)createChallengePickWithParams:(NSDictionary *)params;
+                            
 
 + (NSString *)createPickID;
 

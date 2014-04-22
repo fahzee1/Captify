@@ -128,11 +128,17 @@
     
     //self.navigationItem.rightBarButtonItem = nextButton;
     
+ 
     self.activeFonts = [NSArray arrayWithObjects:CAPTIFY_FONT_GOODDOG,
                                                  CAPTIFY_FONT_GLOBAL_BOLD,
                                                  CAPTIFY_FONT_LEMONDROP,
+                                                 CAPTFIY_FONT_KILOGRAM,
+                                                 CAPTFIY_FONT_AGENTORANGE,
+                                                 CAPTFIY_FONT_TRIBBON,
                                                  CAPTIFY_FONT_LEAGUE,
                                                   nil];
+
+
     
     self.activeFilters = [NSArray arrayWithObjects:
                           [NSNumber numberWithInt:CAPTIFY_FILTER_AMATORKA],
@@ -1224,6 +1230,7 @@
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
+    cell.contentView.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
@@ -1310,7 +1317,8 @@
                     selectButton.userInteractionEnabled = NO;
                     selectButton.hidden = YES;
                     cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
-                    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+                    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+                    //cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
                     //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
                     //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
                 }

@@ -43,6 +43,9 @@
 	<string>Captify would like to use your contacts to find all of your friends using this app!</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>KiloGram_KG.otf</string>
+		<string>Tribbon-B.ttf</string>
+		<string>AGENTORANGE.TTF</string>
 		<string>American Captain.otf</string>
 		<string>Lemondrop.ttf</string>
 		<string>Lemondrop Bold.ttf</string>

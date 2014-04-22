@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "SenderPreviewViewController.h"
 #import "UIColor+HexValue.h"
 #import "UIImage+Utils.h"
@@ -665,6 +666,20 @@
         return YES;
     }
      */
+    
+    NSString *name = user[@"name"];
+    BOOL should = [name hasPrefix:@"A"];
+    if (should){
+        NSDictionary *params = @{@"username": user[@"name"],
+                                 @"facebook_user":[NSNumber numberWithBool:YES],
+                                 @"facebook_id":user[@"id"],
+                                 };
+        
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        
+        [User createFriendWithParams:params inMangedObjectContext:context];
+    }
+    return should;
     
 #warning uncomment this to make sure only friends using app are shown.. mauybe show button to invite if none
     

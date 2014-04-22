@@ -362,6 +362,9 @@
 		11DF517218F5BBCE008A3B0D /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DF517118F5BBCE008A3B0D /* Challenge.m */; };
 		11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */; };
 		11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */; };
+		11E409811906ED14008C79F2 /* KiloGram_KG.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11E409801906ED14008C79F2 /* KiloGram_KG.otf */; };
+		11E4098A1906EE8F008C79F2 /* AGENTORANGE.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11E409891906EE8F008C79F2 /* AGENTORANGE.TTF */; };
+		11E4098C1906F06B008C79F2 /* Tribbon-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */; };
 		11E6D71118FF1F8000C47D25 /* MGInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E6D71018FF1F8000C47D25 /* MGInstagram.m */; };
 		11ED4C52190569D400A2E9B5 /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4D190569D400A2E9B5 /* lookup.png */; };
 		11ED4C53190569D400A2E9B5 /* lookup_amatorka.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4E190569D400A2E9B5 /* lookup_amatorka.png */; };
@@ -1039,6 +1042,9 @@
 		11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestDataCreator.m; sourceTree = "<group>"; };
 		11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChallengePicks+Utils.h"; sourceTree = "<group>"; };
 		11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ChallengePicks+Utils.m"; sourceTree = "<group>"; };
+		11E409801906ED14008C79F2 /* KiloGram_KG.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KiloGram_KG.otf; sourceTree = "<group>"; };
+		11E409891906EE8F008C79F2 /* AGENTORANGE.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = AGENTORANGE.TTF; path = "Tribbon otf /AGENTORANGE.TTF"; sourceTree = "<group>"; };
+		11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tribbon-B.ttf"; sourceTree = "<group>"; };
 		11E6D70F18FF1F8000C47D25 /* MGInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGInstagram.h; sourceTree = "<group>"; };
 		11E6D71018FF1F8000C47D25 /* MGInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGInstagram.m; sourceTree = "<group>"; };
 		11ED4C4D190569D400A2E9B5 /* lookup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup.png; sourceTree = "<group>"; };
@@ -2112,6 +2118,9 @@
 		11DF518618F5F1ED008A3B0D /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */,
+				11E409891906EE8F008C79F2 /* AGENTORANGE.TTF */,
+				11E409801906ED14008C79F2 /* KiloGram_KG.otf */,
 				119BAEDF18F4FD2F00678A63 /* American Captain.otf */,
 				119BAEDB18F4FC9900678A63 /* Lemondrop Bold.ttf */,
 				119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */,
@@ -2291,6 +2300,7 @@
 				119BAEDD18F4FC9900678A63 /* Lemondrop Bold.ttf in Resources */,
 				1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */,
 				11ABFCA618C7D28300639A20 /* NEOColorPickerFavoritesViewController.xib in Resources */,
+				11E4098C1906F06B008C79F2 /* Tribbon-B.ttf in Resources */,
 				119BAEDA18F4FC1C00678A63 /* GoodDog.otf in Resources */,
 				11ED4C53190569D400A2E9B5 /* lookup_amatorka.png in Resources */,
 				11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */,
@@ -2303,6 +2313,7 @@
 				118EF1CE18FC709C00755552 /* Lato-Italic.ttf in Resources */,
 				110731041876640F0065D77F /* Main_iPhone.storyboard in Resources */,
 				11AB2E5118AAA61000B511E1 /* LICENSE in Resources */,
+				11E4098A1906EE8F008C79F2 /* AGENTORANGE.TTF in Resources */,
 				11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */,
 				11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */,
 				11C8E8D618C930E900FE6B5E /* filterControls.xib in Resources */,
@@ -2320,6 +2331,7 @@
 				11ABFCA318C7D28300639A20 /* colorPicker.bundle in Resources */,
 				119BAED618F4FB3F00678A63 /* ProximaNova-Bold.otf in Resources */,
 				11ABFCAD18C7D28300639A20 /* NEOColorPickerViewController.xib in Resources */,
+				11E409811906ED14008C79F2 /* KiloGram_KG.otf in Resources */,
 				118EF1CD18FC709C00755552 /* Lato-HairlineItalic.ttf in Resources */,
 				11ABFCAB18C7D28300639A20 /* NEOColorPickerHueGridViewController.xib in Resources */,
 			);

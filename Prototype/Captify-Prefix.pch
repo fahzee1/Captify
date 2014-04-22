@@ -49,6 +49,10 @@
 #define CAPTIFY_FONT_LEAGUE @"LeagueGothic-Regular"
 #define CAPTIFY_FONT_GOODDOG @"GoodDog"
 #define CAPTIFY_FONT_LEMONDROP @"Lemondrop-Bold"
+#define CAPTFIY_FONT_KILOGRAM @"KiloGram"
+#define CAPTFIY_FONT_AGENTORANGE @"AgentOrange"
+#define CAPTFIY_FONT_TRIBBON @"TribbonB"
+
 
 // AmericanCaptain
 // Lemondrop and  Lemondrop-Bold

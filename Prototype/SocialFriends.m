@@ -149,16 +149,40 @@
          title:title
          parameters:@{@"to":userID }
          handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-             if (!error){
+             if (error){
+                 NSLog(@"%@",[error localizedDescription]);
+                 [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Unable to send invitaton at this momemt. Make sure you're connected to the internet", nil)];
                  if (block){
-                     block(YES, result);
+                     block(NO , result);
                  }
              }
              else{
-                 if (block){
-                     block(NO,result);
+                 if (![resultURL query]){
+                     return;
                  }
-             }
+                 
+                 NSDictionary *params = [self parseURLParams:[resultURL query]];
+                 NSMutableArray *IDS = [[NSMutableArray alloc] init];
+                 for (NSString *key in params){
+                     if ([key hasPrefix:@"to["]){
+                         [IDS addObject:[params objectForKey:key]];
+                     }
+                 }
+                 
+                 if ([params objectForKey:@"request"]){
+                      NSLog(@"Request ID: %@", [params objectForKey:@"request"]);
+                 }
+                 
+                 if ([IDS count] > 0){
+                     NSLog(@"Recipient ID(s): %@", IDS);
+                     
+                     if (block){
+                         block(YES,result);
+                     }
+
+                 }
+                 
+            }
          }];
     }
     else{
@@ -167,6 +191,22 @@
         }
     }
 
+}
+
+
+- (NSDictionary *)parseURLParams:(NSString *)query
+{
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs)
+    {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        
+        [params setObject:[[kv objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                   forKey:[[kv objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    return params;
 }
 
 

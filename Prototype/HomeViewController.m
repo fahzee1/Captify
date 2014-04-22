@@ -102,7 +102,7 @@
     [super viewDidLoad];
 
     [self fetchContacts];
-    
+
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         
         /*
@@ -468,7 +468,7 @@
                                                                 NSDictionary *params = @{@"username": user[@"username"],
                                                                                          @"facebook_user":user[@"is_facebook"],
                                                                                          @"facebook_id":facebook_id};
-                                                                BOOL create = [User createContactsWithParams:params
+                                                                BOOL create = [User createFriendWithParams:params
                                                                                        inMangedObjectContext:self.myUser.managedObjectContext];
                                                                 if (create){
                                                                     NSLog(@"successfully created %@", user[@"username"]);

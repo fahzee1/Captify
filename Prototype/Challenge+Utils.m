@@ -360,13 +360,13 @@
     NSAssert([params valueForKey:@"recipients_count"], @"Must include recipients_count");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     
-    
+
     
     Challenge *challenge;
     NSError *error;
     User *user = [User getUserWithUsername:[params valueForKey:@"sender"] inContext:[params valueForKey:@"context"] error:&error];
     // check if exists first
-                  
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
     NSUInteger exist = [user.managedObjectContext countForFetchRequest:request error:&error];
@@ -404,11 +404,13 @@
                     abort();
                     
                 }
-                else{
-                    NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
-                }
-
+                
             });
+        }
+        // no user
+        else{
+            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
+            
         }
 
     }

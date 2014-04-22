@@ -188,12 +188,17 @@
                                                     NSString *caption = results[@"answer"];
                                                     NSNumber *is_chosen = results[@"is_chosen"];
                                                     NSString *pick_id = results[@"pick_id"];
+                                                    NSNumber *is_facebook = results[@"is_facebook"];
+                                                    NSNumber *facebook_id = results[@"facebook_id"];
+
                                                     
                                                     NSDictionary *params2 = @{@"player": player,
                                                                               @"context":self.myUser.managedObjectContext,
                                                                               @"is_chosen":is_chosen,
                                                                               @"answer":caption,
-                                                                              @"pick_id":pick_id};
+                                                                              @"pick_id":pick_id,
+                                                                              @"is_facebook":is_facebook,
+                                                                              @"facebook_id":facebook_id};
                                                     ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
                                                     if (pick){
                                                         [challenge addPicksObject:pick];
@@ -255,6 +260,30 @@
     
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self setCellColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forCell:cell];
+}
+
+- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self setCellColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forCell:cell];
+    
+}
+
+- (void)setCellColor:(UIColor *)color forCell:(UITableViewCell *)cell
+{
+    cell.contentView.backgroundColor = color;
+    //cell.backgroundColor = color;
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -263,6 +292,7 @@
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
+    cell.contentView.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     if ([cell isKindOfClass:[HistorySentCell class]]){

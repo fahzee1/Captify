@@ -83,6 +83,7 @@
         }
         else{
             NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
+
         }
 
     }

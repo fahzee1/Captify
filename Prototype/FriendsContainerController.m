@@ -30,6 +30,9 @@
 @property (strong, nonatomic) SocialFriends *friend;
 @property (strong, nonatomic) FBCacheDescriptor *cacheDescriptor;
 @property (strong, nonatomic) FBCacheDescriptor *appCacheDescriptor;
+@property (strong, nonatomic) NSArray *selectedFriends;
+@property (strong, nonatomic) NSMutableArray *selectedIDS;
+
 
 
 @end
@@ -70,9 +73,16 @@
     [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                      NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     
+    UIBarButtonItem *invite = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", nil) style:UIBarButtonItemStylePlain target:self action:@selector(inviteFriendsFromList)];
+    [invite setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17],
+                                     NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    
    
     self.navigationItem.leftBarButtonItem = button;
+    self.navigationItem.rightBarButtonItem = invite;
     self.navigationItem.title = NSLocalizedString(@"Invite", nil);
+    [self.navigationController setToolbarHidden:YES];
+    
     
     
        
@@ -98,7 +108,32 @@
      [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
+- (void)inviteFriendsFromList
+{
+    [self.friendPickerController clearSelection];
+    
+    if ([self.selectedFriends count] > 0){
+        for (NSDictionary *dict in self.selectedFriends){
+            [self.selectedIDS addObject:dict[@"id"]];
+        }
+        
+        
+        NSString *friends = [self.selectedIDS componentsJoinedByString:@","];
+        [self.friend inviteFriendWithID:friends
+                                  title:@"Invite"
+                                message:[NSString stringWithFormat:@"Hey send me a caption on Captify!"]
+                                  block:^(BOOL wasSuccessful, FBWebDialogResult result) {
+                                      if (wasSuccessful){
+                                          NSLog(@"success");
+                                      }
+                                      [self.friendPickerController clearSelection];
+                                  }];
 
+        // reset
+        self.selectedFriends = nil;
+        self.selectedIDS = nil;
+    }
+}
 
 
 - (void)showFacebookInvite{
@@ -282,26 +317,16 @@
     
 }
 
+
+
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
-    if (friendPicker == self.friendPickerController){
-        // send friend invite request when tapped
-        if (![friendPicker.selection count] == 0){
-            NSString *friendID = [friendPicker.selection[0] objectForKey:@"id"];
-            NSString *name = [friendPicker.selection[0] objectForKey:@"name"];
-           [self.friend inviteFriendWithID:friendID
-                                     title:@"Invite"
-                                   message:[NSString stringWithFormat:@"Hey %@ send me a caption on Captify!",name]
-                                     block:^(BOOL wasSuccessful, FBWebDialogResult result) {
-                                         if (wasSuccessful){
-                                             NSLog(@"success");
-                                         }
-                                        [friendPicker clearSelection];
-                                     }];
-        }
-    }
+        self.selectedFriends = friendPicker.selection;
+
     
 }
+ 
+ 
 
 
 - (FBFriendPickerViewController *)friendPickerController
@@ -311,7 +336,7 @@
         _friendPickerController = [[FBFriendPickerViewController alloc] init];
         _friendPickerController.title = @"Invite Friend";
         _friendPickerController.delegate = self;
-        _friendPickerController.allowsMultipleSelection = NO;
+        _friendPickerController.allowsMultipleSelection = YES;
         [_friendPickerController configureUsingCachedDescriptor:self.cacheDescriptor];
         
         
@@ -360,8 +385,23 @@
     return _myUser;
 }
 
+- (NSArray *)selectedFriends
+{
+    if (!_selectedFriends){
+        _selectedFriends = [NSArray array];
+    }
+    
+    return _selectedFriends;
+}
 
-
+- (NSMutableArray *)selectedIDS
+{
+    if (!_selectedIDS){
+        _selectedIDS = [NSMutableArray array];
+    }
+    
+    return _selectedIDS;
+}
 
 
 

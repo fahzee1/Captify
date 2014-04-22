@@ -24,7 +24,7 @@ typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 
 + (BOOL)validPhoneNumber:(NSString *)number;
 
-+ (BOOL)createContactsWithParams:(NSDictionary *)params
++ (BOOL)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context;
 
 + (User *)getUserWithUsername:(NSString *)username
