@@ -97,6 +97,7 @@
 
 - (void)showMenu
 {
+    [self destoryEditScreen];
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
