@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
+   // NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self setupButtonStyles];
     
     

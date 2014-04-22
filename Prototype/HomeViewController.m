@@ -71,7 +71,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *previewOneFieldContainer;
 
-@property (weak, nonatomic) IBOutlet UILabel *previewFinalPhraseLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *previewTextFieldIcon;
 
 @property (nonatomic, strong)NSString *challengeTitle;
 @property CGPoint finalPhraseLabelPostion;
@@ -103,6 +104,7 @@
     [self fetchContacts];
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+        
         /*
          User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.myUser.managedObjectContext];
         user.super_user = [NSNumber numberWithBool:NO];
@@ -111,13 +113,13 @@
         user.username = @"gumbo";
         NSError *e;
         [user.managedObjectContext save:&e];
+        
+        
+        User *user4 = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
+        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
          */
         
-        //User *user = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-        //User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
-        //User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-
-
         
         /*
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
@@ -317,13 +319,13 @@
 - (void)setupPreviewStylesAndMore
 {
     
-    self.previewCancelButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    self.previewCancelButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:45];
     [self.previewCancelButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-    [self.previewCancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [self.previewCancelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
-    self.previewNextButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+    self.previewNextButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:45];
     [self.previewNextButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"] forState:UIControlStateNormal];
-    [self.previewNextButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [self.previewNextButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
     /*
     // add pulsating effect to button
@@ -336,12 +338,22 @@
      */
     
 
-    self.previewFinalPhraseLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
-    self.previewFinalPhraseLabel.hidden = YES;
+    //self.previewFinalPhraseLabel.font = [UIFont fontWithName:@"Chalkduster" size:25];
+    //self.previewFinalPhraseLabel.hidden = YES;
     
-    self.previewTextField.placeholder = NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text");
+    //self.previewTextField.placeholder = NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text");
+    self.previewTextField.borderStyle = UITextBorderStyleNone;
+    self.previewTextField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.previewTextField.textColor = [UIColor whiteColor];
+    self.previewTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text") attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+    self.previewTextFieldIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    self.previewTextFieldIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square"];
+    self.previewTextFieldIcon.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.previewTextFieldIcon.layer.cornerRadius = 5;
+    
     self.previewOneFieldContainer.layer.cornerRadius = 10.0f;
-    self.previewOneFieldContainer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] colorWithAlphaComponent:0.5f];
+    self.previewOneFieldContainer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5f];
     CGRect firstRect = self.previewOneFieldContainer.frame;
     self.previewOneFieldContainer.frame = CGRectMake(firstRect.origin.x, SCREENHEIGHT , firstRect.size.width, firstRect.size.height);
     for (id textField in self.previewOneFieldContainer.subviews){
@@ -374,8 +386,8 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     int count = [[defaults valueForKey:@"homeToolTip"] intValue];
-    if (count < 2){
-        self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap once to take picture. Tap Twice for photo library", nil)];
+    if (count < 3){
+        self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap to take picture", nil)];
 
         self.toolTip.backgroundColor = [UIColor whiteColor];
         self.toolTip.hasGradientBackground = NO;
@@ -384,17 +396,35 @@
         self.toolTip.has3DStyle = NO;
         self.toolTip.borderWidth = 0;
         self.toolTip.textColor = [UIColor blackColor];
-        self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
-        self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+        self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+        self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+        [self.toolTip autoDismissAnimated:YES atTimeInterval:3.0];
         [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
-        double delayInSeconds = 7.0;
+        double delayInSeconds = 3.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.toolTip dismissAnimated:YES];
+            [self showTooltip2];
         });
         
         [defaults setValue:[NSNumber numberWithInt:count + 1] forKey:@"homeToolTip"];
     }
+
+}
+
+- (void)showTooltip2
+{
+    self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap twice to enter the photo gallery", nil)];
+    self.toolTip.backgroundColor = [UIColor whiteColor];
+    self.toolTip.hasGradientBackground = NO;
+    self.toolTip.preferredPointDirection = PointDirectionDown;
+    self.toolTip.hasShadow = NO;
+    self.toolTip.has3DStyle = NO;
+    self.toolTip.borderWidth = 0;
+    self.toolTip.textColor = [UIColor blackColor];
+    self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+    self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+    [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
+    [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
 
 }
 
@@ -404,7 +434,8 @@
     
     // fetch contacts from phone and
     // from backend in the background
-    double delayInSeconds = 45.0;
+    static int retrys;
+    double delayInSeconds = 30.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
  
@@ -412,48 +443,55 @@
         Contacts *c = [[Contacts alloc] init];
         [c fetchContactsWithBlock:^(BOOL done, id data) {
             if (done){
-                NSLog(@"%@",data);
+                //NSLog(@"%@",data);
                 if ([data isKindOfClass:[NSArray class]]){
-                    self.contactNumbers = (NSArray *)data;
+                    self.contactNumbers = data;
                     
-                    // send numbers to backend to see if any users return
-                    NSDictionary *params = @{@"username":self.myUser.username ,
-                                             @"action":@"getCF",
-                                             @"content":self.contactNumbers};
-                    
-                    [c requestFriendsFromContactsList:params
-                                                block:^(BOOL success, id data) {
-                                                    if (success){
-                                                        for (id user in data[@"contacts"]){
-                                                            NSNumber *facebook_id;
-                                                            if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
-                                                                facebook_id = @0;
-                                                            }
-                                                            else{
-                                                                facebook_id = user[@"facebook_id"];
-                                                            }
-                                                            
-                                                            NSDictionary *params = @{@"username": user[@"username"],
-                                                                                     @"facebook_user":user[@"is_facebook"],
-                                                                                     @"facebook_id":facebook_id};
-                                                            BOOL create = [User createContactsWithParams:params
-                                                                                   inMangedObjectContext:self.myUser.managedObjectContext];
-                                                            if (create){
-                                                                NSLog(@"successfully created %@", user[@"username"]);
-                                                            }
-                                                            else
-                                                            {
-                                                                NSLog(@"failerd created %@", user[@"username"]);
+                    if (self.contactNumbers && self.myUser){
+                        // send numbers to backend to see if any users return
+                        NSDictionary *params = @{@"username":self.myUser.username ,
+                                                 @"action":@"getCF",
+                                                 @"content":self.contactNumbers};
+                        
+                        [c requestFriendsFromContactsList:params
+                                                    block:^(BOOL success, id data) {
+                                                        if (success){
+                                                            for (id user in data[@"contacts"]){
+                                                                NSNumber *facebook_id;
+                                                                if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                                    facebook_id = @0;
+                                                                }
+                                                                else{
+                                                                    facebook_id = user[@"facebook_id"];
+                                                                }
+                                                                
+                                                                NSDictionary *params = @{@"username": user[@"username"],
+                                                                                         @"facebook_user":user[@"is_facebook"],
+                                                                                         @"facebook_id":facebook_id};
+                                                                BOOL create = [User createContactsWithParams:params
+                                                                                       inMangedObjectContext:self.myUser.managedObjectContext];
+                                                                if (create){
+                                                                    NSLog(@"successfully created %@", user[@"username"]);
+                                                                }
+                                                                else
+                                                                {
+                                                                    NSLog(@"failerd created %@", user[@"username"]);
+                                                                }
+                                                                
                                                             }
                                                             
                                                         }
-                                                        
-                                                    }
-                                                    else{
-                                                        NSLog(@"no success");
-                                                    }
-                                                }];
-                    
+                                                        else{
+                                                            NSLog(@"no success");
+                                                        }
+                                                    }];
+                    }
+                    else{
+                        if (retrys < 3){
+                            [self fetchContacts];
+                            retrys += 1;
+                        }
+                    }
                 }
             }
         }];
@@ -659,7 +697,6 @@
     self.previewBackground = nil;
     self.previewNextButton = nil;
     self.previewCancelButton = nil;
-    self.previewFinalPhraseLabel = nil;
     self.previewTextField = nil;
     self.previewOneFieldContainer = nil;
     
@@ -1116,7 +1153,6 @@
         if ([fromVC isKindOfClass:[SenderPreviewViewController class]]){
             self.previewNextButton.hidden = NO;
             self.previewCancelButton.hidden = NO;
-            self.previewFinalPhraseLabel.hidden = YES;
             self.challengeTitle = nil;
             CGRect oneFrame = self.previewOneFieldContainer.frame;
             self.previewOneFieldContainer.frame = CGRectMake(oneFrame.origin.x,

@@ -20,6 +20,8 @@
 #import "AwesomeAPICLient.h"
 #import "Notifications.h"
 #import "UIColor+HexValue.h"
+#import "TWTSideMenuViewController.h"
+#import "MenuViewController.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
@@ -53,17 +55,36 @@
     if ([self.data count] == 0){
 
         UIView *view = [[UIView alloc] initWithFrame:self.myTable.frame];
-        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        view.layer.cornerRadius = 10;
+        view.layer.masksToBounds = YES;
+        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
         
+        CGRect containerFrame = view.frame;
+        containerFrame.size.width -= 15;
+        containerFrame.size.height -= 250;
+        containerFrame.origin.y += 25;
+        containerFrame.origin.x += 7;
+        view.frame = containerFrame;
+
         UILabel *errorLabel = [[UILabel alloc] init];
-        errorLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:20];
+        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
         errorLabel.numberOfLines = 0;
         [errorLabel sizeToFit];
         errorLabel.textColor = [UIColor whiteColor];
-        errorLabel.frame = CGRectMake(20, 50, 300, 100);
+        errorLabel.frame = CGRectMake(15, 50, view.frame.size.width -20, 100);
+        
+        UIButton *play = [UIButton buttonWithType:UIButtonTypeSystem];
+        play.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        play.layer.cornerRadius = 10;
+        play.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        [play setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
+        [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        play.frame = CGRectMake(50, view.bounds.size.height - 130, 200, 50);
+        [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
         
         [view addSubview:errorLabel];
+        [view addSubview:play];
         [self.myTable addSubview:view];
     }
     
@@ -92,6 +113,18 @@
     [self.myTable reloadData];
 }
 
+
+- (void)showHomeScreen
+{
+    // update the highlighted menu button to the screen we're about to show
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) updateCurrentScreen:MenuHomeScreen];
+    }
+
+    UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
+    [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:NO];
+}
 
 - (void)fetchUpdatesWithBlock:(FetchRecentsBlock2)block
 {

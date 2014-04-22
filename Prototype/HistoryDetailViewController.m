@@ -96,7 +96,6 @@
 @property int errorCount;
 
 // filters
-@property (strong ,nonatomic)GPUImageEmbossFilter *embossFilter;
 @property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
 @property (strong ,nonatomic)GPUImageSepiaFilter *sepiaFilter;
 @property (strong ,nonatomic)GPUImageSketchFilter *sketchFilter;
@@ -104,7 +103,7 @@
 @property (strong ,nonatomic)GPUImagePosterizeFilter *posterizeFilter;
 @property (strong ,nonatomic)GPUImageAmatorkaFilter *amatoraFilter;
 @property (strong ,nonatomic)GPUImageMissEtikateFilter *etikateFilter;
-@property (strong ,nonatomic)GPUImageHistogramFilter *histogramFilter;
+
 
 
 
@@ -135,14 +134,16 @@
                                                  CAPTIFY_FONT_LEAGUE,
                                                   nil];
     
-    self.activeFilters = [NSArray arrayWithObjects:[NSNumber numberWithInt:CAPTIFY_FILTER_EMBOSS],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_SEPIA],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_GRAYSCALE],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_POSTERIZE],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_SKETCH],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_ORIGINAL],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_AMATORKA],
-                                                   [NSNumber numberWithInt:CAPTIFY_FILTER_MISS_ETIKATE],nil];
+    self.activeFilters = [NSArray arrayWithObjects:
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_AMATORKA],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_MISS_ETIKATE],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_SEPIA],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_GRAYSCALE],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_POSTERIZE],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_SKETCH],
+                          [NSNumber numberWithInt:CAPTIFY_FILTER_ORIGINAL],nil];
+
+
     self.currentFont = CAPTIFY_FONT_CAPTION;
     
     self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
@@ -200,8 +201,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    
-    self.embossFilter = nil;
+
     self.grayScaleFilter = nil;
     self.sepiaFilter = nil;
     self.sketchFilter = nil;
@@ -209,7 +209,6 @@
     self.posterizeFilter = nil;
     self.amatoraFilter = nil;
     self.etikateFilter = nil;
-    self.histogramFilter = nil;
     
     self.imageControls = nil;
 
@@ -285,6 +284,8 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.finalCaptionLabel.hidden = YES;
+    self.finalCaptionLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    
     [self.myImageView addSubview:self.finalCaptionLabel];
     self.myImageView.clipsToBounds = YES;
     
@@ -481,11 +482,11 @@
                          int count = [[defaults valueForKey:@"challengeToolTip"] intValue];
                          
                          if (count < 2){
-                             self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Press and hold for edit options or drag caption", nil)];
+                             self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Hold for edit options or drag caption", nil)];
                              self.toolTip.backgroundColor = [UIColor whiteColor];
                              self.toolTip.textColor = [UIColor blackColor];
-                             self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
-                             self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:15];
+                             self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+                             self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
                              self.toolTip.hasGradientBackground = NO;
                              self.toolTip.preferredPointDirection = PointDirectionDown;
                              self.toolTip.dismissTapAnywhere = YES;
@@ -631,12 +632,6 @@
     
     id filter = [self.activeFilters objectAtIndex:filterIndex];
     switch ([filter intValue]) {
-        case CAPTIFY_FILTER_EMBOSS:
-        {
-            UIImage *image = [self.embossFilter imageByFilteringImage:self.image];
-            self.myImageView.image = image;
-        }
-            break;
             
         case CAPTIFY_FILTER_GRAYSCALE:
         {
@@ -673,6 +668,7 @@
             self.myImageView.image = image;
 
         }
+            break;
             
         case CAPTIFY_FILTER_ORIGINAL:
         {
@@ -1387,15 +1383,6 @@
 }
 
 
-- (GPUImageEmbossFilter *)embossFilter
-{
-    if (!_embossFilter){
-        _embossFilter = [GPUImageEmbossFilter new];
-        _embossFilter.intensity = 1.0;
-    }
-    return _embossFilter;
-}
-
 
 - (GPUImageGrayscaleFilter *)grayScaleFilter
 {
@@ -1445,29 +1432,14 @@
 
 - (GPUImageAmatorkaFilter *)amatoraFilter
 {
-    if (!_amatoraFilter){
-        _amatoraFilter = [GPUImageAmatorkaFilter new];
-       
-    }
+    _amatoraFilter = [GPUImageAmatorkaFilter new];
     return _amatoraFilter;
 }
 
 - (GPUImageMissEtikateFilter *)etikateFilter
 {
-    if (!_etikateFilter){
-        _etikateFilter = [GPUImageMissEtikateFilter new];
-
-    }
+    _etikateFilter = [GPUImageMissEtikateFilter new];
     return _etikateFilter;
-}
-
-- (GPUImageHistogramFilter *)histogramFilter
-{
-    if (!_histogramFilter){
-        _histogramFilter = [GPUImageHistogramFilter new];
-        _histogramFilter.downsamplingFactor = 16;
-    }
-    return _histogramFilter;
 }
 
 

@@ -15,10 +15,6 @@
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
 
-#define HomeTag 1000
-#define HistoryTag 1001
-#define FriendsTag 1002
-#define SettingsTag 1003
 
 @interface MenuViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *menuCamera;
@@ -50,7 +46,7 @@
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
     if (!self.currentScreen){
-        self.currentScreen = [NSNumber numberWithInt:HomeTag];
+        self.currentScreen = [NSNumber numberWithInt:MenuHomeScreen];
     }
     
     
@@ -110,17 +106,25 @@
 
 - (void)setupColors
 {
-    self.menuCamera.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:HomeTag]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
-    self.menuHistory.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:HistoryTag]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    self.menuCamera.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHomeScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    self.menuHistory.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHistoryScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
     
-    self.menuFriends.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:FriendsTag]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
-    self.menuSettings.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:SettingsTag]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    self.menuFriends.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFriendsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    self.menuSettings.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
 
+}
+
+- (void)updateCurrentScreen:(MenuScreenConstants)screen
+{
+    self.currentScreen = [NSNumber numberWithInt:screen];
+    [self setupColors];
+    
+    
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {
     switch (sender.tag) {
-        case HomeTag:
+        case MenuHomeScreen:
         {
             UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
             if ([self isAlreadyMainVC:camera.childViewControllers[0]]){
@@ -131,14 +135,14 @@
                     
                     [self.delegate menuShowingAnotherScreen];
                 }
-                self.currentScreen = [NSNumber numberWithInt:HomeTag];
+                self.currentScreen = [NSNumber numberWithInt:MenuHomeScreen];
                 [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:YES];
                
             }
 
             break;
         }
-        case HistoryTag:
+        case MenuHistoryScreen:
         {
             UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
             if ([self isAlreadyMainVC:history.childViewControllers[0]]){
@@ -148,14 +152,14 @@
                 if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
                     [self.delegate menuShowingAnotherScreen];
                 }
-                self.currentScreen = [NSNumber numberWithInt:HistoryTag];
+                self.currentScreen = [NSNumber numberWithInt:MenuHistoryScreen];
                 [self.sideMenuViewController setMainViewController:history animated:YES closeMenu:YES];
             }
             
             break;
         }
             
-        case FriendsTag:
+        case MenuFriendsScreen:
         {
             UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
             if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
@@ -165,14 +169,14 @@
                 if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
                     [self.delegate menuShowingAnotherScreen];
                 }
-                self.currentScreen =[NSNumber numberWithInt:FriendsTag];
+                self.currentScreen =[NSNumber numberWithInt:MenuFriendsScreen];
                 ((FriendsContainerController *)friends.childViewControllers[0]).facebookFriendsArray = self.facebookFriendsArray;
                 [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
             }
             break;
         }
             
-        case SettingsTag:
+        case MenuSettingsScreen:
         {
             UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsRoot"];
             if([self isAlreadyMainVC:settings.childViewControllers[0]]){
@@ -182,7 +186,7 @@
                 if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
                     [self.delegate menuShowingAnotherScreen];
                 }
-                self.currentScreen = [NSNumber numberWithInt:SettingsTag];
+                self.currentScreen = [NSNumber numberWithInt:MenuSettingsScreen];
                 [self.sideMenuViewController setMainViewController:settings animated:YES closeMenu:YES];
             }
             break;

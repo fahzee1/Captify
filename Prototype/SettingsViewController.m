@@ -207,7 +207,7 @@
     NSString *email = self.editEmailField.text;
     
     
-    BOOL change;
+    BOOL change = NO;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
         if (![name isEqualToString:self.myUser.username]){
             change = YES;
@@ -260,9 +260,16 @@
                                                 
                                                 
                                             }
+                                            // no changes
                                             else{
                                                 [self destoryEditScreen];
                                             }
+                                        }
+                                        // not successful
+                                        else{
+                                            
+                                            [self destoryEditScreen];
+                                            [self showAlertWithTitle:@"Error" message:message];
                                         }
                                     }];
     }
@@ -319,7 +326,12 @@
                     }
                 }
                 
-
+                // update the highlighted menu button to the screen we're about to show
+                UIViewController *menu = self.sideMenuViewController.menuViewController;
+                if ([menu isKindOfClass:[MenuViewController class]]){
+                    [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
+                }
+                
                 UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
                 [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
             }
@@ -700,5 +712,9 @@
         [((MenuViewController *)menu) setupColors];
     }
 }
+
+
+
+
 
 @end

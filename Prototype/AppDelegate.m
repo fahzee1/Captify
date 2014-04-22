@@ -171,7 +171,6 @@
     }
     
     [Appirater setAppId:@"865825526"];
-#warning set appid
     [Appirater setDaysUntilPrompt:5];
     [Appirater setUsesUntilPrompt:4];
     [Appirater setSignificantEventsUntilPrompt:-1];

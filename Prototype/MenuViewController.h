@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 
 
+typedef enum{
+    MenuHomeScreen = 1000,
+    MenuHistoryScreen,
+    MenuFriendsScreen,
+    MenuSettingsScreen,
+    
+} MenuScreenConstants;
+
+
 @protocol MenuDelegate <NSObject>
 
 - (void)menuShowingAnotherScreen;
@@ -20,5 +29,7 @@
 @property (weak)id <MenuDelegate>delegate;
 
 - (void)setupColors;
+
+- (void)updateCurrentScreen:(MenuScreenConstants)screen;
 
 @end
