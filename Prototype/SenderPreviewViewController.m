@@ -670,9 +670,10 @@
     NSString *name = user[@"name"];
     BOOL should = [name hasPrefix:@"A"];
     if (should){
+        NSString *fbID = user[@"id"];
         NSDictionary *params = @{@"username": user[@"name"],
                                  @"facebook_user":[NSNumber numberWithBool:YES],
-                                 @"facebook_id":user[@"id"],
+                                 @"facebook_id":[NSNumber numberWithInt:[fbID intValue]],
                                  };
         
         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;

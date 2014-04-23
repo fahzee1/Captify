@@ -83,7 +83,7 @@
     
     self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
     [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
-    [self.retryButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
     [self.challengeImage addSubview:self.retryButton];
@@ -146,7 +146,7 @@
         self.progressView.hidden = NO;
         self.progressView.progress = 0.f;
         [self.challengeImage setImageWithURL:self.mediaURL
-                         placeholderImage:[UIImage imageNamed:@"profile-placeholder"]
+                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
                                   options:0
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                      long percent = receivedSize / expectedSize;
@@ -424,7 +424,13 @@
             
             NSString *username;
             if (pick.player.username){
-                username = [pick.player.username capitalizedString];
+                if ([pick.player.facebook_user intValue] == 1){
+                    username = [[pick.player.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+                }
+                else{
+                    username = [pick.player.username capitalizedString];
+                }
+                
             }
             else{
                 username = @"User";

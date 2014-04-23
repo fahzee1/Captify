@@ -180,18 +180,13 @@
                                             NSString *media_url = ch[@"media_url"];
                                             
                                             NSString *sender_name;
-                                            NSNumber *sender_isFacebook;
-                                            NSNumber *sender_facebookID;
                                             for (id sender in json[@"sender"]){
                                                 sender_name = sender[@"username"];
-                                                sender_isFacebook = sender[@"facebook_user"];
-                                                sender_facebookID = sender[@"facebook_id"];
+    
                                             }
     
                                             
                                             NSDictionary *params = @{@"sender": sender_name,
-                                                                     @"sender_isFB": sender_isFacebook,
-                                                                     @"sender_FBID": sender_facebookID,
                                                                      @"context": self.myUser.managedObjectContext,
                                                                      @"recipients": recipients,
                                                                      @"recipients_count": recipients_count,
@@ -360,6 +355,13 @@
          */
         
         usernameLabel.text = [sender.username capitalizedString];
+        if ([sender.facebook_user intValue] == 1){
+            usernameLabel.text = [[sender.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+        }
+        else{
+            usernameLabel.text = [sender.username capitalizedString];
+        }
+
         usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
         

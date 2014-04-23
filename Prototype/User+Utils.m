@@ -106,18 +106,20 @@
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"username = %@",[params valueForKey:@"username"]];
+    
     NSInteger gotUser = [self checkIfUserWithFetch:request
                                            context:context
                                              error:&error];
-    if (gotUser){
+    if (gotUser == 1){
         NSLog(@"cant create cause we have %@",[params valueForKey:@"username"]);
         return NO;
     }
-    
+
     
     User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
                                                inManagedObjectContext:context];
-    user.username = [params valueForKey:@"username"];
+    NSString *username = [params valueForKey:@"username"];
+    user.username = [username stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     user.facebook_user = [params valueForKey:@"facebook_user"];
     user.facebook_id = [params valueForKey:@"facebook_id"];
     user.email = [params valueForKey:@"email"];
