@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+#endif
+
+
+
 @protocol SenderPreviewDelegate <NSObject>
 
 - (void)previewscreenDidMoveBack;
@@ -17,7 +23,12 @@
 @end
 
 
-@interface SenderPreviewViewController : UIViewController
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface SenderPreviewViewController : GAITrackedViewController
+#else
+    @interface SenderPreviewViewController : UIViewController
+#endif
+
 
 @property (nonatomic, retain)User *myUser;
 @property(nonatomic,strong)NSString *name;

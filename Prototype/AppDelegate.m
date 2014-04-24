@@ -25,6 +25,9 @@
 #import "Appirater.h"
 #import <CrashReporter/CrashReporter.h>
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAI.h"
+#endif
 
 
 @interface AppDelegate()
@@ -179,6 +182,15 @@
 #warning set deubg to no
     
      [Appirater appLaunched:YES];
+    
+    
+    if (USE_GOOGLE_ANALYTICS){
+        [GAI sharedInstance].trackUncaughtExceptions = YES;
+        [GAI sharedInstance].dispatchInterval = 20;
+        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+        [[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
+    }
+    
     return YES;
 }
 

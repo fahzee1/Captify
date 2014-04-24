@@ -9,9 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "User+Utils.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+#endif
+
+
 typedef void(^FetchRecentsBlock2)();
 
-@interface HistorySentViewController : UIViewController
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface HistorySentViewController : GAITrackedViewController
+#else
+    @interface HistorySentViewController : UIViewController
+#endif
+
+
 
 @property (nonatomic, retain)User *myUser;
 

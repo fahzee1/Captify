@@ -6,6 +6,7 @@
 
 #import <Availability.h>
 
+
 #ifndef __IPHONE_5_0
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
@@ -79,6 +80,6 @@
 
 
 
-
-
 #define CAPTIFY_UNAUTHORIZED @"Request failed: unauthorized (401)"
+
+#define USE_GOOGLE_ANALYTICS 1

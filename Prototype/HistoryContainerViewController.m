@@ -96,6 +96,12 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+ 
+}
+
 - (void)dealloc
 {
     self.currentController = nil;

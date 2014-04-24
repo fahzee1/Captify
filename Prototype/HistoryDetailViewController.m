@@ -176,6 +176,18 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (USE_GOOGLE_ANALYTICS){
+        if (self.hideSelectButtonsMax){
+             self.screenName = @"Inactive Detail Screen";
+        }
+        else{
+             self.screenName = @"Active Detail Screen";
+        }
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -806,6 +818,15 @@
         {
             if (self.imageControls.hidden){
                 self.imageControls.hidden = NO;
+                
+                if (USE_GOOGLE_ANALYTICS){
+                    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                          action:@"show_image_controls"
+                                                                           label:@"detail_screen"
+                                                                           value:nil] build]];
+                }
+
             }
 
         }

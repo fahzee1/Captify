@@ -13,6 +13,12 @@
 #import "TWTSideMenuViewController.h"
 #import "OverlayView.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+    #import "GAIDictionaryBuilder.h"
+    #import "GAI.h"
+#endif
+
 
 @protocol showingMenu <NSObject>
 
@@ -21,8 +27,12 @@
 
 @end
 
-@interface HomeViewController : UIViewController
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface HomeViewController : GAITrackedViewController
+#else
 
+    @interface HomeViewController : UIViewController
+#endif
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 @property (nonatomic, assign)BOOL showResults;

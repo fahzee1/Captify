@@ -13,8 +13,16 @@
 #import "Challenge.h"
 #import "HomeViewController.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+#endif
 
-@interface ChallengeViewController : UIViewController 
+
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface ChallengeViewController : GAITrackedViewController
+#else
+    @interface ChallengeViewController : UIViewController
+#endif
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 @property (strong, nonatomic)NSString *myFriend; //temp for testing

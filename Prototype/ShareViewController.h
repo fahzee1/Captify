@@ -10,7 +10,19 @@
 #import "Challenge+Utils.h"
 #import "ChallengePicks+Utils.h"
 
-@interface ShareViewController : UIViewController
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+    #import "GAI.h"
+    #import "GAIFields.h"
+    #import "GAIDictionaryBuilder.h"
+#endif
+
+
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface ShareViewController : GAITrackedViewController
+#else
+    @interface ShareViewController : UIViewController
+#endif
 
 @property (weak, nonatomic) IBOutlet UIImageView *shareImageView;
 @property (strong, nonatomic)UIImage *shareImage;

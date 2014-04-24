@@ -366,6 +366,9 @@
 		11E4098A1906EE8F008C79F2 /* AGENTORANGE.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11E409891906EE8F008C79F2 /* AGENTORANGE.TTF */; };
 		11E4098C1906F06B008C79F2 /* Tribbon-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */; };
 		11E6D71118FF1F8000C47D25 /* MGInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E6D71018FF1F8000C47D25 /* MGInstagram.m */; };
+		11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DBA19097E01009B95F7 /* AdSupport.framework */; };
+		11E83DBD19097E4F009B95F7 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DBC19097E4F009B95F7 /* libGoogleAnalyticsServices.a */; };
+		11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DC519097FBB009B95F7 /* libsqlite3.dylib */; };
 		11ED4C52190569D400A2E9B5 /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4D190569D400A2E9B5 /* lookup.png */; };
 		11ED4C53190569D400A2E9B5 /* lookup_amatorka.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4E190569D400A2E9B5 /* lookup_amatorka.png */; };
 		11ED4C54190569D400A2E9B5 /* lookup_miss_etikate.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4F190569D400A2E9B5 /* lookup_miss_etikate.png */; };
@@ -1047,6 +1050,15 @@
 		11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tribbon-B.ttf"; sourceTree = "<group>"; };
 		11E6D70F18FF1F8000C47D25 /* MGInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGInstagram.h; sourceTree = "<group>"; };
 		11E6D71018FF1F8000C47D25 /* MGInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGInstagram.m; sourceTree = "<group>"; };
+		11E83DBA19097E01009B95F7 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		11E83DBC19097E4F009B95F7 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		11E83DBF19097E9F009B95F7 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		11E83DC019097E9F009B95F7 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		11E83DC119097E9F009B95F7 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		11E83DC219097E9F009B95F7 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		11E83DC319097E9F009B95F7 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		11E83DC419097E9F009B95F7 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		11E83DC519097FBB009B95F7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		11ED4C4D190569D400A2E9B5 /* lookup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup.png; sourceTree = "<group>"; };
 		11ED4C4E190569D400A2E9B5 /* lookup_amatorka.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_amatorka.png; sourceTree = "<group>"; };
 		11ED4C4F190569D400A2E9B5 /* lookup_miss_etikate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_miss_etikate.png; sourceTree = "<group>"; };
@@ -1102,13 +1114,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */,
+				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
+				11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */,
 				11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */,
+				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */,
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
 				1124520018F2EEF7006373B6 /* CrashReporter.framework in Frameworks */,
-				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */,
 				1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */,
@@ -1120,8 +1135,8 @@
 				1153DFE818A9DF0400AD950E /* AVFoundation.framework in Frameworks */,
 				1153DFE618A9DEFA00AD950E /* OpenGLES.framework in Frameworks */,
 				1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */,
+				11E83DBD19097E4F009B95F7 /* libGoogleAnalyticsServices.a in Frameworks */,
 				1153DFE418A9DEEE00AD950E /* CoreVideo.framework in Frameworks */,
-				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
 				11C8E8D118C8FA7600FE6B5E /* FacebookSDK.framework in Frameworks */,
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
 				110730F51876640F0065D77F /* UIKit.framework in Frameworks */,
@@ -1166,6 +1181,9 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11E83DC519097FBB009B95F7 /* libsqlite3.dylib */,
+				11E83DBC19097E4F009B95F7 /* libGoogleAnalyticsServices.a */,
+				11E83DBA19097E01009B95F7 /* AdSupport.framework */,
 				112451FF18F2EEF7006373B6 /* CrashReporter.framework */,
 				112EB2AB18EFABF000252AC1 /* Parse.framework */,
 				11A8525818EDE53000557A5B /* SystemConfiguration.framework */,
@@ -1279,6 +1297,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11E83DBE19097E9F009B95F7 /* GoogleAnalytics */,
 				11ED4C571905B04F00A2E9B5 /* appirater-master */,
 				11E6D70E18FF1F8000C47D25 /* MGInstagram */,
 				118EF18118FC6F4F00755552 /* FlatUIKit */,
@@ -2143,6 +2162,19 @@
 			path = MGInstagram;
 			sourceTree = "<group>";
 		};
+		11E83DBE19097E9F009B95F7 /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				11E83DBF19097E9F009B95F7 /* GAI.h */,
+				11E83DC019097E9F009B95F7 /* GAIDictionaryBuilder.h */,
+				11E83DC119097E9F009B95F7 /* GAIFields.h */,
+				11E83DC219097E9F009B95F7 /* GAILogger.h */,
+				11E83DC319097E9F009B95F7 /* GAITrackedViewController.h */,
+				11E83DC419097E9F009B95F7 /* GAITracker.h */,
+			);
+			path = GoogleAnalytics;
+			sourceTree = "<group>";
+		};
 		11ED4C4C190569D400A2E9B5 /* GPU_Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2838,6 +2870,10 @@
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Captify-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/cjogbuehi/ios/Captify,
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = Captify;
@@ -2861,6 +2897,10 @@
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Captify-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/cjogbuehi/ios/Captify,
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Captify;
 				WRAPPER_EXTENSION = app;

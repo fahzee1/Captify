@@ -11,7 +11,19 @@
 #import "Challenge.h"
 #import "ChallengePicks+Utils.h"
 
-@interface HistoryDetailViewController : UIViewController
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAITrackedViewController.h"
+    #import "GAI.h"
+    #import "GAIDictionaryBuilder.h"
+#endif
+
+
+#ifdef USE_GOOGLE_ANALYTICS
+    @interface HistoryDetailViewController : GAITrackedViewController
+#else
+    @interface HistoryDetailViewController : UIViewController
+#endif
+
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *myImageView;
 @property (weak, nonatomic) IBOutlet UITableView *myTable;

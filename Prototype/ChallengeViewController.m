@@ -112,9 +112,14 @@
     });
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [self setupTopLabel];
+    
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Sent Menu Screen";
+    }
 }
 
 

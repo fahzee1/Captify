@@ -92,6 +92,14 @@
 
 }
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Sent Menu Screen";
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
     [self fetchUpdatesWithBlock:nil];

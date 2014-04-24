@@ -175,6 +175,16 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Home screen";
+    }
+
+    
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -517,6 +527,15 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         sender.view.userInteractionEnabled = YES;
     });
+    
+    
+    if (USE_GOOGLE_ANALYTICS){
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                             action:@"one_tap"
+                                                              label:@"picture"
+                                                              value:nil] build]];
+    }
 }
 
 
@@ -563,6 +582,7 @@
 
 
 - (void)doubleTappedSnap:(UITapGestureRecognizer *)sender {
+    
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
         NSLog(@"no photo library");
         return;
@@ -573,6 +593,15 @@
     picker.mediaTypes = @[(NSString *)kUTTypeImage];
     picker.delegate = self;
     [self presentViewController:picker animated:YES completion:nil];
+    
+    if (USE_GOOGLE_ANALYTICS){
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                              action:@"two_tap"
+                                                               label:@"picture"
+                                                               value:nil] build]];
+    }
+
     
 }
 

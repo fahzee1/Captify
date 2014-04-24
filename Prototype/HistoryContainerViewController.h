@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol showingMenuDelegate <NSObject>
 
 @optional
@@ -17,6 +18,7 @@
 
 
 @interface HistoryContainerViewController : UIViewController
+
 
 @property BOOL showSentScreen;
 

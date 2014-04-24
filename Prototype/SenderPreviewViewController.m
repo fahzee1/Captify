@@ -83,6 +83,13 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Sender Preview Screen";
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

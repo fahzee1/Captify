@@ -20,6 +20,12 @@
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+    #import "GAI.h"
+    #import "GAIFields.h"
+    #import "GAIDictionaryBuilder.h"
+#endif
+
 
 #define SETTINGS_PHONE_DEFAULT @"No # provided"
 #define SETTINGS_INVITE 2000
@@ -45,14 +51,7 @@
 
 @implementation SettingsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+
 
 - (void)viewDidLoad
 {
@@ -77,8 +76,18 @@
     self.sideMenuViewController.delegate = self;
     
     self.navigationItem.title = NSLocalizedString(@"Settings", nil);
-  }
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (USE_GOOGLE_ANALYTICS){
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker set:kGAIScreenName value:@"Settings Screen"];
+        [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    }
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {

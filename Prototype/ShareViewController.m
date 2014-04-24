@@ -71,6 +71,13 @@ typedef void (^ShareToNetworksBlock) ();
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Share Screen";
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -338,11 +345,19 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)shareToFacebookAndTwitterWithBlock:(ShareToNetworksBlock)block
 {
+    
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
     self.hud.labelText = @"Saving/Sharing";
     
     if (self.shareFacebook){
+        
+        if (USE_GOOGLE_ANALYTICS){
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            NSString *targetUrl = @"https://developers.google.com/analytics";
+            [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Facebook" action:@"Share" target:targetUrl] build]];
+        }
+        
         NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
         if (!albumID){
             albumID = @"NEED TO GRAB THIS";
@@ -363,6 +378,14 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     if (self.shareTwitter){
+        
+        if (USE_GOOGLE_ANALYTICS){
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            NSString *targetUrl = @"https://developers.google.com/analytics";
+            [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Twitter" action:@"Share" target:targetUrl] build]];
+        }
+
+        
         [self.friends postImageToTwitterFeed:self.shareImage
                                      caption:self.selectedCaption
                                        block:^(BOOL wasSuccessful) {
@@ -498,6 +521,16 @@ typedef void (^ShareToNetworksBlock) ();
 }
 
 
+- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
+{
+    if (USE_GOOGLE_ANALYTICS){
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        NSString *targetUrl = @"https://developers.google.com/analytics";
+        [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Instagram" action:@"Share" target:targetUrl] build]];
+    }
+
+}
+
 #pragma -mark Message delegate
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
@@ -512,6 +545,13 @@ typedef void (^ShareToNetworksBlock) ();
             break;
         case MessageComposeResultSent:
         {
+            if (USE_GOOGLE_ANALYTICS){
+                id tracker = [[GAI sharedInstance] defaultTracker];
+                NSString *targetUrl = @"https://developers.google.com/analytics";
+                [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"SMS messaging" action:@"Share" target:targetUrl] build]];
+            }
+
+            
             [self saveImage];
             self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             self.hud.mode = MBProgressHUDModeIndeterminate;
