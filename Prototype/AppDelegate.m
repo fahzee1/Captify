@@ -191,6 +191,8 @@
         [[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
     }
     
+#warning add loggers
+       
     return YES;
 }
 

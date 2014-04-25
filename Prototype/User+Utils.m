@@ -256,22 +256,49 @@
                                          NSError *error;
                                          user = (id) [context existingObjectWithID:superuserID error:&error];
                                      }
+                                    else{
+                                        NSString *username = responseObject[@"username"];
+                                        NSString *email = [responseObject valueForKeyPath:@"user.email"];
+                                        NSString *phone_number = responseObject[@"phone_number"];
+                                        NSNumber *score = [NSNumber numberWithInt:[responseObject[@"score"]intValue]];
+                                        NSNumber *facebook = [NSNumber numberWithBool:[responseObject[@"facebook_user"] boolValue]];
+                                        NSNumber *privacy = [NSNumber numberWithInt:0];
+                                        NSDate *date = [NSDate date];
+                                        NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
+                                        
+                                        // prepare to get or create a user
+                                        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                                        NSDictionary *gcParams = @{@"username": username,
+                                                                   @"score": score,
+                                                                   @"facebook_user":facebook,
+                                                                   @"privacy":privacy,
+                                                                   @"super_user":super_user,
+                                                                   @"timestamp":date,
+                                                                   @"email":email,
+                                                                   @"phone_number":phone_number};
+                                        
+                                        if (context){
+                                            user = [self GetOrCreateUserWithParams:gcParams
+                                                            inManagedObjectContext:context
+                                                                        skipCreate:NO];
+                                        }
+
+                                    }
 
                                      
-                                     NSString *username = [responseObject valueForKeyPath:@"user.username"];
-                                     BOOL facebook_user = [[responseObject valueForKey:@"facebook_user"]boolValue];
+                                     NSString *username = responseObject[@"username"];
+                                     BOOL facebook_user = [responseObject[@"facebook_user"]boolValue];
                                      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                      [defaults setValue:username forKey:@"username"];
                                      [defaults setBool:YES forKey:@"logged"];
                                      [defaults setBool:facebook_user forKey:@"facebook_user"];
-                                     [defaults setValue:[responseObject valueForKey:@"api_key"] forKey:@"api_key"];
+                                     [defaults setValue:responseObject[@"api_key"] forKey:@"api_key"];
                                      if ([user.username isEqualToString:username]){
                                            [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                      }else{
                                          user = [self GetOrCreateUserWithParams:@{@"username": username}
                                                          inManagedObjectContext:context
                                                                      skipCreate:YES];
-                                         NSLog(@"%@",user.username);
                                          [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
 
                                      }
@@ -336,11 +363,11 @@
                                   // things went well
                                  if ([[responseObject valueForKey:@"code"] intValue] == 1){
                                      // get params from response
-                                     NSString *username = [responseObject valueForKeyPath:@"username"];
+                                     NSString *username = responseObject[@"username"];
                                      NSString *email = [responseObject valueForKeyPath:@"user.email"];
-                                     NSString *phone_number = [responseObject valueForKeyPath:@"phone_number"];
-                                     NSNumber *score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"]intValue]];
-                                     NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
+                                     NSString *phone_number = responseObject[@"phone_number"];
+                                     NSNumber *score = [NSNumber numberWithInt:[responseObject[@"score"]intValue]];
+                                     NSNumber *facebook = [NSNumber numberWithBool:[responseObject[@"facebook_user"] boolValue]];
                                      NSNumber *privacy = [NSNumber numberWithInt:0];
                                      NSDate *date = [NSDate date];
                                      NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user

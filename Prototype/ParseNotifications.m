@@ -33,7 +33,9 @@
 
 - (NSString *)formatChannelNameForParse:(NSString *)name
 {
-    return [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    [name stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+    return name;
 }
 
 - (void)addChannelWithChallengeID:(NSString *)name

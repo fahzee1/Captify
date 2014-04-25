@@ -186,14 +186,7 @@
                                                           }
                                                           
                                                           
-                                                          ParseNotifications *p = [ParseNotifications new];
-                                                          
-                                                          [p addChannelWithChallengeID:self.myChallenge.challenge_id];
-                                                          [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
-                                                                    toFriends:@[self.myChallenge.sender.username]
-                                                                     withData:@{@"challenge_id": self.myChallenge.challenge_id}
-                                                             notificationType:ParseNotificationSendCaptionPick
-                                                                        block:nil];
+                                                          [self notifyChallengeSender];
                                                           
                                                           [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }
@@ -236,6 +229,31 @@
     
     
 }
+
+- (void)notifyChallengeSender
+{
+    
+    ParseNotifications *p = [ParseNotifications new];
+    
+    [p addChannelWithChallengeID:self.myChallenge.challenge_id];
+    
+    /*
+    [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+              toFriend:self.myChallenge.sender.username
+               withData:@{@"challenge_id": self.myChallenge.challenge_id}
+       notificationType:ParseNotificationSendCaptionPick
+                  block:nil];
+     */
+    
+    [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+               toFriend:@"Cj-Ogbuehi"
+               withData:@{@"challenge_id": self.myChallenge.challenge_id}
+       notificationType:ParseNotificationSendCaptionPick
+                  block:nil];
+#warning send to actual sender
+    
+}
+
 
 - (void)startedLabelDrag:(UILongPressGestureRecognizer *)gesture
 {

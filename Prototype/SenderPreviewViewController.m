@@ -368,18 +368,18 @@
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
     [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
-              toFriends:self.selectedFacebookFriends
+              toFriends:self.allFriends
                withData:params
        notificationType:ParseNotificationCreateChallenge
                   block:nil];
     
     [p addChannelWithChallengeID:params[@"challenge_id"]];
-    /*
+
      [p sendTestNotification:@"Cj you should see this"
      withData:@{@"challenge_name": self.name}
      notificationType:ParseNotificationCreateChallenge
      block:nil];
-     */
+     
     
 
 }
