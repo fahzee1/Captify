@@ -61,13 +61,15 @@
 {
     //self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     
-    self.loginButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] CGColor];
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
+    self.loginButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.loginButton.layer.cornerRadius = 5;
     [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    self.registerButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#f1c40f"] CGColor];
+    self.registerButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.registerButton.layer.cornerRadius = 5;
-    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.registerButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
 
     
 }

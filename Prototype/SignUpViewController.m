@@ -16,6 +16,8 @@
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
 #import "MBProgressHUD.h"
+#import "NSString+FontAwesome.h"
+#import "UIFont+FontAwesome.h"
 
 @interface SignUpViewController ()<UITextFieldDelegate>
 
@@ -40,6 +42,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToRoot)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
+
+    
     [self setupButtonAndFieldStyles];
     self.usernameField.delegate = self;
     self.passwordField.delegate = self;
@@ -50,32 +59,47 @@
 	// Do any additional setup after loading the view.
 }
 
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)popToRoot
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)setupButtonAndFieldStyles
 {
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    
     self.usernameField.borderStyle = UITextBorderStyleNone;
-    self.usernameField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.usernameField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.usernameField.layer.opacity = 0.6f;
     self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Username" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     self.passwordField.borderStyle = UITextBorderStyleNone;
-    self.passwordField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.passwordField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.passwordField.layer.opacity = 0.6f;
     self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     self.emailField.borderStyle = UITextBorderStyleNone;
-    self.emailField.layer.backgroundColor = [[UIColor colorWithHexString:@"#e74c3c"] CGColor];
+    self.emailField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.emailField.layer.opacity = 0.6f;
     self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
 
-    self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:@"#1abc9c"] CGColor];
+    self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myRegisterButton.layer.cornerRadius = 5;
     [self.myRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }

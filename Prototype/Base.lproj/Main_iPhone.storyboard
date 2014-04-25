@@ -44,6 +44,10 @@
                                     <segue destination="dpL-xo-kC3" kind="push" id="tJV-YD-UOw"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="captify" id="bSL-PV-XkB">
+                                <rect key="frame" x="107" y="143" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1515,6 +1519,7 @@
         <image name="active-history-screen" width="100" height="44"/>
         <image name="active_404" width="202" height="46"/>
         <image name="brilliant-grill" width="500" height="375"/>
+        <image name="captify" width="640" height="302"/>
         <image name="challenge_placeholder" width="306" height="306"/>
         <image name="profile-placeholder" width="50" height="50"/>
     </resources>
