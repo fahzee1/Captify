@@ -529,7 +529,12 @@
             
             if (indexPath.row == 2){
                 // email
-                cell.detailTextLabel.text = self.myUser.email;
+                if (self.myUser.email){
+                    cell.detailTextLabel.text = self.myUser.email;
+                }
+                else{
+                    cell.detailTextLabel.text = NSLocalizedString(@"No email provided", nil);
+                }
             }
             
             if (indexPath.row == 3){
@@ -538,7 +543,7 @@
                     cell.detailTextLabel.text = self.myUser.phone_number;
                 }
                 else{
-                    cell.detailTextLabel.text = @"No # provided";
+                    cell.detailTextLabel.text = NSLocalizedString(@"No # provided", nil);;
                 }
             }
             
