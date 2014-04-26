@@ -15,7 +15,7 @@
 #import "HomeViewController.h"
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
-#import "MBProgressHUD.h"
+#import "CJPopup.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 
@@ -154,14 +154,13 @@
                              @"email": self.emailField.text,
                              @"fbook_user": fbook};
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"Signing In", nil);
     
+    CJPopup *hud = [[CJPopup alloc] init];
+    [hud showBlackActivityWithMessage:@"Signing In"];
 
     NSURLSessionDataTask *task = [User registerWithParams:params
                                                  callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                     [hud hide:YES];
+                                                     [hud hideNoAnimation];
                                                      if (wasSuccessful){
                                                          // data here will be the managed object context to pass to homeview controller
                                                          // if needed

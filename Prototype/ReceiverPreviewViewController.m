@@ -11,7 +11,7 @@
 #import "TWTSideMenuViewController.h"
 #import "ChallengePicks+Utils.h"
 #import <MessageUI/MessageUI.h>
-#import "MBProgressHUD.h"
+#import "CJPopup.h"
 #import "ParseNotifications.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
@@ -159,13 +159,14 @@
                              @"challenge_id":self.myChallenge.challenge_id,
                              @"answer":self.previewCaption.text};
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"Sending", nil);
+
+    
+    CJPopup *hud = [[CJPopup alloc] init];
+    [hud showBlackActivityWithMessage:@"Sending"];
     
     [ChallengePicks sendCreatePickRequestWithParams:params
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
-                                                  [hud hide:YES];
+                                                  [hud hideNoAnimation];
                                                   if (wasSuccessful){
                                                       
                                                       

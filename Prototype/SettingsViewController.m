@@ -16,7 +16,8 @@
 #import "User+Utils.h"
 #import "AppDelegate.h"
 #import "AwesomeAPICLient.h"
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
+#import "CJPopup.h"
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
 
@@ -209,9 +210,8 @@
 {
     [textField resignFirstResponder];
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.editScreen animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Updating";
+    CJPopup *hud = [[CJPopup alloc] init];
+    [hud showBlackActivityWithMessage:@"Updating"];
     
     NSString *name = self.editUsernameField.text;
     NSString *phone = self.editPhoneField.text;
@@ -242,7 +242,7 @@
         
         [User sendProfileUpdatewithParams:params
                                     block:^(BOOL wasSuccessful, id data, NSString *message) {
-                                          [hud hide:YES];
+                                          [hud hide];
                                         if (wasSuccessful){
                                             int changes = [[data valueForKey:@"changes"] intValue];
                                             if (changes){
@@ -286,7 +286,7 @@
     }
     // no changes
     else{
-        [hud hide:YES];
+        [hud hide];
          [self destoryEditScreen];
     }
     
@@ -424,6 +424,7 @@
             // Actions
             if (indexPath.row == 0){
                // logout
+                
                 
                 UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
