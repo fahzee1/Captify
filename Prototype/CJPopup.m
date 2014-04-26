@@ -9,6 +9,7 @@
 #import "CJPopup.h"
 #import "GPUImage.h"
 #import "UIColor+HexValue.h"
+#import "MBProgressHUD.h"
 
 @interface CJPopup()
 
@@ -46,6 +47,28 @@
     [self.window makeKeyAndVisible];
     
 }
+
+- (void)showBlackActivityWithMessage:(NSString *)message
+{
+    // Most basic pop over. Use to show UI element without background
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.windowLevel = UIWindowLevelAlert;
+    self.window.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    
+    self.center = CGPointMake(CGRectGetMidX(self.window.bounds), CGRectGetMidY(self.window.bounds));
+    
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.window animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(message, nil);
+
+    
+    [self.window addSubview:self];
+    [self.window makeKeyAndVisible];
+    
+}
+
 
 - (void)showErrorRed
 {
@@ -354,6 +377,12 @@
                          self.window = nil;
                      }];
 
+}
+
+- (void) hideNoAnimation
+{
+    self.window.hidden =YES;
+    self.window = nil;
 }
 
 

@@ -186,13 +186,8 @@
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
                                             
-                                            NSString *sender_name;
-                                            for (id sender in json[@"sender"]){
-                                                sender_name = sender[@"username"];
+                                            NSString *sender_name = ch[@"sender"][0][@"username"];
     
-                                            }
-    
-                                            
                                             NSDictionary *params = @{@"sender": sender_name,
                                                                      @"context": self.myUser.managedObjectContext,
                                                                      @"recipients": recipients,

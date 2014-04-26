@@ -27,6 +27,10 @@
 #import <MessageUI/MessageUI.h>
 #import "FUIAlertView.h"
 #import "GPUImage.h"
+#import "UISlider+FlatUI.h"
+#import "UIStepper+FlatUI.h"
+#import "UIColor+FlatUI.h"
+
 
 /*
  mark challenge as done when complete
@@ -548,9 +552,11 @@
     self.captionRotateButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.captionRotateButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-repeat"] forState:UIControlStateNormal];
     [self.captionRotateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.captionRotateButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
     self.captionRotateReverseButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.captionRotateReverseButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-undo"] forState:UIControlStateNormal];
     [self.captionRotateReverseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.captionRotateReverseButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
 
     self.captionRotateTitle.textColor = [UIColor whiteColor];
     self.captionRotateTitle.text = NSLocalizedString(@"Rotate", nil);
@@ -558,7 +564,11 @@
     
     self.captionAlphaTitle.textColor = [UIColor whiteColor];
     self.captionAlphaValue.textColor = [UIColor whiteColor];
-    self.captionAlphaSlider.tintColor = [UIColor whiteColor];
+    //self.captionAlphaSlider.tintColor = [UIColor whiteColor];
+    [self.captionAlphaSlider configureFlatSliderWithTrackColor:[UIColor silverColor]
+                                                 progressColor:self.finalCaptionLabel.textColor
+                                              thumbColorNormal:[UIColor whiteColor]
+                                         thumbColorHighlighted:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]];
     
     
     self.captionSizeTitle.textColor = [UIColor whiteColor];
@@ -574,12 +584,14 @@
     self.captionFontButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     [self.captionFontButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-font"] forState:UIControlStateNormal];
     [self.captionFontButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.captionFontButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
     
     self.captionImageFilterLabel.textColor = [UIColor whiteColor];
     self.captionImageFilterLabel.text = NSLocalizedString(@"Filter", nil);
     self.captionImageFilterButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     [self.captionImageFilterButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-picture-o"] forState:UIControlStateNormal];
     [self.captionImageFilterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.captionImageFilterButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
     
     
     

@@ -136,6 +136,12 @@
     [[UISegmentedControl appearance] setTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],
                                                               NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    [[UITableView appearance] setSectionIndexColor:[UIColor blackColor]];
+    [[UITextField appearance] setKeyboardAppearance:UIKeyboardAppearanceDark];
+    
+    
+    
     /*
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],
                                                               NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateDisabled];
@@ -187,7 +193,7 @@
     if (USE_GOOGLE_ANALYTICS){
         [GAI sharedInstance].trackUncaughtExceptions = YES;
         [GAI sharedInstance].dispatchInterval = 20;
-        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
         [[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
     }
     

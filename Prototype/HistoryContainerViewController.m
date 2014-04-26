@@ -20,11 +20,12 @@
 #import "UIColor+FlatUI.h"
 
 @interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mySegmentControl;
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
-
-
 @property (strong,nonatomic)UIViewController *currentController;
+@property (strong, nonatomic)UIButton *refreshButton;
+@property (strong, nonatomic)UIBarButtonItem *rightRefreshButton;
 
 @end
 
@@ -47,10 +48,29 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                      NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(reloadHistory)];
     [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                           NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     
+    /*
+  
+    // custom view here so we can use frame of button to place activity indicator when tapped
+    self.refreshButton = [[UIButton alloc] init];
+    self.refreshButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    [self.refreshButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
+    [self.refreshButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+    self.refreshButton.frame = CGRectMake(0, 0, 80, 80);
+    [self.refreshButton addTarget:self action:@selector(reloadHistory) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIBarButtonItem *right =  [[UIBarButtonItem alloc] initWithCustomView:self.refreshButton];
+    CGRect frame = self.refreshButton.frame;
+    frame.origin.x += 100;
+    self.refreshButton.frame = frame;
+     */
+    
+    self.rightRefreshButton = rightButton;
     self.navigationItem.rightBarButtonItem = rightButton;
     self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
@@ -178,11 +198,22 @@
 
 - (void)reloadHistory
 {
+    self.navigationItem.rightBarButtonItem = nil;
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(275, 0, 50, 50);
+    spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    [self.navigationController.navigationBar addSubview:spinner];
+    [spinner startAnimating];
+
    UIViewController *vcR = [self.storyboard instantiateViewControllerWithIdentifier:@"recievedHistory"];
     UIViewController *vcS = [self.storyboard instantiateViewControllerWithIdentifier:@"sentHistory"];
     if ([vcR isKindOfClass:[HistoryRecievedViewController class]] && [vcS isKindOfClass:[HistorySentViewController class]]){
         [((HistoryRecievedViewController *)vcR) fetchUpdatesWithBlock:^{
-              [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:nil];
+              [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:^{
+                  [spinner stopAnimating];
+                  self.navigationItem.rightBarButtonItem = self.rightRefreshButton;
+              }];
+            
         }];
     }
 }

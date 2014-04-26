@@ -20,6 +20,7 @@
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
 
+
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
     #import "GAIFields.h"
@@ -312,6 +313,28 @@
     else{
         return @"";
     }
+}
+
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 2){
+        // support
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self setCellColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forCell:cell];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self setCellColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forCell:cell];
+    
+}
+
+- (void)setCellColor:(UIColor *)color forCell:(UITableViewCell *)cell
+{
+    cell.contentView.backgroundColor = color;
+    cell.backgroundColor = color;
 }
 
 

@@ -81,7 +81,7 @@
     [self setupTopLabel];
     
     
-    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
+    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:50];
     [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
     [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
@@ -250,7 +250,7 @@
         image.frame = navFrameBase;
         
         UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-        friendName.text = [self.sender capitalizedString];
+        friendName.text = [[self.sender stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
         friendName.textColor = [UIColor whiteColor];
         friendName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
 

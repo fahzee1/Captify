@@ -20,6 +20,7 @@
 #import "ParseNotifications.h"
 #import "SocialFriends.h"
 #import "ContactsViewController.h"
+#import "CJPopup.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
@@ -256,10 +257,8 @@
     
         // create challenge in backend
     
-    NSData *imageData = UIImageJPEGRepresentation(self.image, 0.1);
-    TICK;
+    NSData *imageData = UIImageJPEGRepresentation(self.image, 0.3);
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
-    TOCK;
     
 
     NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
@@ -278,9 +277,13 @@
     }
     
     
+    /*
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = NSLocalizedString(@"Sending", nil);
+     */
+    CJPopup *hud = [[CJPopup alloc] init];
+    [hud showBlackActivityWithMessage:@"Sending"];
     
 
     [Challenge sendCreateChallengeRequestWithParams:apiParams
@@ -303,7 +306,7 @@
                                                       
                                                       Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                                       if (challenge){
-                                                          [hud hide:YES];
+                                                          [hud hide];
                                                           
                                                           // send notification
                                                           [self notifyFriendsWithParams:params];
@@ -315,7 +318,7 @@
                                                       
                                                   }
                                                   else{
-                                                      [hud hide:YES];
+                                                      [hud hideNoAnimation];
                                                       if (fail){
                                                           // 500
                                                           if (message){
@@ -336,7 +339,6 @@
     
     
     
-        NSLog(@"send challenge to %@",[self.selectedFacebookFriends description]);
     
 }
 
@@ -611,7 +613,7 @@
     self.selectedContactFriends = controller.selection;
     [self dismissViewControllerAnimated:YES completion:^{
         [self.allFriends addObjectsFromArray:self.selectedContactFriends];
-        [self.allFriends addObjectsFromArray:self.facebookFriendsArray];
+        [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
         
         [self editSendButton];
         
@@ -644,13 +646,14 @@
     }
     
     
-    //NSLog(@"%@",self.selectedFriends[@"friends"]);
+   
     
     [self dismissViewControllerAnimated:YES completion:^{
         [self.allFriends addObjectsFromArray:self.selectedContactFriends];
-        [self.allFriends addObjectsFromArray:self.facebookFriendsArray];
+        [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
         
         [self editSendButton];
+
 
     }];
 }
@@ -743,7 +746,7 @@
 {
     
     self.facebookFriendsArray = friendPicker.selection;
-    [friendPicker clearSelection];
+    //[friendPicker clearSelection];
     
 
 }

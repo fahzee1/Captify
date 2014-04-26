@@ -19,10 +19,12 @@
 @property (weak) id <CJPopupDelegate> delegate;
 
 - (void) showClear;
+- (void) showBlackActivityWithMessage:(NSString *)message;
 - (void) showErrorRed;
 - (void) showSuccessBlurWithImage:(UIImage *)image;
 - (void) showSuccessBlur2WithImage:(UIImage *)image sender:(NSString *)sender;
 - (void) showFailBlurWithImage:(UIImage *)image;
 - (void) hide;
+- (void) hideNoAnimation;
 
 @end
