@@ -377,10 +377,12 @@
     
     [p addChannelWithChallengeID:params[@"challenge_id"]];
 
+    /*
      [p sendTestNotification:@"Cj you should see this"
      withData:@{@"challenge_name": self.name}
      notificationType:ParseNotificationCreateChallenge
      block:nil];
+     */
      
     
 

@@ -30,9 +30,9 @@ typedef void (^ShareToNetworksBlock) ();
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (strong,nonatomic)MBProgressHUD *hud;
 @property (strong,nonatomic)SocialFriends *friends;
-@property  BOOL fbSuccess;
-@property BOOL twSuccess;
-@property BOOL igSuccess;
+@property  BOOL sendFB;
+@property BOOL sendTW;
+
 
 
 
@@ -67,6 +67,8 @@ typedef void (^ShareToNetworksBlock) ();
     
     self.shareFacebook = NO;
     self.shareInstagram = NO;
+    self.sendTW = YES;
+    self.sendFB = YES;
     [self setupShareStyles];
     
 }
@@ -332,12 +334,11 @@ typedef void (^ShareToNetworksBlock) ();
     
     // notify chosen captions sender
     [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",self.myChallenge.sender.username]
-               toFriend:@"Cj-Ogbuehi"  // this should be self.myPick.player.username
+               toFriend:self.myPick.player.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationNotifySelectedCaptionSender
                   block:nil];
     
-#warning send this notification to the player not myself
     
 
 }
@@ -358,23 +359,9 @@ typedef void (^ShareToNetworksBlock) ();
             [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Facebook" action:@"Share" target:targetUrl] build]];
         }
         
-        NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
-        if (!albumID){
-            albumID = @"NEED TO GRAB THIS";
-        }
+        [self sendFacebook];
         
-        [self.friends postImageToFacebookFeed:self.shareImage
-                                      message:self.selectedCaption
-                                      caption:self.selectedCaption
-                                         name:@"A name"
-                                      albumID:albumID
-                                 facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
-                                    feedBlock:^(BOOL wasSuccessful) {
-                                        if (wasSuccessful){
-                                            NSLog(@"posting to feed was successful");
-                                            self.fbSuccess = YES;
-                                        }
-                                    }];
+        
     }
     
     if (self.shareTwitter){
@@ -384,36 +371,12 @@ typedef void (^ShareToNetworksBlock) ();
             NSString *targetUrl = @"https://developers.google.com/analytics";
             [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Twitter" action:@"Share" target:targetUrl] build]];
         }
+        
+        [self sendTwitter];
 
         
-        [self.friends postImageToTwitterFeed:self.shareImage
-                                     caption:self.selectedCaption
-                                       block:^(BOOL wasSuccessful) {
-                                           if (wasSuccessful){
-                                               NSLog(@"post to twitter success");
-                                               self.twSuccess = YES;
-                                           }
-                                       }];
     }
     
-    
-    if (self.shareFacebook){
-        if (!self.fbSuccess){
-            [self.hud hide:YES];
-            [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
-                             message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
-            return;
-        }
-    }
-    
-    if (self.shareTwitter){
-        if (!self.twSuccess){
-            [self.hud hide:YES];
-            [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
-                             message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
-            return;
-        }
-    }
     
     
     if (block){
@@ -421,6 +384,61 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     
+
+}
+
+- (void)sendFacebook
+{
+    
+    NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
+    if (!albumID){
+        albumID = @"NEED TO GRAB THIS";
+    }
+
+    [self.friends postImageToFacebookFeed:self.shareImage
+                                  message:self.selectedCaption
+                                  caption:self.selectedCaption
+                                     name:@"A name"
+                                  albumID:albumID
+                             facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
+                                feedBlock:^(BOOL wasSuccessful) {
+                                    if (wasSuccessful){
+                                        NSLog(@"posting to feed was successful");
+                                        if (self.shareTwitter){
+                                            [self sendTwitter];
+                                        }
+                                        
+                                    }
+                                    else{
+                                        [self.hud hide:YES];
+                                        [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
+                                                         message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
+                                        return;
+                                        
+                                    }
+                                }];
+
+}
+
+- (void)sendTwitter
+{
+    if (self.sendTW){
+        self.sendTW = NO;
+        [self.friends postImageToTwitterFeed:self.shareImage
+                                     caption:self.selectedCaption
+                                       block:^(BOOL wasSuccessful) {
+                                           if (wasSuccessful){
+                                               NSLog(@"post to twitter success");
+                                               
+                                           }
+                                           else{
+                                               [self.hud hide:YES];
+                                               [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
+                                                                message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
+                                               return;
+                                           }
+                                       }];
+    }
 
 }
 

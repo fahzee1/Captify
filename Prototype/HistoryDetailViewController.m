@@ -446,6 +446,7 @@
             ((ShareViewController *)shareVc).shareImage = self.finalImage;
             ((ShareViewController *)shareVc).myChallenge = self.myChallenge;
             ((ShareViewController *)shareVc).myPick = self.selectedPick;
+            ((ShareViewController *)shareVc).selectedCaption = self.finalCaptionLabel.text;
         }
         [self.navigationController pushViewController:shareVc animated:YES];
         
@@ -1129,9 +1130,8 @@
                                                                       
                                                                       if ([MFMailComposeViewController canSendMail])
                                                                       {
-#warning set correct email for live app
                                                                           tempMailCompose.mailComposeDelegate = self;
-                                                                          [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                                                                          [tempMailCompose setToRecipients:@[@"help@gocaptify.com"]];
                                                                           [tempMailCompose setSubject:@"Theres a freaking bug!"];
                                                                           [tempMailCompose setMessageBody:[NSString stringWithFormat:@"I tried to send %@ a caption and I keep getting error alerts! Get this fixed now!",self.myChallenge.sender.username] isHTML:NO];
                                                                           [self presentViewController:tempMailCompose animated:YES completion:^{

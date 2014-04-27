@@ -35,6 +35,7 @@
 #import "TestDataCreator.h"
 #import "Contacts.h"
 #import <Parse/Parse.h>
+#import "ParseNotifications.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -205,6 +206,8 @@
         self.showHistory = NO;
 
     }
+    
+    //[self testNotifs];
 }
 
 - (void)didReceiveMemoryWarning
@@ -212,6 +215,70 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 
+    
+}
+
+- (void)testNotifs
+{
+#define challengeID @"cj-0001-0002-0003"
+    ParseNotifications *p = [[ParseNotifications alloc] init];
+    NSArray *list = [NSArray arrayWithObjects:self.myUser.username,@"DEBA",@"cedric" ,nil];
+    
+    [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
+                  toFriends:list
+                   withData:@{@"challenge": challengeID}
+           notificationType:ParseNotificationCreateChallenge
+                      block:^(BOOL wasSuccessful) {
+                          if (wasSuccessful){
+                              NSLog(@"sent notif");
+                          }
+                          else{
+                              NSLog(@"didnt send notif");
+                          }
+                      }];
+
+    
+    [p addChannelWithChallengeID:challengeID];
+    
+    double delayInSeconds = 10.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+                   toFriend:self.myUser.username
+                   withData:@{@"challenge": challengeID}
+           notificationType:ParseNotificationSendCaptionPick
+                      block:^(BOOL wasSuccessful) {
+                          if (wasSuccessful){
+                              NSLog(@"sent challenge pick notif");
+                          }
+                          else{
+                              NSLog(@"didnt send challenge pic notif");
+                          }
+
+                      }];
+
+    });
+    
+    
+    double delayInSeconds2 = 20.0;
+    dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds2 * NSEC_PER_SEC));
+    dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
+        [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",@"DEBA"]
+                  toChannel:challengeID
+                   withData:@{@"challenge_id": challengeID}
+           notificationType:ParseNotificationSenderChoseCaption
+                      block:^(BOOL wasSuccessful) {
+                          if (wasSuccessful){
+                              NSLog(@"sent final notif");
+                          }
+                          else{
+                              NSLog(@"didnt send final notif");
+                          }
+
+                      }];
+
+    });
+    
     
 }
 

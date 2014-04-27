@@ -114,46 +114,12 @@
         notificationType:(ParseNotificationTypes)type
                    block:(ParseNotifBlock)block
 {
-  
-    
-    PFQuery *pushQuery = [PFInstallation query];
-    
-    [pushQuery whereKey:@"username" containsAllObjectsInArray:friends];
-    [pushQuery whereKey:@"deviceType" equalTo:@"ios"];
-    
-    PFPush *push = [PFPush new];
-    [push setQuery:pushQuery];
-    
-    NSMutableDictionary *payload = [@{@"alert":message,
-                              @"badge": @"Increment",
-                              @"type":[NSNumber numberWithInt:type]} mutableCopy];
-    
-    if (data[@"challenge_id"]){
-        payload[@"challenge"] = data[@"challenge_id"];
+    for (NSString *friend in friends){
+        [self sendNotification:message
+                      toFriend:friend
+                      withData:data
+              notificationType:type block:block];
     }
-    
-    
-    [push setData:payload];
-
-    
-    [push sendPushInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (block){
-                     block (YES);
-                }
-            });
-        }
-        else{
-            NSLog(@"%@",error);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (block){
-                    block (NO);
-                }
-            });
-
-        }
-    }];
 }
 
 

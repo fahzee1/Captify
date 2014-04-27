@@ -210,9 +210,8 @@
                                                               
                                                               if ([MFMailComposeViewController canSendMail])
                                                               {
-#warning set correct email for live app
                                                                   tempMailCompose.mailComposeDelegate = self;
-                                                                  [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                                                                  [tempMailCompose setToRecipients:@[@"help@gocaptify.com"]];
                                                                   [tempMailCompose setSubject:@"Theres a freaking bug!"];
                                                                   [tempMailCompose setMessageBody:[NSString stringWithFormat:@"I tried to send %@ a caption and I keep getting error alerts! Get this fixed now!",self.myChallenge.sender.username] isHTML:NO];
                                                                   [self presentViewController:tempMailCompose animated:YES completion:^{
@@ -247,11 +246,10 @@
      */
     
     [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
-               toFriend:@"Cj-Ogbuehi"
+               toFriend:self.myChallenge.sender.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSendCaptionPick
                   block:nil];
-#warning send to actual sender
     
 }
 

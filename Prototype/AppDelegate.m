@@ -821,7 +821,7 @@
     }
     
     
-        [self setupHistoryViewControllers];
+        //[self setupHistoryViewControllers];
 }
 
 @end

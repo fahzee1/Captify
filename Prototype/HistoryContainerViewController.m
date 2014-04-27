@@ -26,6 +26,7 @@
 @property (strong,nonatomic)UIViewController *currentController;
 @property (strong, nonatomic)UIButton *refreshButton;
 @property (strong, nonatomic)UIBarButtonItem *rightRefreshButton;
+@property (strong, nonatomic)UIActivityIndicatorView *spinner;
 
 @end
 
@@ -199,18 +200,20 @@
 - (void)reloadHistory
 {
     self.navigationItem.rightBarButtonItem = nil;
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.frame = CGRectMake(275, 0, 50, 50);
-    spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    [self.navigationController.navigationBar addSubview:spinner];
-    [spinner startAnimating];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.spinner.frame = CGRectMake(275, 0, 50, 50);
+    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    [self.navigationController.navigationBar addSubview:self.spinner];
+    [self.spinner startAnimating];
 
    UIViewController *vcR = [self.storyboard instantiateViewControllerWithIdentifier:@"recievedHistory"];
     UIViewController *vcS = [self.storyboard instantiateViewControllerWithIdentifier:@"sentHistory"];
     if ([vcR isKindOfClass:[HistoryRecievedViewController class]] && [vcS isKindOfClass:[HistorySentViewController class]]){
         [((HistoryRecievedViewController *)vcR) fetchUpdatesWithBlock:^{
               [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:^{
-                  [spinner stopAnimating];
+                  [self.spinner stopAnimating];
+                  [self.spinner removeFromSuperview];
+                  self.spinner = nil;
                   self.navigationItem.rightBarButtonItem = self.rightRefreshButton;
               }];
             

@@ -535,7 +535,7 @@
                                               ACAccount *twitterAccount = [listOfAccounts lastObject];
                                               NSDictionary *params = @{@"status": caption};
                                               
-                                              NSURL *requestUrl = [NSURL URLWithString:@"http://api.twitter.com/1/statuses/update_with_media.json"];
+                                              NSURL *requestUrl = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update_with_media.json"];
                                               
                                               SLRequest *postRequest = [SLRequest
                                                                         requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST
@@ -547,15 +547,17 @@
                                                                    withName:@"media[]" type:@"image/jpeg" filename:@"image.jpg"];
                                               
                                               [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                                                  if (error){
+                                                  if (error || [urlResponse statusCode] != 200){
                                                       NSLog(@"%@",error);
                                                       if (block){
                                                           block(NO);
                                                       }
                                                       return ;
                                                   }
+                                                  else{
+                                                      block(YES);
+                                                  }
                                                   
-                                                  NSLog(@"Twiiter response %ld",(long)[urlResponse statusCode]);
                                               }];
                                           }
                                       }

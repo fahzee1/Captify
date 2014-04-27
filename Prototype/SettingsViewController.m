@@ -407,9 +407,8 @@
                 // contact
                 MFMailComposeViewController *tempMailCompose = [[MFMailComposeViewController alloc] init];
                 if ([MFMailComposeViewController canSendMail]){
-#warning set correct email for live app
                     tempMailCompose.mailComposeDelegate = self;
-                    [tempMailCompose setToRecipients:@[@"cj_ogbuehi@yahoo.com"]];
+                    [tempMailCompose setToRecipients:@[@"help@gocaptify.com"]];
                     [tempMailCompose setSubject:@"I have a question"];
                     [self presentViewController:tempMailCompose animated:YES completion:^{
                     }];
