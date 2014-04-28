@@ -101,6 +101,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        NSLog(@"%@",self.myUser);
 
     [self fetchContacts];
 

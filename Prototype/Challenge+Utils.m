@@ -195,12 +195,15 @@
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
     
+    
     if (sent){
     request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
     }
     else{
         request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.is_friend = 1)"];
     }
+     
+
     NSSortDescriptor *sortByDate = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
     request.sortDescriptors = @[sortByDate];
     
