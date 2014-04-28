@@ -145,7 +145,7 @@
 
 - (void)downloadImage
 {
-    NSLog(@"%@",self.mediaURL);
+    DLog(@"%@",self.mediaURL);
     if (self.mediaURL){
         self.retryButton.hidden = YES;
         self.progressView.hidden = NO;
@@ -415,7 +415,7 @@
 
             
             if (pick.player.facebook_user){
-                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
+                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
                 

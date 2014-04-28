@@ -182,7 +182,7 @@
                                                           [self.myChallenge addPicksObject:pick];
                                                           self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
                                                           if (![self.myChallenge.managedObjectContext save:&error]){
-                                                              NSLog(@"%@",error);
+                                                              DLog(@"%@",error);
                                                               return;
                                                           }
                                                           

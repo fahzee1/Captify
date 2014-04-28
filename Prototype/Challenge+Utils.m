@@ -103,7 +103,7 @@
         NSAssert([params valueForKey:@"original_phrase"], @"must supply 'original answer' when creating challenge");
         
         NSDictionary *smallParams = @{@"username": [params valueForKey:@"sender"]};
-        User *user = [User GetOrCreateUserWithParams:smallParams
+        User *user = [User getOrCreateUserWithParams:smallParams
                               inManagedObjectContext:context
                                           skipCreate:YES];
         // no challenge create one
@@ -115,7 +115,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             NSError *e;
             if (![challenge.managedObjectContext save:&e]){
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                DLog(@"Unresolved error %@, %@", error, [error userInfo]);
                 
                 [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
                 abort();
@@ -140,7 +140,7 @@
     
     NSArray *challenges = [context executeFetchRequest:request error:&error];
     if (! challenges){
-        NSLog(@"%@",error);
+        DLog(@"%@",error);
         return nil;
     }
     
@@ -183,7 +183,7 @@
     
     NSArray *returnAll;
     
-    NSLog(@"%@",returnAll);
+    DLog(@"%@",returnAll);
     return returnAll;
 
 }
@@ -248,17 +248,17 @@
                  parameters:params
                     success:^(NSURLSessionDataTask *task, id responseObject) {
                         [client stopNetworkActivity];
-                        NSLog(@"%@",responseObject);
+                        DLog(@"%@",responseObject);
                         int code = [[responseObject valueForKey:@"code"] intValue];
                         if (code == 1){
                             // we're good
-                            NSLog(@"we're all good here");
+                            DLog(@"we're all good here");
                             challenge.sync_status = [NSNumber numberWithBool:NO];
                         }
                         
                         if (code == -10){
                             // 500 issue on our end
-                            NSLog(@"we're not all good here");
+                            DLog(@"we're not all good here");
                             challenge.sync_status = [NSNumber numberWithBool:YES];
                         }
                         
@@ -267,7 +267,7 @@
                         //something bad happened
                         // find ways to handle this. maybe set it for retry
                         [client stopNetworkActivity];
-                        NSLog(@"definitely not all good here");
+                        DLog(@"definitely not all good here");
                         challenge.sync_status = [NSNumber numberWithBool:YES];
                         [JDStatusBarNotification showWithStatus:error.localizedDescription
                                                    dismissAfter:2.0
@@ -284,7 +284,7 @@
         NSError *error;
         if ([challenge.managedObjectContext hasChanges]){
             if(![challenge.managedObjectContext save:&error]){
-                NSLog(@"error saving active status of challenge");
+                DLog(@"error saving active status of challenge");
             }
         }
     }
@@ -345,7 +345,7 @@
     challenge.name = @"make her go bananas...hanna!";
     challenge.active = [NSNumber numberWithBool:YES];
     if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
         
     }
@@ -401,7 +401,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *error;
                 if (![challenge.managedObjectContext save:&error]){
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                    DLog(@"Unresolved error %@, %@", error, [error userInfo]);
                     [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
                     
                     abort();
@@ -412,7 +412,7 @@
         }
         // no user
         else{
-            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
+            DLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
             
         }
 
@@ -424,7 +424,7 @@
         challenge.active = active ? active : [NSNumber numberWithBool:YES];
         
         if (![challenge.managedObjectContext save:&error]){
-            NSLog(@"%@",error);
+            DLog(@"%@",error);
         }
         return challenge;
     }
@@ -451,10 +451,10 @@
                  [client stopNetworkActivity];
                  int code = [[responseObject valueForKey:@"code"] intValue];
                  if (code == 1){
-                     NSLog(@"success uploading");
+                     DLog(@"success uploading");
                  }
                  else{
-                     NSLog(@"no success uploading");
+                     DLog(@"no success uploading");
                  }
              } failure:^(NSURLSessionDataTask *task, NSError *error) {
                  [client stopNetworkActivity];
@@ -466,7 +466,7 @@
                  }
 
 
-                 NSLog(@"error %@",error);
+                 DLog(@"error %@",error);
              }];
     }
     else{
@@ -493,7 +493,7 @@
              }
              
              if (code == -10){
-                 NSLog(@"%@",[responseObject valueForKey:@"message"]);
+                 DLog(@"%@",[responseObject valueForKey:@"message"]);
                  if (block){
                      block(NO,@"Fail");
                  }
@@ -509,7 +509,7 @@
              }
 
 
-             NSLog(@"%@",error);
+             DLog(@"%@",error);
              if (block){
                  block(NO, error.localizedDescription);
              }
@@ -574,13 +574,13 @@
         NSString *challengeDirectory = [documentsDirectory stringByAppendingPathComponent:@"challenges"];
         
         if (![[NSFileManager defaultManager] createDirectoryAtPath:challengeDirectory withIntermediateDirectories:YES attributes:nil error:&e]){
-            NSLog(@"%@",e);
+            DLog(@"%@",e);
         }
         
         
         NSString* path = [challengeDirectory stringByAppendingPathComponent:name];
         if (![image writeToFile:path options:0 error:&e]){
-            NSLog(@"%@",e);
+            DLog(@"%@",e);
             
             return nil;
         }

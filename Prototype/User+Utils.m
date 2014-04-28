@@ -55,7 +55,7 @@
 - (void)getCorrectProfilePicWithImageView:(UIImageView *)iV
 {
     if (self.facebook_user){
-        NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",self.facebook_id];
+        NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",self.facebook_id];
         NSURL * fbUrl = [NSURL URLWithString:fbString];
         [iV setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
 
@@ -100,7 +100,7 @@
     }
 }
 
-+ (BOOL)createFriendWithParams:(NSDictionary *)params
++ (User *)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context
 {
     NSError *error;
@@ -111,9 +111,13 @@
                                            context:context
                                              error:&error];
     if (gotUser == 1){
-        NSLog(@"cant create cause we have %@",[params valueForKey:@"username"]);
-        return NO;
+        //DLog(@"cant create cause we have %@",[params valueForKey:@"username"]);
+        return [self getUserWithFetch:request
+                              context:context
+                                error:&error];
     }
+    
+    
 
     
     User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
@@ -122,18 +126,19 @@
     user.username = [username stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     user.facebook_user = [params valueForKey:@"facebook_user"];
     user.facebook_id = [params valueForKey:@"facebook_id"];
+    user.phone_number = [params valueForKey:@"phone_number"];
     user.email = [params valueForKey:@"email"];
     user.private = [NSNumber numberWithBool:NO];
     user.super_user = [NSNumber numberWithBool:NO];
     user.is_friend = [NSNumber numberWithBool:YES];
     
     if (![user.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
         
     }
     
-    return YES;
+    return user;
 
 }
 
@@ -153,14 +158,14 @@
         return [results firstObject];
     }
     else{
-        NSLog(@"theres no user %@ created",username);
+        DLog(@"theres no user %@ created",username);
         return nil;
     }
 
 }
 
 
-+ (User *)GetOrCreateUserWithParams:(NSDictionary *)params
++ (User *)getOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
                          skipCreate:(BOOL)skip
 
@@ -170,14 +175,14 @@
 
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) and (username = %@)",[params valueForKey:@"username"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) && (username = %@)",[params valueForKey:@"username"]];
     request.fetchLimit = 1;
     
     // check to see if we have this user (login)
     NSInteger gotUser = [self checkIfUserWithFetch:request
                                            context:context
                                              error:&error];
-    if (gotUser)
+    if (gotUser > 0)
     {
         // if we have user return user
         return [self getUserWithFetch:request
@@ -199,7 +204,7 @@
         //user.timestamp = [params valueForKey:@"timestamp"];
         
            if (![user.managedObjectContext save:&error]){
-               NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+               DLog(@"Unresolved error %@, %@", error, [error userInfo]);
                abort();
 
         }
@@ -278,9 +283,8 @@
                                                                    @"phone_number":phone_number};
                                         
                                         if (context){
-                                            user = [self GetOrCreateUserWithParams:gcParams
-                                                            inManagedObjectContext:context
-                                                                        skipCreate:NO];
+                                            user = [self createFriendWithParams:gcParams
+                                                          inMangedObjectContext:context];
                                         }
 
                                     }
@@ -296,7 +300,7 @@
                                      if ([user.username isEqualToString:username]){
                                            [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
                                      }else{
-                                         user = [self GetOrCreateUserWithParams:@{@"username": username}
+                                         user = [self getOrCreateUserWithParams:@{@"username": username}
                                                          inManagedObjectContext:context
                                                                      skipCreate:YES];
                                          [defaults setURL:user.objectID.URIRepresentation forKey:@"superuser"];
@@ -385,7 +389,7 @@
                                      
                                      User *user = nil;
                                      if (context){
-                                         user = [self GetOrCreateUserWithParams:gcParams
+                                         user = [self getOrCreateUserWithParams:gcParams
                                                          inManagedObjectContext:context
                                                                      skipCreate:NO];
                                      }
@@ -460,7 +464,7 @@
                                       parameters:params
                                          success:^(NSURLSessionDataTask *task, id responseObject) {
                                               [client stopNetworkActivity];
-                                             NSLog(@"%@",responseObject);
+                                             DLog(@"%@",responseObject);
                                              // things went well
                                              if ([[responseObject valueForKey:@"code"] intValue] == 1){
                                                  NSString *username = [responseObject valueForKeyPath:@"user.username"];
@@ -483,7 +487,7 @@
                                                                             @"phone_number":phone_number};
                                                  User *user = nil;
                                                  if (context){
-                                                      user = [self GetOrCreateUserWithParams:gcParams
+                                                      user = [self getOrCreateUserWithParams:gcParams
                                                                       inManagedObjectContext:context
                                                                                   skipCreate:NO];
                                                  }
@@ -515,7 +519,7 @@
                                              
                                              // things did not go well because of user
                                              if ([[responseObject valueForKey:@"code"] intValue] == -1){
-                                                  NSLog(@" not success");
+                                                  DLog(@" not success");
                                                  if (block){
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          block(NO,responseObject, nil, NO);
@@ -525,7 +529,7 @@
                                              }
                                              // things did not go well because of me
                                              if ([[responseObject valueForKey:@"code"] intValue] == -10){
-                                                  NSLog(@"not me success");
+                                                  DLog(@"not me success");
                                                  if (block){
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          block(NO,responseObject, nil, NO);
@@ -651,14 +655,14 @@
             [client stopNetworkActivity];
             int code = [[responseObject valueForKey:@"code"] intValue];
             if (code == 1){
-                NSLog(@"success");
+                DLog(@"success");
                 if (block){
                     block(YES,responseObject,@"success");
                 }
             }
             
             else if (code == -10){
-                NSLog(@"success but not quite");
+                DLog(@"success but not quite");
                 if (block){
                     block(NO,nil,[responseObject valueForKey:@"message"]);
                 }
@@ -693,13 +697,13 @@
                  [client stopNetworkActivity];
                  int code = [[responseObject valueForKey:@"code"] intValue];
                  if (code == 1){
-                     NSLog(@"success");
+                     DLog(@"success");
                      if (block){
                          block(YES,responseObject,@"success");
                      }
                  }
                  else if (code == -10){
-                     NSLog(@"success but not really");
+                     DLog(@"success but not really");
                      if (block){
                          block(NO,nil,[responseObject valueForKey:@"message"]);
                      }

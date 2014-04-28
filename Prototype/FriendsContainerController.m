@@ -124,7 +124,7 @@
                                 message:[NSString stringWithFormat:@"Hey send me a caption on Captify!"]
                                   block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                       if (wasSuccessful){
-                                          NSLog(@"success");
+                                          DLog(@"success");
                                       }
                                       [self.friendPickerController clearSelection];
                                   }];
@@ -243,7 +243,7 @@
                                 message:@"Cool Message"
                                   block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                       if (wasSuccessful){
-                                          NSLog(@"good invite");
+                                          DLog(@"good invite");
                                       }
                                   }];
     }

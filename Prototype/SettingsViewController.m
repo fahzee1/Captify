@@ -259,7 +259,7 @@
                                                 dispatch_async(settingsQueue, ^{
                                                     NSError *e;
                                                     if (![self.myUser.managedObjectContext save:&e]){
-                                                        NSLog(@"%@",e);
+                                                        DLog(@"%@",e);
                                                     }
                                                     
                                                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -445,7 +445,7 @@
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setBool:NO forKey:@"logged"];
                 [defaults setBool:NO forKey:@"facebook_user"];
-                [defaults setBool:NO forKey:@"phone_never"];
+                //[defaults setBool:NO forKey:@"phone_never"];
                 [defaults setValue:[NSNumber numberWithInt:0] forKey:@"challengeToolTip"];
                 [defaults setValue:[NSNumber numberWithInt:0] forKey:@"homeToolTip"];
                 [defaults removeObjectForKey:@"superuser"];

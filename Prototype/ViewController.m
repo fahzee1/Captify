@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   // NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
+   // DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self setupButtonStyles];
     
     
@@ -36,11 +36,11 @@
     /*
     for (NSString* family in [UIFont familyNames])
     {
-        NSLog(@"%@", family);
+        DLog(@"%@", family);
         
         for (NSString* name in [UIFont fontNamesForFamilyName: family])
         {
-            NSLog(@"  %@", name);
+            DLog(@"  %@", name);
         }
     }
      */
@@ -113,7 +113,7 @@
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                               [hud hideNoAnimation];
                                               if (!error){
-                                                  //NSLog(@"%@",result);
+                                                  //DLog(@"%@",result);
                                                   NSNumber *fbookId = [result valueForKey:@"id"];
                                                   //NSString *fbookName = [result valueForKey:@"username"];
                                                   NSString *fbookEmail = [result valueForKey:@"email"];
@@ -204,7 +204,7 @@
         
     }
     else{
-        NSLog(@"no navigation");
+        DLog(@"no navigation");
     }
 }
 

@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSArray *data;
 @property BOOL pendingRequest;
 @property (strong, nonatomic) Notifications *notifications;
+@property (strong, nonatomic)UIView *errorContainerView;
 
 @end
 
@@ -54,38 +55,7 @@
     
     if ([self.data count] == 0){
 
-        UIView *view = [[UIView alloc] initWithFrame:self.myTable.frame];
-        view.layer.cornerRadius = 10;
-        view.layer.masksToBounds = YES;
-        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-        
-        CGRect containerFrame = view.frame;
-        containerFrame.size.width -= 15;
-        containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
-        containerFrame.origin.x += 7;
-        view.frame = containerFrame;
-
-        UILabel *errorLabel = [[UILabel alloc] init];
-        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
-        errorLabel.numberOfLines = 0;
-        [errorLabel sizeToFit];
-        errorLabel.textColor = [UIColor whiteColor];
-        errorLabel.frame = CGRectMake(15, 50, view.frame.size.width -20, 100);
-        
-        UIButton *play = [UIButton buttonWithType:UIButtonTypeSystem];
-        play.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        play.layer.cornerRadius = 10;
-        play.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        [play setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
-        [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        play.frame = CGRectMake(50, view.bounds.size.height - 130, 200, 50);
-        [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
-        
-        [view addSubview:errorLabel];
-        [view addSubview:play];
-        [self.myTable addSubview:view];
+        [self.myTable addSubview:self.errorContainerView];
     }
     
 
@@ -208,7 +178,7 @@
                                                         [challenge addPicksObject:pick];
                                                         NSError *error;
                                                         if (![challenge.managedObjectContext save:&error]){
-                                                            NSLog(@"%@",error);
+                                                            DLog(@"%@",error);
                                                             
                                                         }
                                                     }
@@ -221,6 +191,12 @@
                                         }
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                            if ([self.data count] > 0){
+                                                self.errorContainerView = nil;
+                                                [self.errorContainerView removeFromSuperview];
+                                            }
+                                            
+
                                             [self.myTable reloadData];
                                         });
                                     }
@@ -407,7 +383,7 @@
         challenge.first_open = [NSNumber numberWithBool:NO];
         NSError *error;
         if (![challenge.managedObjectContext save:&error]){
-            NSLog(@"%@",error);
+            DLog(@"%@",error);
         }
     }
 
@@ -421,7 +397,7 @@
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
             ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
-            NSLog(@"%@ is image path",challenge.image_path);
+            DLog(@"%@ is image path",challenge.image_path);
             
              [self.navigationController pushViewController:vc animated:YES];
         }
@@ -437,7 +413,7 @@
             ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
-            NSLog(@"%@ is image path",challenge.image_path);
+            DLog(@"%@ is image path",challenge.image_path);
             
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -482,6 +458,47 @@
     }
     
     return _notifications;
+}
+
+- (UIView *)errorContainerView
+{
+    if (!_errorContainerView){
+        
+       _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
+       _errorContainerView.layer.cornerRadius = 10;
+       _errorContainerView.layer.masksToBounds = YES;
+       _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        
+        CGRect containerFrame = _errorContainerView.frame;
+        containerFrame.size.width -= 15;
+        containerFrame.size.height -= 250;
+        containerFrame.origin.y += 25;
+        containerFrame.origin.x += 7;
+        _errorContainerView.frame = containerFrame;
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width -20, 100);
+        
+        UIButton *play = [UIButton buttonWithType:UIButtonTypeSystem];
+        play.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        play.layer.cornerRadius = 10;
+        play.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        [play setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
+        [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        play.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_errorContainerView addSubview:errorLabel];
+        [_errorContainerView addSubview:play];
+
+    }
+    
+    return _errorContainerView;
 }
 
 

@@ -107,16 +107,16 @@
     UISearchBar *searchBar = controller.searchBar;
     UIView *superView = searchBar.superview;
     if (![superView isKindOfClass:[UITableView class]]) {
-        NSLog(@"Error here");
+        DLog(@"Error here");
         [searchBar removeFromSuperview];
         [self.tableView addSubview:searchBar];
     }
-    NSLog(@"%@", NSStringFromClass([superView class]));
+    DLog(@"%@", NSStringFromClass([superView class]));
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"cancel clicked");
+    DLog(@"cancel clicked");
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

@@ -35,7 +35,7 @@
         if (!error){
             NSArray *friends = [result objectForKey:@"data"];
             for (NSDictionary<FBGraphUser>* friend in friends) {
-                //NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
+                //DLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
                 
                 // get friends picture
                 //NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",friend.id];
@@ -50,7 +50,7 @@
                 [self.tempFriendList addObject:dict];
             }
 
-            //NSLog(@"Found: %i friends", friends.count);
+            //DLog(@"Found: %i friends", friends.count);
             
             if (block){
                 block(YES,self.tempFriendList);
@@ -150,7 +150,7 @@
          parameters:@{@"to":userID }
          handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
              if (error){
-                 NSLog(@"%@",[error localizedDescription]);
+                 DLog(@"%@",[error localizedDescription]);
                  [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Unable to send invitaton at this momemt. Make sure you're connected to the internet", nil)];
                  if (block){
                      block(NO , result);
@@ -170,11 +170,11 @@
                  }
                  
                  if ([params objectForKey:@"request"]){
-                      NSLog(@"Request ID: %@", [params objectForKey:@"request"]);
+                      DLog(@"Request ID: %@", [params objectForKey:@"request"]);
                  }
                  
                  if ([IDS count] > 0){
-                     NSLog(@"Recipient ID(s): %@", IDS);
+                     DLog(@"Recipient ID(s): %@", IDS);
                      
                      if (block){
                          block(YES,result);
@@ -229,7 +229,7 @@
                                                        image:image
                                                          url:nil
                                                      handler:^(FBOSIntegratedShareDialogResult result, NSError *error) {
-                                                         NSLog(@"%u",result);
+                                                         DLog(@"%u",result);
                                                          
                                                          if (error){
                                                              if (block){
@@ -387,7 +387,7 @@
         }
         
         if (fblock){
-            NSLog(@"feed result %@",result);
+            DLog(@"feed result %@",result);
             fblock(YES);
         }
         
@@ -407,8 +407,8 @@
     // second save to photo album
     [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (error){
-            NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
-            NSLog(@"%@",error);
+            DLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
+            DLog(@"%@",error);
             if (fblock){
                 fblock(NO);
             }
@@ -417,7 +417,7 @@
         }
         
         if (fblock){
-            NSLog(@"album result %@",result);
+            DLog(@"album result %@",result);
             fblock(YES);
         }
     }];
@@ -492,7 +492,7 @@
                                                            else{
                                                                if (fblock){
                                                                    fblock(YES);
-                                                                   NSLog(@"%ld status code",(long)[urlResponse statusCode]);
+                                                                   DLog(@"%ld status code",(long)[urlResponse statusCode]);
                                                                }
                                                                return;
                                                            }
@@ -505,7 +505,7 @@
                                                
                                            }
                                            else{
-                                               NSLog(@"Error occoured %@",[error localizedDescription] );
+                                               DLog(@"Error occoured %@",[error localizedDescription] );
                                                [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Twitter", nil)];
                                            }
                                            
@@ -548,7 +548,7 @@
                                               
                                               [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                                                   if (error || [urlResponse statusCode] != 200){
-                                                      NSLog(@"%@",error);
+                                                      DLog(@"%@",error);
                                                       if (block){
                                                           block(NO);
                                                       }
@@ -562,7 +562,7 @@
                                           }
                                       }
                                       else{
-                                          NSLog(@"Error occoured %@",[error localizedDescription] );
+                                          DLog(@"Error occoured %@",[error localizedDescription] );
                                           [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Twitter", nil)];
                                           
                                       }
@@ -588,8 +588,8 @@
             
             [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if (error){
-                    NSLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
-                    NSLog(@"%@",error);
+                    DLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
+                    DLog(@"%@",error);
                     if (block){
                         block(NO);
                     }
@@ -598,7 +598,7 @@
                 }
                 
                 if (block){
-                    NSLog(@"album result %@",result);
+                    DLog(@"album result %@",result);
                     block(YES);
                 }
             }];
@@ -606,7 +606,7 @@
             
         }
         else{
-            NSLog(@"error");
+            DLog(@"error");
         }
     }];
     
@@ -619,7 +619,7 @@
     [FBRequestConnection startWithGraphPath:ID
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (error){
-                                  NSLog(@"%@",error.localizedDescription);
+                                  DLog(@"%@",error.localizedDescription);
                                   if (block){
                                       block(NO,nil);
                                   }
@@ -707,17 +707,17 @@
     [client POST:AwesomeAPISettingsString
                                parameters:params
                                   success:^(NSURLSessionDataTask *task, id responseObject) {
-                                    NSLog(@"%@",responseObject);
+                                    DLog(@"%@",responseObject);
                                       int code = [[responseObject valueForKey:@"code"] intValue];
                                       if (code == 1){
-                                        NSLog(@"success");
+                                        DLog(@"success");
                                           if (block){
                                               block(YES);
                                           }
                                       }
                                   }
                                   failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                      NSLog(@"%@",error.localizedDescription);
+                                      DLog(@"%@",error.localizedDescription);
                                       if (block){
                                           block(NO);
                                       }

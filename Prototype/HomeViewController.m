@@ -101,7 +101,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        NSLog(@"%@",self.myUser);
+    
 
     [self fetchContacts];
 
@@ -231,10 +231,10 @@
            notificationType:ParseNotificationCreateChallenge
                       block:^(BOOL wasSuccessful) {
                           if (wasSuccessful){
-                              NSLog(@"sent notif");
+                              DLog(@"sent notif");
                           }
                           else{
-                              NSLog(@"didnt send notif");
+                              DLog(@"didnt send notif");
                           }
                       }];
 
@@ -250,10 +250,10 @@
            notificationType:ParseNotificationSendCaptionPick
                       block:^(BOOL wasSuccessful) {
                           if (wasSuccessful){
-                              NSLog(@"sent challenge pick notif");
+                              DLog(@"sent challenge pick notif");
                           }
                           else{
-                              NSLog(@"didnt send challenge pic notif");
+                              DLog(@"didnt send challenge pic notif");
                           }
 
                       }];
@@ -270,10 +270,10 @@
            notificationType:ParseNotificationSenderChoseCaption
                       block:^(BOOL wasSuccessful) {
                           if (wasSuccessful){
-                              NSLog(@"sent final notif");
+                              DLog(@"sent final notif");
                           }
                           else{
-                              NSLog(@"didnt send final notif");
+                              DLog(@"didnt send final notif");
                           }
 
                       }];
@@ -316,7 +316,7 @@
         
     }
     else{
-        NSLog(@"error creating camera input or output");
+        DLog(@"error creating camera input or output");
     }
     
 
@@ -521,15 +521,21 @@
         Contacts *c = [[Contacts alloc] init];
         [c fetchContactsWithBlock:^(BOOL done, id data) {
             if (done){
-                //NSLog(@"%@",data);
+                //DLog(@"%@",data);
                 if ([data isKindOfClass:[NSArray class]]){
                     self.contactNumbers = data;
                     
                     if (self.contactNumbers && self.myUser){
                         // send numbers to backend to see if any users return
-                        NSDictionary *params = @{@"username":self.myUser.username ,
-                                                 @"action":@"getCF",
-                                                 @"content":self.contactNumbers};
+                        NSDictionary *params;
+                        @try {
+                           params = @{@"username":self.myUser.username ,
+                                      @"action":@"getCF",
+                                      @"content":self.contactNumbers};
+                        }
+                        @catch (NSException *exception) {
+                            DLog(@"%@",exception);
+                        }
                         
                         [c requestFriendsFromContactsList:params
                                                     block:^(BOOL success, id data) {
@@ -543,24 +549,32 @@
                                                                     facebook_id = user[@"facebook_id"];
                                                                 }
                                                                 
-                                                                NSDictionary *params = @{@"username": user[@"username"],
-                                                                                         @"facebook_user":user[@"is_facebook"],
-                                                                                         @"facebook_id":facebook_id};
+                                                                NSDictionary *params;
+                                                                @try {
+                                                                   params = @{@"username": user[@"username"],
+                                                                              @"facebook_user":user[@"is_facebook"],
+                                                                              @"facebook_id":facebook_id};
+
+                                                                }
+                                                                @catch (NSException *exception) {
+                                                                     DLog(@"%@",exception);
+                                                                }
+                                                                
                                                                 BOOL create = [User createFriendWithParams:params
                                                                                        inMangedObjectContext:self.myUser.managedObjectContext];
                                                                 if (create){
-                                                                    NSLog(@"successfully created %@", user[@"username"]);
+                                                                    DLog(@"successfully created %@", user[@"username"]);
                                                                 }
                                                                 else
                                                                 {
-                                                                    NSLog(@"failerd created %@", user[@"username"]);
+                                                                    DLog(@"failerd created %@", user[@"username"]);
                                                                 }
                                                                 
                                                             }
                                                             
                                                         }
                                                         else{
-                                                            NSLog(@"no success");
+                                                            DLog(@"no success");
                                                         }
                                                     }];
                     }
@@ -652,7 +666,7 @@
 - (void)doubleTappedSnap:(UITapGestureRecognizer *)sender {
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]){
-        NSLog(@"no photo library");
+        DLog(@"no photo library");
         return;
     }
     
@@ -864,7 +878,7 @@
         }
     }
     else{
-        NSLog(@"No flash available");
+        DLog(@"No flash available");
         [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
         return;
     }
@@ -1104,7 +1118,7 @@
                                        forUser:[[NSUserDefaults standardUserDefaults]valueForKey:@"username"]
                                          block:^(BOOL wasSuccessful) {
                                              if (wasSuccessful){
-                                                 NSLog(@"success sending phone from home");
+                                                 DLog(@"success sending phone from home");
                                              }
                                          }];
               

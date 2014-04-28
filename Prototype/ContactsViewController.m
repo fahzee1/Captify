@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSArray *filteredList;
 @property (strong, nonatomic) NSFetchRequest *searchFetchRequest;
 @property (strong, nonatomic) NSMutableArray *indexPaths;
+@property (strong, nonatomic) UIView *errorContainerView;
 
 @end
 
@@ -65,6 +66,13 @@
 
     
     
+    if ([self.data count] > 0){
+#warning change this to == 0 instead of >
+        self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        [self.myTable addSubview:self.errorContainerView];
+    }
+    
+    
     
     
     
@@ -80,6 +88,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)sendTextInvite
+{
+    
+}
 
 - (void)showMenu
 {
@@ -302,6 +315,49 @@
     }
     
     return _selection;
+}
+
+
+- (UIView *)errorContainerView
+{
+    if (!_errorContainerView){
+        _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
+        _errorContainerView.layer.cornerRadius = 10;
+        _errorContainerView.layer.masksToBounds = YES;
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        
+        CGRect containerFrame = _errorContainerView.frame;
+        containerFrame.size.width -= 15;
+        containerFrame.size.height -= 250;
+        containerFrame.origin.y += 25;
+        containerFrame.origin.x += 7;
+        _errorContainerView.frame = containerFrame;
+        
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        errorLabel.text = @"None of your contacts are on Captify! Tell some friends to Join!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width-20, 100);
+        
+        UIButton *invite = [UIButton buttonWithType:UIButtonTypeSystem];
+        invite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        invite.layer.cornerRadius = 10;
+        invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
+        [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        [invite addTarget:self action:@selector(sendTextInvite) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [_errorContainerView addSubview:errorLabel];
+        [_errorContainerView addSubview:invite];
+        
+    }
+    
+    return _errorContainerView;
 }
 
 @end

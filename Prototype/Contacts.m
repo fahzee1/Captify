@@ -17,7 +17,7 @@
     CFErrorRef error = nil;
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, &error);
     if (addressBook == nil){
-        NSLog(@"error: %@",error);
+        DLog(@"error: %@",error);
         return;
     }
     
@@ -26,7 +26,7 @@
             // show alert to tell user how to give access somewhere else
             // from settings --> privacy --> contacts
             
-            NSLog(@"error: %@",error);
+            DLog(@"error: %@",error);
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"contactsPermission"];
             return;
         }
@@ -50,7 +50,7 @@
     CFErrorRef error = nil;
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, &error);
     if (addressBook == nil){
-        NSLog(@"error: %@",error);
+        DLog(@"error: %@",error);
         return;
     }
     
@@ -59,7 +59,7 @@
             // show alert to tell user how to give access somewhere else
             // from settings --> privacy --> contacts
 
-            NSLog(@"error: %@",error);
+            DLog(@"error: %@",error);
             return ;
         }
     });
@@ -75,14 +75,14 @@
         ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
         for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++){
             NSString *phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
-            //NSLog(@"phone is %@",phoneNumber);
+            //DLog(@"phone is %@",phoneNumber);
             [numbersList addObject:phoneNumber];
         }
     }
     
     if ([numbersList count] == 0){
         // retry
-        NSLog(@"i did retry");
+        DLog(@"i did retry");
         double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -92,7 +92,7 @@
                 ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
                 for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++){
                     NSString *phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
-                    //NSLog(@"phone is %@",phoneNumber);
+                    //DLog(@"phone is %@",phoneNumber);
                     [numbersList addObject:phoneNumber];
                 }
             }
@@ -119,7 +119,7 @@
              parameters:params
                 success:^(NSURLSessionDataTask *task, id responseObject) {
                     [client stopNetworkActivity];
-                    NSLog(@"%@",responseObject);
+                    DLog(@"%@",responseObject);
                     if (block){
                         int code = [[responseObject valueForKey:@"code"] intValue];
                         if (code == 1){
@@ -131,7 +131,7 @@
                     }
                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
                     [client stopNetworkActivity];
-                    NSLog(@"error was %@",error.localizedDescription);
+                    DLog(@"error was %@",error.localizedDescription);
                     if (block){
                         block(NO, NULL);
                     }

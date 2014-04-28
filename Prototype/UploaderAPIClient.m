@@ -56,13 +56,13 @@
             }
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                //NSLog(@"WIFI");
+                //DLog(@"WIFI");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
-                //NSLog(@"3G");
+                //DLog(@"3G");
                 break;
             default:
-                NSLog(@"Unknown network");
+                DLog(@"Unknown network");
                 break;
         }
     }];

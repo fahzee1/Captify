@@ -21,6 +21,8 @@
 #import "SocialFriends.h"
 #import "ContactsViewController.h"
 #import "CJPopup.h"
+#import "TWTSideMenuViewController.h"
+#import "MenuViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
@@ -45,7 +47,7 @@
 @property NSString *localMediaName;
 @property (strong,nonatomic) UIViewController *contactsScreen;
 @property (strong,nonatomic) FBFriendPickerViewController *facebookScreen;
-
+@property (strong,nonatomic) UIView *errorContainerView;
 
 
 @end
@@ -260,85 +262,101 @@
     NSData *imageData = UIImageJPEGRepresentation(self.image, 0.3);
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     
+    NSMutableDictionary *apiParams;
+    NSString *mediaName;
+    @try {
+        apiParams = [@{@"username": self.myUser.username,
+                        @"is_picture":[NSNumber numberWithBool:YES],
+                        @"name":self.name,
+                        @"recipients":self.allFriends,
+                        @"challenge_id":challenge_id,
+                        } mutableCopy];
+        
+        mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
+        if (mediaData){
+            mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
+            NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
+            apiParams[@"media"] = media;
+            apiParams[@"media_name"] = mediaName;
+        }
+        
 
-    NSMutableDictionary *apiParams = [@{@"username": self.myUser.username,
-                                @"is_picture":[NSNumber numberWithBool:YES],
-                                @"name":self.name,
-                                @"recipients":self.allFriends,
-                                @"challenge_id":challenge_id,
-                               } mutableCopy];
-    
-    NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
-    if (mediaData){
-        NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
-        NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
-        apiParams[@"media"] = media;
-        apiParams[@"media_name"] = mediaName;
+
+    }
+    @catch (NSException *exception) {
+        DLog(@"%@",exception);
     }
     
-    
-    /*
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"Sending", nil);
-     */
+ 
     CJPopup *hud = [[CJPopup alloc] init];
     [hud showBlackActivityWithMessage:@"Sending"];
     
+    if ([apiParams count] > 0 && mediaName){
 
-    [Challenge sendCreateChallengeRequestWithParams:apiParams
-                                              block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
-                                                  if (wasSuccessful){
-                                                      NSUInteger count = [self.allFriends count];
-                                                      NSString *media_url = [data valueForKey:@"media"];
-                                                      
-                                                      // save image locally in documents directory
-                                                      NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
-    
-                                                      NSDictionary *params = @{@"sender":self.myUser.username,
-                                                                               @"context":self.myUser.managedObjectContext,
-                                                                               @"recipients":self.allFriends,
-                                                                               @"recipients_count":[NSNumber numberWithInteger:count],
-                                                                               @"challenge_name":self.name,
-                                                                               @"challenge_id":challenge_id,
-                                                                               @"media_url":media_url,
-                                                                               @"local_media_url":localMediaName};
-                                                      
-                                                      Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
-                                                      if (challenge){
-                                                          [hud hide];
+        [Challenge sendCreateChallengeRequestWithParams:apiParams
+                                                  block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
+                                                      if (wasSuccessful){
+                                                          NSUInteger count = [self.allFriends count];
+                                                          NSString *media_url = [data valueForKey:@"media"];
                                                           
-                                                          // send notification
-                                                          [self notifyFriendsWithParams:params];
-                                                          
-                                                          // leave screen
-                                                          [self notifyDelegateAndGoHome];
-                                                      }
+                                                          // save image locally in documents directory
+                                                          NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
+        
+                                                          Challenge *challenge;
+                                                          NSDictionary *params;
+                                                          @try {
+                                                              params = @{@"sender":self.myUser.username,
+                                                                           @"context":self.myUser.managedObjectContext,
+                                                                           @"recipients":self.allFriends,
+                                                                           @"recipients_count":[NSNumber numberWithInteger:count],
+                                                                           @"challenge_name":self.name,
+                                                                           @"challenge_id":challenge_id,
+                                                                           @"media_url":media_url,
+                                                                           @"local_media_url":localMediaName};
+                                                              
+                                                              challenge = [Challenge createChallengeWithRecipientsWithParams:params];
 
-                                                      
-                                                  }
-                                                  else{
-                                                      [hud hideNoAnimation];
-                                                      if (fail){
-                                                          // 500
-                                                          if (message){
-                                                              [self showAlertWithMessage:message];
                                                           }
-                                                          else{
-                                                              [self showAlertWithMessage:@"There was an error sending your request"];
+                                                          @catch (NSException *exception) {
+                                                              DLog(@"%@",exception);
                                                           }
+                                                          @finally {
+                                                              if (challenge){
+                                                                  [hud hide];
+                                                                  
+                                                                  // send notification
+                                                                  [self notifyFriendsWithParams:params];
+                                                                  
+                                                                  // leave screen
+                                                                  [self notifyDelegateAndGoHome];
+                                                              }
+
+                                                          }
+                                                          
+                                                          
                                                       }
                                                       else{
-                                                          // 200 but error
-                                                          [self showAlertWithMessage:@"There was an error sending your request"];
-                                                      }
-                                                      
+                                                          [hud hideNoAnimation];
+                                                          if (fail){
+                                                              // 500
+                                                              if (message){
+                                                                  [self showAlertWithMessage:message];
+                                                              }
+                                                              else{
+                                                                  [self showAlertWithMessage:@"There was an error sending your request"];
+                                                              }
+                                                          }
+                                                          else{
+                                                              // 200 but error
+                                                              [self showAlertWithMessage:@"There was an error sending your request"];
+                                                          }
+                                                          
 
-                                                  }
-                                              }];
+                                                      }
+                                                  }];
+        
     
-    
-    
+    }
     
 }
 
@@ -401,6 +419,17 @@
     
 }
 
+- (void)showFacebookInvite
+{
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
+    }
+    
+    UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
+    [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
+}
+
 
 - (void)showAlertWithMessage:(NSString *)message
 {
@@ -415,187 +444,6 @@
 
 
 
-
-
-/*
-#pragma -mark UItableview delegate
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    
-    // Return the number of sections.
-    return [self.sections count];;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    return index;
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return self.sections;
-}
-
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    
-    return [self.sections objectAtIndex:section];
-}
-
-
-
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-     // Return the number of rows in the section.
-    
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"Facebook"]){
-        
-        // get count of facebook friends
-        // return it
-            return [self.facebookFriendsArray count];
-    }
-    
-    else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contact"]){
-        // get count of contact friends
-        // return it
-            return [self.friendsArray count];
-    }
-    
-    else{
-        
-        return [self.friendsArray count];
-    }
-
-
-
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell;
-
-    CellIdentifier = @"senderFriends";
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    UIImageView *imageView = ((SenderFriendsCell *)cell).myFriendPic;
-    UILabel *usernameLabel =  ((SenderFriendsCell *)cell).myFriendUsername;
-    
-    if (cell){
-        
-        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
-            // retrurn cells for fbook friends
-            User *friend = [self.facebookFriendsArray objectAtIndex:indexPath.row];
-            usernameLabel.text = friend.username;
-            usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 200, 40);
-            usernameLabel.numberOfLines = 0;
-            [usernameLabel sizeToFit];
-            
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",friend.facebook_id];
-            NSURL * fbUrl = [NSURL URLWithString:fbString];
-            [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-
-            
-            
-        }
-        else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]){
-            // return cells for contact friends
-            User *friend = [self.friendsArray objectAtIndex:indexPath.row];
-            usernameLabel.text = friend.username;
-            usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 200, 40);
-            usernameLabel.numberOfLines = 0;
-            [usernameLabel sizeToFit];
-
-            ((SenderFriendsCell *)cell).myFriendPic.image = nil;
-            FAImageView *imageView =  ((FAImageView *)((SenderFriendsCell *)cell).myFriendPic);
-            [imageView setDefaultIconIdentifier:@"fa-user"];
-
-        }
-
-        // add this to list of cells that have checkmarks
-        if ([self.selectedFriends[@"index_paths"] containsObject:indexPath]){
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        }
-        else{
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
-
-
-    }
-
-    
-    return cell;
-}
- */
-
-/*
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-   // get correct type of friend
-    User *friend;
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Facebook"]){
-        friend = [self.facebookFriendsArray objectAtIndex:indexPath.row];
-    }
-    else{
-        friend = [self.friendsArray objectAtIndex:indexPath.row];
-    }
-    
-    
-    // add/remove friend from selected list
-    if ([self.selectedFriends[@"friends"] containsObject:friend.username]){
-        
-        // remove friends from list and their positions
-        [self.selectedFriends[@"friends"] removeObject:friend.username];
-        
-        
-    }
-    else{
-        // add user to selected list
-        
-        [self.selectedFriends[@"friends"] addObject:friend.username];
-        
-        
-    
-    }
-    
-    // add/remove indexpath of cells selected to add checkmarks
-    // this list is used in cellforrowindexpath of tableview
-    if (![self.selectedFriends[@"index_paths"] containsObject:indexPath]){
-        [self.selectedFriends[@"index_paths"] addObject:indexPath];
-        
-    }
-    else{
-        [self.selectedFriends[@"index_paths"] removeObject:indexPath];
-    }
-
-    // if selected friend list is empty show "choose friends" label
-    // else remove label and show send button
-    NSUInteger count = [self.selectedFriends[@"friends"] count];
-    if (!count == 0){
-        self.bottomSendButton.userInteractionEnabled = YES;
-        self.bottomSendButton.layer.opacity = 1.0f;
-        NSString *sendString = [NSString stringWithFormat:@"Send to %lu friends",(unsigned long)count];
-        [self.bottomSendButton setTitle:NSLocalizedString(sendString, nil) forState:UIControlStateNormal];
-        
-    }
-    else{
-        self.bottomSendButton.userInteractionEnabled = NO;
-        self.bottomSendButton.layer.opacity = 0.6f;
-        [self.bottomSendButton setTitle:NSLocalizedString(@"Choose Friends", nil) forState:UIControlStateNormal];
-    }
-    
-    // reload to show checkmarks
-    [tableView reloadData];
-   
-}
-*/
 
 #pragma -mark Contacts delegate
 
@@ -614,10 +462,16 @@
     
     self.selectedContactFriends = controller.selection;
     [self dismissViewControllerAnimated:YES completion:^{
-        [self.allFriends addObjectsFromArray:self.selectedContactFriends];
-        [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
+        @try {
+            [self.allFriends addObjectsFromArray:self.selectedContactFriends];
+            [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
+            
+            [self editSendButton];
+        }
+        @catch (NSException *exception) {
+            DLog(@"%@",exception);
+        }
         
-        [self editSendButton];
         
     }];
 
@@ -682,16 +536,23 @@
     NSString *name = user[@"name"];
     BOOL should = [name hasPrefix:@"A"];
     if (should){
-        NSString *fbID = user[@"id"];
-        NSDictionary *params = @{@"username": user[@"name"],
-                                 @"facebook_user":[NSNumber numberWithBool:YES],
-                                 @"facebook_id":[NSNumber numberWithInt:[fbID intValue]],
-                                 };
-        
-        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-        
-        [User createFriendWithParams:params inMangedObjectContext:context];
+        @try {
+            NSString *fbID = user[@"id"];
+            NSDictionary *params = @{@"username": user[@"name"],
+                                     @"facebook_user":[NSNumber numberWithBool:YES],
+                                     @"facebook_id":[NSNumber numberWithInt:[fbID intValue]],
+                                     };
+            
+            NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+            
+            [User createFriendWithParams:params inMangedObjectContext:context];
+
+        }
+        @catch (NSException *exception) {
+            DLog(@"%@",exception);
+        }
     }
+    
     return should;
     
 #warning uncomment this to make sure only friends using app are shown.. mauybe show button to invite if none
@@ -721,23 +582,12 @@
         
         if (empty){
             // add subview with error message
-            UILabel *faceLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 150, 150)];
-            UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+            self.facebookScreen.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+            [friendPicker.tableView addSubview:self.errorContainerView];
             
-            faceLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:60];
-            faceLabel.textColor = [UIColor redColor];
-            faceLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"];
-            faceLabel.center = CGPointMake(200 , 100);
-            
-            textLabel.text = @"None of your facebook friends are using the app, you should invite them!";
-            textLabel.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:14];
-            textLabel.center = CGPointMake(170, 230);
-            textLabel.numberOfLines = 0;
-            [textLabel sizeToFit];
-            
-            [friendPicker.tableView addSubview:faceLabel];
-            [friendPicker.tableView addSubview:textLabel];
-            
+        }
+        else{
+            self.facebookScreen.tableView.backgroundColor = [UIColor whiteColor];
         }
     }
     
@@ -828,6 +678,49 @@
     
     return _facebookScreen;
 }
+
+- (UIView *)errorContainerView
+{
+    if (!_errorContainerView){
+        _errorContainerView = [[UIView alloc] initWithFrame:self.facebookScreen.tableView.frame];
+        _errorContainerView.layer.cornerRadius = 10;
+        _errorContainerView.layer.masksToBounds = YES;
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        
+        CGRect containerFrame = _errorContainerView.frame;
+        containerFrame.size.width -= 15;
+        containerFrame.size.height -= 250;
+        containerFrame.origin.y += 25;
+        containerFrame.origin.x += 7;
+        _errorContainerView.frame = containerFrame;
+        
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        errorLabel.text = @"None of your contacts are on Captify! Tell some friends to Join!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width-20, 100);
+        
+        UIButton *invite = [UIButton buttonWithType:UIButtonTypeSystem];
+        invite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        invite.layer.cornerRadius = 10;
+        invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
+        [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        [invite addTarget:self action:@selector(showFacebookInvite) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [_errorContainerView addSubview:errorLabel];
+        [_errorContainerView addSubview:invite];
+        
+    }
+    
+    return _errorContainerView;
+}
+
 
 
 - (void)alertErrorWithTitle:(NSString *)title

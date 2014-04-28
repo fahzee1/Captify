@@ -63,7 +63,7 @@
     user.is_friend = [NSNumber numberWithBool:YES];
     
     if (![user.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
         
     }
@@ -108,7 +108,7 @@
     [challenge addRecipients:[NSSet setWithArray:friends]];
     challenge.active = [NSNumber numberWithBool:NO];
     if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
         
     }
@@ -131,14 +131,14 @@
     pick.answer = caption;
     pick.player = player;
     if (![pick.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     
     [challenge addPicksObject:pick];
     
     if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
 
     }

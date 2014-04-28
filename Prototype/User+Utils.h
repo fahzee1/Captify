@@ -24,14 +24,14 @@ typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 
 + (BOOL)validPhoneNumber:(NSString *)number;
 
-+ (BOOL)createFriendWithParams:(NSDictionary *)params
++ (User *)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context;
 
 + (User *)getUserWithUsername:(NSString *)username
                     inContext:(NSManagedObjectContext *)context
                         error:(NSError **)error;
 
-+ (User *)GetOrCreateUserWithParams:(NSDictionary *)params
++ (User *)getOrCreateUserWithParams:(NSDictionary *)params
              inManagedObjectContext:(NSManagedObjectContext *)context
                          skipCreate:(BOOL)skip;
 

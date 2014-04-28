@@ -93,6 +93,7 @@
 @property (strong, nonatomic)NSString *currentFont;
 @property (strong,nonatomic)NSArray *activeFilters;
 @property (strong, nonatomic)NSString *currentFilter;
+@property (strong, nonatomic)NSIndexPath *previousCellIndex;
 
 @property BOOL pendingRequest;
 @property BOOL makeButtonVisible;
@@ -205,7 +206,7 @@
             self.myPick.first_open = [NSNumber numberWithBool:NO];
             NSError *error;
             if (![self.myPick.managedObjectContext save:&error]){
-                NSLog(@"%@",error);
+                DLog(@"%@",error);
             }
     
         }
@@ -276,7 +277,7 @@
                                                  
                                                  NSError *error;
                                                  if (![self.myChallenge.managedObjectContext save:&error]){
-                                                     NSLog(@"%@",error);
+                                                     DLog(@"%@",error);
                                                      
                                                  }
                                                  
@@ -638,7 +639,7 @@
     
     NSString *font = [self.activeFonts objectAtIndex:fontIndex];
     self.currentFont = font;
-    self.finalCaptionLabel.font = [UIFont fontWithName:font size:CAPTIFY_CAPTION_SIZE];
+    self.finalCaptionLabel.font = [UIFont fontWithName:font size:self.captionSizeStepper.value];
     self.finalCaptionLabel.numberOfLines = 0;
     [self.finalCaptionLabel sizeToFit];
     
@@ -926,12 +927,20 @@
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.myTable];
     NSIndexPath *indexPath = [self.myTable indexPathForRowAtPoint:buttonPosition];
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
+    UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    
+    if (self.previousCellIndex && ![self.previousCellIndex isEqual:indexPath]){
+        UITableViewCell *previousCell = [self.myTable cellForRowAtIndexPath:self.previousCellIndex];
+        previousCell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
     if (indexPath != nil){
         self.selectedPick = pick;
         self.selectedCaption = pick.answer;
         self.selectedUsername = pick.player.username;
     }
 
+    self.previousCellIndex = indexPath;
     [self.finalCaptionLabel stopGlowing];
     self.hideSelectButtons = YES;
     //[self.myTable reloadData];
@@ -1106,7 +1115,7 @@
                                                                   [self.myChallenge addPicksObject:pick];
                                                                   self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
                                                                   if (![self.myChallenge.managedObjectContext save:&error]){
-                                                                      NSLog(@"%@",error);
+                                                                      DLog(@"%@",error);
                                                                   }
                                                               }
                                                               
@@ -1282,7 +1291,7 @@
             [pick.player getCorrectProfilePicWithImageView:imageView];
             
             if ([pick.player.facebook_user intValue] == 1){
-                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",pick.player.facebook_id];
+                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
                 

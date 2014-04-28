@@ -33,6 +33,7 @@
 @property BOOL pendingRequest;
 @property (strong, nonatomic) NSMutableArray *picksList;
 @property (strong,nonatomic) Notifications *notifications;
+@property (strong,nonatomic)UIView *errorContainerView;
 
 
 @end
@@ -57,41 +58,7 @@
     self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     if ([self.cData count] == 0){
-        
-        UIView *view = [[UIView alloc] initWithFrame:self.myTable.frame];
-        view.layer.cornerRadius = 10;
-        view.layer.masksToBounds = YES;
-        view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-        
-        CGRect containerFrame = view.frame;
-        containerFrame.size.width -= 15;
-        containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
-        containerFrame.origin.x += 7;
-        view.frame = containerFrame;
-        
-        
-        UILabel *errorLabel = [[UILabel alloc] init];
-        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
-        errorLabel.numberOfLines = 0;
-        [errorLabel sizeToFit];
-        errorLabel.textColor = [UIColor whiteColor];
-        errorLabel.frame = CGRectMake(15, 50, view.frame.size.width-20, 100);
-        
-        UIButton *invite = [UIButton buttonWithType:UIButtonTypeSystem];
-        invite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        invite.layer.cornerRadius = 10;
-        invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
-        [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        invite.frame = CGRectMake(50, view.bounds.size.height - 130, 200, 50);
-        [invite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        [view addSubview:errorLabel];
-        [view addSubview:invite];
-        [self.myTable addSubview:view];
+        [self.myTable addSubview:self.errorContainerView];
     }
     
     
@@ -226,7 +193,7 @@
                                                         
                                                         NSError *error;
                                                         if (![challenge.managedObjectContext save:&error]){
-                                                            NSLog(@"%@",error);
+                                                            DLog(@"%@",error);
                                                             
                                                         }
 
@@ -240,6 +207,11 @@
                                         }
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                            if ([self.cData count] > 0){
+                                                [self.errorContainerView removeFromSuperview];
+                                                 self.errorContainerView = nil;
+                                            }
+
                                             [self.myTable reloadData];
                                         });
                                     }
@@ -413,7 +385,7 @@
         if (pick && [pick isKindOfClass:[ChallengePicks class]]){
             if (((ChallengePicks *)pick).is_chosen || ((ChallengePicks *)pick).challenge.is_chosen){
 #warning show trophy here if selected caption is mines
-                NSLog(@"should show badge");
+                DLog(@"should show badge");
             }
             
         }
@@ -483,7 +455,7 @@
     
     NSError *error;
     if (![challenge.managedObjectContext save:&error]){
-        NSLog(@"%@",error);
+        DLog(@"%@",error);
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -524,6 +496,51 @@
     
     return _notifications;
 }
+
+- (UIView *)errorContainerView
+{
+    if (!_errorContainerView){
+        
+        _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
+        _errorContainerView.layer.cornerRadius = 10;
+        _errorContainerView.layer.masksToBounds = YES;
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        
+        CGRect containerFrame = _errorContainerView.frame;
+        containerFrame.size.width -= 15;
+        containerFrame.size.height -= 250;
+        containerFrame.origin.y += 25;
+        containerFrame.origin.x += 7;
+        _errorContainerView.frame = containerFrame;
+        
+        
+        UILabel *errorLabel = [[UILabel alloc] init];
+        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
+        errorLabel.numberOfLines = 0;
+        [errorLabel sizeToFit];
+        errorLabel.textColor = [UIColor whiteColor];
+        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width-20, 100);
+        
+        UIButton *invite = [UIButton buttonWithType:UIButtonTypeSystem];
+        invite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        invite.layer.cornerRadius = 10;
+        invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
+        [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        [invite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [_errorContainerView addSubview:errorLabel];
+        [_errorContainerView addSubview:invite];
+        
+    }
+    
+    return _errorContainerView;
+}
+
+
 
 
 

@@ -83,7 +83,7 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSLog(@"check if this challenge is acive.. if not shoot back to history");
+    DLog(@"check if this challenge is acive.. if not shoot back to history");
     if (!self.myChallenge.active){
         
     }
@@ -259,7 +259,7 @@ typedef void (^ShareToNetworksBlock) ();
             }
             else
             {
-                NSLog(@"Error Instagram is either not installed or image is incorrect size");
+                DLog(@"Error Instagram is either not installed or image is incorrect size");
                 [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
                 
                   self.myInstagramLabel.textColor = [UIColor whiteColor];
@@ -273,7 +273,7 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)tappedTwitter
 {
-    NSLog(@"tapped twitter");
+    DLog(@"tapped twitter");
     self.shareTwitter = !self.shareTwitter;
     if (self.shareTwitter){
         self.myTwitterLabel.textColor = [UIColor colorWithHexString:CAPTIFY_TWITTER];
@@ -313,7 +313,7 @@ typedef void (^ShareToNetworksBlock) ();
 {
     [self.friends postImage:self.shareImage block:^(BOOL wasSuccessful) {
         if (wasSuccessful){
-            NSLog(@"good money");
+            DLog(@"good money");
         }
     }];
 }
@@ -359,6 +359,15 @@ typedef void (^ShareToNetworksBlock) ();
             [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Facebook" action:@"Share" target:targetUrl] build]];
         }
         
+        if (USE_GOOGLE_ANALYTICS){
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                  action:@"facebook"
+                                                                   label:@"share"
+                                                                   value:nil] build]];
+        }
+        
+
         [self sendFacebook];
         
         
@@ -371,6 +380,15 @@ typedef void (^ShareToNetworksBlock) ();
             NSString *targetUrl = @"https://developers.google.com/analytics";
             [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Twitter" action:@"Share" target:targetUrl] build]];
         }
+        
+        if (USE_GOOGLE_ANALYTICS){
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                  action:@"twitter"
+                                                                   label:@"share"
+                                                                   value:nil] build]];
+        }
+
         
         [self sendTwitter];
 
@@ -403,7 +421,7 @@ typedef void (^ShareToNetworksBlock) ();
                              facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
                                 feedBlock:^(BOOL wasSuccessful) {
                                     if (wasSuccessful){
-                                        NSLog(@"posting to feed was successful");
+                                        DLog(@"posting to feed was successful");
                                         if (self.shareTwitter){
                                             [self sendTwitter];
                                         }
@@ -428,7 +446,7 @@ typedef void (^ShareToNetworksBlock) ();
                                      caption:self.selectedCaption
                                        block:^(BOOL wasSuccessful) {
                                            if (wasSuccessful){
-                                               NSLog(@"post to twitter success");
+                                               DLog(@"post to twitter success");
                                                
                                            }
                                            else{
@@ -470,7 +488,7 @@ typedef void (^ShareToNetworksBlock) ();
                                            self.myChallenge.active = [NSNumber numberWithBool:NO];
                                            NSError *error;
                                            if (![self.myChallenge.managedObjectContext save:&error]){
-                                               NSLog(@"%@",error);
+                                               DLog(@"%@",error);
                                            }
                                            
                                            if (!self.haveNotified){
@@ -517,6 +535,15 @@ typedef void (^ShareToNetworksBlock) ();
 #pragma -mark Documents (share to IG) delegate
 -(void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application
 {
+    
+    if (USE_GOOGLE_ANALYTICS){
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                              action:@"instagram"
+                                                               label:@"share"
+                                                               value:nil] build]];
+    }
+
     if (!self.haveNotified){
         [self notifyFriends];
         self.haveNotified = YES;
@@ -529,7 +556,7 @@ typedef void (^ShareToNetworksBlock) ();
         self.myChallenge.shared = [NSNumber numberWithBool:YES];
         NSError *error;
         if(![self.myChallenge.managedObjectContext save:&error]){
-            NSLog(@"%@",error);
+            DLog(@"%@",error);
             
         }
 
@@ -550,6 +577,8 @@ typedef void (^ShareToNetworksBlock) ();
 }
 
 #pragma -mark Message delegate
+
+
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     switch (result) {
@@ -568,6 +597,15 @@ typedef void (^ShareToNetworksBlock) ();
                 NSString *targetUrl = @"https://developers.google.com/analytics";
                 [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"SMS messaging" action:@"Share" target:targetUrl] build]];
             }
+            
+            if (USE_GOOGLE_ANALYTICS){
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                      action:@"sms_text"
+                                                                       label:@"share"
+                                                                       value:nil] build]];
+            }
+
 
             
             [self saveImage];

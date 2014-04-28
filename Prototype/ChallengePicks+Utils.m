@@ -73,7 +73,7 @@
             
             NSError *error;
             if (![pick.managedObjectContext save:&error]){
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                DLog(@"Unresolved error %@, %@", error, [error userInfo]);
                 [ChallengePicks showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
                 
                 abort();
@@ -82,7 +82,7 @@
             
         }
         else{
-            NSLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
+            DLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
 
         }
 
@@ -128,7 +128,7 @@
     
     NSArray *picks = [context executeFetchRequest:request error:&error];
     if (! picks){
-        NSLog(@"%@",error);
+        DLog(@"%@",error);
         return nil;
     }
     
@@ -177,7 +177,7 @@
          }
          failure:^(NSURLSessionDataTask *task, NSError *error) {
              [client stopNetworkActivity];
-             NSLog(@"%@",error);
+             DLog(@"%@",error);
              if (block){
                  block(NO, YES, error.localizedDescription, nil);
                  [JDStatusBarNotification showWithStatus:error.localizedDescription
