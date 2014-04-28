@@ -421,13 +421,16 @@
 
 - (void)showFacebookInvite
 {
-    UIViewController *menu = self.sideMenuViewController.menuViewController;
-    if ([menu isKindOfClass:[MenuViewController class]]){
-        [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
-    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        UIViewController *menu = self.sideMenuViewController.menuViewController;
+        if ([menu isKindOfClass:[MenuViewController class]]){
+            [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
+        }
+        
+        UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
+        [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
+    }];
     
-    UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
-    [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
 }
 
 
@@ -582,8 +585,12 @@
         
         if (empty){
             // add subview with error message
-            self.facebookScreen.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-            [friendPicker.tableView addSubview:self.errorContainerView];
+            //self.facebookScreen.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
+            [friendPicker.tableView removeFromSuperview];
+            [friendPicker.view addSubview:self.errorContainerView];
+            friendPicker.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+
             
         }
         else{
@@ -690,14 +697,14 @@
         CGRect containerFrame = _errorContainerView.frame;
         containerFrame.size.width -= 15;
         containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
+        containerFrame.origin.y += 150;
         containerFrame.origin.x += 7;
         _errorContainerView.frame = containerFrame;
         
         
         UILabel *errorLabel = [[UILabel alloc] init];
         errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        errorLabel.text = @"None of your contacts are on Captify! Tell some friends to Join!";
+        errorLabel.text = @"None of your facebook friends are on Captify! Tell some friends to Join!";
         errorLabel.numberOfLines = 0;
         [errorLabel sizeToFit];
         errorLabel.textColor = [UIColor whiteColor];
@@ -709,7 +716,7 @@
         invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
         [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 90, 200, 50);
         [invite addTarget:self action:@selector(showFacebookInvite) forControlEvents:UIControlEventTouchUpInside];
         
         

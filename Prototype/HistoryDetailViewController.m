@@ -94,6 +94,7 @@
 @property (strong,nonatomic)NSArray *activeFilters;
 @property (strong, nonatomic)NSString *currentFilter;
 @property (strong, nonatomic)NSIndexPath *previousCellIndex;
+@property (strong, nonatomic)UITableViewCell *previousCell;
 
 @property BOOL pendingRequest;
 @property BOOL makeButtonVisible;
@@ -928,19 +929,35 @@
     NSIndexPath *indexPath = [self.myTable indexPathForRowAtPoint:buttonPosition];
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    NSArray *visibleCells = [self.myTable visibleCells];
     
-    if (self.previousCellIndex && ![self.previousCellIndex isEqual:indexPath]){
-        UITableViewCell *previousCell = [self.myTable cellForRowAtIndexPath:self.previousCellIndex];
-        previousCell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    NSString *checkCaption = [((HistoryDetailCell *)cell).myCaptionLabel.text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    
+    if ([pick.answer isEqualToString:checkCaption]){
+        cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     }
+    else{
+        cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
+    
+    if (self.previousCell && ![self.previousCell isEqual:cell]){
+        self.previousCell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    }
+    
+    for (UITableViewCell *ce in visibleCells){
+        if (![ce isEqual:cell]){
+            ce.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        }
+    }
+    
+    
     if (indexPath != nil){
         self.selectedPick = pick;
         self.selectedCaption = pick.answer;
         self.selectedUsername = pick.player.username;
     }
 
-    self.previousCellIndex = indexPath;
+    self.previousCell = cell;
     [self.finalCaptionLabel stopGlowing];
     self.hideSelectButtons = YES;
     //[self.myTable reloadData];

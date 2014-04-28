@@ -66,10 +66,9 @@
 
     
     
-    if ([self.data count] > 0){
-#warning change this to == 0 instead of >
-        self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-        [self.myTable addSubview:self.errorContainerView];
+    if ([self.myFriends count] == 0){
+        [self.myTable removeFromSuperview];
+        [self.view addSubview:self.errorContainerView];
     }
     
     
@@ -328,8 +327,8 @@
         
         CGRect containerFrame = _errorContainerView.frame;
         containerFrame.size.width -= 15;
-        containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
+        containerFrame.size.height -= 300;
+        containerFrame.origin.y += 150;
         containerFrame.origin.x += 7;
         _errorContainerView.frame = containerFrame;
         
@@ -348,7 +347,7 @@
         invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
         [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 134, 200, 50);
         [invite addTarget:self action:@selector(sendTextInvite) forControlEvents:UIControlEventTouchUpInside];
         
         
