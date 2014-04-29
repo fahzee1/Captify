@@ -15,6 +15,7 @@
 #import "UIAlertView+AFNetworking.h"
 #import "UIColor+HexValue.h"
 #import "CJPopup.h"
+#import "MBProgressHUD.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
@@ -97,8 +98,9 @@
     }else{
         
         
-        CJPopup *hud = [[CJPopup alloc] init];
-        [hud showBlackActivityWithMessage:@"Logging In"];
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"user_friends",@"user_photos"]
@@ -111,7 +113,7 @@
                                           
                                           //get username
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                              [hud hideNoAnimation];
+                                              [hud hide:YES];
                                               if (!error){
                                                   //DLog(@"%@",result);
                                                   NSNumber *fbookId = [result valueForKey:@"id"];
@@ -133,7 +135,7 @@
                                                 // show homescreen call back handled in delegate
                                                 NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                     
-                                                    [hud hideNoAnimation];
+                                                    [hud hide:YES];
                                                     if (wasSuccessful){
                                                               [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
                                                               [[NSUserDefaults standardUserDefaults] synchronize];

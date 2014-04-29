@@ -322,7 +322,7 @@
                 message:(NSString *)message
                 caption:(NSString *)caption
                    name:(NSString *)name
-                        albumID:(NSString *)albumId
+                    albumID:(NSString *)albumId
                    facebookUser:(BOOL)isFB
               feedBlock:(FacebookPostStatus)fblock
 
@@ -442,7 +442,7 @@
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     
     //specifiy APP id permissions
-    NSDictionary *options = @{ACFacebookAppIdKey: @"0000",
+    NSDictionary *options = @{ACFacebookAppIdKey:CAPTIFY_FACEBOOK_ID,
                               ACFacebookPermissionsKey:@[@"publish_stream", @"publish_actions"],
                               ACFacebookAudienceKey:ACFacebookAudienceEveryone};
     
@@ -454,20 +454,29 @@
                                                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
                                                ACAccount *facebookAccount = [accounts lastObject];
                                                
-                                               NSDictionary *params1 = @{@"image": image,
+                                               NSDictionary *params1 = @{
                                                                          @"message":message,
                                                                          @"caption":caption,
                                                                          @"name":name};
                                                
-                                               NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+    
                                                
                                                SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
                                                                                            requestMethod:SLRequestMethodPOST
-                                                                                                     URL:feedURL
+                                                                                                     URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
                                                                                               parameters:params1];
+                            
+                                               [feedRequest addMultipartData:UIImagePNGRepresentation(image)
+                                                                    withName:@"picture"
+                                                                        type:@"image/png"
+                                                                    filename:nil];
+                                               
+                                               
                                                feedRequest.account = facebookAccount;
                                                [feedRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                                                    DLog(@"%@",urlResponse);
                                                    if (error){
+                                                       NSLog(@"%@",error);
                                                        if (fblock){
                                                            fblock(NO);
                                                        }
@@ -475,7 +484,9 @@
                                                    }
                                                    else{
                                                        // successfully posted to feed now post to album
-                                                       NSURL *albumURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId]];
+                                                       NSString *albumString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId];
+                                                       NSString *finalAlbum = [albumString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                                                       NSURL *albumURL = [NSURL URLWithString:finalAlbum];
                                                        NSDictionary *params2 = @{@"source": image};
                                                        
                                                        SLRequest *albumRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
@@ -484,6 +495,7 @@
                                                                                                        parameters:params2];
                                                        [albumRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                                                            if (error){
+                                                                NSLog(@"%@",error);
                                                                if (fblock){
                                                                    fblock(NO);
                                                                }
@@ -493,6 +505,7 @@
                                                                if (fblock){
                                                                    fblock(YES);
                                                                    DLog(@"%ld status code",(long)[urlResponse statusCode]);
+                                                                   DLog(@"%@",urlResponse);
                                                                }
                                                                return;
                                                            }

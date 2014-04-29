@@ -103,6 +103,7 @@
     [super viewDidLoad];
     
 
+     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts];
 
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
@@ -649,6 +650,8 @@
 
 
 - (IBAction)tappedNextPreview:(UIButton *)sender {
+    
+    self.previewNextButton.userInteractionEnabled = NO;
     if ([self.previewTextField.text length] == 0){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Alert error title")
                                                             message:NSLocalizedString(@"Must enter challenge title before continuing", @"Alert error message")
@@ -705,6 +708,7 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.navigationController pushViewController:vc animated:YES];
+        self.previewNextButton.userInteractionEnabled = YES;
 
     });
 }

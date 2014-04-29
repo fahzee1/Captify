@@ -71,7 +71,7 @@
     
      application.applicationIconBadgeNumber = 0;
     
-    [self createAlbumAfterTime:60.0 * 5];
+    [self createAlbumAfterTime:30.0];
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
         

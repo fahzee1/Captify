@@ -200,7 +200,7 @@
     request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
     }
     else{
-        request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.is_friend = 1)"];
+        request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.username != %@) && (recipients.",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
     }
      
 
@@ -385,30 +385,38 @@
             NSString *media_url = [params valueForKey:@"media_url"];
             NSString *local_url = [params valueForKey:@"local_media_url"];
             NSNumber *active = [params valueForKey:@"active"];
-            challenge.image_path = media_url ? media_url : NULL;
-            challenge.local_image_path = local_url ? local_url : NULL;
-            challenge.active = active ? active : [NSNumber numberWithBool:YES];
-
-            
-            for (NSString *friend in [params valueForKey:@"recipients"]){
-                User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
-                if (uFriend && uFriend.is_friend && !uFriend.super_user){
-                    [challenge addRecipientsObject:uFriend];
-                }
-            }
-            
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *error;
-                if (![challenge.managedObjectContext save:&error]){
-                    DLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                    [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
-                    
-                    abort();
-                    
+            @try {
+                challenge.image_path = media_url;
+                challenge.local_image_path = local_url;
+                challenge.active = active ? active : [NSNumber numberWithBool:YES];
+                
+                for (NSString *friend in [params valueForKey:@"recipients"]){
+                    User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
+                    if (uFriend && uFriend.is_friend && !uFriend.super_user){
+                        [challenge addRecipientsObject:uFriend];
+                    }
                 }
                 
-            });
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *error;
+                    if (![challenge.managedObjectContext save:&error]){
+                        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                        [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+                        
+                        abort();
+                        
+                    }
+                    
+                });
+
+
+
+            }
+            @catch (NSException *exception) {
+                DLog(@"%@",exception);
+            }
+                        
+            
         }
         // no user
         else{

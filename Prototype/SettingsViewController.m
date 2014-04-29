@@ -449,6 +449,7 @@
                 [defaults setValue:[NSNumber numberWithInt:0] forKey:@"challengeToolTip"];
                 [defaults setValue:[NSNumber numberWithInt:0] forKey:@"homeToolTip"];
                 [defaults removeObjectForKey:@"superuser"];
+                [defaults removeObjectForKey:@"albumID"];
                 HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
                 home.goToLogin = YES;
                 UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];

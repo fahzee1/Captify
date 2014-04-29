@@ -368,7 +368,12 @@ typedef void (^ShareToNetworksBlock) ();
         }
         
 
-        [self sendFacebook];
+        if (block){
+            [self sendFacebookWithBlock:block];
+        }
+        else{
+            [self sendFacebookWithBlock:nil];
+        }
         
         
     }
@@ -389,41 +394,53 @@ typedef void (^ShareToNetworksBlock) ();
                                                                    value:nil] build]];
         }
 
-        
-        [self sendTwitter];
+        if (block){
+            [self sendTwitterWithBlock:block];
+        }
+        else{
+            [self sendTwitterWithBlock:nil];
+        }
 
         
     }
     
     
-    
-    if (block){
-        block();
-    }
     
     
 
 }
 
-- (void)sendFacebook
+- (void)sendFacebookWithBlock:(ShareToNetworksBlock)block
 {
     
     NSString *albumID = [[NSUserDefaults standardUserDefaults] objectForKey:@"albumID"];
     if (!albumID){
         albumID = @"NEED TO GRAB THIS";
+        return;
     }
 
     [self.friends postImageToFacebookFeed:self.shareImage
                                   message:self.selectedCaption
                                   caption:self.selectedCaption
-                                     name:@"A name"
+                                     name:self.selectedCaption
                                   albumID:albumID
-                             facebookUser:[[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]
+                             facebookUser:NO
                                 feedBlock:^(BOOL wasSuccessful) {
+                                    [self.hud hide:YES];
                                     if (wasSuccessful){
                                         DLog(@"posting to feed was successful");
                                         if (self.shareTwitter){
-                                            [self sendTwitter];
+                                            if (block){
+                                                [self sendTwitterWithBlock:block];
+                                            }
+                                            else{
+                                                [self sendTwitterWithBlock:nil];
+                                            }
+                                        }
+                                        else{
+                                            if (block){
+                                                block();
+                                            }
                                         }
                                         
                                     }
@@ -438,15 +455,19 @@ typedef void (^ShareToNetworksBlock) ();
 
 }
 
-- (void)sendTwitter
+- (void)sendTwitterWithBlock:(ShareToNetworksBlock)block
 {
     if (self.sendTW){
         self.sendTW = NO;
         [self.friends postImageToTwitterFeed:self.shareImage
                                      caption:self.selectedCaption
                                        block:^(BOOL wasSuccessful) {
+                                           [self.hud hide:YES];
                                            if (wasSuccessful){
                                                DLog(@"post to twitter success");
+                                               if (block){
+                                                   block();
+                                               }
                                                
                                            }
                                            else{
