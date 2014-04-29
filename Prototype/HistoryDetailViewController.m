@@ -81,7 +81,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *captionImageFilterLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
-
+@property (strong, nonatomic)UIView *errorContainerView;
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
@@ -134,7 +134,7 @@
     
     //self.navigationItem.rightBarButtonItem = nextButton;
     
- 
+    
     self.activeFonts = [NSArray arrayWithObjects:CAPTIFY_FONT_GOODDOG,
                                                  CAPTIFY_FONT_GLOBAL_BOLD,
                                                  CAPTIFY_FONT_LEMONDROP,
@@ -178,7 +178,10 @@
     }
     
     // shows error message if no captions
-    [self checkForCaptions];
+    if ([self.data count] == 0){
+        [self.view addSubview:self.errorContainerView];
+    }
+
     
 }
 
@@ -287,6 +290,11 @@
                                          }
                                          
                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                             if ([self.data count] > 0){
+                                                 [self.errorContainerView removeFromSuperview];
+                                                 self.errorContainerView = nil;
+                                             }
+                                             
                                              [self.myTable reloadData];
                                          });
 
@@ -373,34 +381,9 @@
     
 }
 
+
 - (void)checkForCaptions
 {
-    if ([self.data count] == 0){
-        UIView *container = [[UIView alloc] initWithFrame:self.myTable.frame];
-        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
-        container.layer.cornerRadius = 10;
-        container.layer.masksToBounds = YES;
-        CGRect containerFrame = container.frame;
-        containerFrame.size.width -= 30;
-        containerFrame.size.height -= 30;
-        containerFrame.origin.x += 15;
-        containerFrame.origin.y += 15;
-        container.frame = containerFrame;
-        
-        CGRect bounds = container.bounds;
-        
-        UILabel *message = [[UILabel alloc] init];
-        message.textColor = [UIColor whiteColor];
-        message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-        message.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
-        message.numberOfLines = 0;
-        [message sizeToFit];
-        message.frame = CGRectMake(bounds.size.width/10, bounds.size.height/3, bounds.size.width, 40);
-        
-        [container addSubview:message];
-        
-        [self.view addSubview:container];
-    }
 }
 
 - (void)downloadImage
@@ -1516,6 +1499,39 @@
     return _etikateFilter;
 }
 
+
+- (UIView *)errorContainerView
+{
+    if (!_errorContainerView){
+        
+        _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        _errorContainerView.layer.cornerRadius = 10;
+        _errorContainerView.layer.masksToBounds = YES;
+        CGRect containerFrame = _errorContainerView.frame;
+        containerFrame.size.width -= 30;
+        containerFrame.size.height -= 30;
+        containerFrame.origin.x += 15;
+        containerFrame.origin.y += 15;
+        _errorContainerView.frame = containerFrame;
+        
+        CGRect bounds = _errorContainerView.bounds;
+        
+        UILabel *message = [[UILabel alloc] init];
+        message.textColor = [UIColor whiteColor];
+        message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+        message.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
+        message.numberOfLines = 0;
+        [message sizeToFit];
+        message.frame = CGRectMake(bounds.size.width/10, bounds.size.height/3, bounds.size.width, 40);
+        
+        [_errorContainerView addSubview:message];
+
+    }
+    
+    
+    return _errorContainerView;
+}
 
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message

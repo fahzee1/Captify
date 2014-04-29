@@ -161,6 +161,33 @@
                      return;
                  }
                  
+                 if (result == FBWebDialogResultDialogNotCompleted){
+                     [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Unable to send invitaton at this momemt. Make sure you're connected to the internet", nil)];
+                     if (block){
+                         block(NO,result);
+                     }
+
+                     return;
+                 }
+                 else if (![[resultURL description] hasPrefix:@"fbconnect://success?request="]){
+                     if (block){
+                         block(NO,result);
+                     }
+
+                     return;
+                 }
+                 else{
+                     // success
+                     
+                     if (block){
+                         block(YES,result);
+                     }
+                     
+                     DLog(@"%@",resultURL);
+
+                 }
+                 
+                 /*
                  NSDictionary *params = [self parseURLParams:[resultURL query]];
                  NSMutableArray *IDS = [[NSMutableArray alloc] init];
                  for (NSString *key in params){
@@ -181,6 +208,7 @@
                      }
 
                  }
+                  */
                  
             }
          }];
@@ -365,63 +393,62 @@
     }
     
     
-    NSDictionary *params1 = @{@"image": image,
+    /*
+    NSDictionary *params1 = @{@"album":albumId,
                              @"message":message,
-                             @"caption":caption,
-                             @"name":name};
+                             @"caption":caption};
     
     
-   FBRequest *request = [FBRequest requestWithGraphPath:@"me/feed"
-                         parameters:params1
-                         HTTPMethod:@"POST"];
+    // upload to album
+    FBRequest *request = [FBRequest requestForUploadPhoto:image];
+    [request.parameters addEntriesFromDictionary:params1];
     
-    // first publish to feed
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (error){
-            if (fblock) {
-                fblock(NO);
-         
-            
-            }
-            return;
-        }
-        
-        if (fblock){
-            DLog(@"feed result %@",result);
-            fblock(YES);
-        }
-        
-        
+    FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+    [connection addRequest:request
+         completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+             if (error){
+                 NSLog(@"%@",error);
+                 if (fblock) {
+                     fblock(NO);
+                     
+                     
+                 }
+                 return;
+             }
+             
+             if (fblock){
+                 DLog(@"album result %@",result);
+                 fblock(YES);
+             }
+
     }];
-    
-    
-    NSDictionary *params2 = @{@"source": image};
-    
-    NSString *albumPath = [NSString stringWithFormat:@"%@/photos",albumId];
-    FBRequest *albumRequest = [FBRequest requestWithGraphPath:albumPath
-                                                   parameters:params2
-                                                   HTTPMethod:@"POST"];
-    
+     */
 
     
-    // second save to photo album
-    [albumRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (error){
-            DLog(@"Remember to get album id and add to user defaults with method createAlbumwithname in facebook friends");
-            DLog(@"%@",error);
-            if (fblock){
-                fblock(NO);
-            }
-            
-            return;
-        }
-        
-        if (fblock){
-            DLog(@"album result %@",result);
-            fblock(YES);
-        }
-    }];
-
+    // upload to feed
+    NSDictionary *params2 = @{@"picture": image,
+                              @"caption":caption,
+                              @"message":message};
+    
+    [FBRequestConnection startWithGraphPath:@"me/photos"
+                                 parameters:params2
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (error){
+                                  NSLog(@"%@",error);
+                                  if (fblock) {
+                                      fblock(NO);
+                                      
+                                      
+                                  }
+                                  return;
+                              }
+                              
+                              if (fblock){
+                                  DLog(@"feed result %@",result);
+                                  fblock(YES);
+                              }
+                          }];
     
     
     
@@ -466,9 +493,9 @@
                                                                                                      URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
                                                                                               parameters:params1];
                             
-                                               [feedRequest addMultipartData:UIImagePNGRepresentation(image)
+                                               [feedRequest addMultipartData:UIImageJPEGRepresentation(image, 1.f)
                                                                     withName:@"picture"
-                                                                        type:@"image/png"
+                                                                        type:@"image/jpeg"
                                                                     filename:nil];
                                                
                                                

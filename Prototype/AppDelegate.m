@@ -71,7 +71,8 @@
     
      application.applicationIconBadgeNumber = 0;
     
-    [self createAlbumAfterTime:30.0];
+    //[self createAlbumAfterTime:30.0];
+    
     if ([[defaults valueForKey:@"facebook_user"]boolValue]){
         NSLog(@"facebook user");
         
@@ -174,10 +175,12 @@
     NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (notificationPayload){
         [self handlePushNotificationPayload:notificationPayload isForeground:NO];
+        DLog(@"got notification from background show history screen");
     }
     else{
         [self setupHomeViewControllers];
     }
+
     
     [Appirater setAppId:@"865825526"];
     [Appirater setDaysUntilPrompt:5];
@@ -807,6 +810,8 @@
                 }
                
             }
+            
+            [self setupHistoryViewControllers];
         }
             break;
         case ParseNotificationNotifySelectedCaptionSender:
@@ -821,7 +826,10 @@
     }
     
     
-        //[self setupHistoryViewControllers];
+    if (!isF){
+        [self setupHistoryViewControllers];
+    }
+
 }
 
 @end

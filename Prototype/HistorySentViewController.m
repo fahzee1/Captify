@@ -192,8 +192,9 @@
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             if ([self.data count] > 0){
-                                                self.errorContainerView = nil;
                                                 [self.errorContainerView removeFromSuperview];
+                                                self.errorContainerView = nil;
+                                
                                             }
                                             
 
@@ -445,8 +446,8 @@
 
 - (NSArray *)data
 {
-    _data = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
-                                                    sent:YES];
+    _data = [Challenge getHistoryChallengesForUser:self.myUser
+                                              sent:YES];
     return _data;
 }
 

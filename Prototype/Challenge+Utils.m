@@ -189,18 +189,18 @@
 }
 
 
-+ (NSArray *)getHistoryChallengesInContext:(NSManagedObjectContext *)context
-                                      sent:(BOOL)sent
++ (NSArray *)getHistoryChallengesForUser:(User *)user
+                                    sent:(BOOL)sent
 {
     NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[self name]];
     
     
     if (sent){
-    request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user = 1) && (sender.username = %@)",user.username];
     }
     else{
-        request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.username != %@) && (recipients.",[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+        request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.username != %@) && (recipients CONTAINS %@)",user.username, user];
     }
      
 
@@ -208,7 +208,7 @@
     request.sortDescriptors = @[sortByDate];
     
     
-    return [context executeFetchRequest:request error:&error];
+    return [user.managedObjectContext executeFetchRequest:request error:&error];
 }
 
 
@@ -394,6 +394,10 @@
                     User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
                     if (uFriend && uFriend.is_friend && !uFriend.super_user){
                         [challenge addRecipientsObject:uFriend];
+                    }
+                    else{
+                        DLog(@"%@ is either not there, not afriend, or a super user",friend);
+                        
                     }
                 }
                 

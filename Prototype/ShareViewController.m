@@ -424,7 +424,7 @@ typedef void (^ShareToNetworksBlock) ();
                                   caption:self.selectedCaption
                                      name:self.selectedCaption
                                   albumID:albumID
-                             facebookUser:NO
+                             facebookUser:self.myChallenge.sender.facebook_user
                                 feedBlock:^(BOOL wasSuccessful) {
                                     [self.hud hide:YES];
                                     if (wasSuccessful){

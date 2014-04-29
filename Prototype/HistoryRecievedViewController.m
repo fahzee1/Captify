@@ -468,8 +468,8 @@
 
 - (NSArray *)cData
 {
-    _cData = [Challenge getHistoryChallengesInContext:self.myUser.managedObjectContext
-                                                    sent:NO];
+    _cData = [Challenge getHistoryChallengesForUser:self.myUser
+                                               sent:NO];
     return _cData;
 }
 

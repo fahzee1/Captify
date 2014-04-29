@@ -182,15 +182,30 @@
     NSInteger gotUser = [self checkIfUserWithFetch:request
                                            context:context
                                              error:&error];
+    
+    User *user = nil;
     if (gotUser > 0)
     {
         // if we have user return user
-        return [self getUserWithFetch:request
+    
+        
+        user = [self getUserWithFetch:request
                               context:context
                                 error:&error];
+        
+        NSNumber *fbUser = [params valueForKey:@"facebook_user"];
+        user.facebook_id = [NSNumber numberWithInt:(int)[params valueForKey:@"fbook_id"]];
+        user.facebook_user = fbUser;
+        
+        if (![user.managedObjectContext save:&error]){
+            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+            
+        }
+        
+        return user;
     }
     
-    User *user = nil;
     if (!skip){
         // else create a user, save, and return user (register)
         user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
@@ -471,10 +486,11 @@
                                                  NSString *email = [responseObject valueForKeyPath:@"user.email"];
                                                  NSString *phone_number = [responseObject valueForKeyPath:@"phone_number"];
                                                  NSNumber *score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"]intValue]];
-                                                 NSNumber *facebook = [NSNumber numberWithBool:[[responseObject valueForKey:@"facebook_user"] boolValue]];
+                                                 NSNumber *facebook = [NSNumber numberWithBool:YES];
                                                  NSNumber *privacy = [NSNumber numberWithInt:0];
                                                  NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
-                                                 NSNumber *facebook_id = [NSNumber numberWithInt:[[responseObject valueForKey:@"facebook_id"] intValue]];
+                                                 NSString *fbIDString = [responseObject valueForKey:@"facebook_id"];
+                                                 NSNumber *facebook_id = [responseObject valueForKey:@"facebook_id"]; //[NSNumber numberWithInteger:[fbIDString integerValue]];
                                                  // prepare to get or create a user
                                                  NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
                                                  NSDictionary *gcParams = @{@"username": username,

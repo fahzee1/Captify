@@ -106,6 +106,7 @@
      //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts];
 
+    NSLog(@"%@",self.myUser);
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         
         /*

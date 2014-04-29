@@ -67,6 +67,7 @@
     vc.view.frame = self.myContainerView.frame;
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
+
     
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
@@ -110,7 +111,6 @@
 
 - (void)inviteFriendsFromList
 {
-    [self.friendPickerController clearSelection];
     
     if ([self.selectedFriends count] > 0){
         for (NSDictionary *dict in self.selectedFriends){
@@ -130,6 +130,7 @@
                                   }];
 
         // reset
+        [self.friendPickerController clearSelection];
         self.selectedFriends = nil;
         self.selectedIDS = nil;
     }
@@ -249,7 +250,7 @@
     }
     
     [self.friendPickerController clearSelection];
-    [self.friendPickerController updateView];
+    //[self.friendPickerController updateView];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -257,7 +258,7 @@
 - (void)facebookViewControllerCancelWasPressed:(id)sender{
     
     [self.friendPickerController clearSelection];
-    [self.friendPickerController updateView];
+    //[self.friendPickerController updateView];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -339,15 +340,14 @@
         _friendPickerController.allowsMultipleSelection = YES;
         [_friendPickerController configureUsingCachedDescriptor:self.cacheDescriptor];
         
+        CGRect frame =  _friendPickerController.tableView.frame;
+        frame.origin.y -= 7;
+        _friendPickerController.tableView.frame = frame;
+
         
     }
     //_friendPickerController.tableView.delegate = self;
     _friendPickerController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //_friendPickerController.tableView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    _friendPickerController.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    CGRect frame =  _friendPickerController.tableView.frame;
-    frame.origin.y -= 7;
-    _friendPickerController.tableView.frame = frame;
     
     if ([_friendPickerController.tableView respondsToSelector:@selector(setSectionIndexColor:)]){
         //_friendPickerController.tableView.sectionIndexBackgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];

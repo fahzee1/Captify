@@ -42,8 +42,9 @@ typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSStrin
                                 getAll:(BOOL)all
                                context:(NSManagedObjectContext *)context;
 
-+ (NSArray *)getHistoryChallengesInContext:(NSManagedObjectContext *)context
++ (NSArray *)getHistoryChallengesForUser:(User *)user
                                       sent:(BOOL)sent;
+
 
 
 + (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;
