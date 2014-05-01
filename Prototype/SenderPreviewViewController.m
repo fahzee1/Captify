@@ -20,7 +20,7 @@
 #import "ParseNotifications.h"
 #import "SocialFriends.h"
 #import "ContactsViewController.h"
-#import "CJPopup.h"
+#import "MBProgressHUD.h"
 #import "TWTSideMenuViewController.h"
 #import "MenuViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -288,8 +288,16 @@
     }
     
  
-    CJPopup *hud = [[CJPopup alloc] init];
-    [hud showBlackActivityWithMessage:@"Sending"];
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"Sending", nil);
+    hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    hud.detailsLabelText = NSLocalizedString(@"Challenges are active for 24 hours", nil);
+    hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
+    hud.dimBackground = YES;
+ 
+
     
     if ([apiParams count] > 0 && mediaName){
 
@@ -322,7 +330,7 @@
                                                           }
                                                           @finally {
                                                               if (challenge){
-                                                                  [hud hide];
+                                                                  [hud hide:YES];
                                                                   
                                                                   // send notification
                                                                   [self notifyFriendsWithParams:params];
@@ -336,7 +344,7 @@
                                                           
                                                       }
                                                       else{
-                                                          [hud hideNoAnimation];
+                                                          [hud hide:YES];
                                                           if (fail){
                                                               // 500
                                                               if (message){
@@ -387,7 +395,7 @@
 {
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
-    [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",self.myUser.username]
+    [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
               toFriends:self.allFriends
                withData:params
        notificationType:ParseNotificationCreateChallenge
@@ -543,7 +551,7 @@
             NSString *fbID = user[@"id"];
             NSDictionary *params = @{@"username": user[@"name"],
                                      @"facebook_user":[NSNumber numberWithBool:YES],
-                                     @"facebook_id":[NSNumber numberWithInt:[fbID intValue]],
+                                     @"facebook_id":fbID,
                                      };
             
             NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;

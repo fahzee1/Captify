@@ -326,14 +326,14 @@ typedef void (^ShareToNetworksBlock) ();
     
     NSString *channel = [self.myChallenge.challenge_id stringByReplacingOccurrencesOfString:@"." withString:@"-"];
     // notify all receipients of challenge
-    [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",self.myChallenge.sender.username]
+    [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",[self.myChallenge.sender.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
               toChannel:channel
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSenderChoseCaption
                   block:nil];
     
     // notify chosen captions sender
-    [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",self.myChallenge.sender.username]
+    [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",[self.myChallenge.sender.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
                toFriend:self.myPick.player.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationNotifySelectedCaptionSender
@@ -349,7 +349,11 @@ typedef void (^ShareToNetworksBlock) ();
     
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
-    self.hud.labelText = @"Saving/Sharing";
+    self.hud.labelText = NSLocalizedString(@"Sharing", nil);
+    self.hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.hud.detailsLabelText = NSLocalizedString(@"Also saving to photo library", nil);
+    self.hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
     
     if (self.shareFacebook){
         
@@ -633,6 +637,8 @@ typedef void (^ShareToNetworksBlock) ();
             self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             self.hud.mode = MBProgressHUDModeIndeterminate;
             self.hud.labelText = @"Updating";
+            self.hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+            self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
 
         }
             

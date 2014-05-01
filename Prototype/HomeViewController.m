@@ -106,24 +106,25 @@
      //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts];
 
-    NSLog(@"%@",self.myUser);
+    //NSLog(@"%@",self.myUser);
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         
         /*
          User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.myUser.managedObjectContext];
         user.super_user = [NSNumber numberWithBool:NO];
         user.is_friend = [NSNumber numberWithBool:YES];
-        user.facebook_user = [NSNumber numberWithBool:NO];
-        user.username = @"gumbo";
+        user.facebook_user = [NSNumber numberWithBool:YES];
+        user.username = @"Allie-Lewis";
         NSError *e;
         [user.managedObjectContext save:&e];
-        
-        
-        User *user4 = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
-        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
-        User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
          */
         
+        /*
+        User *user4 = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
+        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
+        
+        */
         
         /*
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
@@ -543,9 +544,9 @@
                                                     block:^(BOOL success, id data) {
                                                         if (success){
                                                             for (id user in data[@"contacts"]){
-                                                                NSNumber *facebook_id;
+                                                                NSString *facebook_id;
                                                                 if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
-                                                                    facebook_id = @0;
+                                                                    facebook_id = @"0";
                                                                 }
                                                                 else{
                                                                     facebook_id = user[@"facebook_id"];

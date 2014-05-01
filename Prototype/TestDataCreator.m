@@ -24,7 +24,7 @@
         if (facebook){
         User *user = [self createTestFriendWithName:@"Jolly"
                                            facebook:YES
-                                               fbID:@111
+                                               fbID:@"111"
                                           inContext:context];
             
         [friends addObject:user];
@@ -46,7 +46,7 @@
 
 + (User *)createTestFriendWithName:(NSString *)name
                           facebook:(BOOL)facebook
-                              fbID:(NSNumber *)fbID
+                              fbID:(NSString *)fbID
                          inContext:(NSManagedObjectContext *)context
 {
     NSError *error;

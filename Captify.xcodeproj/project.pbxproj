@@ -55,7 +55,6 @@
 		1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */; };
 		1126C09118E9C4D100838484 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C09018E9C4D100838484 /* Notifications.m */; };
 		1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A818EA0E3E00838484 /* ChallengePicks.m */; };
-		1128443618EF273F0056D517 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1128443518EF273F0056D517 /* User.m */; };
 		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */; };
@@ -272,6 +271,8 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
+		1188CDAA19115DF700F6407C /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1188CDA919115DF700F6407C /* Challenge.m */; };
+		1188CDAD19115DF800F6407C /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1188CDAC19115DF800F6407C /* User.m */; };
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
@@ -359,7 +360,6 @@
 		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
 		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
 		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
-		11DF517218F5BBCE008A3B0D /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DF517118F5BBCE008A3B0D /* Challenge.m */; };
 		11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */; };
 		11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */; };
 		11E409811906ED14008C79F2 /* KiloGram_KG.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11E409801906ED14008C79F2 /* KiloGram_KG.otf */; };
@@ -478,8 +478,6 @@
 		1126C09018E9C4D100838484 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		1126C0A718EA0E3E00838484 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
 		1126C0A818EA0E3E00838484 /* ChallengePicks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengePicks.m; sourceTree = "<group>"; };
-		1128443418EF273F0056D517 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		1128443518EF273F0056D517 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		1128443718EF2F520056D517 /* settingsEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = settingsEdit.xib; sourceTree = "<group>"; };
 		11299C741899772E00D69000 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
@@ -905,6 +903,10 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
+		1188CDA819115DF700F6407C /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		1188CDA919115DF700F6407C /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
+		1188CDAB19115DF800F6407C /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		1188CDAC19115DF800F6407C /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
 		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
 		118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriendsViewController.h; sourceTree = "<group>"; };
@@ -1039,8 +1041,6 @@
 		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
 		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
-		11DF517018F5BBCE008A3B0D /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		11DF517118F5BBCE008A3B0D /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11DFE7AA18E0A0B700066E62 /* TestDataCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDataCreator.h; sourceTree = "<group>"; };
 		11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestDataCreator.m; sourceTree = "<group>"; };
 		11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChallengePicks+Utils.h"; sourceTree = "<group>"; };
@@ -1266,10 +1266,10 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				11DF517018F5BBCE008A3B0D /* Challenge.h */,
-				11DF517118F5BBCE008A3B0D /* Challenge.m */,
-				1128443418EF273F0056D517 /* User.h */,
-				1128443518EF273F0056D517 /* User.m */,
+				1188CDAB19115DF800F6407C /* User.h */,
+				1188CDAC19115DF800F6407C /* User.m */,
+				1188CDA819115DF700F6407C /* Challenge.h */,
+				1188CDA919115DF700F6407C /* Challenge.m */,
 				1126C0A718EA0E3E00838484 /* ChallengePicks.h */,
 				1126C0A818EA0E3E00838484 /* ChallengePicks.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
@@ -2437,7 +2437,6 @@
 				118EF1B918FC6F4F00755552 /* UIStepper+FlatUI.m in Sources */,
 				1153E18C18A9DF4800AD950E /* GPUImageLuminanceRangeFilter.m in Sources */,
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
-				11DF517218F5BBCE008A3B0D /* Challenge.m in Sources */,
 				118EF1BC18FC6F4F00755552 /* UIToolbar+FlatUI.m in Sources */,
 				11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
@@ -2553,7 +2552,6 @@
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
-				1128443618EF273F0056D517 /* User.m in Sources */,
 				118EF1B718FC6F4F00755552 /* UIProgressView+FlatUI.m in Sources */,
 				113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */,
 				1153E18B18A9DF4800AD950E /* GPUImageLowPassFilter.m in Sources */,
@@ -2589,6 +2587,7 @@
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
 				11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */,
+				1188CDAA19115DF700F6407C /* Challenge.m in Sources */,
 				118EF1BB18FC6F4F00755552 /* UITableViewCell+FlatUI.m in Sources */,
 				118EF1AD18FC6F4F00755552 /* FUIPopoverBackgroundView.m in Sources */,
 				119711E018AE0203008AD895 /* OverlayView.m in Sources */,
@@ -2627,6 +2626,7 @@
 				118EF1AA18FC6F4F00755552 /* FUIAlertView.m in Sources */,
 				1144E3E018EC6F0600DBCF3B /* JDStatusBarView.m in Sources */,
 				1153E1B718A9DF4800AD950E /* GPUImageShiTomasiFeatureDetectionFilter.m in Sources */,
+				1188CDAD19115DF800F6407C /* User.m in Sources */,
 				11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,

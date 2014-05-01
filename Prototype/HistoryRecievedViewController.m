@@ -170,6 +170,8 @@
                                             
                                             if (challenge){
                                                 
+                                                [self.myUser addRecipient_challengesObject:challenge];
+                                                
                                                 // create challenge picks to add to challenge
                                                 for (id results in ch[@"results"]){
                                                     // create picks
@@ -178,7 +180,7 @@
                                                     NSNumber *is_chosen = results[@"is_chosen"];
                                                     NSString *pick_id = results[@"pick_id"];
                                                     NSNumber *is_facebook = results[@"is_facebook"];
-                                                    NSNumber *facebook_id = results[@"facebook_id"];
+                                                    NSString *facebook_id = results[@"facebook_id"];
                                                     
                                                     NSDictionary *params2 = @{@"player": player,
                                                                               @"context":self.myUser.managedObjectContext,

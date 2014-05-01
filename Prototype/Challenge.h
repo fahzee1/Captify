@@ -2,7 +2,7 @@
 //  Challenge.h
 //  Captify
 //
-//  Created by CJ Ogbuehi on 4/9/14.
+//  Created by CJ Ogbuehi on 4/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * image_path;
 @property (nonatomic, retain) NSNumber * is_chosen;
 @property (nonatomic, retain) NSNumber * is_deleted;
+@property (nonatomic, retain) NSString * local_image_path;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * recipients_count;
 @property (nonatomic, retain) NSString * selected_phrase;
@@ -29,7 +30,6 @@
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSString * thumbnail_path;
 @property (nonatomic, retain) NSDate * timestamp;
-@property (nonatomic, retain) NSString * local_image_path;
 @property (nonatomic, retain) NSSet *picks;
 @property (nonatomic, retain) NSSet *recipients;
 @property (nonatomic, retain) User *sender;

@@ -11,7 +11,7 @@
 #import "TWTSideMenuViewController.h"
 #import "ChallengePicks+Utils.h"
 #import <MessageUI/MessageUI.h>
-#import "CJPopup.h"
+#import "MBProgressHUD.h"
 #import "ParseNotifications.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
@@ -161,12 +161,18 @@
     
 
     
-    CJPopup *hud = [[CJPopup alloc] init];
-    [hud showBlackActivityWithMessage:@"Sending"];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"Sending", nil);
+    hud.dimBackground = YES;
+    hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
+
+
     
     [ChallengePicks sendCreatePickRequestWithParams:params
                                               block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
-                                                  [hud hideNoAnimation];
+                                                  [hud hide:YES];
                                                   if (wasSuccessful){
                                                       
                                                       
@@ -245,7 +251,7 @@
                   block:nil];
      */
     
-    [p sendNotification:[NSString stringWithFormat:@"Caption from %@",self.myUser.username]
+    [p sendNotification:[NSString stringWithFormat:@"Caption from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
                toFriend:self.myChallenge.sender.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSendCaptionPick

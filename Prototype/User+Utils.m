@@ -194,7 +194,7 @@
                                 error:&error];
         
         NSNumber *fbUser = [params valueForKey:@"facebook_user"];
-        user.facebook_id = [NSNumber numberWithInt:(int)[params valueForKey:@"fbook_id"]];
+        user.facebook_id = [params valueForKey:@"fbook_id"];
         user.facebook_user = fbUser;
         
         if (![user.managedObjectContext save:&error]){
@@ -489,8 +489,8 @@
                                                  NSNumber *facebook = [NSNumber numberWithBool:YES];
                                                  NSNumber *privacy = [NSNumber numberWithInt:0];
                                                  NSNumber *super_user = [NSNumber numberWithInt:1]; //is a super user
-                                                 NSString *fbIDString = [responseObject valueForKey:@"facebook_id"];
-                                                 NSNumber *facebook_id = [responseObject valueForKey:@"facebook_id"]; //[NSNumber numberWithInteger:[fbIDString integerValue]];
+                                                 NSString *facebook_id = [responseObject valueForKey:@"facebook_id"];
+                        
                                                  // prepare to get or create a user
                                                  NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
                                                  NSDictionary *gcParams = @{@"username": username,

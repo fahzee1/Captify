@@ -100,6 +100,10 @@
         
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"Logging In", nil);
+        hud.dimBackground = YES;
+        hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+
         
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session

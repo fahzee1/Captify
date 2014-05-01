@@ -15,7 +15,7 @@
 
 + (User *)createTestFriendWithName:(NSString *)name
                           facebook:(BOOL)facebook
-                              fbID:(NSNumber *)fbID
+                              fbID:(NSString *)fbID
                          inContext:(NSManagedObjectContext*)context;
 
 + (Challenge *)createTestChallengeWithName:(NSString *)name

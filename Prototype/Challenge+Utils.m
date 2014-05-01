@@ -192,6 +192,7 @@
 + (NSArray *)getHistoryChallengesForUser:(User *)user
                                     sent:(BOOL)sent
 {
+    /*
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[self name]];
     
@@ -202,13 +203,19 @@
     else{
         request.predicate = [NSPredicate predicateWithFormat:@"(sender.super_user != 1) && (sender.username != %@) && (recipients CONTAINS %@)",user.username, user];
     }
-     
-
+     */
+    
+   
     NSSortDescriptor *sortByDate = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
-    request.sortDescriptors = @[sortByDate];
     
+    if (sent){
+        return [user.sent_challenges.allObjects sortedArrayUsingDescriptors:@[sortByDate]];
+    }
+    else{
+        return [user.recipient_challenges.allObjects sortedArrayUsingDescriptors:@[sortByDate]];
+    }
     
-    return [user.managedObjectContext executeFetchRequest:request error:&error];
+
 }
 
 

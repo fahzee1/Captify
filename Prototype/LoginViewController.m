@@ -15,7 +15,7 @@
 #import "HomeViewController.h"
 #import "AppDelegate.h"
 #import "UIColor+HexValue.h"
-#import "CJPopup.h"
+#import "MBProgressHUD.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
 
@@ -149,14 +149,17 @@
 {
     // if we're connected to the internet, login
     
-    CJPopup *hud = [[CJPopup alloc] init];
-    [hud showBlackActivityWithMessage:@"Logging In"];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"Logging In", nil);
+    hud.dimBackground = YES;
+    hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+
     
     NSDictionary *params = @{@"username": self.usernameField.text,
                              @"password": self.passwordField.text};
     NSURLSessionDataTask *task = [User loginWithUsernameAndPassword:params
                                                            callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                               [hud hideNoAnimation];
+                                                               [hud hide:YES];
                                                                if (wasSuccessful) {
                                                                    // data here will be the managed object context to pass to homeview controller
                                                                    // if needed

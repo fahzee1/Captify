@@ -21,6 +21,7 @@
 #import "UIColor+HexValue.h"
 #import "User+Utils.h"
 #import "MenuViewController.h"
+#import "MBProgressHUD.h"
 
 @interface FriendsContainerController ()<FBViewControllerDelegate,FBFriendPickerDelegate, TWTSideMenuViewControllerDelegate,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *myContainerView;
@@ -125,6 +126,16 @@
                                   block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                       if (wasSuccessful){
                                           DLog(@"success");
+                                          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.friendPickerController.view animated:YES];
+                                          [hud hide:YES afterDelay:1.5];
+                                          hud.labelText = @"Success";
+                                          hud.mode = MBProgressHUDModeCustomView;
+                                          hud.color = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] colorWithAlphaComponent:0.8];
+                                          UILabel *check = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+                                          check.font = [UIFont fontWithName:kFontAwesomeFamilyName size:50];
+                                          check.textColor = [UIColor whiteColor];
+                                          check.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"];
+                                          hud.customView = check;
                                       }
                                       [self.friendPickerController clearSelection];
                                   }];
@@ -264,6 +275,7 @@
 
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
+    
     if (friendPicker == self.appFriendPickerController){
         BOOL installed = [user objectForKey:@"installed"] == nil;
         return installed;
