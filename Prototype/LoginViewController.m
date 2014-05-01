@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activitySpinner;
 @property (weak, nonatomic) IBOutlet UIButton *myLoginButton;
+@property CGRect keyboardFrame;
 
 @end
 
@@ -44,6 +45,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view
+    
+    //[self registerKeyboardNotif];
+    
     [self.navigationController setNavigationBarHidden:NO];
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToRoot)];
@@ -70,6 +74,12 @@
     }
 }
 
+- (void)dealloc
+{
+    //[self unregisterKeyboardNotif];
+    
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -80,6 +90,31 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)registerKeyboardNotif
+{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardDidShowNotification object:nil];
+}
+
+- (void)unregisterKeyboardNotif
+{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+}
+
+- (void)keyboardOnScreen:(NSNotification *)notification
+{
+    NSDictionary *info  = notification.userInfo;
+    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rawFrame      = [value CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    
+    DLog(@"keyboardFrame: %@", NSStringFromCGRect(keyboardFrame));
+    
+    self.keyboardFrame = keyboardFrame;
 }
 
 - (void)popToRoot
@@ -105,6 +140,20 @@
     self.myLoginButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myLoginButton.layer.cornerRadius = 5;
     [self.myLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    if (!IS_IPHONE5){
+        CGRect usernameFrame = self.usernameField.frame;
+        CGRect passwordFrame = self.passwordField.frame;
+        CGRect loginButtonFrame = self.myLoginButton.frame;
+        
+        usernameFrame.origin.y -= IPHONE4_PAD;
+        passwordFrame.origin.y -= IPHONE4_PAD;
+        loginButtonFrame.origin.y -= IPHONE4_PAD;
+        
+        self.usernameField.frame = usernameFrame;
+        self.passwordField.frame = passwordFrame;
+        self.myLoginButton.frame = loginButtonFrame;
+    }
 }
 
 

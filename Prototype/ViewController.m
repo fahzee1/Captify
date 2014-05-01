@@ -20,6 +20,7 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *registerButton;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 
 @end
 
@@ -71,6 +72,20 @@
     self.registerButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.registerButton.layer.cornerRadius = 5;
     [self.registerButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+    
+    if (!IS_IPHONE5){
+        CGRect facebookFrame = self.facebookButton.frame;
+        CGRect loginFrame = self.loginButton.frame;
+        CGRect registerFrame = self.registerButton.frame;
+        
+        facebookFrame.origin.y -= IPHONE4_PAD;
+        loginFrame.origin.y -= IPHONE4_PAD;
+        registerFrame.origin.y -= IPHONE4_PAD;
+        
+        self.facebookButton.frame = facebookFrame;
+        self.loginButton.frame = loginFrame;
+        self.registerButton.frame = registerFrame;
+    }
 
     
 }
@@ -107,7 +122,7 @@
         
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"user_friends",@"user_photos"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info",@"user_friends",@"user_photos",@"email"]
                                            allowLoginUI:YES
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                           //get app delegate
@@ -119,25 +134,64 @@
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                               [hud hide:YES];
                                               if (!error){
-                                                  //DLog(@"%@",result);
-                                                  NSNumber *fbookId = [result valueForKey:@"id"];
+                                                  DLog(@"%@",result);
+                                                  NSNumber *fbookId;
                                                   //NSString *fbookName = [result valueForKey:@"username"];
-                                                  NSString *fbookEmail = [result valueForKey:@"email"];
-                                                  NSString *password = [[NSUUID UUID] UUIDString];
-                                                  NSString *fbookFirstName = [result valueForKey:@"first_name"];
-                                                  NSString *fbookLastName = [result valueForKey:@"last_name"];
-                                                  NSString *fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
-                                                  NSDictionary *parms = @{@"username": fbookUsername,
-                                                                          @"email":fbookEmail,
-                                                                          @"password":password,
-                                                                          @"fbook_id":fbookId,
-                                                                          @"first_name":fbookFirstName,
-                                                                          @"last_name":fbookLastName,
-                                                                          @"fbook_user":[NSNumber numberWithBool:YES]};
+                                                  NSString *fbookEmail;
+                                                  NSString *password;
+                                                  NSString *fbookFirstName;
+                                                  NSString *fbookLastName;
+                                                  NSString *fbookUsername;
+                                                  NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:7];
+                                                  @try {
+                                                      fbookId = [result valueForKey:@"id"];
+                                                      //fbookName = [result valueForKey:@"username"];
+                                                      fbookEmail = [result valueForKey:@"email"];
+                                                      password = [[NSUUID UUID] UUIDString];
+                                                      fbookFirstName = [result valueForKey:@"first_name"];
+                                                      fbookLastName = [result valueForKey:@"last_name"];
+                                                      fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
+
+                                                  }
+                                                  @catch (NSException *exception) {
+                                                      DLog(@"%@",exception);
+                                                      if (!fbookEmail){
+                                                          fbookEmail = [NSString stringWithFormat:@"%@@facebook.com",fbookUsername];
+                                                      }
+                                                  }
+                                                  @finally {
+                                                      if (fbookUsername){
+                                                          params[@"username"] = fbookUsername;
+                                                      }
+                                                      if (fbookEmail){
+                                                          params[@"email"] = fbookEmail;
+                                                      }
+                                                      
+                                                      if (password){
+                                                          params[@"password"] = password;
+                                                      }
+                                                      
+                                                      if (fbookId){
+                                                          params[@"fbook_id"] = fbookId;
+                                                      }
+                                                      
+                                                      if (fbookFirstName){
+                                                          params[@"first_name"] = fbookFirstName;
+                                                      }
+                                                      
+                                                      if (fbookLastName){
+                                                          params[@"last_name"] = fbookLastName;
+                                                      }
+                                                      
+                                                      params[@"fbook_user"] = [NSNumber numberWithBool:YES];
+                                                  }
                                                   
+                                                  DLog(@"%@",params);
+                                                  DLog(@"%lu",(unsigned long)[params count]);
+        
                                                   
                                                 // show homescreen call back handled in delegate
-                                                NSURLSessionDataTask *task = [User registerFacebookWithParams:parms callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                     
                                                     [hud hide:YES];
                                                     if (wasSuccessful){

@@ -608,9 +608,8 @@
 
 
 - (IBAction)tappedDone:(id)sender {
-    if (!self.imageControls.hidden){
-         self.imageControls.hidden = YES;
-    }
+    self.imageControls.hidden = YES;
+    
 }
 
 

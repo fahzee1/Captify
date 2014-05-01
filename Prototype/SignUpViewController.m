@@ -102,6 +102,24 @@
     self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myRegisterButton.layer.cornerRadius = 5;
     [self.myRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    if (!IS_IPHONE5){
+        CGRect usernameFrame = self.usernameField.frame;
+        CGRect passwordFrame = self.passwordField.frame;
+        CGRect emailFieldFrame = self.emailField.frame;
+        CGRect registerButtonFrame = self.myRegisterButton.frame;
+        
+        usernameFrame.origin.y -= IPHONE4_PAD;
+        passwordFrame.origin.y -= IPHONE4_PAD;
+        emailFieldFrame.origin.y -= IPHONE4_PAD;
+        registerButtonFrame.origin.y -= IPHONE4_PAD;
+        
+        self.usernameField.frame = usernameFrame;
+        self.passwordField.frame = passwordFrame;
+        self.emailField.frame = emailFieldFrame;
+        self.myRegisterButton.frame = registerButtonFrame;
+    }
+
 }
 
 

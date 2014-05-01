@@ -53,6 +53,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="n5l-UE-TRq" colorLabel="IBBuiltInLabel-Orange"/>
                     <connections>
+                        <outlet property="facebookButton" destination="Ety-OY-geU" id="Tct-ZY-BlO"/>
                         <outlet property="loginButton" destination="8Be-QC-67Y" id="nwF-1q-aDa"/>
                         <outlet property="registerButton" destination="iWH-GB-Mor" id="2Rx-TH-Gc0"/>
                     </connections>

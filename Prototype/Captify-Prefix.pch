@@ -18,6 +18,8 @@
 #endif
 
 #define MY_APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
+#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
+#define IPHONE4_PAD 50
 #define SENDERPICANDNAME_TAG 0012
 #define TITLE_LIMIT 40
 #define CAPTION_LIMIT 40
