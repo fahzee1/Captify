@@ -196,6 +196,7 @@
             //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
             UILabel *username = ((FriendCell *)cell).myFriendUsername;
             username.text = [user.username capitalizedString];
+            [cell.contentView sendSubviewToBack:((FriendCell *)cell).myFriendPic];
             //((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
 
         }
