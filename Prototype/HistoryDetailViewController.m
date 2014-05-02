@@ -493,8 +493,8 @@
                              self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Hold for edit options or drag caption", nil)];
                              self.toolTip.backgroundColor = [UIColor whiteColor];
                              self.toolTip.textColor = [UIColor blackColor];
-                             self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
-                             self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+                             self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+                             self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
                              self.toolTip.hasGradientBackground = NO;
                              self.toolTip.preferredPointDirection = PointDirectionDown;
                              self.toolTip.dismissTapAnywhere = YES;
@@ -1522,7 +1522,7 @@
         message.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
         message.numberOfLines = 0;
         [message sizeToFit];
-        message.frame = CGRectMake(bounds.size.width/10, bounds.size.height/3, bounds.size.width, 40);
+        message.frame = CGRectMake(bounds.size.width/13, bounds.size.height/3, bounds.size.width, 40);
         
         [_errorContainerView addSubview:message];
 

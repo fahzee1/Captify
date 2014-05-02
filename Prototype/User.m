@@ -2,7 +2,7 @@
 //  User.m
 //  Captify
 //
-//  Created by CJ Ogbuehi on 4/30/14.
+//  Created by CJ Ogbuehi on 5/1/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 

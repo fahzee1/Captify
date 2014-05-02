@@ -158,7 +158,7 @@
         User *user = [self.filteredList objectAtIndex:indexPath.row];
         
         ((FriendCell*)cell).myFriendUsername.text = user.username;
-        ((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
+        ((FriendCell *)cell).myFriendScore.text = user.score;
         ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
     }
     else{

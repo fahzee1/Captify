@@ -2,7 +2,7 @@
 //  User.h
 //  Captify
 //
-//  Created by CJ Ogbuehi on 4/30/14.
+//  Created by CJ Ogbuehi on 5/1/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 @property (nonatomic, retain) NSString * phone_number;
 @property (nonatomic, retain) NSString * pic_url;
 @property (nonatomic, retain) NSNumber * private;
-@property (nonatomic, retain) NSNumber * score;
+@property (nonatomic, retain) NSString * score;
 @property (nonatomic, retain) NSNumber * super_user;
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSDate * timestamp;

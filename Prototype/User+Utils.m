@@ -280,7 +280,7 @@
                                         NSString *username;
                                         NSString *email;
                                         NSString *phone_number;
-                                        NSNumber *score;
+                                        NSString *score;
                                         NSNumber *facebook;
                                         NSNumber *privacy;
                                         NSDate *date;
@@ -291,7 +291,7 @@
                                             username = responseObject[@"username"];
                                             email = [responseObject valueForKeyPath:@"user.email"];
                                             phone_number = responseObject[@"phone_number"];
-                                            score = [NSNumber numberWithInt:[responseObject[@"score"]intValue]];
+                                            score = responseObject[@"score"];
                                             facebook = [NSNumber numberWithBool:[responseObject[@"facebook_user"] boolValue]];
                                             privacy = [NSNumber numberWithInt:0];
                                             date = [NSDate date];
@@ -577,14 +577,14 @@
                                                  NSString *email;
                                                  NSNumber *facebook;
                                                  NSNumber *privacy;
-                                                 NSNumber *score;
+                                                 NSString *score;
                                                  NSNumber *super_user; //is a super user
                                                  NSString *facebook_id;
                                                  NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:9];
                                                  @try {
                                                      username = [responseObject valueForKeyPath:@"user.username"];
                                                      email = [responseObject valueForKeyPath:@"user.email"];
-                                                     score = [NSNumber numberWithInt:[[responseObject valueForKey:@"score"]intValue]];
+                                                     score = [responseObject valueForKey:@"score"];
                                                      facebook = [NSNumber numberWithBool:YES];
                                                      privacy = [NSNumber numberWithInt:0];
                                                      super_user = [NSNumber numberWithInt:1]; //is a super user

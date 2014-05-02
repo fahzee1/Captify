@@ -146,11 +146,11 @@
                                                   @try {
                                                       fbookId = [result valueForKey:@"id"];
                                                       //fbookName = [result valueForKey:@"username"];
-                                                      fbookEmail = [result valueForKey:@"email"];
                                                       password = [[NSUUID UUID] UUIDString];
                                                       fbookFirstName = [result valueForKey:@"first_name"];
                                                       fbookLastName = [result valueForKey:@"last_name"];
                                                       fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
+                                                      fbookEmail = [result valueForKey:@"email"];
 
                                                   }
                                                   @catch (NSException *exception) {

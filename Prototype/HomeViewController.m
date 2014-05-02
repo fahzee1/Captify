@@ -117,9 +117,9 @@
         user.username = @"Allie-Lewis";
         NSError *e;
         [user.managedObjectContext save:&e];
-         */
         
-        /*
+        
+        
         User *user4 = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
         User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
         User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
@@ -477,8 +477,8 @@
         self.toolTip.has3DStyle = NO;
         self.toolTip.borderWidth = 0;
         self.toolTip.textColor = [UIColor blackColor];
-        self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
-        self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+        self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+        self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
         [self.toolTip autoDismissAnimated:YES atTimeInterval:3.0];
         [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
         double delayInSeconds = 3.0;
@@ -502,8 +502,8 @@
     self.toolTip.has3DStyle = NO;
     self.toolTip.borderWidth = 0;
     self.toolTip.textColor = [UIColor blackColor];
-    self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
-    self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_GOODDOG size:19];
+    self.toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+    self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
     [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
     [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
 
