@@ -178,6 +178,47 @@
             </objects>
             <point key="canvasLocation" x="1110" y="-1602"/>
         </scene>
+        <!--Phone Number View Controller - Phone Number-->
+        <scene sceneID="fCq-JD-nVE">
+            <objects>
+                <viewController id="q1S-ej-Dlo" customClass="PhoneNumberViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Af-uL-aGX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" id="GDx-jx-EXh">
+                                <rect key="frame" x="0.0" y="197" width="320" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your phone number will only be used to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vdI-sC-fpq">
+                                <rect key="frame" x="45" y="103" width="396" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="find contacts using Spotify" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qo9-cd-rTc">
+                                <rect key="frame" x="45" y="120" width="396" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Phone Number" id="riW-DP-spE"/>
+                    <connections>
+                        <outlet property="phoneLabel" destination="qo9-cd-rTc" id="0WO-48-jrG"/>
+                        <outlet property="phoneTextField" destination="GDx-jx-EXh" id="TBc-WI-RiI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rHS-el-4BE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1275" y="-881"/>
+        </scene>
         <!--Home View Controller - homeScreen-->
         <scene sceneID="tyI-2a-6I3">
             <objects>
@@ -1513,6 +1554,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xo-tp-2OK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-561" y="675"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xZT-3J-O7V">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="buf-Zx-rRu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IIR-c7-hIv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="q1S-ej-Dlo" kind="relationship" relationship="rootViewController" id="xwA-6S-Wpn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ppG-YQ-3n9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="837" y="-886"/>
         </scene>
     </scenes>
     <resources>

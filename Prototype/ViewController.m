@@ -150,7 +150,7 @@
                                                       fbookFirstName = [result valueForKey:@"first_name"];
                                                       fbookLastName = [result valueForKey:@"last_name"];
                                                       fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
-                                                      fbookEmail = [result valueForKey:@"email"];
+                                                       fbookEmail = [result valueForKey:@"email"];
 
                                                   }
                                                   @catch (NSException *exception) {

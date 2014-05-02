@@ -69,6 +69,7 @@
 		1144E3DF18EC6F0600DBCF3B /* JDStatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144E3DB18EC6F0600DBCF3B /* JDStatusBarStyle.m */; };
 		1144E3E018EC6F0600DBCF3B /* JDStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144E3DD18EC6F0600DBCF3B /* JDStatusBarView.m */; };
 		114626DF18BEA65D0058E821 /* UITableView+ReloadAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */; };
+		114F827B1913D4CE000F9E54 /* PhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114F827A1913D4CE000F9E54 /* PhoneNumberViewController.m */; };
 		1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */; };
 		1153DFE018A9CCB600AD950E /* CJPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153DFDF18A9CCB600AD950E /* CJPopup.m */; };
 		1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1153DFE118A9DEEE00AD950E /* CoreMedia.framework */; };
@@ -505,6 +506,8 @@
 		1144E3DD18EC6F0600DBCF3B /* JDStatusBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JDStatusBarView.m; sourceTree = "<group>"; };
 		114626DD18BEA65D0058E821 /* UITableView+ReloadAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+ReloadAnimation.h"; sourceTree = "<group>"; };
 		114626DE18BEA65D0058E821 /* UITableView+ReloadAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+ReloadAnimation.m"; sourceTree = "<group>"; };
+		114F82791913D4CE000F9E54 /* PhoneNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberViewController.h; sourceTree = "<group>"; };
+		114F827A1913D4CE000F9E54 /* PhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberViewController.m; sourceTree = "<group>"; };
 		1153DFDC18A9CBB300AD950E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1153DFDE18A9CCB600AD950E /* CJPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJPopup.h; sourceTree = "<group>"; };
 		1153DFDF18A9CCB600AD950E /* CJPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJPopup.m; sourceTree = "<group>"; };
@@ -1471,6 +1474,8 @@
 				113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */,
 				1108021318CA5AB00014BAD8 /* HistorySentViewController.h */,
 				1108021418CA5AB00014BAD8 /* HistorySentViewController.m */,
+				114F82791913D4CE000F9E54 /* PhoneNumberViewController.h */,
+				114F827A1913D4CE000F9E54 /* PhoneNumberViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -2515,6 +2520,7 @@
 				1184FE0618BD03A000FDEAE0 /* SDWebImageManager.m in Sources */,
 				1153E17C18A9DF4800AD950E /* GPUImageHSBFilter.m in Sources */,
 				1153E1B618A9DF4800AD950E /* GPUImageSharpenFilter.m in Sources */,
+				114F827B1913D4CE000F9E54 /* PhoneNumberViewController.m in Sources */,
 				11ED4C801905B04F00A2E9B5 /* Appirater.m in Sources */,
 				11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */,
 				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
