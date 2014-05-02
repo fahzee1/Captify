@@ -193,7 +193,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self showAlertForPhoneNumber];
+    //[self showAlertForPhoneNumber];
     
     if (self.showHistory){
         UIViewController *historyNav = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];

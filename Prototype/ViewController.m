@@ -16,8 +16,9 @@
 #import "UIColor+HexValue.h"
 #import "CJPopup.h"
 #import "MBProgressHUD.h"
+#import "PhoneNumberViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<PhoneNumberDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *registerButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
@@ -90,7 +91,8 @@
     
 }
 
-- (IBAction)facebookLogin:(UIButton *)sender {
+- (void)startFacebookSignInWithNumber:(NSString *)number
+{
     // if the session state is any of the two "open" states when the button is clicked
     if (FBSession.activeSession.state == FBSessionStateOpen
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
@@ -118,7 +120,7 @@
         hud.labelText = NSLocalizedString(@"Logging In", nil);
         hud.dimBackground = YES;
         hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-
+        
         
         //open a sessiom showing user the login UI
         //must ALWAYS ask for basic_info when opening a session
@@ -144,14 +146,14 @@
                                                   NSString *fbookUsername;
                                                   NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:7];
                                                   @try {
-                                                      fbookId = [result valueForKey:@"id"];
+                                                      fbookId = result[@"id"];
                                                       //fbookName = [result valueForKey:@"username"];
                                                       password = [[NSUUID UUID] UUIDString];
-                                                      fbookFirstName = [result valueForKey:@"first_name"];
-                                                      fbookLastName = [result valueForKey:@"last_name"];
+                                                      fbookFirstName = result[@"first_name"];
+                                                      fbookLastName = result[@"last_name"];
                                                       fbookUsername = [NSString stringWithFormat:@"%@-%@",fbookFirstName,fbookLastName];
-                                                       fbookEmail = [result valueForKey:@"email"];
-
+                                                      fbookEmail = result[@"email"];
+            
                                                   }
                                                   @catch (NSException *exception) {
                                                       DLog(@"%@",exception);
@@ -183,37 +185,67 @@
                                                           params[@"last_name"] = fbookLastName;
                                                       }
                                                       
+                                                      if (number){
+                                                          params[@"phone_number"] = number;
+                                                      }
                                                       params[@"fbook_user"] = [NSNumber numberWithBool:YES];
                                                   }
                                                   
                                                   DLog(@"%@",params);
                                                   DLog(@"%lu",(unsigned long)[params count]);
-        
                                                   
-                                                // show homescreen call back handled in delegate
-                                                NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                    
-                                                    [hud hide:YES];
-                                                    if (wasSuccessful){
-                                                              [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
-                                                              [[NSUserDefaults standardUserDefaults] synchronize];
-                                                              [self showHomeScreen:user];
-                                                          }
-                                                          else{
-                                                              [self alertErrorWithTitle:nil message:nil];
-                                                          }
-                                                          
-                                                      }];
-
-                                                // If FAILURE, show alert
-                                                [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
-            
-                                                }
-                                            }];
+                                                  
+                                                  // show homescreen call back handled in delegate
+                                                  NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                      
+                                                      [hud hide:YES];
+                                                      if (wasSuccessful){
+                                                          [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
+                                                          [[NSUserDefaults standardUserDefaults] synchronize];
+                                                          [self showHomeScreen:user];
+                                                      }
+                                                      else{
+                                                          [self alertErrorWithTitle:nil message:nil];
+                                                      }
+                                                      
+                                                  }];
+                                                  
+                                                  // If FAILURE, show alert
+                                                  [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+                                                  
+                                              }
+                                          }];
                                       }];
     }
     
+
 }
+
+- (void)showPhoneNumberScreen
+{
+    UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
+    if ([phoneRoot isKindOfClass:[UINavigationController class]]){
+        UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
+        if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
+            ((PhoneNumberViewController *) phoneScreen).delegate = self;
+            [self presentViewController:phoneRoot animated:YES completion:nil];
+        }
+    }
+}
+
+
+- (IBAction)facebookLogin:(UIButton *)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *phone = [defaults valueForKey:@"phone_number"];
+    
+    if (phone){
+        [self startFacebookSignInWithNumber:phone];
+    }
+    else{
+        [self showPhoneNumberScreen];
+    }
+  
+  }
 
 - (void)alertErrorWithTitle:(NSString *)title
                     message:(NSString *)message
@@ -287,6 +319,25 @@
             }];
         }
     }
+}
+
+
+#pragma -mark PhoneController Delegate
+
+- (void)phoneNumberControllerDidTapCancel:(PhoneNumberViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self startFacebookSignInWithNumber:nil];
+    }];
+}
+
+- (void)phoneNumberControllerDidTapSave:(PhoneNumberViewController *)controller
+{
+    NSString *phoneNumber = controller.phoneNumber;
+    [[NSUserDefaults standardUserDefaults] setValue:phoneNumber forKey:@"phone_number"];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self startFacebookSignInWithNumber:phoneNumber];
+    }];
 }
 
 @end

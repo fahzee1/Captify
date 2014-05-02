@@ -208,7 +208,6 @@
                              @"password": self.passwordField.text};
     NSURLSessionDataTask *task = [User loginWithUsernameAndPassword:params
                                                            callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                               [hud hide:YES];
                                                                if (wasSuccessful) {
                                                                    // data here will be the managed object context to pass to homeview controller
                                                                    // if needed
@@ -239,6 +238,7 @@
                                                                    if ([home respondsToSelector:@selector(setGoToLogin:)]){
                                                                        ((HomeViewController *)home).goToLogin = NO;
                                                                    }
+                                                                   [hud hide:YES];
                                                                    [self.navigationController popToViewController:home animated:YES];
 
                                                                    
@@ -246,6 +246,7 @@
                                                                }
                                                                else if (!wasSuccessful && !failure){
                                                                    // user error, show alert and reshow button
+                                                                   [hud hide:YES];
                                                                    [self alertErrorWithType:LoginError
                                                                                    andField:nil
                                                                                  andMessage:[data valueForKey:@"message"]];
@@ -253,6 +254,7 @@
                                                                }
                                                                else{
                                                                    // failure alert handled by "show alertviewfortaskwitherror..
+                                                                   [hud hide:YES];
                                                                    sender.hidden = NO;
                                                                }
                                                                

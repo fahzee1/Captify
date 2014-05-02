@@ -18,8 +18,13 @@
 #import "MBProgressHUD.h"
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
+#import "PhoneNumberViewController.h"
 
-@interface SignUpViewController ()<UITextFieldDelegate>
+#define usernamePlaceholder @"Create Username"
+#define passwordPlaceholder @"Create Password"
+#define emailPlaceholder @"Enter Email"
+
+@interface SignUpViewController ()<UITextFieldDelegate,PhoneNumberDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myRegisterButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
@@ -59,6 +64,12 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    self.navigationController.navigationBarHidden = NO;
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -86,22 +97,23 @@
     self.usernameField.borderStyle = UITextBorderStyleNone;
     self.usernameField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.usernameField.layer.opacity = 0.6f;
-    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Username" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:usernamePlaceholder attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     self.passwordField.borderStyle = UITextBorderStyleNone;
     self.passwordField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.passwordField.layer.opacity = 0.6f;
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Create Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:passwordPlaceholder attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     self.emailField.borderStyle = UITextBorderStyleNone;
     self.emailField.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     self.emailField.layer.opacity = 0.6f;
-    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:emailPlaceholder attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
 
     self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.myRegisterButton.layer.cornerRadius = 5;
     [self.myRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
     
     if (!IS_IPHONE5){
         CGRect usernameFrame = self.usernameField.frame;
@@ -119,6 +131,7 @@
         self.emailField.frame = emailFieldFrame;
         self.myRegisterButton.frame = registerButtonFrame;
     }
+     
 
 }
 
@@ -157,20 +170,38 @@
     }
     
     [self.emailField resignFirstResponder];
-    [self registerUserIsFacebook:NO button:sender];
+    [self showPhoneNumberScreen];
+    //[self registerUserIsFacebook:NO button:sender];
     
 }
 
 
+- (void)showPhoneNumberScreen
+{
+    UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
+    if ([phoneRoot isKindOfClass:[UINavigationController class]]){
+        UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
+        if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
+            ((PhoneNumberViewController *) phoneScreen).delegate = self;
+            [self presentViewController:phoneRoot animated:YES completion:nil];
+        }
+    }
+}
+
 
 - (void)registerUserIsFacebook:(BOOL)fb
                         button:(UIButton *)sender
+                   phoneNumber:(NSString *)number
 {
     NSString *fbook = fb? @"yes":@"no";
-    NSDictionary *params = @{@"username": self.usernameField.text,
+    NSMutableDictionary *params = [@{@"username": self.usernameField.text,
                              @"password": self.passwordField.text,
                              @"email": self.emailField.text,
-                             @"fbook_user": fbook};
+                             @"fbook_user": fbook} mutableCopy];
+    
+    if (number){
+        params[@"phone_number"] = number;
+    }
     
     
     
@@ -284,22 +315,41 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([textField.placeholder isEqualToString:@"Create a username"]){
+    if ([textField.placeholder isEqualToString:usernamePlaceholder]){
         [self.passwordField becomeFirstResponder];
     }
-    if ([textField.placeholder isEqualToString:@"Create a password"]){
+    
+    if ([textField.placeholder isEqualToString:passwordPlaceholder]){
         [self.emailField becomeFirstResponder];
     }
-    if ([textField.placeholder isEqualToString:@"Enter email"]){
+    
+    if ([textField.placeholder isEqualToString:emailPlaceholder]){
         [textField resignFirstResponder];
         [self registerButton:self.myRegisterButton];
     }
     
     
     
+    
     return YES;
 }
 
+#pragma -mark PhoneController Delegate
 
+- (void)phoneNumberControllerDidTapCancel:(PhoneNumberViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self registerUserIsFacebook:NO button:self.myRegisterButton phoneNumber:nil];
+    }];
+}
+
+- (void)phoneNumberControllerDidTapSave:(PhoneNumberViewController *)controller
+{
+    NSString *phoneNumber = controller.phoneNumber;
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self registerUserIsFacebook:NO button:self.myRegisterButton phoneNumber:phoneNumber];
+    }];
+}
 
 @end

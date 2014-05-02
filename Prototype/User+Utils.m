@@ -54,7 +54,7 @@
 
 - (void)getCorrectProfilePicWithImageView:(UIImageView *)iV
 {
-    if (self.facebook_user){
+    if ([self.facebook_user intValue] == 1){
         NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",self.facebook_id];
         NSURL * fbUrl = [NSURL URLWithString:fbString];
         [iV setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
@@ -103,6 +103,20 @@
 + (User *)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context
 {
+    User *user;
+    
+    NSString *username = params[@"username"];
+    NSNumber *facebook_user = params[@"facebook_user"];
+    NSString *facebook_id = params[@"facebook_id"];
+    NSString *email = params[@"email"];
+    NSNumber *private = [NSNumber numberWithBool:NO];
+    NSNumber *super_user = [NSNumber numberWithBool:NO];
+    NSNumber *is_friend = [NSNumber numberWithBool:YES];
+    NSString *phone_number;
+    if (params[@"phone_number"]){
+        phone_number = params[@"phone_number"];
+    }
+    
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"username = %@",[params valueForKey:@"username"]];
@@ -112,25 +126,26 @@
                                              error:&error];
     if (gotUser == 1){
         //DLog(@"cant create cause we have %@",[params valueForKey:@"username"]);
-        return [self getUserWithFetch:request
+        user = [self getUserWithFetch:request
                               context:context
                                 error:&error];
+        
+        return user;
     }
-    
     
 
     
-    User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
+    user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
                                                inManagedObjectContext:context];
-    NSString *username = [params valueForKey:@"username"];
+
     user.username = [username stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    user.facebook_user = [params valueForKey:@"facebook_user"];
-    user.facebook_id = [params valueForKey:@"facebook_id"];
-    user.phone_number = [params valueForKey:@"phone_number"];
-    user.email = [params valueForKey:@"email"];
-    user.private = [NSNumber numberWithBool:NO];
-    user.super_user = [NSNumber numberWithBool:NO];
-    user.is_friend = [NSNumber numberWithBool:YES];
+    user.facebook_user = facebook_user;
+    user.facebook_id = facebook_id;
+    user.phone_number = phone_number;
+    user.email = email;
+    user.private = private;
+    user.super_user = super_user;
+    user.is_friend = is_friend;
     
     if (![user.managedObjectContext save:&error]){
         DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -173,7 +188,20 @@
     NSParameterAssert(context);
     NSAssert([params objectForKey:@"username"], @"username required");
 
+    User *user = nil;
     NSError *error;
+    NSString *username = params[@"username"];
+    NSNumber *facebook_user = params[@"facebook_user"];
+    NSString *facebook_id = params[@"facebook_id"];
+    NSString *email = params[@"email"];
+    NSNumber *private = [NSNumber numberWithBool:NO];
+    NSNumber *super_user = [NSNumber numberWithBool:NO];
+    NSNumber *is_friend = [NSNumber numberWithBool:YES];
+    NSString *phone_number;
+    if (params[@"phone_number"]){
+        phone_number = params[@"phone_number"];
+    }
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
     request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) && (username = %@)",[params valueForKey:@"username"]];
     request.fetchLimit = 1;
@@ -183,7 +211,6 @@
                                            context:context
                                              error:&error];
     
-    User *user = nil;
     if (gotUser > 0)
     {
         // if we have user return user
@@ -193,9 +220,11 @@
                               context:context
                                 error:&error];
         
-        NSNumber *fbUser = [params valueForKey:@"facebook_user"];
-        user.facebook_id = [params valueForKey:@"fbook_id"];
-        user.facebook_user = fbUser;
+        user.facebook_id = facebook_id;
+        user.facebook_user = facebook_user;
+        user.username = username;
+        user.email = email;
+        user.phone_number = phone_number;
         
         if (![user.managedObjectContext save:&error]){
             DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -209,13 +238,16 @@
     if (!skip){
         // else create a user, save, and return user (register)
         user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-        user.username = [params valueForKey:@"username"];
-        user.facebook_user = [params valueForKey:@"facebook_user"];
-        user.private = [params valueForKey:@"privacy"];
-        user.email = [params valueForKey:@"email"];
-        user.super_user = [NSNumber numberWithBool:YES];
-        user.facebook_id = [params valueForKey:@"fbook_id"];
-        user.is_friend = [NSNumber numberWithBool:NO];
+        user.username = username;
+        user.facebook_user = facebook_user;
+        user.private = private;
+        user.email = email;
+        user.super_user = super_user;
+        user.facebook_id = facebook_id;
+        user.is_friend = is_friend;
+        if (phone_number){
+            user.phone_number = phone_number;
+        }
         //user.timestamp = [params valueForKey:@"timestamp"];
         
            if (![user.managedObjectContext save:&error]){
@@ -429,7 +461,7 @@
                                     callback:(AwesomeAPICompleteBlock)block;
 {
     NSParameterAssert(params);
-    NSAssert([params count] == 4, @"4 parameters not being passed. Dict passed was %@",params);
+    NSAssert([params count] == 5 || [params count] == 4, @"4 parameters not being passed. Dict passed was %@",params);
     
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
@@ -440,6 +472,7 @@
                                   // things went well
                                  if ([[responseObject valueForKey:@"code"] intValue] == 1){
                                      // get params from response
+                                     //NSLog(@"%@",responseObject);
                                      NSString *username;
                                      NSString *email;
                                      NSNumber *facebook;
@@ -447,16 +480,18 @@
                                      NSDate *date;
                                      NSNumber *super_user; //is a super user
                                      NSString *apiKey;
+                                     NSString *phoneNumber;
                                      NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:8];
                                      
                                      @try {
                                          username = responseObject[@"username"];
-                                         email = [responseObject valueForKeyPath:@"user.email"];
-                                         facebook = [NSNumber numberWithBool:[responseObject[@"facebook_user"] boolValue]];
+                                         email = responseObject[@"email"];
+                                         facebook = [NSNumber numberWithBool:[responseObject[@"fbook_user"] boolValue]];
                                          privacy = [NSNumber numberWithBool:NO];
                                          date = [NSDate date];
                                          super_user = [NSNumber numberWithBool:YES]; //is a super user
-                                         apiKey = [responseObject valueForKey:@"api_key"];
+                                         apiKey = responseObject[@"api_key"];
+                                         phoneNumber = responseObject[@"phone_number"];
 
                                      }
                                      @catch (NSException *exception) {
@@ -484,6 +519,10 @@
                                          
                                          if (email){
                                              params[@"email"] = email;
+                                         }
+                                         
+                                         if (phoneNumber){
+                                             params[@"phone_number"] = phoneNumber;
                                          }
                                          
                                          
@@ -562,7 +601,7 @@
 + (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
                                             callback:(AwesomeAPICompleteBlock)block;
 {
-    NSAssert([params count] == 7, @"7 parameters not being passed. Dict sent was %@",params);
+    NSAssert([params count] == 7 || [params count] == 8, @"7 parameters not being passed. Dict sent was %@",params);
     
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
@@ -580,15 +619,17 @@
                                                  NSString *score;
                                                  NSNumber *super_user; //is a super user
                                                  NSString *facebook_id;
+                                                 NSString *phone_number;
                                                  NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:9];
                                                  @try {
                                                      username = [responseObject valueForKeyPath:@"user.username"];
                                                      email = [responseObject valueForKeyPath:@"user.email"];
-                                                     score = [responseObject valueForKey:@"score"];
+                                                     score = responseObject[@"score"];
                                                      facebook = [NSNumber numberWithBool:YES];
                                                      privacy = [NSNumber numberWithInt:0];
                                                      super_user = [NSNumber numberWithInt:1]; //is a super user
-                                                     facebook_id = [responseObject valueForKey:@"facebook_id"];
+                                                     facebook_id = responseObject[@"facebook_id"];
+                                                     phone_number = responseObject[@"phone_number"];
 
                                                  }
                                                  @catch (NSException *exception) {
@@ -620,6 +661,10 @@
                                                      
                                                      if (score){
                                                          params[@"score"] = score;
+                                                     }
+                                                     
+                                                     if (phone_number){
+                                                         params[@"phone_number"] = phone_number;
                                                      }
 
                                                  }
