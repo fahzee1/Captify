@@ -369,6 +369,11 @@
     self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"];
     self.snapPicButton.textColor =[UIColor colorWithHexString:CAPTIFY_ORANGE];
     
+    if (!IS_IPHONE5){
+        CGRect snapPicFrame = self.snapPicButton.frame;
+        snapPicFrame.origin.y -= IPHONE4_PAD;
+        self.snapPicButton.frame = snapPicFrame;
+    }
     
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
