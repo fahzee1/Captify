@@ -253,6 +253,11 @@
         friendName.text = [[self.sender stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
         friendName.textColor = [UIColor whiteColor];
         friendName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+        
+        if ([friendName.text length] >= 16){
+            NSString *newString = [friendName.text substringToIndex:15];
+            friendName.text = [NSString stringWithFormat:@"%@...",newString];
+        }
 
         
         [view addSubview:image];

@@ -161,6 +161,7 @@
             
         case MenuFriendsScreen:
         {
+            /*
             UIViewController *friends = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
             if ([self isAlreadyMainVC:friends.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
@@ -173,6 +174,12 @@
                 ((FriendsContainerController *)friends.childViewControllers[0]).facebookFriendsArray = self.facebookFriendsArray;
                 [self.sideMenuViewController setMainViewController:friends animated:YES closeMenu:YES];
             }
+             */
+            
+            NSString *inviteText = @"Check out Captify.. we could have fun sending caption challlenges to each other with our favorite pics and create memes!";
+            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+            activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
+            [self presentViewController:activityVC animated:YES completion:nil];
             break;
         }
             

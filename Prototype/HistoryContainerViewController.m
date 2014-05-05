@@ -210,6 +210,11 @@
     UIViewController *vcS = [self.storyboard instantiateViewControllerWithIdentifier:@"sentHistory"];
     if ([vcR isKindOfClass:[HistoryRecievedViewController class]] && [vcS isKindOfClass:[HistorySentViewController class]]){
         [((HistoryRecievedViewController *)vcR) fetchUpdatesWithBlock:^{
+            
+            [self.spinner stopAnimating];
+            [self.spinner removeFromSuperview];
+            self.spinner = nil;
+            
               [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:^{
                   [self.spinner stopAnimating];
                   [self.spinner removeFromSuperview];
@@ -219,6 +224,8 @@
             
         }];
     }
+    
+
 }
 
 

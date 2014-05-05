@@ -371,7 +371,7 @@
     
     if (!IS_IPHONE5){
         CGRect snapPicFrame = self.snapPicButton.frame;
-        snapPicFrame.origin.y -= IPHONE4_PAD;
+        snapPicFrame.origin.y -= IPHONE4_PAD + 30;
         self.snapPicButton.frame = snapPicFrame;
     }
     

@@ -644,7 +644,7 @@
                                                      }
                                                      
                                                      if (facebook_id){
-                                                         params[@"fbook_id"] = facebook_id;
+                                                         params[@"facebook_id"] = facebook_id;
                                                      }
                                                      
                                                      if (privacy){

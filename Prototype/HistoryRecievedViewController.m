@@ -337,6 +337,11 @@
         else{
             usernameLabel.text = [sender.username capitalizedString];
         }
+        
+        if ([usernameLabel.text length] >= 24){
+            NSString *uString = [usernameLabel.text substringToIndex:23];
+            usernameLabel.text = [NSString stringWithFormat:@"%@...",uString];
+        }
 
         usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
@@ -344,7 +349,7 @@
         
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
+        dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
         
         [sender getCorrectProfilePicWithImageView:myImageView];
         
@@ -372,6 +377,8 @@
                 [activeButton.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
              */
+            
+            [activeButton setImage:[UIImage imageNamed:CAPTIFY_ACTIVE_HISTORY] forState:UIControlStateNormal];
         }
         else{
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -532,6 +539,12 @@
         [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
         invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
         [invite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
+        
+        if (!IS_IPHONE5){
+            CGRect inviteFrame = invite.frame;
+            inviteFrame.origin.y += 50;
+            invite.frame = inviteFrame;
+        }
         
         
         [_errorContainerView addSubview:errorLabel];

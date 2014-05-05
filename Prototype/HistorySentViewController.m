@@ -310,7 +310,7 @@
             myLabel.text = [challenge.name capitalizedString];
         }
         myLabel.textColor = [UIColor whiteColor];
-        myLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:14];
+        myLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
         
         /*
         myLabel.frame = CGRectMake(myLabel.frame.origin.x, myLabel.frame.origin.y,176 , 30);
@@ -325,7 +325,7 @@
 
         dateLabel.text = [challenge.timestamp timeAgo];
         dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        dateLabel.font = [UIFont fontWithName:@"ProximaNova-Bold" size:11];
+        dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
         
         [sender getCorrectProfilePicWithImageView:myImageView];
         
@@ -354,6 +354,8 @@
                 [activeButton.layer addAnimation:colorPulse forKey:@"historyActive"];
             }
              */
+            
+            [activeButton setImage:[UIImage imageNamed:CAPTIFY_ACTIVE_HISTORY] forState:UIControlStateNormal];
         }
         else{
             [activeButton setImage:[UIImage imageNamed:CAPTIFY_INACTIVE_HISTORY] forState:UIControlStateNormal];
@@ -493,6 +495,14 @@
         [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
         play.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
         [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+        
+        if (!IS_IPHONE5){
+            CGRect playFrame = play.frame;
+            playFrame.origin.y += 50;
+            play.frame = playFrame;
+        }
+        
+
         
         [_errorContainerView addSubview:errorLabel];
         [_errorContainerView addSubview:play];
