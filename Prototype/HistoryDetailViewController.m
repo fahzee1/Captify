@@ -85,6 +85,10 @@
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
+@property (weak, nonatomic) IBOutlet UIButton *splitCaptionButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *joinCaptionButton;
+
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
@@ -100,6 +104,7 @@
 @property BOOL makeButtonVisible;
 @property BOOL captionMoved;
 @property int errorCount;
+@property BOOL captionIsSplit;
 
 // filters
 @property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
@@ -115,6 +120,9 @@
 
 
 @end
+
+#define FINAL_CAPTION_TAG 3433
+
 
 @implementation HistoryDetailViewController
 
@@ -134,6 +142,7 @@
     
     //self.navigationItem.rightBarButtonItem = nextButton;
     
+    self.captionIsSplit = NO;
     
     self.activeFonts = [NSArray arrayWithObjects:CAPTIFY_FONT_GOODDOG,
                                                  CAPTIFY_FONT_GLOBAL_BOLD,
@@ -449,7 +458,7 @@
     [self reset];
     
     UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
-    press.minimumPressDuration = 0.1;
+    press.minimumPressDuration = 0.05;
     
     UILongPressGestureRecognizer *controls = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCaption:)];
     controls.minimumPressDuration = 0.7;
@@ -618,23 +627,56 @@
     
     static NSInteger fontIndex = 0;
     NSInteger total = [self.activeFonts count];
-    
-    
-    NSString *font = [self.activeFonts objectAtIndex:fontIndex];
-    self.currentFont = font;
-    self.finalCaptionLabel.font = [UIFont fontWithName:font size:self.captionSizeStepper.value];
-    self.finalCaptionLabel.numberOfLines = 0;
-    [self.finalCaptionLabel sizeToFit];
-    
-    CGRect frame = self.finalCaptionLabel.frame;
-    frame.size.width = self.finalCaptionLabel.superview.bounds.size.width;
-    self.finalCaptionLabel.frame = frame;
-    
-    
-    fontIndex += 1;
-    
-    if (fontIndex >= total){
-        fontIndex = 0;
+
+    if (!self.captionIsSplit){
+        
+        NSString *font = [self.activeFonts objectAtIndex:fontIndex];
+        self.currentFont = font;
+        self.finalCaptionLabel.font = [UIFont fontWithName:font size:self.captionSizeStepper.value];
+        self.finalCaptionLabel.numberOfLines = 0;
+        [self.finalCaptionLabel sizeToFit];
+        
+        CGRect frame = self.finalCaptionLabel.frame;
+        frame.size.width = self.finalCaptionLabel.superview.bounds.size.width;
+        self.finalCaptionLabel.frame = frame;
+        
+        
+        fontIndex += 1;
+        
+        if (fontIndex >= total){
+            fontIndex = 0;
+        }
+    }
+    else{
+        NSString *font = [self.activeFonts objectAtIndex:fontIndex];
+        self.currentFont = font;
+        for (UIView * view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                ((UILabel *)view).font = [UIFont fontWithName:font size:self.captionSizeStepper.value];
+                ((UILabel *)view).numberOfLines = 0;
+                [((UILabel *)view) sizeToFit];
+                
+                CGRect spiltFrame = ((UILabel *)view).frame;
+                spiltFrame.size.width += 100;
+                ((UILabel *)view).frame = spiltFrame;
+                
+                if (view.tag == FINAL_CAPTION_TAG){
+                    CGRect frame = ((UILabel *)view).frame;
+                    frame.size.width = ((UILabel *)view).superview.bounds.size.width;
+                    ((UILabel *)view).frame = frame;
+
+                }
+
+            }
+        }
+        
+        
+        fontIndex += 1;
+        
+        if (fontIndex >= total){
+            fontIndex = 0;
+        }
+
     }
     
 }
@@ -738,25 +780,55 @@
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
     
     
-    if (!attempts){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+    if (!self.captionIsSplit){
+        if (!attempts){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+        }
+        
+        if (attempts == 1){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+        }
+        
+        if (attempts == 2){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+        }
+        
+        if (attempts == 3){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+        }
+        
+        
+        if (attempts == 4){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+        }
+    
     }
-    
-    if (attempts == 1){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
-    }
-    
-    if (attempts == 2){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-    }
-    
-    if (attempts == 3){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
-    }
-    
-    
-    if (attempts == 4){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    else{
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                if (!attempts){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+                }
+                
+                if (attempts == 1){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+                }
+                
+                if (attempts == 2){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+                }
+                
+                if (attempts == 3){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+                }
+                
+                
+                if (attempts == 4){
+                    [view setTransform:CGAffineTransformMakeRotation(0)];
+                }
+            }
+        }
+
     }
     
     attempts += 1;
@@ -805,6 +877,57 @@
 
 }
 
+- (IBAction)splitCaptionButtonTapped:(UIButton *)sender
+{
+
+    if (!self.captionIsSplit){
+        NSArray *words = [self.finalCaptionLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        words = [words filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
+        for (NSString *word in words){
+            UILabel *splitCaptionLabel = [[UILabel alloc] init];
+            splitCaptionLabel.text = word;
+            splitCaptionLabel.textColor = self.finalCaptionLabel.textColor;
+            splitCaptionLabel.font = self.finalCaptionLabel.font;
+            CGRect previousFrame = self.finalCaptionLabel.frame;
+            splitCaptionLabel.frame = previousFrame;
+            splitCaptionLabel.numberOfLines = 0;
+            [splitCaptionLabel sizeToFit];
+            splitCaptionLabel.userInteractionEnabled = YES;
+            
+            UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startedLabelDrag:)];
+            press.minimumPressDuration = 0.05;
+            
+            UILongPressGestureRecognizer *controls = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCaption:)];
+            controls.minimumPressDuration = 0.7;
+            
+            [press requireGestureRecognizerToFail:controls];
+            
+            [splitCaptionLabel addGestureRecognizer:press];
+            [splitCaptionLabel addGestureRecognizer:controls];
+
+
+            
+            [self.myImageView addSubview:splitCaptionLabel];
+        }
+        
+        self.finalCaptionLabel.hidden = YES;
+        self.captionIsSplit = YES;
+    }
+}
+
+- (IBAction)joinCaptionButtonTapped:(UIButton *)sender
+{
+    if (self.captionIsSplit){
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]] && view.tag != FINAL_CAPTION_TAG){
+                [view removeFromSuperview];
+            }
+        }
+        
+        self.finalCaptionLabel.hidden = NO;
+        self.captionIsSplit = NO;
+    }
+}
 
 
 
@@ -814,6 +937,7 @@
         case UIGestureRecognizerStateBegan:
         {
             if (self.imageControls.hidden){
+                [self.finalCaptionLabel stopGlowing];
                 self.imageControls.hidden = NO;
                 
                 if (USE_GOOGLE_ANALYTICS){
@@ -888,7 +1012,14 @@
 - (IBAction)captionAlphaChanged:(UISlider *)sender {
     
     [self.finalCaptionLabel stopGlowing];
-    self.finalCaptionLabel.alpha = sender.value;
+    //self.finalCaptionLabel.alpha = sender.value;
+    if (self.captionIsSplit){
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                ((UILabel *)view).alpha = sender.value;
+            }
+        }
+    }
     self.captionAlphaValue.text = [NSString stringWithFormat:@"%.1f",sender.value];
 }
 
@@ -950,23 +1081,44 @@
 
 - (void)captionSizeChanged
 {
-    
     [self.finalCaptionLabel stopGlowing];
     
     
     //CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
     //CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
     
-    self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
-    if (self.captionMoved){
-        self.finalCaptionLabel.center = self.currentPoint;
+    if (!self.captionIsSplit){
+        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
+        if (self.captionMoved){
+            self.finalCaptionLabel.center = self.currentPoint;
+        }
+        else{
+            self.finalCaptionLabel.center = self.priorPoint;
+        }
+       
     }
     else{
-        self.finalCaptionLabel.center = self.priorPoint;
+     
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                
+                ((UILabel *)view).font = [UIFont fontWithName:self.currentFont size:self.captionSizeStepper.value];
+                ((UILabel *)view).numberOfLines = 0;
+                [((UILabel *)view) sizeToFit];
+                
+                CGRect frame = view.frame;
+                view.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width+10, 70);
+                //view.center = self.priorPoint;
+                
+                
+            }
+        }
+        
     }
+    
     self.finalCaptionLabel.font = [UIFont fontWithName:self.currentFont size:self.captionSizeStepper.value];
     self.captionSizeValue.text = [NSString stringWithFormat:@"%d pt", (int)self.captionSizeStepper.value];
-    
+
 
 }
 
@@ -1023,7 +1175,14 @@
 
 - (void)colorPickerViewController:(NEOColorPickerBaseViewController *)controller didSelectColor:(UIColor *)color
 {
-    self.finalCaptionLabel.textColor = color;
+    //self.finalCaptionLabel.textColor = color;
+    if (self.captionIsSplit){
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                ((UILabel *)view).textColor = color;
+            }
+        }
+    }
     [self.captionColor setTitleColor:color forState:UIControlStateNormal];
     self.captionColorTitle.textColor = color;
     self.imageControls.hidden = YES;
