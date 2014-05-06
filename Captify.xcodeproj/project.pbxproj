@@ -321,6 +321,10 @@
 		119BAEDE18F4FC9900678A63 /* Lemondrop.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDC18F4FC9900678A63 /* Lemondrop.ttf */; };
 		119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */ = {isa = PBXBuildFile; fileRef = 119BAEDF18F4FD2F00678A63 /* American Captain.otf */; };
 		119BAEE318F639B500678A63 /* NSData+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BAEE218F639B500678A63 /* NSData+Format.m */; };
+		11A3024A1919417F00882275 /* ABContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302421919417F00882275 /* ABContact.m */; };
+		11A3024B1919417F00882275 /* ABContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302441919417F00882275 /* ABContactsHelper.m */; };
+		11A3024C1919417F00882275 /* ABGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302461919417F00882275 /* ABGroup.m */; };
+		11A3024D1919417F00882275 /* ABStandin.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302481919417F00882275 /* ABStandin.m */; };
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
@@ -986,6 +990,15 @@
 		119BAEDF18F4FD2F00678A63 /* American Captain.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "American Captain.otf"; path = "../../American Captain.otf"; sourceTree = "<group>"; };
 		119BAEE118F639B500678A63 /* NSData+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Format.h"; sourceTree = "<group>"; };
 		119BAEE218F639B500678A63 /* NSData+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Format.m"; sourceTree = "<group>"; };
+		11A302411919417F00882275 /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContact.h; sourceTree = "<group>"; };
+		11A302421919417F00882275 /* ABContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContact.m; sourceTree = "<group>"; };
+		11A302431919417F00882275 /* ABContactsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABContactsHelper.h; sourceTree = "<group>"; };
+		11A302441919417F00882275 /* ABContactsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABContactsHelper.m; sourceTree = "<group>"; };
+		11A302451919417F00882275 /* ABGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABGroup.h; sourceTree = "<group>"; };
+		11A302461919417F00882275 /* ABGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABGroup.m; sourceTree = "<group>"; };
+		11A302471919417F00882275 /* ABStandin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStandin.h; sourceTree = "<group>"; };
+		11A302481919417F00882275 /* ABStandin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStandin.m; sourceTree = "<group>"; };
+		11A302491919417F00882275 /* ABWrappers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABWrappers.h; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1298,6 +1311,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11A302401919417F00882275 /* Address Book Wrappers */,
 				11E83DBE19097E9F009B95F7 /* GoogleAnalytics */,
 				11ED4C571905B04F00A2E9B5 /* appirater-master */,
 				11E6D70E18FF1F8000C47D25 /* MGInstagram */,
@@ -2082,6 +2096,22 @@
 			path = TWTSideMenuViewController;
 			sourceTree = "<group>";
 		};
+		11A302401919417F00882275 /* Address Book Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				11A302411919417F00882275 /* ABContact.h */,
+				11A302421919417F00882275 /* ABContact.m */,
+				11A302431919417F00882275 /* ABContactsHelper.h */,
+				11A302441919417F00882275 /* ABContactsHelper.m */,
+				11A302451919417F00882275 /* ABGroup.h */,
+				11A302461919417F00882275 /* ABGroup.m */,
+				11A302471919417F00882275 /* ABStandin.h */,
+				11A302481919417F00882275 /* ABStandin.m */,
+				11A302491919417F00882275 /* ABWrappers.h */,
+			);
+			path = "Address Book Wrappers";
+			sourceTree = "<group>";
+		};
 		11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -2454,6 +2484,7 @@
 				1153E1A518A9DF4800AD950E /* GPUImagePixellatePositionFilter.m in Sources */,
 				1107310A187664100065D77F /* ViewController.m in Sources */,
 				1184FDFF18BD03A000FDEAE0 /* MKAnnotationView+WebCache.m in Sources */,
+				11A3024B1919417F00882275 /* ABContactsHelper.m in Sources */,
 				1184FE0818BD03A000FDEAE0 /* UIButton+WebCache.m in Sources */,
 				1153E1C818A9DF4800AD950E /* GPUImageThresholdEdgeDetectionFilter.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
@@ -2468,6 +2499,7 @@
 				1184FE0B18BD03A000FDEAE0 /* UIImage+WebP.m in Sources */,
 				1153E16418A9DF4800AD950E /* GPUImageEmbossFilter.m in Sources */,
 				1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */,
+				11A3024A1919417F00882275 /* ABContact.m in Sources */,
 				1184FE0018BD03A000FDEAE0 /* NSData+ImageContentType.m in Sources */,
 				1153E1D018A9DF4800AD950E /* GPUImageTwoInputFilter.m in Sources */,
 				1153E17E18A9DF4800AD950E /* GPUImageHueFilter.m in Sources */,
@@ -2557,6 +2589,7 @@
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
+				11A3024C1919417F00882275 /* ABGroup.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
 				118EF1B718FC6F4F00755552 /* UIProgressView+FlatUI.m in Sources */,
 				113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */,
@@ -2637,6 +2670,7 @@
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,
 				1184FE0318BD03A000FDEAE0 /* SDWebImageDecoder.m in Sources */,
+				11A3024D1919417F00882275 /* ABStandin.m in Sources */,
 				1153E15218A9DF4800AD950E /* GPUImageClosingFilter.m in Sources */,
 				1184FE0718BD03A000FDEAE0 /* SDWebImagePrefetcher.m in Sources */,
 				11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */,

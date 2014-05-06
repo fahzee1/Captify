@@ -36,6 +36,7 @@
 #import "Contacts.h"
 #import <Parse/Parse.h>
 #import "ParseNotifications.h"
+#import "ABWrappers.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -103,8 +104,9 @@
     [super viewDidLoad];
     
 
-     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
-    [self fetchContacts];
+
+    //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
+    [self fetchContacts2];
 
     //NSLog(@"%@",self.myUser);
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
@@ -511,6 +513,78 @@
     self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
     [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
     [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
+
+}
+
+
+
+- (void)fetchContacts2
+{
+    static int retrys;
+    NSArray *contacts = [ABContactsHelper contacts];
+    NSMutableArray *list = [@[] mutableCopy];
+    for (ABContact *contact in contacts){
+        DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
+        if (contact.phonenumbers){
+            [list addObject:contact.phonenumbers];
+        }
+    }
+    
+    if ([list count] > 0 && self.myUser){
+        NSDictionary *params = @{@"username":self.myUser.username ,
+                                 @"action":@"getCF",
+                                 @"content":list};
+        
+        Contacts *c = [[Contacts alloc] init];
+        [c requestFriendsFromContactsList:params
+                                    block:^(BOOL success, id data) {
+                                        if (success){
+                                            for (id user in data[@"contacts"]){
+                                                NSString *facebook_id;
+                                                if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                    facebook_id = @"0";
+                                                }
+                                                else{
+                                                    facebook_id = user[@"facebook_id"];
+                                                }
+                                                
+                                                NSDictionary *params;
+                                                @try {
+                                                    params = @{@"username": user[@"username"],
+                                                               @"facebook_user":user[@"is_facebook"],
+                                                               @"facebook_id":facebook_id};
+                                                    
+                                                }
+                                                @catch (NSException *exception) {
+                                                    DLog(@"%@",exception);
+                                                }
+                                                
+                                                User *userCreated = [User createFriendWithParams:params
+                                                                     inMangedObjectContext:self.myUser.managedObjectContext];
+                                                if (userCreated){
+                                                    DLog(@"successfully created %@", user[@"username"]);
+                                                }
+                                                else
+                                                {
+                                                    DLog(@"failerd created %@", user[@"username"]);
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                        else{
+                                            DLog(@"no success");
+                                        }
+                                    }];
+
+    }
+    else{
+        if (retrys < 3){
+            [self fetchContacts2];
+            retrys += 1;
+        }
+    }
+
 
 }
 
@@ -1193,7 +1267,7 @@
             pulseAnimation.toValue = [NSNumber numberWithFloat:1.3];
             pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             pulseAnimation.autoreverses = YES;
-            pulseAnimation.repeatCount = FLT_MAX;
+            pulseAnimation.repeatCount = CGFLOAT_MAX;
             [self.previewNextButton.layer addAnimation:pulseAnimation forKey:@"previewNextButton"];
         }
         

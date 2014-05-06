@@ -928,7 +928,7 @@
 {
 
     if (!self.captionIsSplit){
-        self.splitCaptionLabel.text = NSLocalizedString(@"Unsplit", nil);
+        self.splitCaptionLabel.text = NSLocalizedString(@"Join", nil);
         NSArray *words = [self.finalCaptionLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         words = [words filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
         for (NSString *word in words){
@@ -1245,11 +1245,9 @@
 - (void)colorPickerViewController:(NEOColorPickerBaseViewController *)controller didSelectColor:(UIColor *)color
 {
     //self.finalCaptionLabel.textColor = color;
-    if (self.captionIsSplit){
-        for (UIView *view in self.myImageView.subviews){
-            if ([view isKindOfClass:[UILabel class]]){
-                ((UILabel *)view).textColor = color;
-            }
+    for (UIView *view in self.myImageView.subviews){
+        if ([view isKindOfClass:[UILabel class]]){
+            ((UILabel *)view).textColor = color;
         }
     }
     [self.captionColor setTitleColor:color forState:UIControlStateNormal];
