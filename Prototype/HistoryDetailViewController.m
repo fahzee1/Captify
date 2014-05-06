@@ -86,8 +86,8 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (weak, nonatomic) IBOutlet UIButton *splitCaptionButton;
+@property (weak, nonatomic) IBOutlet UILabel *splitCaptionLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *joinCaptionButton;
 
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
@@ -371,8 +371,6 @@
     labelFrame.size.height += 10;
     self.topLabel.frame = labelFrame;
     
-    
-    
     self.currentPoint = self.finalCaptionLabel.center;
     self.priorPoint = self.finalCaptionLabel.center;
     
@@ -450,6 +448,14 @@
 - (void)reset
 {
     self.captionMoved = NO;
+    
+    for (UIView *view in self.myImageView.subviews){
+        if ([view isKindOfClass:[UILabel class]] && view.tag != FINAL_CAPTION_TAG){
+            [view removeFromSuperview];
+        }
+    }
+    
+    self.captionIsSplit = NO;
 }
 
 
@@ -589,6 +595,13 @@
     [self.captionImageFilterButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
     
     
+    self.splitCaptionButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
+    [self.splitCaptionButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-th-large"] forState:UIControlStateNormal];
+    [self.splitCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.splitCaptionLabel.textColor = [UIColor whiteColor];
+    self.splitCaptionLabel.text = NSLocalizedString(@"Split", nil);
+
+    
     
     
     
@@ -655,9 +668,13 @@
                 ((UILabel *)view).font = [UIFont fontWithName:font size:self.captionSizeStepper.value];
                 ((UILabel *)view).numberOfLines = 0;
                 [((UILabel *)view) sizeToFit];
+                ((UILabel *)view).textAlignment = NSTextAlignmentCenter;
+                
+                CGSize size = view.superview.bounds.size;
                 
                 CGRect spiltFrame = ((UILabel *)view).frame;
-                spiltFrame.size.width += 100;
+                //spiltFrame.size = CGSizeMake(spiltFrame.size.width + 20, spiltFrame.size.height);
+                spiltFrame.size = CGSizeMake(size.width/2, spiltFrame.size.height);
                 ((UILabel *)view).frame = spiltFrame;
                 
                 if (view.tag == FINAL_CAPTION_TAG){
@@ -847,26 +864,54 @@
     
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
     
-    
-    if (!attempts){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+    if (!self.captionIsSplit){
+        if (!attempts){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+        }
+        
+        if (attempts == 1){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
+        }
+        
+        if (attempts == 2){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+        }
+        
+        if (attempts == 3){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+        }
+        
+        
+        if (attempts == 4){
+            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+        }
     }
-    
-    if (attempts == 1){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
-    }
-    
-    if (attempts == 2){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-    }
-    
-    if (attempts == 3){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
-    }
-    
-    
-    if (attempts == 4){
-        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    else{
+        for (UIView *view in self.myImageView.subviews){
+            if ([view isKindOfClass:[UILabel class]]){
+                if (!attempts){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+                }
+                
+                if (attempts == 1){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+                }
+                
+                if (attempts == 2){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+                }
+                
+                if (attempts == 3){
+                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+                }
+                
+                
+                if (attempts == 4){
+                    [view setTransform:CGAffineTransformMakeRotation(0)];
+                }
+            }
+        }
+
     }
     
     attempts += 1;
@@ -877,10 +922,13 @@
 
 }
 
+
+
 - (IBAction)splitCaptionButtonTapped:(UIButton *)sender
 {
 
     if (!self.captionIsSplit){
+        self.splitCaptionLabel.text = NSLocalizedString(@"Unsplit", nil);
         NSArray *words = [self.finalCaptionLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         words = [words filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
         for (NSString *word in words){
@@ -888,8 +936,20 @@
             splitCaptionLabel.text = word;
             splitCaptionLabel.textColor = self.finalCaptionLabel.textColor;
             splitCaptionLabel.font = self.finalCaptionLabel.font;
-            CGRect previousFrame = self.finalCaptionLabel.frame;
-            splitCaptionLabel.frame = previousFrame;
+            
+            [UIView animateWithDuration:1
+                                  delay:0
+                 usingSpringWithDamping:0.7
+                  initialSpringVelocity:.9
+                                options:0
+                             animations:^{
+                                    //splitCaptionLabel.frame = previousFrame;
+                                 splitCaptionLabel.center = CGPointMake(arc4random() % (int) self.myImageView.bounds.size.width/2,
+                                                                        arc4random() % (int) self.myImageView.bounds.size.height/2);
+                                 
+
+                             } completion:nil];
+          
             splitCaptionLabel.numberOfLines = 0;
             [splitCaptionLabel sizeToFit];
             splitCaptionLabel.userInteractionEnabled = YES;
@@ -905,15 +965,21 @@
             [splitCaptionLabel addGestureRecognizer:press];
             [splitCaptionLabel addGestureRecognizer:controls];
 
-
+            
             
             [self.myImageView addSubview:splitCaptionLabel];
         }
         
         self.finalCaptionLabel.hidden = YES;
         self.captionIsSplit = YES;
+
+    }
+    else{
+        self.splitCaptionLabel.text = NSLocalizedString(@"Split", nil);
+        [self joinCaptionButtonTapped:sender];
     }
 }
+
 
 - (IBAction)joinCaptionButtonTapped:(UIButton *)sender
 {
@@ -1013,11 +1079,10 @@
     
     [self.finalCaptionLabel stopGlowing];
     //self.finalCaptionLabel.alpha = sender.value;
-    if (self.captionIsSplit){
-        for (UIView *view in self.myImageView.subviews){
-            if ([view isKindOfClass:[UILabel class]]){
-                ((UILabel *)view).alpha = sender.value;
-            }
+
+    for (UIView *view in self.myImageView.subviews){
+        if ([view isKindOfClass:[UILabel class]]){
+            ((UILabel *)view).alpha = sender.value;
         }
     }
     self.captionAlphaValue.text = [NSString stringWithFormat:@"%.1f",sender.value];
@@ -1105,10 +1170,14 @@
                 ((UILabel *)view).font = [UIFont fontWithName:self.currentFont size:self.captionSizeStepper.value];
                 ((UILabel *)view).numberOfLines = 0;
                 [((UILabel *)view) sizeToFit];
+                ((UILabel *)view).textAlignment = NSTextAlignmentCenter;
                 
-                CGRect frame = view.frame;
-                view.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width+10, 70);
-                //view.center = self.priorPoint;
+                CGSize size = view.superview.bounds.size;
+                
+                CGRect spiltFrame = ((UILabel *)view).frame;
+                //spiltFrame.size = CGSizeMake(spiltFrame.size.width + 20, spiltFrame.size.height);
+                spiltFrame.size = CGSizeMake(size.width/2, spiltFrame.size.height);
+                ((UILabel *)view).frame = spiltFrame;
                 
                 
             }

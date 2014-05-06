@@ -410,7 +410,7 @@
     [self.previewCancelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
     self.previewNextButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:45];
-    [self.previewNextButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"] forState:UIControlStateNormal];
+    [self.previewNextButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"] forState:UIControlStateNormal];
     [self.previewNextButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     
     /*

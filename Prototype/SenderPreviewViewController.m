@@ -36,6 +36,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *contactsLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *selectedFacebookFriends;
 @property (strong, nonatomic)NSMutableArray *selectedContactFriends;
 @property (strong, nonatomic)NSMutableArray *allFriends;
@@ -75,6 +77,7 @@
     
     [self setupStyles];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     //self.name = @"Guess what im eating";
     //self.phrase = @"Nothing stupid";
     self.previewImage.image = [UIImage imageWithImage:self.image convertToSize:self.previewImage.frame.size];
@@ -83,6 +86,7 @@
  
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
+    self.scrollView.contentSize = CGSizeMake(640, 1136);
     
 }
 
