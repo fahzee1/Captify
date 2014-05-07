@@ -520,15 +520,17 @@
 
 - (void)fetchContacts2
 {
-    static int retrys;
+    static int retrys = 0;
     NSArray *contacts = [ABContactsHelper contacts];
     NSMutableArray *list = [@[] mutableCopy];
+
     for (ABContact *contact in contacts){
         DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
         if (contact.phonenumbers){
             [list addObject:contact.phonenumbers];
         }
     }
+    
     
     if ([list count] > 0 && self.myUser){
         NSDictionary *params = @{@"username":self.myUser.username ,
@@ -580,8 +582,9 @@
     }
     else{
         if (retrys < 3){
-            [self fetchContacts2];
             retrys += 1;
+            [self fetchContacts2];
+            
         }
     }
 

@@ -386,16 +386,30 @@
             
             challenge.name = [params valueForKey:@"challenge_name"];
             challenge.sender = user;
-            challenge.recipients_count = [params valueForKey:@"recipients_count"];
+            id count = [params valueForKey:@"recipients_count"];
+            if ([count isKindOfClass:[NSString class]]){
+                count = [NSNumber numberWithInteger:[count integerValue]];
+            }
+            
+            challenge.recipients_count = count;
             challenge.challenge_id = [params valueForKey:@"challenge_id"];
             
             NSString *media_url = [params valueForKey:@"media_url"];
             NSString *local_url = [params valueForKey:@"local_media_url"];
-            NSNumber *active = [params valueForKey:@"active"];
+            id active = [params valueForKey:@"active"];
+            if ([active isKindOfClass:[NSString class]]){
+                if ([active isEqualToString:@"True"]){
+                    active = [NSNumber numberWithBool:YES];
+                }
+                else{
+                    active = [NSNumber numberWithBool:NO];
+                }
+            }
+            
             @try {
                 challenge.image_path = media_url;
                 challenge.local_image_path = local_url;
-                challenge.active = active ? active : [NSNumber numberWithBool:YES];
+                challenge.active = active; //active ? active : [NSNumber numberWithBool:YES];
                 
                 for (NSString *friend in [params valueForKey:@"recipients"]){
                     User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];

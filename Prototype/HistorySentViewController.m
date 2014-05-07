@@ -130,9 +130,17 @@
                                     
                                         
                                         // create json objects
-                                        id challenges = [data valueForKey :@"my_challenges"];
-                                        NSData *jsonString = [challenges dataUsingEncoding:NSUTF8StringEncoding];
-                                        id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                        // create json objects
+                                        id challenges = [data valueForKey:@"my_challenges"];
+                                        
+                                        id json;
+                                        if ([challenges isKindOfClass:[NSString class]]){
+                                            NSData *jsonString = [challenges dataUsingEncoding:NSUTF8StringEncoding];
+                                            json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                        }
+                                        else if ([challenges isKindOfClass:[NSDictionary class]]){
+                                            json = challenges;
+                                        }
                                         
                                         // get sender and create challenge from data
                                         for (id ch in json[@"challenges"]){

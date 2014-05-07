@@ -227,8 +227,8 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         if ([self.spinner isAnimating]){
             [self.spinner stopAnimating];
-            [self.spinner removeFromSuperview];
-            self.spinner = nil;
+            //[self.spinner removeFromSuperview];
+            //self.spinner = nil;
 
         }
     });

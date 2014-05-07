@@ -41,6 +41,7 @@
  
  */
 
+#define SHARE_CONTROLS_CONTAINER 6466
 
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
@@ -630,7 +631,12 @@
 
 
 - (IBAction)tappedDone:(id)sender {
-    self.imageControls.hidden = YES;
+    //self.imageControls.hidden = YES;
+    for (UIView *view in self.view.subviews){
+        if (view.tag == SHARE_CONTROLS_CONTAINER){
+            view.hidden = YES;
+        }
+    }
     
 }
 
