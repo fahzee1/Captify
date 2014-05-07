@@ -72,7 +72,7 @@
     CGRect nameRect = self.previewChallengeName.frame;
     
     self.previewCaption.text = [self.caption capitalizedString];
-    self.previewCaption.textColor = [UIColor whiteColor];
+    self.previewCaption.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     self.previewCaption.textAlignment = NSTextAlignmentCenter;
     self.previewCaption.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
     self.previewCaption.numberOfLines = 0;
@@ -114,12 +114,12 @@
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
        // title of challege
-    self.previewChallengeName.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
+    self.previewChallengeName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
     self.previewChallengeName.textColor = [UIColor whiteColor];
 
     
     // the phrase
-    self.previewCaption.font =  [UIFont fontWithName:@"Optima-ExtraBlack" size:21.5];
+    self.previewCaption.font =  [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:21.5];
     self.previewCaption.textColor = [UIColor colorWithHexString:@"#3498db"];
     
     // the send button

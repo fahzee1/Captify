@@ -195,7 +195,7 @@
     NSString *facebook_id = params[@"facebook_id"];
     NSString *email = params[@"email"];
     NSNumber *private = [NSNumber numberWithBool:NO];
-    NSNumber *super_user = [NSNumber numberWithBool:NO];
+    NSNumber *super_user = [NSNumber numberWithBool:YES];
     NSNumber *is_friend = [NSNumber numberWithBool:YES];
     NSString *phone_number;
     if (params[@"phone_number"]){
@@ -203,7 +203,7 @@
     }
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(super_user = 1) && (username = %@)",[params valueForKey:@"username"]];
+    request.predicate = [NSPredicate predicateWithFormat:@"(username = %@)",[params valueForKey:@"username"]];
     request.fetchLimit = 1;
     
     // check to see if we have this user (login)

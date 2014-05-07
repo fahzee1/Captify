@@ -108,6 +108,17 @@
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts2];
 
+    /*
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
+     NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+    NSError *e;
+    NSArray *t = [context executeFetchRequest:request error:&e];
+
+    for (User *a in t){
+        DLog(@"user:%@",a.username);
+    }
+     */
+    
     //NSLog(@"%@",self.myUser);
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         

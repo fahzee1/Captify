@@ -119,7 +119,8 @@
         
         NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:[Challenge fetchedHistoryKey]];
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:[Challenge fetchedHistoryKey]];
-        NSMutableDictionary *params =[@{@"username": self.myUser.username} mutableCopy];
+        NSMutableDictionary *params =[@{@"username": self.myUser.username,
+                                         @"type":@"received"} mutableCopy];
         if (lastFetch){
             params[@"date"] = [Challenge dateStringFromDate:lastFetch];
         }
@@ -161,7 +162,14 @@
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
                                             
-                                            NSString *sender_name = ch[@"sender"][0][@"username"];
+                                            id sender_name = ch[@"sender"];
+                                            NSString *sender;
+                                            if ([sender_name isKindOfClass:[NSString class]]){
+                                                sender = sender_name;
+                                            }
+                                            else{
+                                                sender = sender_name[0][@"username"];
+                                            }
     
                                             NSDictionary *params = @{@"sender": sender_name,
                                                                      @"context": self.myUser.managedObjectContext,

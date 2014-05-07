@@ -453,8 +453,17 @@
     else{
         // fetch
         challenge = [self getChallengeWithID:[params valueForKey:@"challenge_id"] inContext:[params valueForKey:@"context"]];
-        NSNumber *active = [params valueForKey:@"active"];
-        challenge.active = active ? active : [NSNumber numberWithBool:YES];
+        id active = [params valueForKey:@"active"];
+        if ([active isKindOfClass:[NSString class]]){
+            if ([active isEqualToString:@"True"]){
+                active = [NSNumber numberWithBool:YES];
+            }
+            else{
+                active = [NSNumber numberWithBool:NO];
+            }
+        }
+
+        challenge.active = active;
         
         if (![challenge.managedObjectContext save:&error]){
             DLog(@"%@",error);
