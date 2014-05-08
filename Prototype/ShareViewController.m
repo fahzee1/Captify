@@ -408,6 +408,13 @@ typedef void (^ShareToNetworksBlock) ();
         
     }
     
+    if (!self.shareFacebook && !self.shareTwitter){
+        // just save and mark inactive
+        self.hud.labelText = NSLocalizedString(@"Saving", nil);
+        self.hud.detailsLabelText = nil;
+        [self updateChallengeOnBackend];
+    }
+    
     
     
     
@@ -428,7 +435,7 @@ typedef void (^ShareToNetworksBlock) ();
                                   caption:self.selectedCaption
                                      name:self.selectedCaption
                                   albumID:albumID
-                             facebookUser:self.myChallenge.sender.facebook_user
+                             facebookUser:[self.myChallenge.sender.facebook_user boolValue]
                                 feedBlock:^(BOOL wasSuccessful) {
                                     [self.hud hide:YES];
                                     if (wasSuccessful){
@@ -499,11 +506,70 @@ typedef void (^ShareToNetworksBlock) ();
     
 }
 
+- (void)saveImage:(UIImage *)image
+         filename:(NSString *)name
+{
+    // filename can be /test/another/test.jpg
+    if (image != nil)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+        NSData* data = UIImageJPEGRepresentation(image, 0.9);
+        [data writeToFile:path atomically:YES];
+    }
+}
+
+
+- (UIImage *)loadImagewithFileName:(NSString *)name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+    UIImage* image = [UIImage imageWithContentsOfFile:path];
+    return image;
+}
+
+
+- (BOOL)removeCurrentImageFromFiles
+{
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSError *error;
+    BOOL removed;
+    if ([manager fileExistsAtPath:self.myChallenge.local_image_path]){
+        removed = [manager removeItemAtPath:self.myChallenge.local_image_path error:&error];
+        
+        if (!removed){
+            DLog(@"%@",error);
+        }
+    }
+    else{
+        removed = NO;
+    }
+    
+    return removed;
+}
+
 - (void)updateChallengeOnBackend
 {
+    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, 0.3);
+    NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id];
     
-    NSDictionary *params = @{@"challenge_id": self.myChallenge.challenge_id,
-                             @"pick_id":self.myPick.pick_id};
+    [self removeCurrentImageFromFiles];
+    [Challenge saveImage:imageData filename:mediaName];
+    
+    
+    NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id,
+                                     @"pick_id":self.myPick.pick_id} mutableCopy];
+    if (mediaData){
+        NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
+        params[@"media"] = media;
+        params[@"media_name"] = mediaName;
+    }
+
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *message) {
                                        [self.hud hide:YES];

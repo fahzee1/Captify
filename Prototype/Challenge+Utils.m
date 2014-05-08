@@ -386,12 +386,7 @@
             
             challenge.name = [params valueForKey:@"challenge_name"];
             challenge.sender = user;
-            id count = [params valueForKey:@"recipients_count"];
-            if ([count isKindOfClass:[NSString class]]){
-                count = [NSNumber numberWithInteger:[count integerValue]];
-            }
-            
-            challenge.recipients_count = count;
+            challenge.recipients_count = [params valueForKey:@"recipients_count"];
             challenge.challenge_id = [params valueForKey:@"challenge_id"];
             
             NSString *media_url = [params valueForKey:@"media_url"];
