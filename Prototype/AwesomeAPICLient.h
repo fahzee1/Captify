@@ -16,11 +16,11 @@
 //static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
 
 
-//static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
+static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
 
 // live urls http and https versions
 
-static NSString * const AwesomeAPIBaseUrlString = @"http://107.170.104.114";
+//static NSString * const AwesomeAPIBaseUrlString = @"http://107.170.104.114";
 
 static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
 static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";
@@ -36,6 +36,7 @@ static NSString * const AwesomeAPIChallengeFetchString = @"api/v1/challenge/blob
 static NSString * const AwesomeAPIChallengeMediaString = @"api/v1/challenge/media";
 static NSString * const AwesomeAPIChallengeUpdateString = @"api/v1/challenge/update";
 static NSString * const AwesomeAPIChallengeCreatePickString = @"api/v1/challenge/picks";
+static NSString * const AwesomeAPIChallengeFeedString = @"api/v1/challenge/feed";
 
 @interface AwesomeAPICLient : AFHTTPSessionManager
 

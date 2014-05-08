@@ -454,6 +454,7 @@
                 [defaults removeObjectForKey:@"superuser"];
                 [defaults removeObjectForKey:@"albumID"];
                 [defaults removeObjectForKey:@"phone_number"];
+                [defaults removeObjectForKey:@"fbServerSuccess"];
     
                 HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
                 home.goToLogin = YES;

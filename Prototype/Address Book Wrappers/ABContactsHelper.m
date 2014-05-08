@@ -34,7 +34,7 @@
 + (int) contactsCount
 {
     ABAddressBookRef addressBook = [ABStandin addressBook];
-    return ABAddressBookGetPersonCount(addressBook);
+    return (int)ABAddressBookGetPersonCount(addressBook);
 }
 
 + (int) contactsWithImageCount
@@ -68,8 +68,8 @@
 {
     ABAddressBookRef addressBook = [ABStandin addressBook];
     NSArray *groups = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllGroups(addressBook);
-    int ncount = groups.count;
-    return ncount;
+    NSUInteger ncount = groups.count;
+    return (int)ncount;
 }
 
 + (NSArray *) groups
@@ -90,7 +90,8 @@
 // Sorting
 + (BOOL) firstNameSorting
 {
-    return (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst);
+    return (ABPersonGetCompositeNameFormatForRecord(NULL) == kABPersonCompositeNameFormatFirstNameFirst);
+    //return (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst);
 }
 
 #pragma mark Contact Management

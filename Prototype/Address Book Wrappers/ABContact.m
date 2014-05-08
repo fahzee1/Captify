@@ -477,7 +477,7 @@
     NSArray *valueArray = [self arrayForProperty:aProperty];
     NSArray *labelArray = [self labelsForProperty:aProperty];
     
-    int num = MIN(valueArray.count, labelArray.count);
+    int num = (int)MIN(valueArray.count, labelArray.count);
     NSMutableArray *items = [NSMutableArray array];
     for (int i = 0; i < num; i++)
     {

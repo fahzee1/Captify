@@ -7,6 +7,7 @@
 //
 
 #import "JDStatusBarStyle.h"
+#import "UIColor+HexValue.h"
 
 NSString *const JDStatusBarStyleError   = @"JDStatusBarStyleError";
 NSString *const JDStatusBarStyleWarning = @"JDStatusBarStyleWarning";
@@ -58,8 +59,9 @@ NSString *const JDStatusBarStyleDark    = @"JDStatusBarStyleDark";
     
     // JDStatusBarStyleError
     else if ([styleName isEqualToString:JDStatusBarStyleError]) {
-        style.barColor = [UIColor colorWithRed:0.588 green:0.118 blue:0.000 alpha:1.000];
+        style.barColor = [UIColor colorWithHexString:@"#e74c3c"];
         style.textColor = [UIColor whiteColor];
+        style.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:14];
         style.progressBarColor = [UIColor redColor];
         style.progressBarHeight = 2.0;
         return style;
@@ -75,8 +77,9 @@ NSString *const JDStatusBarStyleDark    = @"JDStatusBarStyleDark";
     
     // JDStatusBarStyleSuccess
     else if ([styleName isEqualToString:JDStatusBarStyleSuccess]) {
-        style.barColor = [UIColor colorWithRed:0.588 green:0.797 blue:0.000 alpha:1.000];
+        style.barColor = [UIColor colorWithHexString:@"#1abc9c"];
         style.textColor = [UIColor whiteColor];
+        style.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:14];
         style.progressBarColor = [UIColor colorWithRed:0.106 green:0.594 blue:0.319 alpha:1.000];
         style.progressBarHeight = 1.0+1.0/[[UIScreen mainScreen] scale];
         return style;

@@ -565,9 +565,12 @@ typedef void (^ShareToNetworksBlock) ();
     NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id,
                                      @"pick_id":self.myPick.pick_id} mutableCopy];
     if (mediaData){
-        NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
-        params[@"media"] = media;
-        params[@"media_name"] = mediaName;
+
+        NSString *media = [[NSString alloc] initWithBytes:mediaData.bytes length:mediaData.length encoding:NSUTF8StringEncoding];
+        if (media && mediaName){
+            params[@"media"] = media;
+            params[@"media_name"] = mediaName;
+        }
     }
 
     [Challenge updateChallengeWithParams:params

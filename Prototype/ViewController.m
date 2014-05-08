@@ -223,12 +223,15 @@
 
 - (void)showPhoneNumberScreen
 {
-    UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
-    if ([phoneRoot isKindOfClass:[UINavigationController class]]){
-        UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
-        if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
-            ((PhoneNumberViewController *) phoneScreen).delegate = self;
-            [self presentViewController:phoneRoot animated:YES completion:nil];
+    NSString *gotPhone = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone_number"];
+    if (!gotPhone){
+        UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
+        if ([phoneRoot isKindOfClass:[UINavigationController class]]){
+            UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
+            if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
+                ((PhoneNumberViewController *) phoneScreen).delegate = self;
+                [self presentViewController:phoneRoot animated:YES completion:nil];
+            }
         }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110593EB191BD74400866C92 /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110593EA191BD74400866C92 /* FeedViewController.m */; };
+		110593F1191BED4F00866C92 /* FeedViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 110593F0191BED4F00866C92 /* FeedViewCell.m */; };
 		110730F11876640F0065D77F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110730F01876640E0065D77F /* Foundation.framework */; };
 		110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110730F21876640F0065D77F /* CoreGraphics.framework */; };
 		110730F51876640F0065D77F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110730F41876640F0065D77F /* UIKit.framework */; };
@@ -399,6 +401,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		110593E9191BD74400866C92 /* FeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewController.h; sourceTree = "<group>"; };
+		110593EA191BD74400866C92 /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
+		110593EF191BED4F00866C92 /* FeedViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewCell.h; sourceTree = "<group>"; };
+		110593F0191BED4F00866C92 /* FeedViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewCell.m; sourceTree = "<group>"; };
 		110730ED1876640E0065D77F /* Captify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Captify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		110730F01876640E0065D77F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		110730F21876640F0065D77F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1490,6 +1496,8 @@
 				1108021418CA5AB00014BAD8 /* HistorySentViewController.m */,
 				114F82791913D4CE000F9E54 /* PhoneNumberViewController.h */,
 				114F827A1913D4CE000F9E54 /* PhoneNumberViewController.m */,
+				110593E9191BD74400866C92 /* FeedViewController.h */,
+				110593EA191BD74400866C92 /* FeedViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1518,6 +1526,8 @@
 				1128443718EF2F520056D517 /* settingsEdit.xib */,
 				119BAEE118F639B500678A63 /* NSData+Format.h */,
 				119BAEE218F639B500678A63 /* NSData+Format.m */,
+				110593EF191BED4F00866C92 /* FeedViewCell.h */,
+				110593F0191BED4F00866C92 /* FeedViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2592,6 +2602,7 @@
 				11A3024C1919417F00882275 /* ABGroup.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
 				118EF1B718FC6F4F00755552 /* UIProgressView+FlatUI.m in Sources */,
+				110593F1191BED4F00866C92 /* FeedViewCell.m in Sources */,
 				113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */,
 				1153E18B18A9DF4800AD950E /* GPUImageLowPassFilter.m in Sources */,
 				1153E19218A9DF4800AD950E /* GPUImageMissEtikateFilter.m in Sources */,
@@ -2629,6 +2640,7 @@
 				1188CDAA19115DF700F6407C /* Challenge.m in Sources */,
 				118EF1BB18FC6F4F00755552 /* UITableViewCell+FlatUI.m in Sources */,
 				118EF1AD18FC6F4F00755552 /* FUIPopoverBackgroundView.m in Sources */,
+				110593EB191BD74400866C92 /* FeedViewController.m in Sources */,
 				119711E018AE0203008AD895 /* OverlayView.m in Sources */,
 				118EF1B118FC6F4F00755552 /* UIBarButtonItem+FlatUI.m in Sources */,
 				1153E16318A9DF4800AD950E /* GPUImageDivideBlendFilter.m in Sources */,

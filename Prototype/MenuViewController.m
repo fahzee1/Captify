@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *menuHistory;
 @property (weak, nonatomic) IBOutlet UIButton *menuFriends;
 @property (weak, nonatomic) IBOutlet UIButton *menuSettings;
+@property (weak, nonatomic) IBOutlet UIButton *menuFeed;
+
 @property (strong, nonatomic)NSArray *facebookFriendsArray;
 @property (strong, nonatomic)NSNumber *currentScreen;
 
@@ -199,6 +201,23 @@
             break;
 
         }
+            
+        case MenuFeedScreen:
+        {
+            UIViewController *feed = [self.storyboard instantiateViewControllerWithIdentifier:@"feedRoot"];
+            if([self isAlreadyMainVC:feed.childViewControllers[0]]){
+                [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+            }
+            else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+                    [self.delegate menuShowingAnotherScreen];
+                }
+                self.currentScreen = [NSNumber numberWithInt:MenuFeedScreen];
+                [self.sideMenuViewController setMainViewController:feed animated:YES closeMenu:YES];
+            }
+
+        }
+            break;
         default:
             break;
     }

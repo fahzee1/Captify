@@ -14,6 +14,7 @@ typedef enum{
     MenuHistoryScreen,
     MenuFriendsScreen,
     MenuSettingsScreen,
+    MenuFeedScreen,
     
 } MenuScreenConstants;
 
