@@ -17,9 +17,11 @@
 
 @interface FeedViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
+@property (strong,nonatomic)NSArray *results;
 @property (strong,nonatomic)NSArray *data;
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
-
+@property BOOL fetched;
+@property BOOL reloaded;
 @end
 
 @implementation FeedViewController
@@ -54,6 +56,7 @@
     logo.frame = CGRectMake(0, 0, 80, 80);
     self.navigationItem.titleView = logo;
     
+   
 
 }
 
@@ -71,8 +74,37 @@
 }
 
 
+- (void)storeAndReturnResults
+{
+
+    if (!self.fetched){
+    [Challenge getCurrentChallengeFeedWithBlock:^(BOOL wasSuccessful, id data) {
+        if (wasSuccessful){
+            self.results = data[@"data"];
+        
+        }
+        else{
+            [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:data];
+        }
+    }];
+
+        self.fetched = YES;
+    }
+    
+}
+
+- (NSArray *)results
+{
+    if (!_results){
+        _results = [NSArray array];
+    }
+    
+    return _results;
+}
+
 - (NSArray *)data
 {
+    /*
     if (!_data){
         [Challenge getCurrentChallengeFeedWithBlock:^(BOOL wasSuccessful, id data) {
             if (wasSuccessful){
@@ -85,6 +117,14 @@
         }];
     }
     
+     */
+    [self storeAndReturnResults];
+    _data = self.results;
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.collectionView reloadData];
+    });
     return _data;
 }
 
@@ -117,15 +157,57 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FeedViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FeedCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    cell.layer.borderWidth = 1.f;
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    cell.layer.cornerRadius = 5.f;
+    
     
     NSInteger count = [self.data count];
     if (indexPath.row < count){
+        //DLog(@"row %ld is less then %ld so show",(long)indexPath.row,(long)count)
         NSString *jsonString = [self.data objectAtIndex:indexPath.row];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
 
-        cell.sender = json[@"name"];
+        NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
+        if ([is_facebook intValue] == 1){
+            
+            NSString *fbID = json[@"sender"][0][@"facebook_id"];
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",fbID];
+            NSURL * fbUrl = [NSURL URLWithString:fbString];
+            [cell.senderPic setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+            cell.senderPic.layer.masksToBounds = YES;
+            cell.senderPic.layer.cornerRadius = 15.f;
+        }
+        else{
+            cell.senderPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+        }
+       
+        // senderLabel and name are mismatched (to lazy to fix)
+        
+        cell.senderLabel.text = [json[@"name"] capitalizedString];
+        cell.senderLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
+        cell.senderLabel.textColor = [UIColor whiteColor];
+        if ([cell.senderLabel.text length] >= 24){
+            NSString *uString = [cell.senderLabel.text substringToIndex:23];
+            cell.senderLabel.text = [NSString stringWithFormat:@"%@...",uString];
+        }
+        
+        
+        
+        NSString *username = json[@"sender"][0][@"username"];
+        cell.name.text = [[username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+        cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
+        cell.name.textColor = [UIColor whiteColor];
+        if ([cell.name.text length] >= 24){
+            NSString *uString = [cell.name.text substringToIndex:23];
+            cell.name.text = [NSString stringWithFormat:@"%@...",uString];
+        }
+        
+        
+        
+        
         NSString *url = json[@"media_url"];
         [cell.myImageView setImageWithURL:[NSURL URLWithString:url]
                          placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
@@ -134,11 +216,19 @@
                                         DLog(@"%@",error);
                                     }
                                 }];
-    }
-    else{
-        cell.myImageView.image = [UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER];
         
     }
+    else{
+       // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
+
+        cell.myImageView.image = nil;
+        cell.senderPic.image = nil;
+        cell.senderLabel.text = nil;
+        cell.name.text = nil;
+        
+    }
+    
+    //cell.name.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     
     return cell;
 }
@@ -168,20 +258,29 @@
        return CGSizeMake(150, 150);
     }
      */
-    return CGSizeMake(150, 150);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[FeedViewCell class]]){
+        CGSize size = ((FeedViewCell *)cell).myImageView.frame.size;
+        size.height -= 50;
+        size.width -= 50;
+        return size;
+    }
+    else{
+        return CGSizeMake(150, 160);
+    }
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 2.0;
+    return 1.0;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 5.0;
+    return 7.0;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(20, 0 , 20, 0);
+    return UIEdgeInsetsMake(20, 5 , 20, 5);
 }
 
 /*- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath

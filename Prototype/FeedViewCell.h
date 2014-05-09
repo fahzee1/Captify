@@ -12,7 +12,9 @@
 
 @property (nonatomic, strong)IBOutlet UIImageView *myImageView;
 @property (strong, nonatomic)UIImage *image;
-@property (strong, nonatomic)IBOutlet NSString *sender;
+
 @property (strong, nonatomic)IBOutlet UIImageView *senderPic;
+@property (weak, nonatomic) IBOutlet UILabel *senderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *name;
 
 @end

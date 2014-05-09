@@ -572,6 +572,11 @@ typedef void (^ShareToNetworksBlock) ();
             params[@"media_name"] = mediaName;
         }
     }
+    
+#warning implement privacy for image showing on feed
+    if (1){
+        params[@"is_private"] = [NSNumber numberWithBool:NO];
+    }
 
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *message) {
