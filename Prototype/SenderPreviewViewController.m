@@ -86,7 +86,7 @@
  
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
-    self.scrollView.contentSize = CGSizeMake(640, 1136);
+    self.scrollView.contentSize = CGSizeMake(320, 550);
     
 }
 
@@ -177,13 +177,21 @@
     tapFB.numberOfTapsRequired = 1;
     tapFB.numberOfTouchesRequired = 1;
 
-    self.facebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
     self.facebookLabel.textColor = [UIColor whiteColor];
     self.facebookLabel.layer.cornerRadius = 5;
     self.facebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     self.facebookLabel.text = [NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
-    self.facebookLabel.userInteractionEnabled = YES;
+    self.facebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
     [self.facebookLabel addGestureRecognizer:tapFB];
+    
+    if ([self.myUser.facebook_user intValue] == 1){
+        self.facebookLabel.userInteractionEnabled = YES;
+    }
+    else{
+        self.facebookLabel.layer.opacity = 0.6f;
+        self.facebookLabel.userInteractionEnabled = NO;
+    }
+    
     
     
     // the bottom send button

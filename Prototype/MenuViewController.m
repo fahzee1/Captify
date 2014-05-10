@@ -75,6 +75,7 @@
     self.menuHistory.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
     self.menuFriends.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
     self.menuSettings.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    self.menuFeed.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
     
     
     [self.menuCamera setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Home", @"Home button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"]] forState:UIControlStateNormal];
@@ -84,12 +85,17 @@
     [self.menuHistory setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ History", @"History button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"]] forState:UIControlStateNormal];
 
     [self.menuSettings setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Settings", @"Settings button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"]] forState:UIControlStateNormal];
+    
+    [self.menuFeed setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Action", @"Feed button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"]] forState:UIControlStateNormal];
+    
+    
  
     
     [self.menuCamera setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuHistory setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuFriends setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuSettings setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.menuFeed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     /*
     self.menuCamera.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
@@ -102,6 +108,7 @@
     self.menuHistory.layer.cornerRadius = 6.0f;
     self.menuFriends.layer.cornerRadius = 6.0f;
     self.menuSettings.layer.cornerRadius = 6.0f;
+    self.menuFeed.layer.cornerRadius = 6.0f;
 
     
 }
@@ -113,6 +120,8 @@
     
     self.menuFriends.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFriendsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
     self.menuSettings.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    
+    self.menuFeed.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
 
 }
 

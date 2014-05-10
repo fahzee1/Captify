@@ -52,9 +52,15 @@
     self.navigationItem.leftBarButtonItem = leftButton;
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.collectionView.backgroundColor = [UIColor clearColor];
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:CAPTIFY_CONTACT_PIC]];
-    logo.frame = CGRectMake(0, 0, 80, 80);
-    self.navigationItem.titleView = logo;
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:CAPTIFY_LOGO]];
+    logo.frame = CGRectMake(40, -60, 175, 175);
+    logo.contentMode = UIViewContentModeScaleAspectFit;
+    
+    UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height)];
+    titleContainer.backgroundColor = [UIColor clearColor];
+    [titleContainer addSubview:logo];
+    self.navigationItem.titleView = titleContainer;
+  
     
    
 
