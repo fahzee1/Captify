@@ -164,11 +164,11 @@
     tapC.numberOfTapsRequired = 1;
     tapC.numberOfTouchesRequired = 1;
 
-    self.contactsLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.contactsLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
     self.contactsLabel.textColor = [UIColor whiteColor];
     self.contactsLabel.layer.cornerRadius = 5;
-    self.contactsLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-    self.contactsLabel.text = [NSString stringWithFormat:@"%@   Contacts",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
+    self.contactsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
+    self.contactsLabel.text = [NSString stringWithFormat:@"Contacts"];
     self.contactsLabel.userInteractionEnabled = YES;
     [self.contactsLabel addGestureRecognizer:tapC];
     
@@ -179,10 +179,27 @@
 
     self.facebookLabel.textColor = [UIColor whiteColor];
     self.facebookLabel.layer.cornerRadius = 5;
-    self.facebookLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-    self.facebookLabel.text = [NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    self.facebookLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
+    self.facebookLabel.text = [NSString stringWithFormat:@"Facebook"];
     self.facebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
     [self.facebookLabel addGestureRecognizer:tapFB];
+    
+    UILabel *facebookIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -20, 80, 80)];
+    facebookIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    facebookIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
+    facebookIcon.userInteractionEnabled = NO;
+    facebookIcon.textColor = [UIColor whiteColor];
+    
+    UILabel *contactIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -20, 80, 80)];
+    contactIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    contactIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"];
+    contactIcon.userInteractionEnabled = NO;
+    contactIcon.textColor = [UIColor whiteColor];
+    
+    [self.facebookLabel addSubview:facebookIcon];
+    [self.contactsLabel addSubview:contactIcon];
+
+
     
     if ([self.myUser.facebook_user intValue] == 1){
         self.facebookLabel.userInteractionEnabled = YES;
@@ -197,7 +214,7 @@
     // the bottom send button
     [self.bottomSendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     self.bottomSendButton.layer.opacity = 0.6f;
-    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:35];
+    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
     self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.bottomSendButton.layer.cornerRadius = 5;
     self.bottomSendButton.userInteractionEnabled = NO;
@@ -332,7 +349,8 @@
                                                                            @"challenge_name":self.name,
                                                                            @"challenge_id":challenge_id,
                                                                            @"media_url":media_url,
-                                                                           @"local_media_url":localMediaName};
+                                                                           @"local_media_url":localMediaName,
+                                                                          @"active":[NSNumber numberWithBool:YES]};
                                                               
                                                               challenge = [Challenge createChallengeWithRecipientsWithParams:params];
 

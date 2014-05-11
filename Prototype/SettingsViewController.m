@@ -456,6 +456,11 @@
                 [defaults removeObjectForKey:@"phone_number"];
                 [defaults removeObjectForKey:@"fbServerSuccess"];
     
+                // since logging out set active menu button to home
+                UIViewController *menu = self.sideMenuViewController.menuViewController;
+                if ([menu isKindOfClass:[MenuViewController class]]){
+                    [((MenuViewController *)menu) updateCurrentScreen:MenuHomeScreen];
+                }
                 HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
                 home.goToLogin = YES;
                 UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];

@@ -71,22 +71,23 @@
 
 - (void)setupStyles
 {
-    self.menuCamera.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
-    self.menuHistory.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
-    self.menuFriends.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
-    self.menuSettings.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
-    self.menuFeed.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:19];
+    
+    self.menuCamera.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:19];
+    self.menuHistory.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:19];
+    self.menuFriends.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:19];
+    self.menuSettings.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:19];
+    self.menuFeed.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:19];
     
     
-    [self.menuCamera setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Home", @"Home button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"]] forState:UIControlStateNormal];
+    [self.menuCamera setTitle:[NSString stringWithFormat:NSLocalizedString(@"Home", @"Home button in menu")] forState:UIControlStateNormal];
     
-    [self.menuFriends setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Invite", @"Friends button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]] forState:UIControlStateNormal];
+    [self.menuFriends setTitle:[NSString stringWithFormat:NSLocalizedString(@"Invite", @"Friends button in menu")] forState:UIControlStateNormal];
 
-    [self.menuHistory setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ History", @"History button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"]] forState:UIControlStateNormal];
+    [self.menuHistory setTitle:[NSString stringWithFormat:NSLocalizedString(@"History", @"History button in menu")] forState:UIControlStateNormal];
 
-    [self.menuSettings setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Settings", @"Settings button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"]] forState:UIControlStateNormal];
+    [self.menuSettings setTitle:[NSString stringWithFormat:NSLocalizedString(@"Settings", @"Settings button in menu")] forState:UIControlStateNormal];
     
-    [self.menuFeed setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Action", @"Feed button in menu"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"]] forState:UIControlStateNormal];
+    [self.menuFeed setTitle:[NSString stringWithFormat:NSLocalizedString(@"Action", @"Feed button in menu")] forState:UIControlStateNormal];
     
     
  
@@ -109,6 +110,52 @@
     self.menuFriends.layer.cornerRadius = 6.0f;
     self.menuSettings.layer.cornerRadius = 6.0f;
     self.menuFeed.layer.cornerRadius = 6.0f;
+    
+    UILabel *cameraIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -15, 80, 80)];
+    cameraIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    cameraIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"];
+    cameraIcon.userInteractionEnabled = NO;
+    cameraIcon.textColor = [UIColor whiteColor];
+    
+    UILabel *historyIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -15, 80, 80)];
+    historyIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    historyIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"];
+    historyIcon.userInteractionEnabled = NO;
+    historyIcon.textColor = [UIColor whiteColor];
+    
+    UILabel *actionIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -15, 80, 80)];
+    actionIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    actionIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
+    actionIcon.userInteractionEnabled = NO;
+    actionIcon.textColor = [UIColor whiteColor];
+    
+
+    UILabel *settingsIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -15, 80, 80)];
+    settingsIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    settingsIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"];
+    settingsIcon.userInteractionEnabled = NO;
+    settingsIcon.textColor = [UIColor whiteColor];
+    
+    UILabel *inviteIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -15, 80, 80)];
+    inviteIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    inviteIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"];
+    inviteIcon.userInteractionEnabled = NO;
+    inviteIcon.textColor = [UIColor whiteColor];
+    
+
+
+
+    
+    
+    
+    [self.menuCamera addSubview:cameraIcon];
+    [self.menuHistory addSubview:historyIcon];
+    [self.menuFeed addSubview:actionIcon];
+    [self.menuFriends addSubview:inviteIcon];
+    [self.menuSettings addSubview:settingsIcon];
+    
+
+    
 
     
 }
@@ -121,7 +168,7 @@
     self.menuFriends.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFriendsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
     self.menuSettings.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
     
-    self.menuFeed.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
+    self.menuFeed.layer.backgroundColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFeedScreen]])? [[UIColor colorWithHexString:@"#4698aa"] CGColor]:[[UIColor colorWithHexString:@"#69c9d0"] CGColor];
 
 }
 
