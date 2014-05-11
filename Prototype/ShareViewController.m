@@ -484,7 +484,10 @@ typedef void (^ShareToNetworksBlock) ();
                                   albumID:nil
                              facebookUser:[self.myChallenge.sender.facebook_user boolValue]
                                 feedBlock:^(BOOL wasSuccessful) {
-                                    [self.hud hide:YES];
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [self.hud hide:YES];
+                                    });
+
                                     if (wasSuccessful){
                                         DLog(@"posting to feed was successful");
                                         if (self.shareTwitter){
@@ -503,7 +506,10 @@ typedef void (^ShareToNetworksBlock) ();
                                         
                                     }
                                     else{
-                                        [self.hud hide:YES];
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [self.hud hide:YES];
+                                        });
+
                                         [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
                                                          message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
                                         return;
@@ -520,7 +526,9 @@ typedef void (^ShareToNetworksBlock) ();
         [self.friends postImageToTwitterFeed:self.shareImage
                                      caption:self.selectedCaption
                                        block:^(BOOL wasSuccessful) {
-                                           [self.hud hide:YES];
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               [self.hud hide:YES];
+                                           });
                                            
                                            if (wasSuccessful){
                                                DLog(@"post to twitter success");
@@ -530,7 +538,10 @@ typedef void (^ShareToNetworksBlock) ();
                                                
                                            }
                                            else{
-                                               [self.hud hide:YES];
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   [self.hud hide:YES];
+                                               });
+
                                                [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
                                                                 message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
                                                return;

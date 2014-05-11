@@ -212,9 +212,14 @@
         [((HistoryRecievedViewController *)vcR) fetchUpdatesWithBlock:^{
             
               [((HistorySentViewController *)vcS) fetchUpdatesWithBlock:^{
-                  [self.spinner stopAnimating];
-                  [self.spinner removeFromSuperview];
-                  self.spinner = nil;
+                  
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                       [self.spinner stopAnimating];
+                  });
+
+                  //[self.spinner stopAnimating];
+                  //[self.spinner removeFromSuperview];
+                  //self.spinner = nil;
                   self.navigationItem.rightBarButtonItem = self.rightRefreshButton;
               }];
             
