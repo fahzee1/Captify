@@ -235,7 +235,7 @@
     int count = [[defaults valueForKey:@"makeButtonToolTip"] intValue];
     
     if (count < 2){
-        CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap here to make your own caption", nil)];
+        CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Make your own caption", nil)];
         toolTip.backgroundColor = [UIColor whiteColor];
         toolTip.textColor = [UIColor blackColor];
         toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
