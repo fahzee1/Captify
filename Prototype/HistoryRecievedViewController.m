@@ -531,7 +531,7 @@
         _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
         _errorContainerView.layer.cornerRadius = 10;
         _errorContainerView.layer.masksToBounds = YES;
-        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         
         CGRect containerFrame = _errorContainerView.frame;
         containerFrame.size.width -= 15;

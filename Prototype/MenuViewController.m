@@ -272,8 +272,9 @@
                 [self.sideMenuViewController setMainViewController:feed animated:YES closeMenu:YES];
             }
 
+             break;
         }
-            break;
+           
         default:
             break;
     }

@@ -228,7 +228,31 @@
         // mark it as being displayed
         // also mark on challenge that this
         
+        
     }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    int count = [[defaults valueForKey:@"makeButtonToolTip"] intValue];
+    
+    if (count < 2){
+        CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap here to make your own caption", nil)];
+        toolTip.backgroundColor = [UIColor whiteColor];
+        toolTip.textColor = [UIColor blackColor];
+        toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+        toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+        toolTip.hasGradientBackground = NO;
+        toolTip.preferredPointDirection = PointDirectionDown;
+        toolTip.dismissTapAnywhere = YES;
+        toolTip.hasShadow = NO;
+        toolTip.has3DStyle = NO;
+        toolTip.borderWidth = 0;
+        [toolTip autoDismissAnimated:YES atTimeInterval:5.0];
+        [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
+        
+        [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"makeButtonToolTip"];
+    }
+    
+
     
     [self fetchUpdates];
     
@@ -258,6 +282,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 - (void)fetchUpdates
 {
@@ -1736,7 +1761,7 @@
     if (!_errorContainerView){
         
         _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
-        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
         _errorContainerView.layer.cornerRadius = 10;
         _errorContainerView.layer.masksToBounds = YES;
         CGRect containerFrame = _errorContainerView.frame;
