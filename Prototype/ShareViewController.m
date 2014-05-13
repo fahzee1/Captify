@@ -19,7 +19,7 @@
 
 typedef void (^ShareToNetworksBlock) ();
 
-@interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate>
+@interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
@@ -100,6 +100,7 @@ typedef void (^ShareToNetworksBlock) ();
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+      DLog(@"received memory warning here");
 }
 
 
@@ -552,15 +553,38 @@ typedef void (^ShareToNetworksBlock) ();
 
 }
 
-
-- (IBAction)tappedShare:(UIButton *)sender {
+- (void)startShare
+{
     // after share show success overlay or alert or something
     // then pop to root
+
     [self saveImage];
     
     [self shareToFacebookAndTwitterWithBlock:^{
         [self updateChallengeOnBackend];
     }];
+
+}
+
+
+- (IBAction)tappedShare:(UIButton *)sender {
+    
+    NSString *shareOrSave;
+    if (!self.shareFacebook && !self.shareTwitter){
+        shareOrSave = NSLocalizedString(@"Save", nil);
+    }
+    else{
+        shareOrSave = NSLocalizedString(@"Share", nil);
+    }
+    
+    UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:shareOrSave, nil];
+    
+    [popUp showFromRect:self.myShareButton.frame inView:self.view animated:YES];
+
     
     
     
@@ -633,10 +657,9 @@ typedef void (^ShareToNetworksBlock) ();
         }
     }
     
-#warning implement privacy for image showing on feed
-    if (1){
-        params[@"is_private"] = [NSNumber numberWithBool:NO];
-    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isPrivate = [defaults boolForKey:@"isPrivate"];
+    params[@"is_private"] = [NSNumber numberWithBool:isPrivate];
 
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *message) {
@@ -689,6 +712,14 @@ typedef void (^ShareToNetworksBlock) ();
     [a show];
 }
 
+
+#pragma -mark uiactionsheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        [self startShare];
+    }
+}
 
 
 #pragma -mark Documents (share to IG) delegate

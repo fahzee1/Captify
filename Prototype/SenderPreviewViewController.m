@@ -28,7 +28,7 @@
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate,ContactsControllerDelegate>
+@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate,ContactsControllerDelegate, UIActionSheetDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
@@ -120,6 +120,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+        DLog(@"received memory warning here");
 }
 
 - (void)popToPreview
@@ -270,8 +271,21 @@
 }
 
 
-
 - (void)sendButtonTapped:(UIButton *)sender
+{
+ 
+    UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedString(@"Send", nil), nil];
+    
+    [popUp showFromRect:self.bottomSendButton.frame inView:self.view animated:YES];
+}
+
+
+
+- (void)sendChallenge
 {
     // create challenge in backend
     // then in core data
@@ -459,6 +473,7 @@
 
 - (void)showFacebookInvite
 {
+    /*
     [self dismissViewControllerAnimated:YES completion:^{
         UIViewController *menu = self.sideMenuViewController.menuViewController;
         if ([menu isKindOfClass:[MenuViewController class]]){
@@ -468,6 +483,12 @@
         UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
         [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
     }];
+     */
+    
+    NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+    activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
+    [self presentViewController:activityVC animated:YES completion:nil];
     
 }
 
@@ -484,6 +505,13 @@
 
 
 
+#pragma -mark uiactionsheet
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        [self sendChallenge];
+    }
+}
 
 
 #pragma -mark Contacts delegate

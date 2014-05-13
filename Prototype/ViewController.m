@@ -58,6 +58,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    DLog(@"received memory warning here");
 }
 
 - (void)setupButtonStyles
@@ -223,8 +224,9 @@
 
 - (void)showPhoneNumberScreen
 {
-    NSString *gotPhone = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone_number"];
-    if (!gotPhone){
+    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone_number"];
+
+    if (!phone){
         UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
         if ([phoneRoot isKindOfClass:[UINavigationController class]]){
             UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;

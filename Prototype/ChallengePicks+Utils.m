@@ -90,7 +90,7 @@
     else{
         // fetch and update
         NSNumber *is_chosen = [params valueForKey:@"is_chosen"];
-        ChallengePicks *pick = [self getPicksWithID:[params valueForKey:@"pick_id"]
+        pick = [self getPicksWithID:[params valueForKey:@"pick_id"]
                                           inContext:[params valueForKey:@"context"]];
         pick.is_chosen = is_chosen ? is_chosen : [NSNumber numberWithBool:NO];
         

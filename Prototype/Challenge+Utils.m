@@ -374,12 +374,14 @@
     
     Challenge *challenge;
     NSError *error;
-    User *user = [User getUserWithUsername:[params valueForKey:@"sender"] inContext:[params valueForKey:@"context"] error:&error];
+    NSString *sender = [NSString stringWithFormat:@"%@",[params valueForKey:@"sender"]];
+    User *user = [User getUserWithUsername:sender inContext:[params valueForKey:@"context"] error:&error];
     // check if exists first
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
     NSUInteger exist = [user.managedObjectContext countForFetchRequest:request error:&error];
+    
     if (exist == 0){
         if (user){
             challenge = [NSEntityDescription insertNewObjectForEntityForName:[Challenge name] inManagedObjectContext:user.managedObjectContext];
@@ -440,7 +442,7 @@
         }
         // no user
         else{
-            DLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"sender"]);
+            DLog(@"user %@ hasnt been created, so challenge not created",sender);
             
         }
 

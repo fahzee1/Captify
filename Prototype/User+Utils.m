@@ -164,12 +164,15 @@
                     inContext:(NSManagedObjectContext *)context
                         error:(NSError **)error
 {
+    
+    username = [username stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
     request.fetchLimit = 1;
     request.predicate = [NSPredicate predicateWithFormat:@"username = %@",username];
     
     NSArray *results = [context executeFetchRequest:request error:error];
-    if (results){
+    if ([results count] > 0){
         return [results firstObject];
     }
     else{

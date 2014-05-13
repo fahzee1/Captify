@@ -104,7 +104,6 @@
     [super viewDidLoad];
     
 
-
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts2];
 
@@ -151,6 +150,18 @@
 
     }
     
+    //if user not logged in segue to login screen
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"logged"]){
+        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+        return;
+    }
+    // used from settings to logout
+    if (self.goToLogin){
+        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
+        return;
+    }
+
+    
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
           PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
@@ -164,29 +175,7 @@
     menu.delegate = self;
 
 
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        // got a camera
-            [self setupCamera];
-        
-    }
-    else{
-        // using simulator with no camera so just add buttons
-        
-        [self setupTestNoCamera];
-    }
     
-    
-    
-    //if user not logged in segue to login screen
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"logged"]){
-        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-        return;
-    }
-    // used from settings to logout
-    if (self.goToLogin){
-        [self performSegueWithIdentifier:@"segueToLogin" sender:self];
-        return;
-    }
     
     self.sideMenuViewController.delegate = self;
     
@@ -199,6 +188,18 @@
     if (USE_GOOGLE_ANALYTICS){
         self.screenName = @"Home screen";
     }
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        // got a camera
+        [self setupCamera];
+        
+    }
+    else{
+        // using simulator with no camera so just add buttons
+        
+        [self setupTestNoCamera];
+    }
+
 
     
 }
@@ -231,7 +232,26 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+       DLog(@"received memory warning here");
 
+    
+}
+
+#warning this might give me issue, remove if it does
+- (void)setView:(UIView *)view
+{
+    [super setView:view];
+    self.snapPicButton = nil;
+    self.topMenuButton = nil;
+    self.flashButton = nil;
+    self.rotateButton = nil;
+    
+    self.session = nil;
+    self.cameraDevice = nil;
+    self.cameraInput = nil;
+    self.previewLayer = nil;
+    
+    
     
 }
 

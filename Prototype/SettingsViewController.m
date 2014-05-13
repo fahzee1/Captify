@@ -35,8 +35,11 @@
 #define SETTINGS_PHOTO_LABEL 4000
 #define SETTINGS_EDIT_BUTTON 5000
 #define SETTINGS_LOGOUT 6000
+#define SETTINGS_PRIVACY 7000
+#define SETTINGS_PRIVACY_SWITCH 8000
 
-@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate>
+
+@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate, UIActionSheetDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) User *myUser;
 
@@ -103,6 +106,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    DLog(@"received memory warning here");
 }
 
 
@@ -206,6 +210,19 @@
 
 
 
+- (IBAction)privacySwitchChanged:(UISwitch *)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (sender.on){
+        [defaults setBool:NO forKey:@"isPrivate"];
+    }
+    else{
+        [defaults setBool:YES forKey:@"isPrivate"];
+    }
+}
+
+
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -297,6 +314,37 @@
 }
 
 
+- (void)logout
+{
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
+        //close the session and remove the access token from the cache.
+        //the session state handler in the app delegate will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:NO forKey:@"logged"];
+    [defaults setBool:NO forKey:@"facebook_user"];
+    //[defaults setBool:NO forKey:@"phone_never"];
+    [defaults setValue:[NSNumber numberWithInt:0] forKey:@"challengeToolTip"];
+    [defaults setValue:[NSNumber numberWithInt:0] forKey:@"homeToolTip"];
+    [defaults removeObjectForKey:@"superuser"];
+    [defaults removeObjectForKey:@"albumID"];
+    [defaults removeObjectForKey:@"phone_number"];
+    [defaults removeObjectForKey:@"fbServerSuccess"];
+    
+    // since logging out set active menu button to home
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) updateCurrentScreen:MenuHomeScreen];
+    }
+    HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
+    home.goToLogin = YES;
+    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
+    rootNav.navigationBarHidden = YES;
+    [self.sideMenuViewController setMainViewController:rootNav animated:YES closeMenu:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -359,6 +407,14 @@
                         inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
                         inviteB.textColor = [UIColor whiteColor];
                         
+                        double delayInSeconds = 2.0;
+                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                            inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+                            inviteB.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
+                        });
+                        
                     }
                 }
                 
@@ -368,14 +424,21 @@
                     [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
                 }
                 
-                UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
-                [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
+                //UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
+                //[self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
+                
+                
+                NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
+                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+                activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
+                [self presentViewController:activityVC animated:YES completion:nil];
+
             }
         }
         case 1:
         {
             // Profile section
-            if (indexPath.row == 4){
+            if (indexPath.row == 5){
                 
                 UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
@@ -434,38 +497,26 @@
                     if ([logoutButton isKindOfClass:[UILabel class]]){
                         UILabel *logoutB = (UILabel *)logoutButton;
                         logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+                        double delayInSeconds = 2.0;
+                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                            logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+                        });
                         
                     }
                 }
-
                 
-                if (FBSession.activeSession.state == FBSessionStateOpen
-                    || FBSession.activeSession.state == FBSessionStateOpenTokenExtended){
-                    //close the session and remove the access token from the cache.
-                    //the session state handler in the app delegate will be called automatically
-                    [FBSession.activeSession closeAndClearTokenInformation];
-                }
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setBool:NO forKey:@"logged"];
-                [defaults setBool:NO forKey:@"facebook_user"];
-                //[defaults setBool:NO forKey:@"phone_never"];
-                [defaults setValue:[NSNumber numberWithInt:0] forKey:@"challengeToolTip"];
-                [defaults setValue:[NSNumber numberWithInt:0] forKey:@"homeToolTip"];
-                [defaults removeObjectForKey:@"superuser"];
-                [defaults removeObjectForKey:@"albumID"];
-                [defaults removeObjectForKey:@"phone_number"];
-                [defaults removeObjectForKey:@"fbServerSuccess"];
-    
-                // since logging out set active menu button to home
-                UIViewController *menu = self.sideMenuViewController.menuViewController;
-                if ([menu isKindOfClass:[MenuViewController class]]){
-                    [((MenuViewController *)menu) updateCurrentScreen:MenuHomeScreen];
-                }
-                HomeViewController *home = [self.storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
-                home.goToLogin = YES;
-                UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:home];
-                rootNav.navigationBarHidden = YES;
-                [self.sideMenuViewController setMainViewController:rootNav animated:YES closeMenu:YES];
+                
+                UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                     destructiveButtonTitle:nil
+                                                          otherButtonTitles:@"Log Out", nil];
+
+                [popUp showFromRect:cell.frame inView:self.myTable animated:YES];
+                
+                
+
 
             }
         }
@@ -485,6 +536,13 @@
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    
+    UIView *privacyLabel = [cell viewWithTag:SETTINGS_PRIVACY];
+    if ([privacyLabel isKindOfClass:[UILabel class]]){
+        UILabel *privacyL = (UILabel *)privacyLabel;
+        privacyL.textColor = [UIColor whiteColor];
+        privacyL.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    }
     
     UIView *photoLabel = [cell viewWithTag:SETTINGS_PHOTO_LABEL];
     if ([photoLabel isKindOfClass:[UILabel class]]){
@@ -582,7 +640,7 @@
                 }
             }
             
-            if (indexPath.row == 4){
+            if (indexPath.row == 5){
                 // Edit profile button
                 cell.layer.borderWidth = 0;
             }
@@ -627,6 +685,13 @@
         // invite friends
         return 80.0;
     }
+    
+    else if (indexPath.section == 1){
+        if (indexPath.row == 4){
+            return 57.0;
+        }
+    }
+    
     return 50.0;
 }
 
@@ -707,6 +772,14 @@
 }
 
  */
+
+#pragma -mark Uiaction delegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0){
+        [self logout];
+    }
+}
 
 #pragma -mark Mail delegate
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {

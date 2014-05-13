@@ -65,6 +65,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    DLog(@"received memory warning here");
 }
 
 
@@ -234,7 +235,7 @@
             }
              */
             
-            NSString *inviteText = @"Check out Captify.. we could have fun sending caption challlenges to each other with our favorite pics and create memes!";
+            NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
             UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
             activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
             [self presentViewController:activityVC animated:YES completion:nil];

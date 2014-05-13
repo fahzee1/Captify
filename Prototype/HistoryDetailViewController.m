@@ -272,6 +272,8 @@
     self.etikateFilter = nil;
     
     self.imageControls = nil;
+    
+    DLog(@"received memory warning here");
 
 }
 

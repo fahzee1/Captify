@@ -132,6 +132,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+      DLog(@"received memory warning here");
 }
 
 
