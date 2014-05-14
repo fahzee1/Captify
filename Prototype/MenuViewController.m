@@ -244,6 +244,7 @@
             
         case MenuSettingsScreen:
         {
+
             UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsRoot"];
             if([self isAlreadyMainVC:settings.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];

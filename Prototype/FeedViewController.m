@@ -20,6 +20,7 @@
 @property (strong,nonatomic)NSArray *results;
 @property (strong,nonatomic)NSArray *data;
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property(strong,nonatomic)UIRefreshControl *refreshControl;
 @property BOOL fetched;
 @property BOOL reloaded;
 @end
@@ -60,6 +61,10 @@
     titleContainer.backgroundColor = [UIColor clearColor];
     [titleContainer addSubview:logo];
     self.navigationItem.titleView = titleContainer;
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.collectionView addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(updateFeed) forControlEvents:UIControlEventValueChanged];
   
     
    
@@ -80,6 +85,12 @@
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
+- (void)updateFeed
+{
+    self.fetched = NO;
+    [self storeAndReturnResults];
+}
+
 
 - (void)storeAndReturnResults
 {
@@ -93,6 +104,12 @@
         else{
             [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:data];
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.refreshControl.isRefreshing){
+                [self.refreshControl endRefreshing];
+            }
+        });
     }];
 
         self.fetched = YES;

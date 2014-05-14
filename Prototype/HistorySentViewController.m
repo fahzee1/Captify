@@ -29,7 +29,7 @@
 @property BOOL pendingRequest;
 @property (strong, nonatomic) Notifications *notifications;
 @property (strong, nonatomic)UIView *errorContainerView;
-
+@property (strong,  nonatomic)UIRefreshControl *refreshControl;
 @end
 
 @implementation HistorySentViewController
@@ -58,6 +58,10 @@
         [self.myTable addSubview:self.errorContainerView];
     }
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.myTable addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(fetchUpdates) forControlEvents:UIControlEventValueChanged];
+    
 
 
 }
@@ -72,7 +76,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
-    [self fetchUpdatesWithBlock:nil];
+    [self fetchUpdates];
 }
 
 - (void)dealloc
@@ -105,7 +109,7 @@
     [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:NO];
 }
 
-- (void)fetchUpdatesWithBlock:(FetchRecentsBlock2)block
+- (void)fetchUpdates
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
@@ -208,12 +212,9 @@
                                             }
                                             
 
+                                            [self.refreshControl endRefreshing];
                                             [self.myTable reloadData];
                                         });
-                                    }
-                                    
-                                    if (block){
-                                        block();
                                     }
                                     
                                     

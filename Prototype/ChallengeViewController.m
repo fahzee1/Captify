@@ -58,6 +58,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     //self.navigationItem.title = NSLocalizedString(@"Challenge", @"All captions to showing on final screen");
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-folder-o"] style:UIBarButtonItemStylePlain target:self action:@selector(popToHistory)];
@@ -95,6 +96,11 @@
     
     if ([self.data count] == 0){
         [self.myTable removeFromSuperview];
+    }
+    
+    if (self.myTable){
+        NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.data.count -1];
+        [self.myTable scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
    
 }

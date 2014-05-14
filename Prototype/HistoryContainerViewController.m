@@ -50,29 +50,16 @@
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                      NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     
+    /*
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(reloadHistory)];
     [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                           NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
-    
-    /*
-  
-    // custom view here so we can use frame of button to place activity indicator when tapped
-    self.refreshButton = [[UIButton alloc] init];
-    self.refreshButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
-    [self.refreshButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
-    [self.refreshButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
-    self.refreshButton.frame = CGRectMake(0, 0, 80, 80);
-    [self.refreshButton addTarget:self action:@selector(reloadHistory) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    UIBarButtonItem *right =  [[UIBarButtonItem alloc] initWithCustomView:self.refreshButton];
-    CGRect frame = self.refreshButton.frame;
-    frame.origin.x += 100;
-    self.refreshButton.frame = frame;
      */
     
-    self.rightRefreshButton = rightButton;
-    self.navigationItem.rightBarButtonItem = rightButton;
+  
+     
+    //self.rightRefreshButton = rightButton;
+    //self.navigationItem.rightBarButtonItem = rightButton;
     self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationItem.title = NSLocalizedString(@"History", nil);
     
@@ -197,7 +184,7 @@
     }
 }
 
-
+/*
 - (void)reloadHistory
 {
     self.navigationItem.rightBarButtonItem = nil;
@@ -240,6 +227,8 @@
     });
 
 }
+
+*/
 
 
 - (UIViewController *)currentController

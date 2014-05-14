@@ -34,7 +34,7 @@
 @property (strong, nonatomic) NSMutableArray *picksList;
 @property (strong,nonatomic) Notifications *notifications;
 @property (strong,nonatomic)UIView *errorContainerView;
-
+@property (strong,nonatomic)UIRefreshControl *refreshControl;
 
 @end
 
@@ -61,6 +61,10 @@
         [self.myTable addSubview:self.errorContainerView];
     }
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.myTable addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(fetchUpdates) forControlEvents:UIControlEventValueChanged];
+    
     
 
 }
@@ -78,7 +82,7 @@
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self fetchUpdatesWithBlock:nil];
+        [self fetchUpdates];
     });
 }
 
@@ -113,7 +117,7 @@
     [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
 }
 
-- (void)fetchUpdatesWithBlock:(FetchRecentsBlock)block
+- (void)fetchUpdates
 {
     if (!self.pendingRequest){
         self.pendingRequest = YES;
@@ -162,6 +166,8 @@
                                             NSNumber *recipients_count = ch[@"recipients_count"];
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
+                                            NSString *facebook_id = ch[@"facebook_id"];
+                                            NSNumber *is_facebook = ch[@"is_facebook"];
                                             
                                             id sender_name = ch[@"sender"];
                                             NSString *sender;
@@ -231,15 +237,10 @@
                                                  self.errorContainerView = nil;
                                             }
 
+                                            [self.refreshControl endRefreshing];
                                             [self.myTable reloadData];
                                         });
                                     }
-                                        
-                                    
-                                    if (block){
-                                        block();
-                                    }
-    
                                     
                                     
                                 }];
