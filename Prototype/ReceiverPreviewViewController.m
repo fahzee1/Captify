@@ -157,9 +157,11 @@
 
 - (IBAction)sendRecieverPick:(UIButton *)sender
 {
+    NSString *date = [ChallengePicks dateStringFromDate:[NSDate date]];
     NSDictionary *params = @{@"username": self.myUser.username,
                              @"challenge_id":self.myChallenge.challenge_id,
-                             @"answer":self.previewCaption.text};
+                             @"answer":self.previewCaption.text,
+                             @"date":date};
     
 
     

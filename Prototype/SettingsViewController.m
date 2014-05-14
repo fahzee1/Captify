@@ -20,6 +20,8 @@
 #import "CJPopup.h"
 #import "UIColor+HexValue.h"
 #import "MenuViewController.h"
+#import "FUISwitch.h"
+#import "UIColor+FlatUI.h"
 
 
 #ifdef USE_GOOGLE_ANALYTICS
@@ -49,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *editDoneButton;
 @property (weak, nonatomic) IBOutlet UITextField *editPhoneField;
 @property (strong, nonatomic) IBOutlet UIView *editView;
+
+@property (weak, nonatomic) IBOutlet UISwitch *privacySwitch;
 
 @property (strong, nonatomic) UIView *editScreen;
 
@@ -581,6 +585,16 @@
         inviteB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         
     }
+    
+    /*
+    self.privacySwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.privacySwitch.offColor = [UIColor cloudsColor];
+    self.privacySwitch.onBackgroundColor = [UIColor midnightBlueColor];
+    self.privacySwitch.offBackgroundColor = [UIColor silverColor];
+    self.privacySwitch.offLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+    self.privacySwitch.onLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+     */
+    
 
 
 }

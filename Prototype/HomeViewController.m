@@ -333,20 +333,25 @@
     
 
     if (self.cameraInput){
-        [self.session addInput:self.cameraInput];
+        if ([self.session canAddInput:self.cameraInput]){
+            [self.session addInput:self.cameraInput];
+        }
     }
     if (self.snapper){
-        [self.session addOutput:self.snapper];
+        if ([self.session canAddOutput:self.snapper]){
+            [self.session addOutput:self.snapper];
+        }
     }
     
     if (self.cameraInput && self.snapper){
-        
-        [self.view.layer addSublayer:self.previewLayer];
-        [self.view addSubview:self.mainControls];
-        [self setupStylesAndMore];
-        
-        
-        [self.session startRunning];
+        if (![self.view.layer.sublayers containsObject:self.previewLayer]){
+            [self.view.layer addSublayer:self.previewLayer];
+            [self.view addSubview:self.mainControls];
+            [self setupStylesAndMore];
+            
+            
+            [self.session startRunning];
+        }
         
         
         
