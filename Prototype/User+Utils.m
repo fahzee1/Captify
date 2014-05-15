@@ -394,7 +394,8 @@
                                          if (username){
                                             [defaults setValue:username forKey:@"username"];
                                          }
-                                         else if (apiKey){
+                                         
+                                         if (apiKey){
                                             [defaults setValue:apiKey forKey:@"api_key"];
                                             NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",username,[responseObject valueForKey:@"api_key"]];
                                              

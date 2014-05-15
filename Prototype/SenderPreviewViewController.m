@@ -86,8 +86,14 @@
  
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
-    self.scrollView.contentSize = CGSizeMake(320, 550);
+    
+    if (!IS_IPHONE5){
+        self.scrollView.contentSize = CGSizeMake(320, 675);
+        
+    }
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+   
     
 }
 
@@ -97,6 +103,21 @@
     if (USE_GOOGLE_ANALYTICS){
         self.screenName = @"Sender Preview Screen";
     }
+    
+
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+
+    }
+
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {

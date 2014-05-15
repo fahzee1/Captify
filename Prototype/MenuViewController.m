@@ -155,6 +155,29 @@
     [self.menuFriends addSubview:inviteIcon];
     [self.menuSettings addSubview:settingsIcon];
     
+    if (!IS_IPHONE5){
+        for (UIView *view in self.view.subviews){
+            if ([view isKindOfClass:[UIButton class]]){
+                UIButton *button = (UIButton *)view;
+                CGRect buttonFrame = button.frame;
+                buttonFrame.origin.y -= 40;
+                buttonFrame.size.width -= 10;
+                button.frame = buttonFrame;
+                
+                button.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
+                
+                for (UIView *view2 in button.subviews){
+                    if ([view2 isKindOfClass:[UILabel class]]){
+                        UILabel *label = (UILabel *)view2;
+                        if (label.frame.origin.x == 5){
+                            label.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 
     
 

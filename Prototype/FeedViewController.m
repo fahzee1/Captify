@@ -147,7 +147,10 @@
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.collectionView reloadData];
+        if (!self.reloaded){
+            [self.collectionView reloadData];
+            self.reloaded = YES;
+        }
     });
     return _data;
 }
@@ -180,6 +183,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    DLog(@"collection called");
     FeedViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FeedCell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     cell.layer.borderWidth = 1.f;

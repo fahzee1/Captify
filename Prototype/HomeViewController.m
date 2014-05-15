@@ -84,6 +84,7 @@
 @property (strong, nonatomic)UITextField *makePhoneTextField;
 @property (strong, nonatomic) NSArray *contactNumbers;
 @property BOOL showHistory;
+@property BOOL showingPreview;
 
 @end
 
@@ -107,6 +108,8 @@
      [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
+    
+    
     [self fetchContacts2];
 
     /*
@@ -781,6 +784,7 @@
                                                   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
                                                   otherButtonTitles:nil];
             [alert show];
+        self.previewNextButton.userInteractionEnabled = YES;
             return;
     }
     
@@ -914,6 +918,8 @@
     
     [self setupPreviewStylesAndMore];
     [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
+    
+    self.showingPreview = YES;
 
     
     
@@ -936,6 +942,8 @@
     self.previewCancelButton = nil;
     self.previewTextField = nil;
     self.previewOneFieldContainer = nil;
+    
+    self.showingPreview = NO;
     
 }
 
@@ -1068,9 +1076,36 @@
         NSError *error;
         
         if ([self.cameraDevice lockForConfiguration:&error]){
+            
+            if (!CGRectContainsPoint(self.snapPicButton.frame, point)){
+                if (!self.showingPreview){
+                    UIView *circle = [[UIView alloc] initWithFrame:CGRectMake(point.x, point.y, 70, 70)];
+                    circle.layer.cornerRadius = 35;
+                    circle.backgroundColor = [UIColor clearColor];
+                    circle.layer.borderColor = [[UIColor whiteColor] CGColor];
+                    circle.layer.borderWidth = 2.f;
+                    circle.alpha = 0.7;
+                    [self.view addSubview:circle];
+                    
+                    [UIView animateKeyframesWithDuration:1
+                                                   delay:.5
+                                                 options:0
+                                              animations:^{
+                                                 circle.alpha = 0;
+                                                  CGRect closeFrame = CGRectMake(point.x, point.y, 20, 20);
+                                                  circle.layer.cornerRadius = 10;
+                                                  circle.frame = closeFrame;
+                                                 
+                                                  
+                                              } completion:^(BOOL finished) {
+                                                  [circle removeFromSuperview];
+                                              }];
+                }
+            }
+            
             [self.cameraDevice setFocusPointOfInterest:point];
             
-            [self.cameraDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+            [self.cameraDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
             
             [self.cameraDevice unlockForConfiguration];
         }
