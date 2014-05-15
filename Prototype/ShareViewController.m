@@ -33,6 +33,7 @@ typedef void (^ShareToNetworksBlock) ();
 @property (strong, nonatomic)UILabel *messageIcon;
 
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)MBProgressHUD *hud;
 @property (strong,nonatomic)SocialFriends *friends;
 @property  BOOL sendFB;
@@ -79,6 +80,15 @@ typedef void (^ShareToNetworksBlock) ();
     self.sendFB = YES;
     [self setupShareStyles];
     
+    if (!IS_IPHONE5){
+        self.scrollView.contentSize = CGSizeMake(320, 675);
+        
+    }
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -88,14 +98,19 @@ typedef void (^ShareToNetworksBlock) ();
     }
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    DLog(@"check if this challenge is acive.. if not shoot back to history");
-    if (!self.myChallenge.active){
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
         
     }
+    
+    
 }
+
 
 - (void)didReceiveMemoryWarning
 {

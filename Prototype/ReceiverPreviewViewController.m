@@ -19,6 +19,7 @@
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIView *captionContainerView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property int errorCount;
 @end
@@ -53,9 +54,31 @@
     [self setupColors];
     [self setupOutlets];
     
+    if (!IS_IPHONE5){
+        self.scrollView.contentSize = CGSizeMake(320, 675);
+        
+    }
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+
+    
     
 	// Do any additional setup after loading the view.
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+        
+    }
+    
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -88,7 +88,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (weak, nonatomic) IBOutlet UIButton *splitCaptionButton;
 @property (weak, nonatomic) IBOutlet UILabel *splitCaptionLabel;
-
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
