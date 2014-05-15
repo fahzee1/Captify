@@ -166,8 +166,6 @@
                                             NSNumber *recipients_count = ch[@"recipients_count"];
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
-                                            NSString *facebook_id = ch[@"facebook_id"];
-                                            NSNumber *is_facebook = ch[@"is_facebook"];
                                             
                                             id sender_name = ch[@"sender"];
                                             NSString *sender;

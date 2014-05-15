@@ -23,8 +23,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activitySpinner;
-@property (weak, nonatomic) IBOutlet UIButton *myLoginButton;
 @property CGRect keyboardFrame;
 
 @end
@@ -53,7 +51,13 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToRoot)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"] style:UIBarButtonItemStylePlain target:self action:@selector(checkB4Login)];
+    [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+
     self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 
     [self setupButtonAndFieldStyles];
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
@@ -138,31 +142,23 @@
     self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
 
-    self.myLoginButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-    self.myLoginButton.layer.cornerRadius = 5;
-    [self.myLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
     if (!IS_IPHONE5){
         CGRect usernameFrame = self.usernameField.frame;
         CGRect passwordFrame = self.passwordField.frame;
-        CGRect loginButtonFrame = self.myLoginButton.frame;
         
         usernameFrame.origin.y -= IPHONE4_PAD;
         passwordFrame.origin.y -= IPHONE4_PAD;
-        loginButtonFrame.origin.y -= IPHONE4_PAD;
         
         self.usernameField.frame = usernameFrame;
         self.passwordField.frame = passwordFrame;
-        self.myLoginButton.frame = loginButtonFrame;
     }
 }
 
 
 
-#pragma -mark Login Methods
 
-- (IBAction)loginButton:(UIButton *)sender {
- 
+- (void)checkB4Login
+{
     // if both username and password are blank ask for username
     if ([self.usernameField.text length] == 0 && [self.passwordField.text length] == 0){
         [self alertErrorWithType:LoginAttempt
@@ -187,23 +183,21 @@
         return;
     }
     
-    [self.passwordField resignFirstResponder];
-    [self loginUserIsFacebook:NO button:sender];
     
-   
+    [self login];
 }
 
-
-- (void)loginUserIsFacebook:(BOOL)fb
-                        button:(UIButton *)sender
+- (void)login
 {
     // if we're connected to the internet, login
+    
+    
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"Logging In", nil);
     hud.dimBackground = YES;
     hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-
+    
     
     NSDictionary *params = @{@"username": self.usernameField.text,
                              @"password": self.passwordField.text};
@@ -241,7 +235,7 @@
                                                                    }
                                                                    [hud hide:YES];
                                                                    [self.navigationController popToViewController:home animated:YES];
-
+                                                                   
                                                                    
                                                                    
                                                                }
@@ -251,25 +245,18 @@
                                                                    [self alertErrorWithType:LoginError
                                                                                    andField:nil
                                                                                  andMessage:[data valueForKey:@"message"]];
-                                                                   sender.hidden = NO;
+                                                                   
                                                                }
                                                                else{
                                                                    // failure alert handled by "show alertviewfortaskwitherror..
                                                                    [hud hide:YES];
-                                                                   sender.hidden = NO;
                                                                }
                                                                
                                                            }];
     // If FAILURE, show alert
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     
-    // Show and start spinning activity indicator
-    UIActivityIndicatorView *spinner = self.activitySpinner;
-    spinner.hidden = NO;
-    [spinner setAnimatingWithStateOfTask:task];
-    // Hide login button
-    sender.hidden = YES;
-    
+
 }
 
 
@@ -315,7 +302,7 @@
     }
     if ([textField.placeholder isEqualToString:@"Enter Password"]){
         [textField resignFirstResponder];
-        [self loginButton:self.myLoginButton];
+        [self checkB4Login];
     }
 
     

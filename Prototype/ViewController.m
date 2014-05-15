@@ -75,8 +75,8 @@
     self.registerButton.layer.cornerRadius = 5;
     [self.registerButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     
+    CGRect facebookFrame = self.facebookButton.frame;
     if (!IS_IPHONE5){
-        CGRect facebookFrame = self.facebookButton.frame;
         CGRect loginFrame = self.loginButton.frame;
         CGRect registerFrame = self.registerButton.frame;
         
@@ -88,6 +88,18 @@
         self.loginButton.frame = loginFrame;
         self.registerButton.frame = registerFrame;
     }
+    
+    
+    UILabel *recommendFB = [[UILabel alloc] init];
+    recommendFB.frame = CGRectMake(facebookFrame.origin.x, facebookFrame.origin.y - 40, facebookFrame.size.width, 80);
+    recommendFB.text = NSLocalizedString(@"We highly recommend using Facebook so you can play against your friends!", nil);
+    recommendFB.textColor = [UIColor whiteColor];
+    recommendFB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
+    recommendFB.numberOfLines = 0;
+    [recommendFB sizeToFit];
+    recommendFB.frame = CGRectMake(facebookFrame.origin.x +18, facebookFrame.origin.y - 66, facebookFrame.size.width - 20, 80);
+    
+    [self.view addSubview:recommendFB];
 
     
 }

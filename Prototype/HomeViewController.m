@@ -37,6 +37,7 @@
 #import <Parse/Parse.h>
 #import "ParseNotifications.h"
 #import "ABWrappers.h"
+#import "AwesomeAPICLient.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -103,7 +104,8 @@
 {
     [super viewDidLoad];
     
-
+     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     [self fetchContacts2];
 
@@ -395,13 +397,6 @@
     [self.snapPicButton addGestureRecognizer:snapTap];
     self.snapPicButton.userInteractionEnabled = YES;
     
-    // alert shows in viewdidappear which is to late from where this is being
-    // called so delay a second then run
-    if (!self.makePhoneAlert.isVisible){
-            [self showTooltip];
-        }
-     
-    
     
     self.snapPicButton.font = [UIFont fontWithName:kFontAwesomeFamilyName size:45];
     self.snapPicButton.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"];
@@ -413,6 +408,13 @@
         self.snapPicButton.frame = snapPicFrame;
     }
     
+    // alert shows in viewdidappear which is to late from where this is being
+    // called so delay a second then run
+    if (!self.makePhoneAlert.isVisible){
+        [self showTooltip];
+    }
+    
+
     
     self.topMenuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
     [self.topMenuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
@@ -1002,7 +1004,7 @@
         }
     }
     else{
-        DLog(@"No flash available");
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Flash isn't supported on your device", nil)];
         [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
         return;
     }
@@ -1506,5 +1508,20 @@
     }
     return _myUser;
 }
+
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
 
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -45,7 +45,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="captify" id="bSL-PV-XkB">
-                                <rect key="frame" x="107" y="143" width="100" height="100"/>
+                                <rect key="frame" x="107" y="108" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -84,29 +84,11 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Yji-97-YjK">
-                                <rect key="frame" x="51" y="294" width="203" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Login">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginButton:" destination="pLe-7R-CnF" eventType="touchUpInside" id="PUd-y1-NcP"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="V3E-Hg-frf">
-                                <rect key="frame" x="142" y="281" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="Uyg-2d-slr"/>
                     <connections>
-                        <outlet property="activitySpinner" destination="V3E-Hg-frf" id="McT-Uu-mfl"/>
-                        <outlet property="myLoginButton" destination="Yji-97-YjK" id="zxM-T7-tAc"/>
                         <outlet property="passwordField" destination="AIQ-8t-L5L" id="W4p-3n-l8e"/>
                         <outlet property="usernameField" destination="V5X-1Z-dLY" id="OMW-l8-J2y"/>
                         <segue destination="zhd-FX-3fa" kind="unwind" identifier="unWindToHomeID" unwindAction="unwindToHomeController:" id="TRq-Ih-6sE"/>
@@ -146,30 +128,12 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="next" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YJy-WB-J5T">
-                                <rect key="frame" x="59" y="304" width="203" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Join">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="registerButton:" destination="dpL-xo-kC3" eventType="touchUpInside" id="Veo-Yo-SqU"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="BPP-S6-uPT">
-                                <rect key="frame" x="150" y="276" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Register" id="oUt-Kb-whC"/>
                     <connections>
-                        <outlet property="activitySpinner" destination="BPP-S6-uPT" id="VYH-iJ-COt"/>
                         <outlet property="emailField" destination="xet-tG-eQu" id="OqE-zn-Un6"/>
-                        <outlet property="myRegisterButton" destination="YJy-WB-J5T" id="cAg-UC-HWS"/>
                         <outlet property="passwordField" destination="3RE-m9-hut" id="acs-Ig-hga"/>
                         <outlet property="usernameField" destination="Wy9-dR-kdc" id="1F6-6c-h8H"/>
                     </connections>

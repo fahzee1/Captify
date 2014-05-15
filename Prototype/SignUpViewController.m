@@ -26,11 +26,9 @@
 
 @interface SignUpViewController ()<UITextFieldDelegate,PhoneNumberDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *myRegisterButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activitySpinner;
 @end
 
 @implementation SignUpViewController
@@ -51,7 +49,13 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToRoot)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"] style:UIBarButtonItemStylePlain target:self action:@selector(checkB4Register)];
+    [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+
     self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 
     
     [self setupButtonAndFieldStyles];
@@ -111,33 +115,44 @@
     self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:emailPlaceholder attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
 
-    self.myRegisterButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-    self.myRegisterButton.layer.cornerRadius = 5;
-    [self.myRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
     
     if (!IS_IPHONE5){
         CGRect usernameFrame = self.usernameField.frame;
         CGRect passwordFrame = self.passwordField.frame;
         CGRect emailFieldFrame = self.emailField.frame;
-        CGRect registerButtonFrame = self.myRegisterButton.frame;
         
         usernameFrame.origin.y -= IPHONE4_PAD;
         passwordFrame.origin.y -= IPHONE4_PAD;
         emailFieldFrame.origin.y -= IPHONE4_PAD;
-        registerButtonFrame.origin.y -= IPHONE4_PAD;
         
         self.usernameField.frame = usernameFrame;
         self.passwordField.frame = passwordFrame;
         self.emailField.frame = emailFieldFrame;
-        self.myRegisterButton.frame = registerButtonFrame;
     }
      
 
 }
 
 
-- (IBAction)registerButton:(UIButton *)sender {
+
+
+- (void)showPhoneNumberScreen
+{
+    UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
+    if ([phoneRoot isKindOfClass:[UINavigationController class]]){
+        UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
+        if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
+            ((PhoneNumberViewController *) phoneScreen).delegate = self;
+            [self presentViewController:phoneRoot animated:YES completion:nil];
+        }
+    }
+}
+
+
+
+
+- (void)checkB4Register
+{
     // if both username and password are blank ask for username
     if ([self.usernameField.text length] == 0 && [self.passwordField.text length] == 0){
         [self alertErrorWithType:SignUpAttempt
@@ -172,33 +187,17 @@
     
     [self.emailField resignFirstResponder];
     [self showPhoneNumberScreen];
-    //[self registerUserIsFacebook:NO button:sender];
-    
-}
 
 
-- (void)showPhoneNumberScreen
-{
-    UIViewController *phoneRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"phoneNumberRoot"];
-    if ([phoneRoot isKindOfClass:[UINavigationController class]]){
-        UIViewController *phoneScreen = ((UINavigationController *)phoneRoot).topViewController;
-        if ([phoneScreen isKindOfClass:[PhoneNumberViewController class]]){
-            ((PhoneNumberViewController *) phoneScreen).delegate = self;
-            [self presentViewController:phoneRoot animated:YES completion:nil];
-        }
-    }
 }
 
 
 - (void)registerUserIsFacebook:(BOOL)fb
-                        button:(UIButton *)sender
                    phoneNumber:(NSString *)number
 {
-    NSString *fbook = fb? @"yes":@"no";
     NSMutableDictionary *params = [@{@"username": self.usernameField.text,
                              @"password": self.passwordField.text,
-                             @"email": self.emailField.text,
-                             @"fbook_user": fbook} mutableCopy];
+                             @"email": self.emailField.text} mutableCopy];
     
     if (number){
         params[@"phone_number"] = number;
@@ -251,12 +250,6 @@
                                                          [self alertErrorWithType:SignUpError
                                                                          andField:nil
                                                                        andMessage:[data valueForKey:@"message"]];
-                                                         sender.hidden = NO;
-                                                         
-                                                     }
-                                                     else{
-                                                         // failure alert handled by "show alertviewfortaskwitherror..
-                                                         sender.hidden = NO;
                                                          
                                                      }
                                                      
@@ -264,14 +257,7 @@
     // If FAILURE, show alert
     [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
     
-    // Show and start spinning activity indicator
-    UIActivityIndicatorView *spinner = self.activitySpinner;
-    spinner.hidden = NO;
-    [spinner setAnimatingWithStateOfTask:task];
-    // Hide login button
-    sender.hidden = YES;
-    
-    // if no internet connection, alert no connection
+
 }
 
 
@@ -326,7 +312,7 @@
     
     if ([textField.placeholder isEqualToString:emailPlaceholder]){
         [textField resignFirstResponder];
-        [self registerButton:self.myRegisterButton];
+        [self checkB4Register];
     }
     
     
@@ -340,7 +326,8 @@
 - (void)phoneNumberControllerDidTapCancel:(PhoneNumberViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        [self registerUserIsFacebook:NO button:self.myRegisterButton phoneNumber:nil];
+        [self registerUserIsFacebook:NO
+                         phoneNumber:nil];
     }];
 }
 
@@ -349,7 +336,9 @@
     NSString *phoneNumber = controller.phoneNumber;
     
     [self dismissViewControllerAnimated:YES completion:^{
-        [self registerUserIsFacebook:NO button:self.myRegisterButton phoneNumber:phoneNumber];
+        
+        [self registerUserIsFacebook:NO
+                         phoneNumber:phoneNumber];
     }];
 }
 

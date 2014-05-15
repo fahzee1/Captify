@@ -87,6 +87,7 @@
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
     self.scrollView.contentSize = CGSizeMake(320, 550);
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
 }
 
