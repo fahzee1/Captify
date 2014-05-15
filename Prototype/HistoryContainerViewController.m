@@ -18,6 +18,7 @@
 #import "FUISegmentedControl.h"
 #import "UIFont+FlatUI.h"
 #import "UIColor+FlatUI.h"
+#import "AwesomeAPICLient.h"
 
 @interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
 
@@ -45,6 +46,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
   
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],

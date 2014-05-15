@@ -14,6 +14,7 @@
 #import "Challenge+Utils.h"
 #import "FeedViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "AwesomeAPICLient.h"
 
 @interface FeedViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -40,6 +41,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
