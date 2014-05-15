@@ -561,6 +561,14 @@
 
 - (void)fetchContacts2
 {
+    static int authRetrys = 0;
+    if (![ABStandin authorizationStatus] == kABAuthorizationStatusAuthorized){
+        [ABStandin requestAccess];
+        authRetrys += 1;
+        if (authRetrys < 3){
+            [self fetchContacts2];
+        }
+    }
     static int retrys = 0;
     NSArray *contacts = [ABContactsHelper contacts];
     NSMutableArray *list = [@[] mutableCopy];

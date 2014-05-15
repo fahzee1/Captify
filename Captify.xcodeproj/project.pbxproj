@@ -60,6 +60,16 @@
 		1128443818EF2F520056D517 /* settingsEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1128443718EF2F520056D517 /* settingsEdit.xib */; };
 		11299C761899772E00D69000 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11299C751899772E00D69000 /* KeyboardViewController.m */; };
 		112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */; };
+		113BD8CF19250FE40099BEA0 /* MZFormSheetBackgroundWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8C219250FE40099BEA0 /* MZFormSheetBackgroundWindow.m */; };
+		113BD8D019250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8C419250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.m */; };
+		113BD8D119250FE40099BEA0 /* MZFormSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8C619250FE40099BEA0 /* MZFormSheetController.m */; };
+		113BD8D219250FE40099BEA0 /* MZFormSheetSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8C819250FE40099BEA0 /* MZFormSheetSegue.m */; };
+		113BD8D319250FE40099BEA0 /* MZTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8CA19250FE40099BEA0 /* MZTransition.m */; };
+		113BD8D419250FE40099BEA0 /* UIImage+Additional.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8CC19250FE40099BEA0 /* UIImage+Additional.m */; };
+		113BD8D519250FE40099BEA0 /* UIViewController+TargetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8CE19250FE40099BEA0 /* UIViewController+TargetViewController.m */; };
+		113BD8D8192510860099BEA0 /* ChallengeResponsesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8D7192510860099BEA0 /* ChallengeResponsesViewController.m */; };
+		113BD8DE192514680099BEA0 /* MZAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8DB192514680099BEA0 /* MZAppearance.m */; };
+		113BD8DF192514680099BEA0 /* NSInvocation+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8DD192514680099BEA0 /* NSInvocation+Copy.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
 		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
@@ -494,6 +504,26 @@
 		11299C751899772E00D69000 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		112EB2AF18EFE9B200252AC1 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		112EB2B018EFE9B200252AC1 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		113BD8C119250FE40099BEA0 /* MZFormSheetBackgroundWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZFormSheetBackgroundWindow.h; sourceTree = "<group>"; };
+		113BD8C219250FE40099BEA0 /* MZFormSheetBackgroundWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZFormSheetBackgroundWindow.m; sourceTree = "<group>"; };
+		113BD8C319250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZFormSheetBackgroundWindowViewController.h; sourceTree = "<group>"; };
+		113BD8C419250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZFormSheetBackgroundWindowViewController.m; sourceTree = "<group>"; };
+		113BD8C519250FE40099BEA0 /* MZFormSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZFormSheetController.h; sourceTree = "<group>"; };
+		113BD8C619250FE40099BEA0 /* MZFormSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZFormSheetController.m; sourceTree = "<group>"; };
+		113BD8C719250FE40099BEA0 /* MZFormSheetSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZFormSheetSegue.h; sourceTree = "<group>"; };
+		113BD8C819250FE40099BEA0 /* MZFormSheetSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZFormSheetSegue.m; sourceTree = "<group>"; };
+		113BD8C919250FE40099BEA0 /* MZTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZTransition.h; sourceTree = "<group>"; };
+		113BD8CA19250FE40099BEA0 /* MZTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZTransition.m; sourceTree = "<group>"; };
+		113BD8CB19250FE40099BEA0 /* UIImage+Additional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additional.h"; sourceTree = "<group>"; };
+		113BD8CC19250FE40099BEA0 /* UIImage+Additional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additional.m"; sourceTree = "<group>"; };
+		113BD8CD19250FE40099BEA0 /* UIViewController+TargetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TargetViewController.h"; sourceTree = "<group>"; };
+		113BD8CE19250FE40099BEA0 /* UIViewController+TargetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TargetViewController.m"; sourceTree = "<group>"; };
+		113BD8D6192510860099BEA0 /* ChallengeResponsesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeResponsesViewController.h; sourceTree = "<group>"; };
+		113BD8D7192510860099BEA0 /* ChallengeResponsesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeResponsesViewController.m; sourceTree = "<group>"; };
+		113BD8DA192514680099BEA0 /* MZAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZAppearance.h; sourceTree = "<group>"; };
+		113BD8DB192514680099BEA0 /* MZAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZAppearance.m; sourceTree = "<group>"; };
+		113BD8DC192514680099BEA0 /* NSInvocation+Copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+Copy.h"; sourceTree = "<group>"; };
+		113BD8DD192514680099BEA0 /* NSInvocation+Copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+Copy.m"; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
 		113FF14A18E1F3A8005D5A82 /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
@@ -1317,6 +1347,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				113BD8C019250FE40099BEA0 /* MZFormSheetController */,
 				11A302401919417F00882275 /* Address Book Wrappers */,
 				11E83DBE19097E9F009B95F7 /* GoogleAnalytics */,
 				11ED4C571905B04F00A2E9B5 /* appirater-master */,
@@ -1542,6 +1573,39 @@
 				112153B518983DB100EADE97 /* SSKeychainQuery.m */,
 			);
 			path = SSKeychain;
+			sourceTree = "<group>";
+		};
+		113BD8C019250FE40099BEA0 /* MZFormSheetController */ = {
+			isa = PBXGroup;
+			children = (
+				113BD8D9192514680099BEA0 /* Additional */,
+				113BD8C119250FE40099BEA0 /* MZFormSheetBackgroundWindow.h */,
+				113BD8C219250FE40099BEA0 /* MZFormSheetBackgroundWindow.m */,
+				113BD8C319250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.h */,
+				113BD8C419250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.m */,
+				113BD8C519250FE40099BEA0 /* MZFormSheetController.h */,
+				113BD8C619250FE40099BEA0 /* MZFormSheetController.m */,
+				113BD8C719250FE40099BEA0 /* MZFormSheetSegue.h */,
+				113BD8C819250FE40099BEA0 /* MZFormSheetSegue.m */,
+				113BD8C919250FE40099BEA0 /* MZTransition.h */,
+				113BD8CA19250FE40099BEA0 /* MZTransition.m */,
+				113BD8CB19250FE40099BEA0 /* UIImage+Additional.h */,
+				113BD8CC19250FE40099BEA0 /* UIImage+Additional.m */,
+				113BD8CD19250FE40099BEA0 /* UIViewController+TargetViewController.h */,
+				113BD8CE19250FE40099BEA0 /* UIViewController+TargetViewController.m */,
+			);
+			path = MZFormSheetController;
+			sourceTree = "<group>";
+		};
+		113BD8D9192514680099BEA0 /* Additional */ = {
+			isa = PBXGroup;
+			children = (
+				113BD8DA192514680099BEA0 /* MZAppearance.h */,
+				113BD8DB192514680099BEA0 /* MZAppearance.m */,
+				113BD8DC192514680099BEA0 /* NSInvocation+Copy.h */,
+				113BD8DD192514680099BEA0 /* NSInvocation+Copy.m */,
+			);
+			path = Additional;
 			sourceTree = "<group>";
 		};
 		1144914A18AE8BEB009B47B6 /* TPKeyboardAvoiding */ = {
@@ -2007,6 +2071,8 @@
 			children = (
 				1186B1D0189749BB0082F35F /* ChallengeViewController.h */,
 				1186B1D1189749BB0082F35F /* ChallengeViewController.m */,
+				113BD8D6192510860099BEA0 /* ChallengeResponsesViewController.h */,
+				113BD8D7192510860099BEA0 /* ChallengeResponsesViewController.m */,
 				11299C741899772E00D69000 /* KeyboardViewController.h */,
 				11299C751899772E00D69000 /* KeyboardViewController.m */,
 				1144915718AEBEA1009B47B6 /* ReceiverPreviewViewController.h */,
@@ -2429,6 +2495,7 @@
 			files = (
 				1153E16718A9DF4800AD950E /* GPUImageExposureFilter.m in Sources */,
 				1108021218CA57880014BAD8 /* HistoryContainerViewController.m in Sources */,
+				113BD8D8192510860099BEA0 /* ChallengeResponsesViewController.m in Sources */,
 				1153E19918A9DF4800AD950E /* GPUImageMultiplyBlendFilter.m in Sources */,
 				112EB2B118EFE9B200252AC1 /* MBProgressHUD.m in Sources */,
 				1153E14618A9DF4800AD950E /* GPUImageAmatorkaFilter.m in Sources */,
@@ -2438,6 +2505,7 @@
 				1153E15418A9DF4800AD950E /* GPUImageColorBurnBlendFilter.m in Sources */,
 				1107316418863B2E0065D77F /* UIButton+AFNetworking.m in Sources */,
 				1184FE0A18BD03A000FDEAE0 /* UIImage+MultiFormat.m in Sources */,
+				113BD8D319250FE40099BEA0 /* MZTransition.m in Sources */,
 				118EF1B518FC6F4F00755552 /* UINavigationBar+FlatUI.m in Sources */,
 				1153E16818A9DF4800AD950E /* GPUImageFalseColorFilter.m in Sources */,
 				1153E17318A9DF4800AD950E /* GPUImageHalftoneFilter.m in Sources */,
@@ -2484,6 +2552,7 @@
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
 				118EF1BC18FC6F4F00755552 /* UIToolbar+FlatUI.m in Sources */,
 				11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */,
+				113BD8D519250FE40099BEA0 /* UIViewController+TargetViewController.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				1153E1D118A9DF4800AD950E /* GPUImageTwoPassFilter.m in Sources */,
@@ -2569,6 +2638,7 @@
 				1153E16D18A9DF4800AD950E /* GPUImageGammaFilter.m in Sources */,
 				1153E14318A9DF4800AD950E /* GPUImageAdaptiveThresholdFilter.m in Sources */,
 				1153E1BB18A9DF4800AD950E /* GPUImageSobelEdgeDetectionFilter.m in Sources */,
+				113BD8D119250FE40099BEA0 /* MZFormSheetController.m in Sources */,
 				1153E1A418A9DF4800AD950E /* GPUImagePixellateFilter.m in Sources */,
 				1153E1AC18A9DF4800AD950E /* GPUImageRawDataOutput.m in Sources */,
 				1153E14018A9DF4800AD950E /* GLProgram.m in Sources */,
@@ -2577,6 +2647,7 @@
 				1153E19818A9DF4800AD950E /* GPUImageMovieComposition.m in Sources */,
 				1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				118EF1AF18FC6F4F00755552 /* FUISwitch.m in Sources */,
+				113BD8D419250FE40099BEA0 /* UIImage+Additional.m in Sources */,
 				110731771888C6240065D77F /* AwesomeAPICLient.m in Sources */,
 				1153E17618A9DF4800AD950E /* GPUImageHazeFilter.m in Sources */,
 				1153E17A18A9DF4800AD950E /* GPUImageHistogramGenerator.m in Sources */,
@@ -2624,9 +2695,11 @@
 				118EF1AE18FC6F4F00755552 /* FUISegmentedControl.m in Sources */,
 				112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */,
 				116F0C60189C03E300C1C430 /* AnswerFieldView.m in Sources */,
+				113BD8D019250FE40099BEA0 /* MZFormSheetBackgroundWindowViewController.m in Sources */,
 				1144E3DF18EC6F0600DBCF3B /* JDStatusBarStyle.m in Sources */,
 				1153E18518A9DF4800AD950E /* GPUImageLevelsFilter.m in Sources */,
 				1153E1CC18A9DF4800AD950E /* GPUImageToneCurveFilter.m in Sources */,
+				113BD8CF19250FE40099BEA0 /* MZFormSheetBackgroundWindow.m in Sources */,
 				1153E18618A9DF4800AD950E /* GPUImageLightenBlendFilter.m in Sources */,
 				1153E19618A9DF4800AD950E /* GPUImageMotionDetector.m in Sources */,
 				11ABFCA418C7D28300639A20 /* NEOColorPickerBaseViewController.m in Sources */,
@@ -2636,6 +2709,7 @@
 				1153E1DA18A9DF4800AD950E /* GPUImageXYDerivativeFilter.m in Sources */,
 				1107314A18863B1E0065D77F /* AFHTTPSessionManager.m in Sources */,
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
+				113BD8DE192514680099BEA0 /* MZAppearance.m in Sources */,
 				11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */,
 				1188CDAA19115DF700F6407C /* Challenge.m in Sources */,
 				118EF1BB18FC6F4F00755552 /* UITableViewCell+FlatUI.m in Sources */,
@@ -2679,6 +2753,7 @@
 				1153E1B718A9DF4800AD950E /* GPUImageShiTomasiFeatureDetectionFilter.m in Sources */,
 				11D4EDD1191329CF005B4981 /* User.m in Sources */,
 				11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */,
+				113BD8DF192514680099BEA0 /* NSInvocation+Copy.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
 				1153E1CF18A9DF4800AD950E /* GPUImageTwoInputCrossTextureSamplingFilter.m in Sources */,
 				1184FE0318BD03A000FDEAE0 /* SDWebImageDecoder.m in Sources */,
@@ -2705,6 +2780,7 @@
 				1153E1D218A9DF4800AD950E /* GPUImageTwoPassTextureSamplingFilter.m in Sources */,
 				1153E1D918A9DF4800AD950E /* GPUImageWhiteBalanceFilter.m in Sources */,
 				1144E3DE18EC6F0600DBCF3B /* JDStatusBarNotification.m in Sources */,
+				113BD8D219250FE40099BEA0 /* MZFormSheetSegue.m in Sources */,
 				1184FE0C18BD03A000FDEAE0 /* UIImageView+WebCache.m in Sources */,
 				1153E14D18A9DF4800AD950E /* GPUImageBulgeDistortionFilter.m in Sources */,
 				1153E1C518A9DF4800AD950E /* GPUImageTextureInput.m in Sources */,

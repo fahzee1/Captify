@@ -23,10 +23,13 @@
 #import "NSDate+TimeAgo.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "UIViewController+TargetViewController.h"
+#import "MZFormSheetController.h"
+#import "ChallengeResponsesViewController.h"
 
 #define TEST 1
 
-@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ChallengeViewController ()<UIGestureRecognizerDelegate, UITextFieldDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic)CJPopup *successPop;
 @property (strong, nonatomic)CJPopup *failPop;
@@ -36,9 +39,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *captionField;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) NSArray *data;
-@property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
+@property (weak, nonatomic) IBOutlet UIButton *viewResponsesButton;
+
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
 @property (strong, nonatomic)UIBarButtonItem *backButton;
 
@@ -70,8 +74,6 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     self.scrollView.delegate = self;
     self.captionField.delegate = self;
-    self.myTable.dataSource = self;
-    self.myTable.delegate = self;
     self.captionField.returnKeyType = UIReturnKeyDone;
     [self setupStylesAndMore];
     
@@ -94,15 +96,7 @@
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
-    if ([self.data count] == 0){
-        [self.myTable removeFromSuperview];
-    }
     
-    if (self.myTable){
-        NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.data.count -1];
-        [self.myTable scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-   
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -192,6 +186,21 @@
 {
     // need a limit of 30 - 40 for title
     //self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
+    
+    [self.viewResponsesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.viewResponsesButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
+    
+    NSString *responseText;
+    if ([self.data count] > 0){
+        responseText = [NSString stringWithFormat:@"View %lu responses",(unsigned long)self.data.count];
+         self.viewResponsesButton.userInteractionEnabled = YES;
+    }
+    else{
+        responseText = NSLocalizedString(@"0 responses", nil);
+        self.viewResponsesButton.userInteractionEnabled = NO;
+    }
+    [self.viewResponsesButton setTitle:responseText forState:UIControlStateNormal];
+    
     self.challengeNameLabel.textColor = [UIColor whiteColor];
     if ([self.name length] > 35){
          self.challengeNameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
@@ -220,8 +229,6 @@
     
     self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.captionContainerView.layer.cornerRadius = 5;
-    
-    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     
     
@@ -293,6 +300,33 @@
     
 }
 
+
+- (IBAction)tappedViewResponsesButton:(UIButton *)sender {
+    
+    UIViewController *responsesRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"challengeResponsesRoot"];
+    if ([responsesRoot isKindOfClass:[UINavigationController class]]){
+        UIViewController *responsesVC =  ((UINavigationController *)responsesRoot).topViewController;
+        if ([responsesVC isKindOfClass:[ChallengeResponsesViewController class]]){
+            ((ChallengeResponsesViewController *)responsesVC).myChallenge = self.myChallenge;
+        }
+    }
+    
+
+    MZFormSheetController *formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:responsesRoot];
+    formSheet.shouldDismissOnBackgroundViewTap = YES;
+    formSheet.transitionStyle = MZFormSheetTransitionStyleSlideAndBounceFromRight;
+    
+    [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+    [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+    [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+    
+    [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+        //
+    }];
+    
+    
+
+}
 
 
 - (void)showAlertWithTitle:(NSString *)title
@@ -371,6 +405,7 @@
     
 }
 
+/*
 #pragma -mark Uitableview delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -481,6 +516,7 @@
 
     
 }
+ */
 
 #pragma -mark UIscrollview delegate
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
