@@ -396,6 +396,10 @@
                                          }
                                          else if (apiKey){
                                             [defaults setValue:apiKey forKey:@"api_key"];
+                                            NSString *apiString = [NSString stringWithFormat:@"ApiKey %@:%@",username,[responseObject valueForKey:@"api_key"]];
+                                             
+                                             [defaults setValue:apiString forKey:@"apiString"];
+
                                          }
                                          
                                          

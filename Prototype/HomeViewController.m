@@ -1004,7 +1004,7 @@
         }
     }
     else{
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Flash isn't supported on your device", nil)];
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Flash isn't supported on the front camera", nil)];
         [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
         return;
     }
