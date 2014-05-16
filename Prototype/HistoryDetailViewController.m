@@ -191,6 +191,16 @@
     if ([self.data count] == 0){
         [self.view addSubview:self.errorContainerView];
     }
+    
+    if (!IS_IPHONE5){
+        self.scrollView.contentSize = CGSizeMake(320, 675);
+        
+    }
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+
+    
+    
 
     
 }
@@ -224,9 +234,15 @@
             }
     
         }
-        // show success screen
-        // mark it as being displayed
-        // also mark on challenge that this
+        
+        
+        if (!IS_IPHONE5){
+            CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+            [self.scrollView setContentOffset:bottomOffset animated:YES];
+            
+        }
+        
+
         
         
     }

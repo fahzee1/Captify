@@ -570,20 +570,24 @@
 
 - (void)fetchContacts2
 {
+    static int retrys = 0;
     
     if ([ABStandin authorizationStatus] != kABAuthorizationStatusAuthorized){
         [ABStandin requestAccess];
         
         
-        double delayInSeconds = 5.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self fetchContacts2];
-        });
+        if (retrys < 5){
+            double delayInSeconds = 5.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                retrys += 1;
+                [self fetchContacts2];
+            });
+        }
         
         return;
     }
-    static int retrys = 0;
+
     NSArray *contacts = [ABContactsHelper contacts];
     NSMutableArray *list = [@[] mutableCopy];
 
