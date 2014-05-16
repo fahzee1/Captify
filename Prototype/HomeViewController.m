@@ -570,13 +570,18 @@
 
 - (void)fetchContacts2
 {
-    static int authRetrys = 0;
-    if (![ABStandin authorizationStatus] == kABAuthorizationStatusAuthorized){
+    
+    if ([ABStandin authorizationStatus] != kABAuthorizationStatusAuthorized){
         [ABStandin requestAccess];
-        authRetrys += 1;
-        if (authRetrys < 3){
+        
+        
+        double delayInSeconds = 5.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self fetchContacts2];
-        }
+        });
+        
+        return;
     }
     static int retrys = 0;
     NSArray *contacts = [ABContactsHelper contacts];
@@ -639,7 +644,7 @@
 
     }
     else{
-        if (retrys < 3){
+        if (retrys < 10){
             retrys += 1;
             [self fetchContacts2];
             
