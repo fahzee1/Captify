@@ -205,7 +205,13 @@
     
     NSString *responseText;
     if ([self.data count] > 0){
-        responseText = [NSString stringWithFormat:@"View %lu responses",(unsigned long)self.data.count];
+        if ([self.data count] == 1){
+            responseText = [NSString stringWithFormat:@"View %lu response",(unsigned long)self.data.count];
+        }
+        else{
+            responseText = [NSString stringWithFormat:@"View %lu responses",(unsigned long)self.data.count];
+
+        }
          self.viewResponsesButton.userInteractionEnabled = YES;
     }
     else{
@@ -325,7 +331,14 @@
     }
     
 
-    MZFormSheetController *formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:responsesRoot];
+    MZFormSheetController *formSheet;
+    if (!IS_IPHONE5){
+        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 300) viewController:responsesRoot];
+    }
+    else{
+        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:responsesRoot];
+    }
+    
     formSheet.shouldDismissOnBackgroundViewTap = YES;
     formSheet.transitionStyle = MZFormSheetTransitionStyleSlideAndBounceFromRight;
     
