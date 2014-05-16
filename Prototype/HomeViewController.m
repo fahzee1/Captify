@@ -593,8 +593,12 @@
 
     for (ABContact *contact in contacts){
         DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
+        NSString *formattedPhoneNumber = contact.phonenumbers;
+        NSString *phoneNumber = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+        DLog(@"%@ formatted number is %@",contact.firstname,phoneNumber);
+
         if (contact.phonenumbers){
-            [list addObject:contact.phonenumbers];
+            [list addObject:phoneNumber];
         }
     }
     
