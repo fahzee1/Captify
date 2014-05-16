@@ -54,6 +54,7 @@
     NSAssert([params valueForKey:@"context"], @"Must include context");
     NSAssert([params valueForKey:@"pick_id"], @"Must include pick_id");
     
+    static int retrys = 0;
    NSError *error;
    ChallengePicks *pick;
     User *user = [User getUserWithUsername:[params valueForKey:@"player"] inContext:[params valueForKey:@"context"] error:&error];
@@ -81,8 +82,21 @@
             }
             
         }
+        // create user
         else{
-            DLog(@"user %@ hasnt been created, so challenge not created",[params valueForKey:@"player"]);
+            DLog(@"user %@ hasnt been created, so creating now for pick",[params valueForKey:@"player"]);
+            NSDictionary *params2 = @{@"username":[params valueForKey:@"player"],
+                                     @"facebook_user":[params valueForKey:@"is_facebook"],
+                                     @"facebook_id":[params valueForKey:@"facebook_id"]};
+            
+            User *newUser =[User createFriendWithParams:params2
+                                  inMangedObjectContext:[params valueForKey:@"context"]];
+            if (newUser){
+                retrys += 1;
+                if (retrys < 4){
+                    [self createChallengePickWithParams:params];
+                }
+            }
 
         }
 

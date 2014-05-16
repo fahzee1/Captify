@@ -43,6 +43,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 @property (weak, nonatomic) IBOutlet UIButton *viewResponsesButton;
 
+@property (weak, nonatomic) IBOutlet UIView *countContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
+
 @property (strong, nonatomic)UIBarButtonItem *nextButton;
 @property (strong, nonatomic)UIBarButtonItem *backButton;
 
@@ -249,6 +252,12 @@
     self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.captionContainerView.layer.cornerRadius = 5;
     
+    self.countContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    //self.countContainerView.layer.cornerRadius = 10;
+    
+    self.countLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+    self.countLabel.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.countLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
     
     
     
@@ -393,6 +402,40 @@
 }
 
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSInteger stringCount = 0;
+    
+    if (![string isEqualToString:@""]){
+         stringCount = [textField.text length] + 1;
+    }
+    else{
+        stringCount = [textField.text length] - 1;
+    }
+    
+    if (stringCount > 0){
+        self.countLabel.text = [NSString stringWithFormat:@"%ld",CAPTION_LIMIT - stringCount];
+    }
+    else{
+        self.countLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
+    }
+    
+    //DLog(@"string count is %ld",(long)stringCount);
+    //DLog(@"limit is %d",CAPTION_LIMIT);
+    //DLog(@"final count is %ld",CAPTION_LIMIT - stringCount);
+    
+    if ([string isEqualToString:@""]){
+        return YES;
+    }
+    
+    if ([textField.text length] <= CAPTION_LIMIT){
+        return YES;
+    }
+    else{
+        return NO;
+    }
+
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

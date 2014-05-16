@@ -52,7 +52,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *editPhoneField;
 @property (strong, nonatomic) IBOutlet UIView *editView;
 
-@property (weak, nonatomic) IBOutlet UISwitch *privacySwitch;
 
 @property (strong, nonatomic) UIView *editScreen;
 
@@ -210,19 +209,6 @@
     
     [self textFieldShouldReturn:field];
 
-}
-
-
-
-- (IBAction)privacySwitchChanged:(UISwitch *)sender {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if (sender.on){
-        [defaults setBool:NO forKey:@"isPrivate"];
-    }
-    else{
-        [defaults setBool:YES forKey:@"isPrivate"];
-    }
 }
 
 
@@ -442,7 +428,7 @@
         case 1:
         {
             // Profile section
-            if (indexPath.row == 5){
+            if (indexPath.row == 4){
                 
                 UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
@@ -586,16 +572,7 @@
         
     }
     
-    /*
-    self.privacySwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    self.privacySwitch.offColor = [UIColor cloudsColor];
-    self.privacySwitch.onBackgroundColor = [UIColor midnightBlueColor];
-    self.privacySwitch.offBackgroundColor = [UIColor silverColor];
-    self.privacySwitch.offLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
-    self.privacySwitch.onLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
-     */
     
-
 
 }
 
@@ -654,7 +631,7 @@
                 }
             }
             
-            if (indexPath.row == 5){
+            if (indexPath.row == 4){
                 // Edit profile button
                 cell.layer.borderWidth = 0;
             }

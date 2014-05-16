@@ -66,6 +66,10 @@
 @property (strong, nonatomic)UIView *previewBackground;
 @property (weak, nonatomic) IBOutlet UIButton *previewCancelButton;
 
+@property (weak, nonatomic) IBOutlet UIView *previewCountContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *previewCountLabel;
+
+
 @property (weak, nonatomic) IBOutlet UITextField *previewTextField;
 @property (weak, nonatomic) IBOutlet UIButton *previewNextButton;
 
@@ -500,6 +504,14 @@
         }
     }
    
+    
+    self.previewCountContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.previewCountContainerView.layer.cornerRadius = 5;
+    
+    self.previewCountLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+    self.previewCountLabel.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.previewCountLabel.text = [NSString stringWithFormat:@"%d",TITLE_LIMIT];
+    
 
     
 }
@@ -1379,6 +1391,23 @@
         
         
     }
+    
+    NSInteger stringCount = 0;
+    
+    if (![string isEqualToString:@""]){
+        stringCount = [textField.text length] + 1;
+    }
+    else{
+        stringCount = [textField.text length] - 1;
+    }
+    
+    if (stringCount > 0){
+        self.previewCountLabel.text = [NSString stringWithFormat:@"%ld",CAPTION_LIMIT - stringCount];
+    }
+    else{
+        self.previewCountLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
+    }
+
 
 
     if ([string isEqualToString:@""]){

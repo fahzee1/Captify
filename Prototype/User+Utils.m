@@ -108,10 +108,15 @@
     NSString *username = params[@"username"];
     NSNumber *facebook_user = params[@"facebook_user"];
     NSString *facebook_id = params[@"facebook_id"];
-    NSString *email = params[@"email"];
     NSNumber *private = [NSNumber numberWithBool:NO];
     NSNumber *super_user = [NSNumber numberWithBool:NO];
     NSNumber *is_friend = [NSNumber numberWithBool:YES];
+    
+    NSString *email;
+    if (params[@"email"]){
+        email = params[@"email"];
+    }
+    
     NSString *phone_number;
     if (params[@"phone_number"]){
         phone_number = params[@"phone_number"];

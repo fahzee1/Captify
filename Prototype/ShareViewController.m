@@ -15,6 +15,8 @@
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
 #import "MGInstagram.h"
+#import "FUISwitch.h"
+#import "UIColor+FlatUI.h"
 #import <MessageUI/MessageUI.h>
 
 typedef void (^ShareToNetworksBlock) ();
@@ -40,8 +42,6 @@ typedef void (^ShareToNetworksBlock) ();
 @property BOOL sendTW;
 
 
-
-
 @property BOOL shareFacebook;
 @property BOOL shareInstagram;
 @property BOOL shareTwitter;
@@ -49,6 +49,9 @@ typedef void (^ShareToNetworksBlock) ();
 @property BOOL haveNotified;
 
 @end
+
+#define PRIVACY_ON_TEXT @"YES"
+#define PRIVACY_OFF_TEXT @"NO"
 
 @implementation ShareViewController
 
@@ -84,7 +87,14 @@ typedef void (^ShareToNetworksBlock) ();
         self.scrollView.contentSize = CGSizeMake(320, 675);
         
     }
+    else{
+        self.scrollView.contentSize = CGSizeMake(320, 630);
+
+    }
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    //reset 
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isPrivate"];
     
     
 
@@ -102,11 +112,10 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (!IS_IPHONE5){
-        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-        [self.scrollView setContentOffset:bottomOffset animated:YES];
-        
-    }
+    
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
+    
     
     
 }
@@ -137,6 +146,9 @@ typedef void (^ShareToNetworksBlock) ();
     self.myShareButton.layer.cornerRadius = 10;
     self.myShareButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
     [self.myShareButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+    CGRect shareFrame = self.myShareButton.frame;
+    shareFrame.origin.y += 60;
+    self.myShareButton.frame = shareFrame;
     
     UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
     tapFB.numberOfTapsRequired = 1;
@@ -223,8 +235,48 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myInstagramLabel addSubview:self.instagramIcon];
     [self.myMessageLabel addSubview:self.messageIcon];
     
+    FUISwitch *privacySwitch = [[FUISwitch alloc] initWithFrame:CGRectMake(shareFrame.origin.x,shareFrame.origin.y -50, 100, 35)];
+    privacySwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE]; //[UIColor turquoiseColor];
+    privacySwitch.offColor = [UIColor cloudsColor];
+    privacySwitch.onBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];//[UIColor midnightBlueColor];
+    privacySwitch.offBackgroundColor = [UIColor silverColor];
+    privacySwitch.offLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+    privacySwitch.onLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+    privacySwitch.onLabel.text = NSLocalizedString(PRIVACY_ON_TEXT, nil);
+    privacySwitch.offLabel.text = NSLocalizedString(PRIVACY_OFF_TEXT, nil);
+    [privacySwitch addTarget:self action:@selector(changedPrivacy:) forControlEvents:UIControlEventValueChanged];
+    
+    CGRect privacyFrame = privacySwitch.frame;
+    privacyFrame.origin.x += 15;
+    privacySwitch.frame = privacyFrame;
 
     
+    UILabel *privacyLabel = [[UILabel alloc] initWithFrame:CGRectMake(privacyFrame.origin.x + privacyFrame.size.width + 5,
+                                                                      privacyFrame.origin.y - privacyFrame.size.height/2, 200, 70)];
+    privacyLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];;
+    privacyLabel.textColor = [UIColor whiteColor];
+    privacyLabel.text = NSLocalizedString(@"Show in public feed?", nil);
+    
+    
+    
+    [self.scrollView addSubview:privacyLabel];
+    [self.scrollView addSubview:privacySwitch];
+    
+    
+
+    
+}
+
+- (void)changedPrivacy:(FUISwitch *)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (sender.isOn){
+        [defaults setBool:NO forKey:@"isPrivate"];
+
+    }
+    else{
+        [defaults setBool:YES forKey:@"isPrivate"];
+    }
 }
 
 - (void)saveImage
