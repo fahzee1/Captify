@@ -96,6 +96,11 @@
     
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
+    if (!IS_IPHONE5){
+        self.scrollView.contentSize = CGSizeMake(320, 560);
+        
+    }
+    
     
 }
 
@@ -110,6 +115,13 @@
             [self.captionField becomeFirstResponder];
         }
     });
+    
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+        
+    }
+
 }
 
 
@@ -188,7 +200,8 @@
     //self.challengeNameLabel.layer.backgroundColor = [[UIColor colorWithHexString:@"#3498db"] CGColor];
     
     [self.viewResponsesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.viewResponsesButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
+    [self.viewResponsesButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
+    self.viewResponsesButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
     
     NSString *responseText;
     if ([self.data count] > 0){

@@ -355,6 +355,16 @@
         [invite addTarget:self action:@selector(sendTextInvite) forControlEvents:UIControlEventTouchUpInside];
         
         
+        if (!IS_IPHONE5){
+            CGRect inviteFrame = invite.frame;
+            containerFrame.origin.y -= 40;
+            containerFrame.size.height += 25;
+            inviteFrame.origin.y += 100;
+            _errorContainerView.frame = containerFrame;
+            invite.frame = inviteFrame;
+            
+        }
+        
         [_errorContainerView addSubview:errorLabel];
         [_errorContainerView addSubview:invite];
         

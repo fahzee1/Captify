@@ -136,9 +136,18 @@
         [user.managedObjectContext save:&e];
         
         
+        User *user2 = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.myUser.managedObjectContext];
+        user2.super_user = [NSNumber numberWithBool:NO];
+        user2.is_friend = [NSNumber numberWithBool:YES];
+        user2.facebook_user = [NSNumber numberWithBool:YES];
+        user2.username = @"Alex-Scott";
+        [user.managedObjectContext save:&e];
+
+        
+        
         
         User *user4 = [TestDataCreator createTestFriendWithName:@"kona2" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
-        User *user2 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
+        User *user6 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
         User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
         
         */
