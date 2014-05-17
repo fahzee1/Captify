@@ -51,8 +51,10 @@
     [super viewDidAppear:animated];
     [self.myTable reloadData];
     
-    CGPoint bottomOffset = CGPointMake(0, self.myTable.contentSize.height - self.myTable.bounds.size.height);
-    [self.myTable setContentOffset:bottomOffset animated:YES];
+    if (self.data.count > 2){
+        CGPoint bottomOffset = CGPointMake(0, self.myTable.contentSize.height - self.myTable.bounds.size.height);
+        [self.myTable setContentOffset:bottomOffset animated:YES];
+    }
 
 }
 
