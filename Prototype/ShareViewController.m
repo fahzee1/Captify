@@ -84,7 +84,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self setupShareStyles];
     
     if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 675);
+        self.scrollView.contentSize = CGSizeMake(320, 730);
         
     }
     else{

@@ -100,7 +100,7 @@
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
     if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 560);
+        self.scrollView.contentSize = CGSizeMake(320, 610);
         
     }
     

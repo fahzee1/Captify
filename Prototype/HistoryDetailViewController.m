@@ -189,13 +189,21 @@
     
     // shows error message if no captions
     if ([self.data count] == 0){
-        [self.view addSubview:self.errorContainerView];
+        [self.scrollView addSubview:self.errorContainerView];
     }
     
-    if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 675);
-        
+    if ([self.data count] > 0){
+        int height = 93 * (int)[self.data count];
+        int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+100);
+        CGRect tableRect = self.myTable.frame;
+        tableRect.size.height += height;
+        self.myTable.frame = tableRect;
     }
+    else{
+         self.scrollView.contentSize = CGSizeMake(320, 670);
+    }
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
 
@@ -221,6 +229,13 @@
 {
     [super viewDidAppear:animated];
     
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+        
+    }
+
+    
     if (self.myPick.is_chosen && ![self.myPick.player.username isEqualToString:self.myUser.username]){
         if ([self.myPick.first_open intValue] == 1){
             UIImage *image = [self.view snapshotView:self.view];
@@ -236,11 +251,7 @@
         }
         
         
-        if (!IS_IPHONE5){
-            CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-            [self.scrollView setContentOffset:bottomOffset animated:YES];
-            
-        }
+
         
 
         
@@ -316,17 +327,21 @@
                                          id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
                                          
                                          for (id pick in json){
+                                             DLog(@"%@",pick);
                                              NSString *caption = pick[@"answer"];
                                              NSString *player = pick[@"player"];
                                              NSNumber *is_chosen = pick[@"is_chosen"];
                                              NSString *pick_id = pick[@"pick_id"];
-                                             
+                                             NSString *facebook_id = pick[@"facebook_id"];
+                                             NSNumber *is_facebook = pick[@"is_facebook"];
                                              
                                              NSDictionary *params = @{@"player": player,
                                                                        @"context":self.myUser.managedObjectContext,
                                                                        @"is_chosen":is_chosen,
                                                                        @"answer":caption,
-                                                                       @"pick_id":pick_id};
+                                                                       @"pick_id":pick_id,
+                                                                      @"is_facebook":is_facebook,
+                                                                       @"facebook_id":facebook_id};
                                              
                                              ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
                                              if (pick){
@@ -378,7 +393,7 @@
     self.imageControls.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     [self setupImageControlsStyle];
     self.imageControls.hidden = YES;
-    [self.view addSubview:self.imageControls];
+    [self.scrollView addSubview:self.imageControls];
     
     self.captionSizeStepper.value = 35;
     self.captionSizeStepper.minimumValue = 8;
@@ -675,7 +690,7 @@
 
 - (IBAction)tappedDone:(id)sender {
     //self.imageControls.hidden = YES;
-    for (UIView *view in self.view.subviews){
+    for (UIView *view in self.scrollView.subviews){
         if (view.tag == SHARE_CONTROLS_CONTAINER){
             view.hidden = YES;
         }
@@ -1152,6 +1167,8 @@
 
 - (void)selectedCaption:(UIButton *)sender
 {
+    [self.scrollView setContentOffset:CGPointZero animated:YES];
+    
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.myTable];
     NSIndexPath *indexPath = [self.myTable indexPathForRowAtPoint:buttonPosition];
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];

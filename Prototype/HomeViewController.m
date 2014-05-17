@@ -1402,10 +1402,10 @@
     }
     
     if (stringCount > 0){
-        self.previewCountLabel.text = [NSString stringWithFormat:@"%ld",CAPTION_LIMIT - stringCount];
+        self.previewCountLabel.text = [NSString stringWithFormat:@"%d",TITLE_LIMIT - stringCount];
     }
     else{
-        self.previewCountLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
+        self.previewCountLabel.text = [NSString stringWithFormat:@"%d",TITLE_LIMIT];
     }
 
 
