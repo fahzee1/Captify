@@ -12,7 +12,6 @@
                 <outlet property="previewNextButton" destination="5tk-s0-4fz" id="xdy-ad-Rn8"/>
                 <outlet property="previewOneFieldContainer" destination="Q32-2n-umV" id="tjy-ri-TW5"/>
                 <outlet property="previewTextField" destination="WpJ-os-58j" id="e4D-mZ-iLg"/>
-                <outlet property="previewTextFieldIcon" destination="7Fb-Lv-10e" id="rWy-rf-6Rn"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -43,7 +42,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" id="Q32-2n-umV">
-                    <rect key="frame" x="13" y="77" width="287" height="63"/>
+                    <rect key="frame" x="13" y="77" width="297" height="57"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" tag="1990" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter title of your caption challenge!" textAlignment="center" minimumFontSize="17" id="WpJ-os-58j">
@@ -52,15 +51,8 @@
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textField>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Icon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Fb-Lv-10e">
-                            <rect key="frame" x="253" y="11" width="30" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" id="5Qb-9I-2wI">
-                            <rect key="frame" x="212" y="41" width="38" height="22"/>
+                            <rect key="frame" x="253" y="15" width="38" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9W0-Xy-gK0">

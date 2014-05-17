@@ -229,11 +229,9 @@
 {
     [super viewDidAppear:animated];
     
-    if (!IS_IPHONE5){
-        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-        [self.scrollView setContentOffset:bottomOffset animated:YES];
-        
-    }
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
+    
 
     
     if (self.myPick.is_chosen && ![self.myPick.player.username isEqualToString:self.myUser.username]){
@@ -258,26 +256,31 @@
         
     }
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    int count = [[defaults valueForKey:@"makeButtonToolTip"] intValue];
-    
-    if (count < 2){
-        CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Make your own caption", nil)];
-        toolTip.backgroundColor = [UIColor whiteColor];
-        toolTip.textColor = [UIColor blackColor];
-        toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
-        toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
-        toolTip.hasGradientBackground = NO;
-        toolTip.preferredPointDirection = PointDirectionDown;
-        toolTip.dismissTapAnywhere = YES;
-        toolTip.hasShadow = NO;
-        toolTip.has3DStyle = NO;
-        toolTip.borderWidth = 0;
-        [toolTip autoDismissAnimated:YES atTimeInterval:5.0];
-        [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        int count = [[defaults valueForKey:@"makeButtonToolTip"] intValue];
         
-        [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"makeButtonToolTip"];
-    }
+        if (count < 2){
+            CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Make your own caption", nil)];
+            toolTip.backgroundColor = [UIColor whiteColor];
+            toolTip.textColor = [UIColor blackColor];
+            toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+            toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+            toolTip.hasGradientBackground = NO;
+            toolTip.preferredPointDirection = PointDirectionDown;
+            toolTip.dismissTapAnywhere = YES;
+            toolTip.hasShadow = NO;
+            toolTip.has3DStyle = NO;
+            toolTip.borderWidth = 0;
+            [toolTip autoDismissAnimated:YES atTimeInterval:5.0];
+            [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
+            
+            [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"makeButtonToolTip"];
+        }
+
+    });
     
 
     

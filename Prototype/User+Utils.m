@@ -121,6 +121,10 @@
     if (params[@"phone_number"]){
         phone_number = params[@"phone_number"];
     }
+    NSNumber *is_contact;
+    if (params[@"is_contact"]){
+        is_contact = params[@"is_contact"];
+    }
     
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
@@ -151,6 +155,7 @@
     user.private = private;
     user.super_user = super_user;
     user.is_friend = is_friend;
+    user.is_contactFriend = is_contact;
     
     if (![user.managedObjectContext save:&error]){
         DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -824,7 +829,7 @@
 {
     NSFetchRequest *firstRequest;
     if (contacts){
-        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (facebook_user = 0)";
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1)";
         
         firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
         firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];

@@ -488,6 +488,7 @@
     self.previewTextField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.previewTextField.textColor = [UIColor whiteColor];
     self.previewTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text") attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.previewTextField.layer.cornerRadius = 5;
     
     self.previewTextFieldIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];
     self.previewTextFieldIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square"];
@@ -582,95 +583,104 @@
 
 - (void)fetchContacts2
 {
-    static int retrys = 0;
-    
-    if ([ABStandin authorizationStatus] != kABAuthorizationStatusAuthorized){
-        [ABStandin requestAccess];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        static int retrys = 0;
         
-        
-        if (retrys < 5){
-            double delayInSeconds = 5.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                retrys += 1;
-                [self fetchContacts2];
-            });
+        if ([ABStandin authorizationStatus] != kABAuthorizationStatusAuthorized){
+            [ABStandin requestAccess];
+            
+            
+            if (retrys < 5){
+                double delayInSeconds = 10.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    retrys += 1;
+                    [self fetchContacts2];
+                });
+            }
+            
+            return;
         }
         
-        return;
-    }
-
-    NSArray *contacts = [ABContactsHelper contacts];
-    NSMutableArray *list = [@[] mutableCopy];
-
-    for (ABContact *contact in contacts){
-        DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
-        NSString *formattedPhoneNumber = contact.phonenumbers;
-        NSString *phoneNumber = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"+0123456789"] invertedSet]] componentsJoinedByString:@""];
-        DLog(@"%@ formatted number is %@",contact.firstname,phoneNumber);
-
-        if (contact.phonenumbers){
-            [list addObject:phoneNumber];
-        }
-    }
-    
-    
-    if ([list count] > 0 && self.myUser){
-        NSDictionary *params = @{@"username":self.myUser.username ,
-                                 @"action":@"getCF",
-                                 @"content":list};
+        NSArray *contacts = [ABContactsHelper contacts];
+        NSMutableArray *list = [@[] mutableCopy];
         
-        Contacts *c = [[Contacts alloc] init];
-        [c requestFriendsFromContactsList:params
-                                    block:^(BOOL success, id data) {
-                                        if (success){
-                                            for (id user in data[@"contacts"]){
-                                                NSString *facebook_id;
-                                                if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
-                                                    facebook_id = @"0";
-                                                }
-                                                else{
-                                                    facebook_id = user[@"facebook_id"];
-                                                }
-                                                
-                                                NSDictionary *params;
-                                                @try {
-                                                    params = @{@"username": user[@"username"],
-                                                               @"facebook_user":user[@"is_facebook"],
-                                                               @"facebook_id":facebook_id};
+        for (ABContact *contact in contacts){
+            DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
+            NSString *formattedPhoneNumber = contact.phonenumbers;
+            NSString *phoneNumber = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"+0123456789"] invertedSet]] componentsJoinedByString:@""];
+            DLog(@"%@ formatted number is %@",contact.firstname,phoneNumber);
+            
+            if (contact.phonenumbers){
+                [list addObject:phoneNumber];
+            }
+        }
+        
+        
+        if ([list count] > 0 && self.myUser){
+            NSDictionary *params = @{@"username":self.myUser.username ,
+                                     @"action":@"getCF",
+                                     @"content":list};
+            
+            Contacts *c = [[Contacts alloc] init];
+            [c requestFriendsFromContactsList:params
+                                        block:^(BOOL success, id data) {
+                                            if (success){
+                                                for (id user in data[@"contacts"]){
+                                                    NSString *facebook_id;
+                                                    if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                        facebook_id = @"0";
+                                                    }
+                                                    else{
+                                                        facebook_id = user[@"facebook_id"];
+                                                    }
                                                     
-                                                }
-                                                @catch (NSException *exception) {
-                                                    DLog(@"%@",exception);
-                                                }
-                                                
-                                                User *userCreated = [User createFriendWithParams:params
-                                                                     inMangedObjectContext:self.myUser.managedObjectContext];
-                                                if (userCreated){
-                                                    DLog(@"successfully created %@", user[@"username"]);
-                                                }
-                                                else
-                                                {
-                                                    DLog(@"failerd created %@", user[@"username"]);
+                                                    NSDictionary *params;
+                                                    @try {
+                                                        params = @{@"username": user[@"username"],
+                                                                   @"facebook_user":user[@"is_facebook"],
+                                                                   @"facebook_id":facebook_id,
+                                                                   @"is_contact":[NSNumber numberWithBool:YES]};
+                                                        
+                                                    }
+                                                    @catch (NSException *exception) {
+                                                        DLog(@"%@",exception);
+                                                    }
+                                                    
+                                                    User *userCreated = [User createFriendWithParams:params
+                                                                               inMangedObjectContext:self.myUser.managedObjectContext];
+                                                    if (userCreated){
+                                                        DLog(@"successfully created %@", user[@"username"]);
+                                                    }
+                                                    else
+                                                    {
+                                                        DLog(@"failerd created %@", user[@"username"]);
+                                                    }
+                                                    
                                                 }
                                                 
                                             }
-                                            
-                                        }
-                                        else{
-                                            DLog(@"no success");
-                                        }
-                                    }];
-
-    }
-    else{
-        if (retrys < 10){
-            retrys += 1;
-            [self fetchContacts2];
+                                            else{
+                                                DLog(@"no success");
+                                            }
+                                        }];
             
         }
-    }
+        else{
+            if (retrys < 10){
+                retrys += 1;
+                double delayInSeconds = 10.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                     [self fetchContacts2];
+                });
+             
+                
+            }
+        }
 
+    });
+    
 
 }
 
@@ -1414,7 +1424,7 @@
         return YES;
     }
     
-    if ([textField.text length] <= TITLE_LIMIT){
+    if ([textField.text length] + 1< TITLE_LIMIT){
         return YES;
     }
     else{

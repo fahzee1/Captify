@@ -187,6 +187,9 @@
                                 }];
         
     }
+    else{
+        self.progressView.hidden = YES;
+    }
     
 }
 
@@ -247,17 +250,19 @@
     self.captionField.backgroundColor = [UIColor whiteColor];
     self.captionField.borderStyle = UITextBorderStyleNone;
     self.captionField.placeholder = NSLocalizedString(@"Enter caption here", nil);
+    self.captionField.layer.cornerRadius = 5;
     
     
     self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.captionContainerView.layer.cornerRadius = 5;
     
     self.countContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    //self.countContainerView.layer.cornerRadius = 10;
+    self.countContainerView.layer.cornerRadius = 5;
     
     self.countLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
     self.countLabel.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.countLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
+
     
     
     
@@ -414,7 +419,7 @@
     }
     
     if (stringCount > 0){
-        self.countLabel.text = [NSString stringWithFormat:@"%ld",CAPTION_LIMIT - stringCount];
+        self.countLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT - stringCount];
     }
     else{
         self.countLabel.text = [NSString stringWithFormat:@"%d",CAPTION_LIMIT];
@@ -428,7 +433,7 @@
         return YES;
     }
     
-    if ([textField.text length] <= CAPTION_LIMIT){
+    if ([textField.text length] +1 < CAPTION_LIMIT){
         return YES;
     }
     else{

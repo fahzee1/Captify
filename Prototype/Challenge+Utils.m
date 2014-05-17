@@ -374,7 +374,11 @@
     
     Challenge *challenge;
     NSError *error;
-    NSString *sender = [NSString stringWithFormat:@"%@",[params valueForKey:@"sender"]];
+    id sender = [NSString stringWithFormat:@"%@",[params valueForKey:@"sender"]];
+    if ([sender isKindOfClass:[NSArray class]]){
+        sender = sender[0][@"username"];
+    }
+    
     User *user = [User getUserWithUsername:sender inContext:[params valueForKey:@"context"] error:&error];
     // check if exists first
     
