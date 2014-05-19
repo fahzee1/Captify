@@ -15,8 +15,9 @@
 #import "FeedViewCell.h"
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
+#import "MenuViewController.h"
 
-@interface FeedViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface FeedViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,TWTSideMenuViewControllerDelegate>
 
 @property (strong,nonatomic)NSArray *results;
 @property (strong,nonatomic)NSArray *data;
@@ -42,6 +43,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    self.sideMenuViewController.delegate = self;
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -317,6 +319,15 @@
 {
     return [[UICollectionReusableView alloc] init];
 }*/
+
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sideMenuViewController
+{
+    UIViewController *menu = self.sideMenuViewController.menuViewController;
+    if ([menu isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menu) setupColors];
+    }
+}
+
 
 
 @end

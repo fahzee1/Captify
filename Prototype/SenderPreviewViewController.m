@@ -33,9 +33,9 @@
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *contactsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *contactsButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *selectedFacebookFriends;
@@ -86,11 +86,14 @@
  
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
-    
     if (!IS_IPHONE5){
         self.scrollView.contentSize = CGSizeMake(320, 675);
-        
     }
+    else{
+        self.scrollView.contentSize = CGSizeMake(320, 620);
+    }
+    
+
     self.automaticallyAdjustsScrollViewInsets = NO;
     
    
@@ -111,11 +114,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (!IS_IPHONE5){
-        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-        [self.scrollView setContentOffset:bottomOffset animated:YES];
 
-    }
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
+
 
     
 }
@@ -183,53 +185,38 @@
     self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
     
     
-    UITapGestureRecognizer *tapC = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedContacts)];
-    tapC.numberOfTapsRequired = 1;
-    tapC.numberOfTouchesRequired = 1;
+ 
 
-    self.contactsLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    self.contactsLabel.textColor = [UIColor whiteColor];
-    self.contactsLabel.layer.cornerRadius = 5;
-    self.contactsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
-    self.contactsLabel.text = [NSString stringWithFormat:@"Contacts"];
-    self.contactsLabel.userInteractionEnabled = YES;
-    [self.contactsLabel addGestureRecognizer:tapC];
-    
-    
-    UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
-    tapFB.numberOfTapsRequired = 1;
-    tapFB.numberOfTouchesRequired = 1;
+    self.contactsButton.backgroundColor = [UIColor clearColor];
+    [self.contactsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.contactsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    self.contactsButton.layer.cornerRadius = 5;
+    self.contactsButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+    self.contactsButton.titleLabel.text = NSLocalizedString(@"Contacts", nil);
+    self.contactsButton.layer.borderWidth = 3;
+    self.contactsButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
 
-    self.facebookLabel.textColor = [UIColor whiteColor];
-    self.facebookLabel.layer.cornerRadius = 5;
-    self.facebookLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
-    self.facebookLabel.text = [NSString stringWithFormat:@"Facebook"];
-    self.facebookLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    [self.facebookLabel addGestureRecognizer:tapFB];
+
+
+    [self.facebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.facebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    self.facebookButton.layer.cornerRadius = 5;
+    self.facebookButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+    self.facebookButton.titleLabel.text = NSLocalizedString(@"Facebook", nil);
+    self.facebookButton.backgroundColor = [UIColor clearColor];
+    self.facebookButton.layer.borderWidth = 3;
+    self.facebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+
     
-    UILabel *facebookIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -20, 80, 80)];
-    facebookIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
-    facebookIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"];
-    facebookIcon.userInteractionEnabled = NO;
-    facebookIcon.textColor = [UIColor whiteColor];
-    
-    UILabel *contactIcon = [[UILabel alloc] initWithFrame:CGRectMake(5, -20, 80, 80)];
-    contactIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
-    contactIcon.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"];
-    contactIcon.userInteractionEnabled = NO;
-    contactIcon.textColor = [UIColor whiteColor];
-    
-    [self.facebookLabel addSubview:facebookIcon];
-    [self.contactsLabel addSubview:contactIcon];
 
 
     
     if ([self.myUser.facebook_user intValue] == 1){
-        self.facebookLabel.userInteractionEnabled = YES;
+        self.facebookButton.userInteractionEnabled = YES;
     }
     else{
-        self.facebookLabel.layer.opacity = 0.6f;
-        self.facebookLabel.userInteractionEnabled = NO;
+        self.facebookButton.layer.opacity = 0.6f;
+        self.facebookButton.userInteractionEnabled = NO;
     }
     
     
@@ -247,17 +234,20 @@
 
 }
 
-- (void)tappedFB
+- (IBAction)tappedContacts:(UIButton *)sender
+{
+    [self presentViewController:self.contactsScreen animated:YES completion:nil];
+
+}
+
+
+- (IBAction)tappedFacebook:(UIButton *)sender
 {
     [self presentViewController:self.facebookScreen animated:YES completion:nil];
 }
 
-- (void)tappedContacts
-{
-  
-    [self presentViewController:self.contactsScreen animated:YES completion:nil];
 
-}
+
 
 - (UIImage *)createThumbnailWithSize:(CGSize)size
 {
@@ -323,8 +313,15 @@
     
     
         // create challenge in backend
+    float compression;
+    if (!IS_IPHONE5){
+        compression = 0.5;
+    }
+    else{
+        compression = 0.3;
+    }
     
-    NSData *imageData = UIImageJPEGRepresentation(self.image, 0.3);
+    NSData *imageData = UIImageJPEGRepresentation(self.image, compression);
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     
     NSMutableDictionary *apiParams;
@@ -396,6 +393,11 @@
                                                           }
                                                           @finally {
                                                               if (challenge){
+                                                                  
+                                                                  [self.myUser addSent_challengesObject:challenge];
+                                                                  NSError *e;
+                                                                  [self.myUser.managedObjectContext save:&e];
+                                                                  
                                                                   [hud hide:YES];
                                                                   
                                                                   // send notification

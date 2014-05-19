@@ -25,7 +25,7 @@ typedef void(^FetchRecentsBlock)();
 
 @property (nonatomic, retain)User *myUser;
 
-- (void)fetchUpdatesWithBlock:(FetchRecentsBlock)block;
+- (void)fetchUpdates;
 
 - (void)reloadMyTable;
 @end

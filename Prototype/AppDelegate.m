@@ -498,7 +498,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
  
-    [self handlePushNotificationPayload:userInfo isForeground:YES];
+    [self handlePushNotificationPayload:userInfo isForeground:NO];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -786,7 +786,7 @@
                 UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
 
                 UIViewController *receivedHistory = (HistoryRecievedViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"recievedHistory"];
-                [((HistoryRecievedViewController *)receivedHistory) fetchUpdatesWithBlock:nil];
+                [((HistoryRecievedViewController *)receivedHistory) fetchUpdates];
                 
                 
             }
