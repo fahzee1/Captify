@@ -300,45 +300,6 @@
     }
 }
 
-+ (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params
-{
-    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
-    [client startNetworkActivity];
-    return [client POST:AwesomeAPIChallengeFetchString
-             parameters:params
-                success:^(NSURLSessionDataTask *task, id responseObject) {
-                    [client stopNetworkActivity];
-                    int code = [[responseObject valueForKey:@"code"] intValue];
-                    if (code == 1){
-                         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
-                        NSDictionary *params = @{@"level": [responseObject valueForKey:@"challenge_type"],
-                                                 @"answer": [responseObject valueForKey:@"answer"],
-                                                 @"hint": [responseObject valueForKey:@"hint"],
-                                                 @"challenge_id": [responseObject valueForKey:@"challenge_id"],
-                                                 @"sender": [responseObject valueForKeyPath:@"sender.username"]};
-                        
-                        Challenge *ch = [self GetOrCreateChallengeWithParams:params
-                                      inManagedObjectContext:context
-                                                  skipCreate:NO];
-                        if (ch){
-                            ch = nil;
-                        }
-                    }
-                }
-                failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    [client stopNetworkActivity];
-                    [JDStatusBarNotification showWithStatus:error.localizedDescription
-                                               dismissAfter:2.0
-                                                  styleName:JDStatusBarStyleError];
-                    if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
-                        [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
-                    }
-
-
-                } autoRetry:5];
-}
-
-
 
 
 + (Challenge *) createTestChallengeWithUser:(User *)user

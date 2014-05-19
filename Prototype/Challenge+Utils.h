@@ -47,10 +47,6 @@ typedef void (^GetChallengeFeedBlock) (BOOL wasSuccessful, id data);
                                       sent:(BOOL)sent;
 
 
-
-+ (NSURLSessionDataTask *)fetchChallengeWithUsernameAndID:(NSDictionary *)params;
-
-
 + (NSURLSessionDataTask *)sendCreateChallengeRequest:(NSDictionary *)params
                                                image:(NSData *)image;
 

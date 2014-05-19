@@ -32,7 +32,6 @@ static NSString * const AwesomeAPIFetchString = @"/api/v1/profile/fetch";
 // challenge urls
 static NSString * const AwesomeAPIChallengeResultsString = @"api/v1/challenge/results";
 static NSString * const AwesomeAPIChallengeCreateString = @"api/v1/challenge";
-static NSString * const AwesomeAPIChallengeFetchString = @"api/v1/challenge/blob";
 static NSString * const AwesomeAPIChallengeMediaString = @"api/v1/challenge/media";
 static NSString * const AwesomeAPIChallengeUpdateString = @"api/v1/challenge/update";
 static NSString * const AwesomeAPIChallengeCreatePickString = @"api/v1/challenge/picks";

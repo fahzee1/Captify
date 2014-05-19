@@ -193,9 +193,9 @@
     }
     
     if ([self.data count] > 0){
-        int height = 93 * (int)[self.data count];
+        int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+100);
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+70);
         CGRect tableRect = self.myTable.frame;
         tableRect.size.height += height;
         self.myTable.frame = tableRect;
@@ -338,13 +338,16 @@
                                              NSString *facebook_id = pick[@"facebook_id"];
                                              NSNumber *is_facebook = pick[@"is_facebook"];
                                              
-                                             NSDictionary *params = @{@"player": player,
+                                             NSMutableDictionary *params = [@{@"player": player,
                                                                        @"context":self.myUser.managedObjectContext,
                                                                        @"is_chosen":is_chosen,
                                                                        @"answer":caption,
-                                                                       @"pick_id":pick_id,
-                                                                      @"is_facebook":is_facebook,
-                                                                       @"facebook_id":facebook_id};
+                                                                       @"pick_id":pick_id} mutableCopy];
+                                             
+                                             if (facebook_id && is_facebook){
+                                                 params[@"is_facebook"] = is_facebook;
+                                                 params[@"facebook_id"] = facebook_id;
+                                             }
                                              
                                              ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
                                              if (pick){
