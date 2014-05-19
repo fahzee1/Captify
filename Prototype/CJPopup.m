@@ -219,6 +219,7 @@
 
 - (void) showSuccessBlur2WithImage:(UIImage *)image sender:(NSString *)sender
 {
+    sender = [[sender stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
     self.blurFilter = [GPUImageiOSBlurFilter new];
     self.blurFilter.blurRadiusInPixels = 1.0f;
     UIImage *blurredImage = [self.blurFilter imageByFilteringImage:image];
@@ -254,6 +255,8 @@
     
     [self.window addSubview:self];
     [self.window makeKeyAndVisible];
+    
+    [self vibrate];
     
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -393,6 +396,11 @@
             [self.delegate userDidClickDoneButtonFromPopup:self];
         }
     }
+}
+
+- (void)vibrate
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 /*
 - (id)initWithFrame:(CGRect)frame

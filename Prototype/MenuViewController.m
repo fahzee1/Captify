@@ -29,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *menuSettingsIcon;
 
 
-@property (strong, nonatomic)NSArray *facebookFriendsArray;
+
 @property (strong, nonatomic)NSNumber *currentScreen;
 
 @end
@@ -57,13 +57,16 @@
         self.currentScreen = [NSNumber numberWithInt:MenuHomeScreen];
     }
     
-    
     [self setupStyles];
+    
+
 }
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     [self setupColors];
 }
 
@@ -241,7 +244,7 @@
             }
              */
             
-            NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
+            NSString *inviteText = @"Check out Captify -- a social meme caption game, best caption wins! http://gocaptify.com/download";
             UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
             activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
             [self presentViewController:activityVC animated:YES completion:nil];

@@ -322,6 +322,8 @@
     [defaults removeObjectForKey:@"albumID"];
     [defaults removeObjectForKey:@"phone_number"];
     [defaults removeObjectForKey:@"fbServerSuccess"];
+    [defaults setBool:NO forKey:@"alreadyLogged"];
+
     
     // since logging out set active menu button to home
     UIViewController *menu = self.sideMenuViewController.menuViewController;

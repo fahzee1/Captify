@@ -180,13 +180,16 @@
                                                     NSString *caption = results[@"answer"];
                                                     NSNumber *is_chosen = results[@"is_chosen"];
                                                     NSString *pick_id = results[@"pick_id"];
-
+                                                    NSNumber *is_facebook = results[@"is_facebook"];
+                                                    NSString *facebook_id = results[@"facebook_id"];
                                                     
                                                     NSDictionary *params2 = @{@"player": player,
                                                                               @"context":self.myUser.managedObjectContext,
                                                                               @"is_chosen":is_chosen,
                                                                               @"answer":caption,
-                                                                              @"pick_id":pick_id};
+                                                                              @"pick_id":pick_id,
+                                                                              @"is_facebook":is_facebook,
+                                                                              @"facebook_id":facebook_id};
                                                     ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params2];
                                                     if (pick){
                                                         [challenge addPicksObject:pick];

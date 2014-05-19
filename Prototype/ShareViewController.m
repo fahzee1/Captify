@@ -37,6 +37,7 @@ typedef void (^ShareToNetworksBlock) ();
 @property (strong,nonatomic)SocialFriends *friends;
 @property  BOOL sendFB;
 @property BOOL sendTW;
+@property BOOL sendIG;
 
 
 @property BOOL shareFacebook;
@@ -286,53 +287,34 @@ typedef void (^ShareToNetworksBlock) ();
     self.shareFacebook = !self.shareFacebook;
     if (self.shareFacebook){
         self.myFacebookLabel.textColor = [UIColor colorWithHexString:CAPTIFY_FACEBOOK];
-        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
     
     }
     else{
         self.myFacebookLabel.textColor = [UIColor whiteColor];
         
         if (!self.shareTwitter && !self.shareInstagram){
-            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
         }
     }
 }
 
 - (void)tappedInstagram
 {
-    if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
-        [self.hud hide:YES];
-        [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
-        [MGInstagram postImage:self.shareImage
-                   withCaption:self.selectedCaption
-                        inView:self.view
-                      delegate:self];
-    }
-    else
-    {
-        [self.hud hide:YES];
-        DLog(@"Error Instagram is either not installed or image is incorrect size");
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
-        
-        self.myInstagramLabel.textColor = [UIColor whiteColor];
-    }
 
-    /*
+
+
     self.shareInstagram = !self.shareInstagram;
     if (self.shareInstagram){
         self.myInstagramLabel.textColor = [UIColor colorWithHexString:CAPTIFY_INSTAGRAM];
-        self.instagramIcon.textColor = [UIColor colorWithHexString:CAPTIFY_INSTAGRAM];
-        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
 
     }
     else{
         self.myInstagramLabel.textColor = [UIColor whiteColor];
-        self.instagramIcon.textColor = [UIColor whiteColor];
         if (!self.shareTwitter && !self.shareFacebook){
-            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
         }
 
     }
+    
+    /*
     
     if (self.shareInstagram){
         
@@ -379,23 +361,21 @@ typedef void (^ShareToNetworksBlock) ();
         }];
     }
      */
+    
 
 }
 
 
 - (void)tappedTwitter
 {
-    DLog(@"tapped twitter");
     self.shareTwitter = !self.shareTwitter;
     if (self.shareTwitter){
         self.myTwitterLabel.textColor = [UIColor colorWithHexString:CAPTIFY_TWITTER];
         //self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
-        [self.myShareButton setTitle:@"Share" forState:UIControlStateNormal];
     }
     else{
         self.myTwitterLabel.textColor = [UIColor whiteColor];
         if (!self.shareInstagram && !self.shareFacebook){
-            [self.myShareButton setTitle:@"Save" forState:UIControlStateNormal];
         }
 
     }
@@ -521,10 +501,18 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     if (!self.shareFacebook && !self.shareTwitter){
-        // just save and mark inactive
-        self.hud.labelText = NSLocalizedString(@"Saving", nil);
-        self.hud.detailsLabelText = nil;
-        [self updateChallengeOnBackend];
+        
+        if (self.shareInstagram && !self.sendIG){
+            [self sendInstagram];
+            self.sendIG = YES;
+        }
+        else{
+
+            // just save and mark inactive
+            self.hud.labelText = NSLocalizedString(@"Saving", nil);
+            self.hud.detailsLabelText = nil;
+            [self updateChallengeOnBackend];
+        }
     }
     
     
@@ -611,6 +599,28 @@ typedef void (^ShareToNetworksBlock) ();
 
 }
 
+- (void)sendInstagram
+{
+    if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
+        [self.hud hide:YES];
+        [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
+        [MGInstagram postImage:self.shareImage
+                   withCaption:self.selectedCaption
+                        inView:self.scrollView
+                      delegate:self];
+    }
+    else
+    {
+        [self.hud hide:YES];
+        DLog(@"Error Instagram is either not installed or image is incorrect size");
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
+        
+        self.myInstagramLabel.textColor = [UIColor whiteColor];
+    }
+
+}
+
+
 - (void)startShare
 {
     // after share show success overlay or alert or something
@@ -619,7 +629,13 @@ typedef void (^ShareToNetworksBlock) ();
     [self saveImage];
     
     [self shareToFacebookAndTwitterWithBlock:^{
-        [self updateChallengeOnBackend];
+        if (self.shareInstagram && !self.sendIG){
+            [self sendInstagram];
+            self.sendIG = YES;
+        }
+        else{
+            [self updateChallengeOnBackend];
+        }
     }];
 
 }
@@ -627,19 +643,35 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (IBAction)tappedShare:(UIButton *)sender {
     
-    NSString *shareOrSave;
-    if (!self.shareFacebook && !self.shareTwitter){
-        shareOrSave = NSLocalizedString(@"Save", nil);
+    
+    NSString *shareString = @"Share to";
+    if (self.shareFacebook){
+        shareString = [shareString stringByAppendingString:@" Facebook"];
     }
-    else{
-        shareOrSave = NSLocalizedString(@"Share", nil);
+    if (self.shareTwitter){
+        if (self.shareFacebook){
+            shareString = [shareString stringByAppendingString:@",Twitter"];
+        }
+        else{
+            shareString = [shareString stringByAppendingString:@" Twitter"];
+        }
     }
+    
+    if (self.shareInstagram){
+        if (self.shareFacebook || self.shareTwitter){
+            shareString = [shareString stringByAppendingString:@",Instagram"];
+        }
+        else{
+            shareString = [shareString stringByAppendingString:@" Instagram"];
+        }
+    }
+
     
     UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:shareOrSave, nil];
+                                              otherButtonTitles:shareString, nil];
     
     [popUp showFromRect:self.myShareButton.frame inView:self.view animated:YES];
 
@@ -777,6 +809,16 @@ typedef void (^ShareToNetworksBlock) ();
     if (buttonIndex == 0){
         [self startShare];
     }
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    [actionSheet.subviews enumerateObjectsUsingBlock:^(id _currentView, NSUInteger idx, BOOL *stop) {
+        if ([_currentView isKindOfClass:[UIButton class]]) {
+            [((UIButton *)_currentView).titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+            // OR
+            //[((UIButton *)_currentView).titleLabel setFont:[UIFont fontWithName:@"Exo2-SemiBold" size:17]];
+        }
+    }];
 }
 
 

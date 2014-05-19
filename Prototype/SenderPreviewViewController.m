@@ -144,7 +144,9 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-        DLog(@"received memory warning here");
+    DLog(@"received memory warning here");
+    
+    self.myUser = nil;
 }
 
 - (void)popToPreview

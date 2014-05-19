@@ -87,6 +87,7 @@
 @property (strong, nonatomic)UIAlertView *makePhoneAlert;
 @property (strong, nonatomic)UITextField *makePhoneTextField;
 @property (strong, nonatomic) NSArray *contactNumbers;
+@property (strong,nonatomic) NSTimer *contactFetchTimer;
 @property BOOL showHistory;
 @property BOOL showingPreview;
 
@@ -113,9 +114,23 @@
     
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL already = [defaults boolForKey:@"alreadyLogged"];
     
-    [self fetchContacts2];
+    if (!already){
+        [self fetchContacts2];
+        [defaults setBool:YES forKey:@"alreadyLogged"];
+    }
+    else{
+        if (!self.contactFetchTimer){
+            self.contactFetchTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 10
+                                                                      target:self
+                                                                    selector:@selector(fetchContacts2)
+                                                                    userInfo:nil repeats:YES];
 
+        }
+    }
+    
     /*
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
      NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
@@ -200,6 +215,11 @@
     
 }
 
+- (void)shout
+{
+    NSLog(@"screaming");
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -251,14 +271,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
        DLog(@"received memory warning here");
-
     
-}
-
-#warning this might give me issue, remove if it does
-- (void)setView:(UIView *)view
-{
-    [super setView:view];
+    self.myUser = nil;
+    
+    [self.contactFetchTimer invalidate];
+    self.contactFetchTimer = nil;
+    
     self.snapPicButton = nil;
     self.topMenuButton = nil;
     self.flashButton = nil;
@@ -267,8 +285,16 @@
     self.session = nil;
     self.cameraDevice = nil;
     self.cameraInput = nil;
-    self.previewLayer = nil;
+    //self.previewLayer = nil;
+
+
     
+}
+
+#warning this might give me issue, remove if it does
+- (void)setView:(UIView *)view
+{
+    [super setView:view];
     
     
 }
@@ -583,6 +609,7 @@
 
 - (void)fetchContacts2
 {
+   
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         static int retrys = 0;
         
@@ -980,6 +1007,8 @@
 
 - (void)cancelPreviewImage
 {
+    [self viewWillAppear:YES];
+    
     [self toggleCameraControls];
     
     [self.previewControls removeFromSuperview];

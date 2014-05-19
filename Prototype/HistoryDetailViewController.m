@@ -234,7 +234,7 @@
     
 
     
-    if (self.myPick.is_chosen && ![self.myPick.player.username isEqualToString:self.myUser.username]){
+    if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
         if ([self.myPick.first_open intValue] == 1){
             UIImage *image = [self.view snapshotView:self.view];
             CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
