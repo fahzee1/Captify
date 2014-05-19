@@ -7,7 +7,6 @@
 //
 
 #import "ChallengeViewController.h"
-#import "AnswerFieldView.h"
 #import "AppDelegate.h"
 #import "Challenge+Utils.h"
 #import "ChallengePicks+Utils.h"

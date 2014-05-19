@@ -14,7 +14,6 @@
 #import "FAImageView.h"
 #import "Challenge+Utils.h"
 #import "AppDelegate.h"
-#import "UploaderAPIClient.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
