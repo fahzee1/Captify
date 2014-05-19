@@ -53,11 +53,6 @@
     self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
     
-    if ([self.data count] == 0){
-
-        [self.myTable addSubview:self.errorContainerView];
-    }
-    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.myTable addSubview:self.refreshControl];
     [self.refreshControl addTarget:self action:@selector(fetchUpdates) forControlEvents:UIControlEventValueChanged];
@@ -72,11 +67,13 @@
     if (USE_GOOGLE_ANALYTICS){
         self.screenName = @"Sent Menu Screen";
     }
+    
+    [self fetchUpdates];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
-    [self fetchUpdates];
+    
 }
 
 - (void)dealloc
@@ -212,6 +209,12 @@
                                                 [self.errorContainerView removeFromSuperview];
                                                 self.errorContainerView = nil;
                                 
+                                            }
+                                            else{
+                                                if ([self.data count] == 0){
+                                                    [self.myTable addSubview:self.errorContainerView];
+                                                }
+
                                             }
                                             
 
