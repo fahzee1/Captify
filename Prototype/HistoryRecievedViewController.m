@@ -493,13 +493,18 @@
 }
 
 
+
 - (NSArray *)cData
 {
-    _cData = [Challenge getHistoryChallengesForUser:self.myUser
-                                               sent:NO];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        _cData = [Challenge getHistoryChallengesForUser:self.myUser
+                                                   sent:NO];
+        
+    });
+    
     return _cData;
+    
 }
-
 - (User *)myUser
 {
     if (!_myUser){

@@ -546,7 +546,10 @@
                                            }
                                            else{
                                                DLog(@"Error occoured %@",[error localizedDescription] );
-                                               [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Twitter", nil)];
+                                               [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook", nil)];
+                                               if (fblock){
+                                                   fblock(NO);
+                                               }
                                            }
                                            
                                        }];
@@ -602,8 +605,11 @@
                                           }
                                       }
                                       else{
-                                          DLog(@"Error occoured %@",[error localizedDescription] );
+                                          DLog(@"Error occoured %@",[error localizedDescription]);
                                           [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Twitter", nil)];
+                                          if (block){
+                                              block(NO);
+                                          }
                                           
                                       }
                                   }];
