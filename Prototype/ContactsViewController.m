@@ -199,16 +199,19 @@
             //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
             UILabel *username = ((FriendCell *)cell).myFriendUsername;
             username.text = [[user.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-            [cell.contentView sendSubviewToBack:((FriendCell *)cell).myFriendPic];
+            //[cell.contentView sendSubviewToBack:((FriendCell *)cell).myFriendPic];
             //((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
 
         }
         
+        CGRect picFrame = ((FriendCell *)cell).myFriendPic.frame;
         if ([self.indexPaths containsObject:indexPath]){
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            picFrame.origin.x += 5;
         }
         else{
             cell.accessoryType = UITableViewCellAccessoryNone;
+            picFrame.origin.x -= 5;
         }
         
 

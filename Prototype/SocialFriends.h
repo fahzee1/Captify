@@ -17,7 +17,7 @@ typedef void (^FacebookFriendFetch) (BOOL wasSuccessful, NSArray *data);
 typedef void (^FacebookFriendInvite) (BOOL wasSuccessful, FBWebDialogResult result);
 typedef void (^FacebookPostStatus) (BOOL wasSuccessful);
 typedef void (^FacebookCreateAlbum) (BOOL wasSuccessful, id albumID);
-typedef void (^TwitterPostStatus) (BOOL wasSuccessful);
+typedef void (^TwitterPostStatus) (BOOL wasSuccessful, BOOL isGranted);
 typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
 
 

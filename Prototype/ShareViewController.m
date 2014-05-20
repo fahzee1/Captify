@@ -35,9 +35,17 @@ typedef void (^ShareToNetworksBlock) ();
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)MBProgressHUD *hud;
 @property (strong,nonatomic)SocialFriends *friends;
+
+// use prior to initial sends
 @property  BOOL sendFB;
 @property BOOL sendTW;
 @property BOOL sendIG;
+
+// these should be marked as yes after posting
+// use for no duplicate posts
+@property  BOOL sentFB;
+@property BOOL sentTW;
+@property BOOL sentIG;
 
 
 @property BOOL shareFacebook;
@@ -79,6 +87,7 @@ typedef void (^ShareToNetworksBlock) ();
     self.shareInstagram = NO;
     self.sendTW = YES;
     self.sendFB = YES;
+    self.sendIG = YES;
     [self setupShareStyles];
     
     if (!IS_IPHONE5){
@@ -388,6 +397,14 @@ typedef void (^ShareToNetworksBlock) ();
         return;
     }
     
+    
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.mode = MBProgressHUDModeIndeterminate;
+    self.hud.labelText = NSLocalizedString(@"Loading..", nil);
+    self.hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
+    
+    
     MFMessageComposeViewController *composer = [[MFMessageComposeViewController alloc] init];
     composer.messageComposeDelegate = self;
     composer.body = NSLocalizedString(@"Check out my pic from Captify!", nil);
@@ -395,7 +412,9 @@ typedef void (^ShareToNetworksBlock) ();
     if ([MFMessageComposeViewController canSendAttachments]){
         NSData *attachment = UIImageJPEGRepresentation(self.shareImage, 0.1);
         [composer addAttachmentData:attachment typeIdentifier:@"public.data" filename:[NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id]];
-        [self presentViewController:composer animated:YES completion:nil];
+        [self presentViewController:composer animated:YES completion:^{
+            [self.hud hide:YES];
+        }];
     }
     
 
@@ -439,11 +458,17 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)shareToFacebookAndTwitterWithBlock:(ShareToNetworksBlock)block
 {
     
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook){
+        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
+        return;
+    }
+
+    
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
     self.hud.labelText = NSLocalizedString(@"Sharing", nil);
     self.hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    self.hud.detailsLabelText = NSLocalizedString(@"Also saving to photo library", nil);
+    self.hud.detailsLabelText = NSLocalizedString(@"and saving to photo library", nil);
     self.hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
     
@@ -475,7 +500,6 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     if (self.shareTwitter){
-         self.hud.labelText = NSLocalizedString(@"Sharing to Twitter", nil);
         if (USE_GOOGLE_ANALYTICS){
             id tracker = [[GAI sharedInstance] defaultTracker];
             NSString *targetUrl = @"https://developers.google.com/analytics";
@@ -500,20 +524,12 @@ typedef void (^ShareToNetworksBlock) ();
         
     }
     
-    if (!self.shareFacebook && !self.shareTwitter){
         
-        if (self.shareInstagram && !self.sendIG){
-            [self sendInstagram];
-            self.sendIG = YES;
-        }
-        else{
-
-            // just save and mark inactive
-            self.hud.labelText = NSLocalizedString(@"Saving", nil);
-            self.hud.detailsLabelText = nil;
-            [self updateChallengeOnBackend];
-        }
+    if (self.shareInstagram){
+        [self sendInstagram];
+        self.sendIG = YES;
     }
+    
     
     
     
@@ -524,98 +540,129 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)sendFacebookWithBlock:(ShareToNetworksBlock)block
 {
 
-    [self.friends postImageToFacebookFeed:self.shareImage
-                                  message:self.selectedCaption
-                                  caption:self.selectedCaption
-                                     name:self.selectedCaption
-                                  albumID:nil
-                             facebookUser:[self.myChallenge.sender.facebook_user boolValue]
-                                feedBlock:^(BOOL wasSuccessful) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        [self.hud hide:YES];
-                                    });
-
-                                    if (wasSuccessful){
-                                        DLog(@"posting to feed was successful");
-                                        if (self.shareTwitter){
-                                            if (block){
-                                                [self sendTwitterWithBlock:block];
-                                            }
-                                            else{
-                                                [self sendTwitterWithBlock:nil];
-                                            }
-                                        }
-                                        else{
-                                            if (block){
-                                                block();
-                                            }
-                                        }
-                                        
-                                    }
-                                    else{
+    if (!self.sentFB){
+        [self.friends postImageToFacebookFeed:self.shareImage
+                                      message:self.selectedCaption
+                                      caption:self.selectedCaption
+                                         name:self.selectedCaption
+                                      albumID:nil
+                                 facebookUser:[self.myChallenge.sender.facebook_user boolValue]
+                                    feedBlock:^(BOOL wasSuccessful) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             [self.hud hide:YES];
                                         });
 
-                                        [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
-                                                         message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
-                                        return;
-                                        
-                                    }
-                                }];
+                                        if (wasSuccessful){
+                                            DLog(@"posting to feed was successful");
+                                            self.sentFB = YES;
+                                            if (self.shareTwitter){
+                                                if (block){
+                                                    [self sendTwitterWithBlock:block];
+                                                }
+                                                else{
+                                                    [self sendTwitterWithBlock:nil];
+                                                }
+                                            }
+                                            else if (self.shareInstagram){
+                                                [self sendInstagram];
+                                            }
+                                            else{
+                                                if (block){
+                                                    block();
+                                                }
+                                            }
+                                            
+                                        }
+                                        else{
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                [self.hud hide:YES];
+                                            });
 
+                                            [self showAlertWithTitle:NSLocalizedString(@"Facebook Error!", nil)
+                                                             message:NSLocalizedString(@"There was an error sharing your photo to Facebook", nil)];
+                                            return;
+                                            
+                                        }
+                                    }];
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hud hide:YES];
+        });
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Already shared to Facebook", nil)];
+        return;
+    }
 }
 
 - (void)sendTwitterWithBlock:(ShareToNetworksBlock)block
 {
-    if (self.sendTW){
-        self.sendTW = NO;
-        [self.friends postImageToTwitterFeed:self.shareImage
-                                     caption:self.selectedCaption
-                                       block:^(BOOL wasSuccessful) {
-                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                               [self.hud hide:YES];
-                                           });
-                                           
-                                           if (wasSuccessful){
-                                               DLog(@"post to twitter success");
-                                               if (block){
-                                                   block();
-                                               }
-                                               
-                                           }
-                                           else{
+    if (!self.sentTW){
+        if (self.sendTW){
+            self.sendTW = NO;
+            [self.friends postImageToTwitterFeed:self.shareImage
+                                         caption:self.selectedCaption
+                                           block:^(BOOL wasSuccessful, BOOL isGranted) {
                                                dispatch_async(dispatch_get_main_queue(), ^{
                                                    [self.hud hide:YES];
                                                });
+                                               
+                                               if (wasSuccessful){
+                                                   DLog(@"post to twitter success");
+                                                   self.sentTW = YES;
+                                                   
+                                                   if (self.shareInstagram){
+                                                       [self sendInstagram];
+                                                   }
+                                                   
+                                                   else if (block){
+                                                       block();
+                                                   }
+                                                   
+                                               }
+                                               else{
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [self.hud hide:YES];
+                                                   });
 
-                                               [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
-                                                                message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
-                                               return;
-                                           }
-                                       }];
+                                                   if (isGranted){
+                                                       [self showAlertWithTitle:NSLocalizedString(@"Twitter Error!", nil)
+                                                                        message:NSLocalizedString(@"There was an error sharing your photo to Twitter", nil)];
+                                                   }
+                                                   return;
+                                               }
+                                           }];
+        }
+        
     }
-    
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hud hide:YES];
+        });
 
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Already shared to Twitter", nil)];
+    }
 }
 
 - (void)sendInstagram
 {
-    if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
-        [self.hud hide:YES];
-        [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
-        [MGInstagram postImage:self.shareImage
-                   withCaption:self.selectedCaption
-                        inView:self.scrollView
-                      delegate:self];
-    }
-    else
-    {
-        [self.hud hide:YES];
-        DLog(@"Error Instagram is either not installed or image is incorrect size");
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
-        
-        self.myInstagramLabel.textColor = [UIColor whiteColor];
+    if (self.sendIG){
+        self.sendIG = NO;
+        if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
+            [self.hud hide:YES];
+            [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
+            [MGInstagram postImage:self.shareImage
+                       withCaption:self.selectedCaption
+                            inView:self.scrollView
+                          delegate:self];
+        }
+        else
+        {
+            [self.hud hide:YES];
+            DLog(@"Error Instagram is either not installed or image is incorrect size");
+            [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Instagram is either not installed or image is incorrect size", nil)];
+            
+            
+        }
     }
 
 }
@@ -629,13 +676,9 @@ typedef void (^ShareToNetworksBlock) ();
     [self saveImage];
     
     [self shareToFacebookAndTwitterWithBlock:^{
-        if (self.shareInstagram && !self.sendIG){
-            [self sendInstagram];
-            self.sendIG = YES;
-        }
-        else{
-            [self updateChallengeOnBackend];
-        }
+    
+        [self updateChallengeOnBackend];
+        
     }];
 
 }
@@ -643,6 +686,12 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (IBAction)tappedShare:(UIButton *)sender {
     
+    
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook){
+        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
+        return;
+    }
+
     
     NSString *shareString = @"Share to";
     if (self.shareFacebook){
@@ -728,6 +777,7 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)updateChallengeOnBackend
 {
+    return;
     NSData *imageData = UIImageJPEGRepresentation(self.shareImage, 0.3);
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id];
@@ -793,13 +843,16 @@ typedef void (^ShareToNetworksBlock) ();
                    message:(NSString *)message
 
 {
-    UIAlertView *a = [[UIAlertView alloc]
-                      initWithTitle:title
-                      message:message
-                      delegate:nil
-                      cancelButtonTitle:@"Ok"
-                      otherButtonTitles:nil];
-    [a show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *a = [[UIAlertView alloc]
+                          initWithTitle:title
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil];
+        [a show];
+
+    });
 }
 
 

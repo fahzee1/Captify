@@ -593,12 +593,12 @@
                                                   if (error || [urlResponse statusCode] != 200){
                                                       DLog(@"%@",error);
                                                       if (block){
-                                                          block(NO);
+                                                          block(NO, YES);
                                                       }
                                                       return ;
                                                   }
                                                   else{
-                                                      block(YES);
+                                                      block(YES, YES);
                                                   }
                                                   
                                               }];
@@ -606,9 +606,9 @@
                                       }
                                       else{
                                           DLog(@"Error occoured %@",[error localizedDescription]);
-                                          [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Twitter", nil)];
+                                          [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've allowed Captify to use Twitter in iOS Settings > Privacy > Twitter", nil)];
                                           if (block){
-                                              block(NO);
+                                              block(NO, NO);
                                           }
                                           
                                       }
@@ -682,19 +682,22 @@
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
 {
-    if (!title){
-        title = @"Error";
-    }
-    else if (!message){
-        message = @"There was an error.";
-    }
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+  
+        if (!title){
+            title = @"Error";
+        }
+        else if (!message){
+            message = @"There was an error.";
+        }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+
+    });
 }
 
 

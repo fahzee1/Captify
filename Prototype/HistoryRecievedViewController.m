@@ -62,6 +62,11 @@
     [self.myTable addSubview:self.refreshControl];
     [self.refreshControl addTarget:self action:@selector(fetchUpdates) forControlEvents:UIControlEventValueChanged];
     
+    if ([self.cData count] == 0){
+        [self.myTable addSubview:self.errorContainerView];
+    }
+
+    
     
 
 }
@@ -242,9 +247,11 @@
                                                  self.errorContainerView = nil;
                                             }
                                             else{
+                                                /*
                                                 if ([self.cData count] == 0){
                                                     [self.myTable addSubview:self.errorContainerView];
                                                 }
+                                                 */
 
                                             }
 
@@ -509,11 +516,17 @@
 
 - (NSArray *)cData
 {
+    /*
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         _cData = [Challenge getHistoryChallengesForUser:self.myUser
                                                    sent:NO];
         
     });
+     */
+    
+    _cData = [Challenge getHistoryChallengesForUser:self.myUser
+                                               sent:NO];
+
     
     return _cData;
     

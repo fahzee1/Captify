@@ -75,6 +75,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     DLog(@"received memory warning here");
+    
+    self.menuHomeIcon.image = nil;
+    self.menuHistoryIcon.image = nil;
+    self.menuFeedIcon.image = nil;
+    self.menuSettingsIcon.image = nil;
+    
+    
+    
+    
+    
+
+    
 }
 
 
