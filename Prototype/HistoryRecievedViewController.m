@@ -573,7 +573,8 @@
         invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
         [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        invite.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        CGRect labelFrame = errorLabel.frame;
+        invite.frame = CGRectMake(labelFrame.origin.x + 15, labelFrame.size.height + 45, 200, 50);
         [invite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
         
         if (!IS_IPHONE5){

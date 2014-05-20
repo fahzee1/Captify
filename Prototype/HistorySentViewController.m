@@ -514,7 +514,8 @@
         play.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         [play setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
         [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        play.frame = CGRectMake(50, _errorContainerView.bounds.size.height - 130, 200, 50);
+        CGRect labelFrame = errorLabel.frame;
+        play.frame = CGRectMake(labelFrame.origin.x + 15, labelFrame.size.height + 45, 200, 50);
         [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
         
         if (!IS_IPHONE5){
