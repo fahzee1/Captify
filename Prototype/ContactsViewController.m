@@ -90,8 +90,8 @@
 
 - (void)sendTextInvite
 {
-    NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+   
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
     activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
     [self presentViewController:activityVC animated:YES completion:nil];
 }
@@ -207,11 +207,11 @@
         CGRect picFrame = ((FriendCell *)cell).myFriendPic.frame;
         if ([self.indexPaths containsObject:indexPath]){
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            picFrame.origin.x += 5;
+            picFrame.origin.x += 15;
         }
         else{
             cell.accessoryType = UITableViewCellAccessoryNone;
-            picFrame.origin.x -= 5;
+            picFrame.origin.x -= 15;
         }
         
 

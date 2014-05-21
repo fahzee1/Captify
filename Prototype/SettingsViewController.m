@@ -424,17 +424,19 @@
                 }
                 
                 // update the highlighted menu button to the screen we're about to show
+                /*
                 UIViewController *menu = self.sideMenuViewController.menuViewController;
                 if ([menu isKindOfClass:[MenuViewController class]]){
                     [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
                 }
+                 */
                 
                 //UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
                 //[self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
                 
                 
-                NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
-                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+            
+                UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
                 activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
                 [self presentViewController:activityVC animated:YES completion:nil];
 

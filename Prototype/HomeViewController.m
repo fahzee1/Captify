@@ -197,8 +197,8 @@
     
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
-          PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
-          [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+        PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+        [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
       }
 
     

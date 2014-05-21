@@ -269,8 +269,7 @@
             }
              */
             
-            NSString *inviteText = @"Check out Captify -- a social meme caption game, best caption wins! http://gocaptify.com/download";
-            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
             activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
             [self presentViewController:activityVC animated:YES completion:nil];
             break;

@@ -278,7 +278,7 @@
                   block:nil];
      */
     
-    [p sendNotification:[NSString stringWithFormat:@"Caption from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
+    [p sendNotification:[NSString stringWithFormat:@"Caption response from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
                toFriend:self.myChallenge.sender.username
                withData:@{@"challenge_id": self.myChallenge.challenge_id}
        notificationType:ParseNotificationSendCaptionPick

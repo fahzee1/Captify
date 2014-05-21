@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *registerButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 
+@property (strong,nonatomic)  NSMutableArray *friendIDS;
+
 @end
 
 @implementation ViewController
@@ -204,27 +206,56 @@
                                                       params[@"fbook_user"] = [NSNumber numberWithBool:YES];
                                                   }
                                                   
-                                                  DLog(@"%@",params);
-                                                  DLog(@"%lu",(unsigned long)[params count]);
+                                                  // get this users friends using the app to notify them of joing the app
+                                                  self.friendIDS = [@[] mutableCopy];
+                                                  FBRequest *friendsRequest = [FBRequest requestWithGraphPath:@"me/friends?fields=installed"
+                                                                                                   parameters:nil
+                                                                                                   HTTPMethod:@"GET"];
+                                                  [friendsRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                      NSArray *friends = result[@"data"];
+                                                    DLog(@"Found: %lu friends", (unsigned long)friends.count);
                                                   
-                                                  
-                                                  // show homescreen call back handled in delegate
-                                                  NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
-                                                      
-                                                      [hud hide:YES];
-                                                      if (wasSuccessful){
-                                                          [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
-                                                          [[NSUserDefaults standardUserDefaults] synchronize];
-                                                          [self showHomeScreen:user];
+                                                      if (!error){
+                                                          for (NSDictionary<FBGraphUser> *friend in friends){
+                                                              [self.friendIDS addObject:friend.id];
+                                                               DLog(@"name: %@ id: %@", friend.name,friend.id);
+                                                          }
                                                       }
                                                       else{
-                                                          [self alertErrorWithTitle:nil message:nil];
+                                                          DLog(@"%@",error);
                                                       }
                                                       
+                                                      //[self.friendIDS addObject:@"100005841792099"];
+                                                      params[@"facebook_ids"] = self.friendIDS;
+                                                      
+                                                      DLog(@"id list is %@",self.friendIDS);
+                                                      
+                                                      DLog(@"%@",params);
+                                                      //DLog(@"%lu",(unsigned long)[params count]);
+                                                      
+
+                                                      
+                                                      // show homescreen call back handled in delegate
+                                                      NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
+                                                          
+                                                          [hud hide:YES];
+                                                          if (wasSuccessful){
+                                                              [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
+                                                              [[NSUserDefaults standardUserDefaults] synchronize];
+                                                              [self showHomeScreen:user];
+                                                          }
+                                                          else{
+                                                              [self alertErrorWithTitle:nil message:nil];
+                                                          }
+                                                          
+                                                      }];
+                                                      
+                                                      // If FAILURE, show alert
+                                                      [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+        
                                                   }];
                                                   
-                                                  // If FAILURE, show alert
-                                                  [UIAlertView showAlertViewForTaskWithErrorOnCompletion:task delegate:nil];
+                                                  
                                                   
                                               }
                                           }];

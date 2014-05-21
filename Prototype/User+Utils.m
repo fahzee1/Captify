@@ -619,7 +619,7 @@
 + (NSURLSessionDataTask *)registerFacebookWithParams:(NSDictionary *)params
                                             callback:(AwesomeAPICompleteBlock)block;
 {
-    NSAssert([params count] == 7 || [params count] == 8, @"7 parameters not being passed. Dict sent was %@",params);
+    NSAssert([params count] == 8 || [params count] == 9, @"8 parameters not being passed. Dict sent was %@",params);
     
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];

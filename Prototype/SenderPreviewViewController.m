@@ -464,7 +464,7 @@
 {
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
-    [p sendNotification:[NSString stringWithFormat:@"Challenge from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
+    [p sendNotification:[NSString stringWithFormat:@"Caption challenge from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
               toFriends:self.allFriends
                withData:params
        notificationType:ParseNotificationCreateChallenge
@@ -510,8 +510,7 @@
     }];
      */
     
-    NSString *inviteText = @"Check out Captify.. Memes and captivating captions with friends! http://gocaptify.com/download";
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[inviteText] applicationActivities:nil];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
     activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
     [self presentViewController:activityVC animated:YES completion:nil];
     
