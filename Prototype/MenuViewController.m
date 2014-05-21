@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *menuHistoryIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *menuFeedIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *menuSettingsIcon;
+@property (weak, nonatomic) IBOutlet UIImageView *menuInviteIcon;
 
 
 
@@ -80,6 +81,8 @@
     self.menuHistoryIcon.image = nil;
     self.menuFeedIcon.image = nil;
     self.menuSettingsIcon.image = nil;
+    self.menuInviteIcon.image = nil;
+    
     
     
     
@@ -151,6 +154,13 @@
                     }
                 }
             }
+            
+            if ([view isKindOfClass:[UIImageView class]]){
+                UIImageView *iv = (UIImageView *)view;
+                CGRect ivFrame = iv.frame;
+                ivFrame.origin.y -= 40;
+                iv.frame = ivFrame;
+            }
         }
     }
     
@@ -174,6 +184,7 @@
     UIColor *feedColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFeedScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
     UIColor *settingsColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
     
+    
     UIImage *homeIcon = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHomeScreen]])? [UIImage imageNamed:MENU_HOME_ACTIVE]:[UIImage imageNamed:MENU_HOME_INACTIVE];
     UIImage *historyIcon = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHistoryScreen]])? [UIImage imageNamed:MENU_HISTORY_ACTIVE]:[UIImage imageNamed:MENU_HISTORY_INACTIVE];
     UIImage *feedIcon = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFeedScreen]])? [UIImage imageNamed:MENU_EXPLORE_ACTIVE]:[UIImage imageNamed:MENU_EXPLORE_INACTIVE];
@@ -189,6 +200,8 @@
     self.menuHistoryIcon.image = historyIcon;
     self.menuFeedIcon.image = feedIcon;
     self.menuSettingsIcon.image = settingsIcon;
+    // invite doesnt change colors
+    self.menuInviteIcon.image = [UIImage imageNamed:MENU_INVITE_INACTIVE];
     
     
 

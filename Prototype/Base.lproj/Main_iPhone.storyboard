@@ -1330,6 +1330,7 @@
                         <outlet property="menuHistory" destination="K9Q-7H-Wyx" id="UNU-Lu-zKq"/>
                         <outlet property="menuHistoryIcon" destination="Uta-gM-Frw" id="Lsl-Bt-u6l"/>
                         <outlet property="menuHomeIcon" destination="VNL-VR-bMN" id="Ifs-Bx-axh"/>
+                        <outlet property="menuInviteIcon" destination="I1O-ic-Jo2" id="3Of-PS-vvz"/>
                         <outlet property="menuSettings" destination="5bt-MQ-bIC" id="0Yf-Vs-pAY"/>
                         <outlet property="menuSettingsIcon" destination="RsO-gC-soJ" id="Dg3-d1-S6l"/>
                     </connections>

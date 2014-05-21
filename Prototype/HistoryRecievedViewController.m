@@ -65,6 +65,10 @@
     if ([self.cData count] == 0){
         [self.myTable addSubview:self.errorContainerView];
     }
+    
+    if (!IS_IPHONE5){
+        self.myTable.contentSize = CGSizeMake(320, 800);
+    }
 
     
     

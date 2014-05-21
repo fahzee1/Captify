@@ -83,6 +83,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
 @property (strong, nonatomic)UIView *errorContainerView;
+@property (strong, nonatomic)UILabel *errorLabel;
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
@@ -189,7 +190,7 @@
     
     // shows error message if no captions
     if ([self.data count] == 0){
-        [self.scrollView addSubview:self.errorContainerView];
+        [self.scrollView addSubview:self.errorLabel];
     }
     
     if ([self.data count] > 0){
@@ -1828,6 +1829,25 @@
     
     
     return _errorContainerView;
+}
+
+- (UILabel *)errorLabel
+{
+    if (!_errorLabel){
+          CGRect ivFrame = self.myImageView.frame;
+         _errorLabel = [[UILabel alloc] init];
+         _errorLabel.textColor = [UIColor whiteColor];
+         _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+         _errorLabel.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
+        _errorLabel.frame = CGRectMake(ivFrame.origin.x, ivFrame.size.height + 90, ivFrame.size.width, 40);
+         _errorLabel.numberOfLines = 0;
+        [_errorLabel sizeToFit];
+         _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
+
+    }
+    
+    
+    return _errorLabel;
 }
 
 

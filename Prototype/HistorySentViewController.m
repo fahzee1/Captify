@@ -61,6 +61,12 @@
     if ([self.data count] == 0){
         [self.myTable addSubview:self.errorContainerView];
     }
+    
+    if (!IS_IPHONE5){
+        self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 120, 0);
+    }
+
+    
 
 
 }
@@ -77,6 +83,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [self.myTable deselectRowAtIndexPath:[self.myTable indexPathForSelectedRow] animated:NO];
+    
     
 }
 

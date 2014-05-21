@@ -32,6 +32,7 @@
 
 
 #define SETTINGS_PHONE_DEFAULT @"No # provided"
+#define SETTINGS_EMAIL_DEFAULT @"No email provided"
 #define SETTINGS_INVITE 2000
 #define SETTINGS_PHOTO 3000
 #define SETTINGS_PHOTO_LABEL 4000
@@ -54,6 +55,8 @@
 
 
 @property (strong, nonatomic) UIView *editScreen;
+@property (weak, nonatomic) IBOutlet UIScrollView *editScrollView;
+
 
 @end
 
@@ -147,7 +150,7 @@
     
     self.editUsernameField.text = self.myUser.username;
     self.editPhoneField.text = self.myUser.phone_number ? self.myUser.phone_number:SETTINGS_PHONE_DEFAULT;
-    self.editEmailField.text = self.myUser.email;
+    self.editEmailField.text = self.myUser.email ? self.myUser.email:SETTINGS_EMAIL_DEFAULT;
     
     self.editDoneButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
     self.editDoneButton.layer.cornerRadius = 10;
@@ -155,6 +158,10 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
         self.editUsernameField.userInteractionEnabled = NO;
         self.editUsernameField.text = NSLocalizedString(@"Not allowed (Facebook)", nil);
+    }
+    
+    if (!IS_IPHONE5){
+         self.editScrollView.contentSize = CGSizeMake(self.editView.frame.size.width, self.editView.frame.size.height + 80);
     }
 
     
@@ -173,6 +180,12 @@
     else{
         [self.editEmailField becomeFirstResponder];
     }
+    
+    if (!IS_IPHONE5){
+        CGPoint bottomOffset = CGPointMake(0, self.editScrollView.contentSize.height - self.editScrollView.bounds.size.height);
+        [self.editScrollView setContentOffset:bottomOffset animated:YES];
+    }
+
     
 }
 
