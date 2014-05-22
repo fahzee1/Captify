@@ -279,12 +279,12 @@
     
     self.snapPicButton = nil;
     self.topMenuButton = nil;
-    self.flashButton = nil;
-    self.rotateButton = nil;
+    //self.flashButton = nil;
+    //self.rotateButton = nil;
     
-    self.session = nil;
-    self.cameraDevice = nil;
-    self.cameraInput = nil;
+    //self.session = nil;
+    //self.cameraDevice = nil;
+    //self.cameraInput = nil;
     //self.previewLayer = nil;
 
 
@@ -372,7 +372,9 @@
     
     // set flash
     [self.cameraDevice lockForConfiguration:&error];
-    [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+    if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
+            self.cameraDevice.flashMode = AVCaptureFlashModeOn;
+    }
     [self.cameraDevice unlockForConfiguration];
     
 
@@ -1071,63 +1073,67 @@
 
 - (void)toggleFlash
 {
-    if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
-        NSError *error;
-        if (self.cameraDevice.flashActive){
-            // turn off
-             [self.cameraDevice lockForConfiguration:&error];
-             [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
-             [self.cameraDevice unlockForConfiguration];
-            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+ 
+        if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
+            NSError *error;
+            if (self.cameraDevice.flashActive){
+                // turn off
+                 [self.cameraDevice lockForConfiguration:&error];
+                 [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
+                 [self.cameraDevice unlockForConfiguration];
+                [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
 
 
+            }
+            else{
+                // turn on
+                [self.cameraDevice lockForConfiguration:&error];
+                [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+                [self.cameraDevice unlockForConfiguration];
+                [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+
+            
+            }
         }
         else{
-            // turn on
-            [self.cameraDevice lockForConfiguration:&error];
-            [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
-            [self.cameraDevice unlockForConfiguration];
-            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
-
-        
+            [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Flash isn't supported on the front camera", nil)];
+            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+            return;
         }
-    }
-    else{
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Flash isn't supported on the front camera", nil)];
-        [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
-        return;
-    }
+            
+    
 }
 
 
 - (void)toggleCameraPosition
 {
-    [self.session beginConfiguration];
-    NSError *error;
-    [self.session removeInput:self.cameraInput];
-    if ([self.cameraDevice position] == AVCaptureDevicePositionBack){
-        // show front camera
-        self.cameraDevice = [self frontCamera];
-        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
-        if (self.cameraInput){
-            [self.session addInput:self.cameraInput];
-            [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+    
+        [self.session beginConfiguration];
+        NSError *error;
+        [self.session removeInput:self.cameraInput];
+        if ([self.cameraDevice position] == AVCaptureDevicePositionBack){
+            // show front camera
+            self.cameraDevice = [self frontCamera];
+            self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+            if (self.cameraInput){
+                [self.session addInput:self.cameraInput];
+                [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+
+            }
+            
+
+        }
+        else{
+            // show back camera
+            self.cameraDevice = [self backCamera];
+            self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
+            if (self.cameraInput){
+                [self.session addInput:self.cameraInput];
+            }
 
         }
         
-
-    }
-    else{
-        // show back camera
-        self.cameraDevice = [self backCamera];
-        self.cameraInput = [AVCaptureDeviceInput deviceInputWithDevice:self.cameraDevice error:&error];
-        if (self.cameraInput){
-            [self.session addInput:self.cameraInput];
-        }
-
-    }
-    
-    [self.session commitConfiguration];
+        [self.session commitConfiguration];
 }
 
 - (AVCaptureDevice *)frontCamera {
