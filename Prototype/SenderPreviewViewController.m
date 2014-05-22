@@ -509,10 +509,12 @@
         [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
     }];
      */
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
-    activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
-    [self presentViewController:activityVC animated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
+        activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
+        [self presentViewController:activityVC animated:YES completion:nil];
+
+    }];
     
 }
 

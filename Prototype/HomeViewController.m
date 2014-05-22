@@ -1472,6 +1472,19 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    
+    self.previewNextButton.userInteractionEnabled = NO;
+    if ([self.previewTextField.text length] == 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Alert error title")
+                                                        message:NSLocalizedString(@"Must enter challenge title before continuing", @"Alert error message")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+        self.previewNextButton.userInteractionEnabled = YES;
+        return NO;
+    }
+
     [textField resignFirstResponder];
     self.challengeTitle = textField.text;
     [self pushFinalPreview];

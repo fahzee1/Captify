@@ -16,6 +16,10 @@
 #import "UIImageView+WebCache.h"
 #import "AwesomeAPICLient.h"
 #import "MenuViewController.h"
+#import "TMCache.h"
+
+
+#define FEED_CACHE_NAME @"feedCache"
 
 @interface FeedViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,TWTSideMenuViewControllerDelegate>
 
@@ -111,6 +115,10 @@
     [Challenge getCurrentChallengeFeedWithBlock:^(BOOL wasSuccessful, id data) {
         if (wasSuccessful){
             self.results = data[@"data"];
+            if ([self.results count] > 0){
+                [[TMCache sharedCache] removeObjectForKey:FEED_CACHE_NAME];
+                [[TMCache sharedCache] setObject:self.results forKey:FEED_CACHE_NAME];
+            }
         
         }
         else{
@@ -156,7 +164,13 @@
     
      */
     [self storeAndReturnResults];
-    _data = self.results;
+    if ([self.results count] > 0){
+        _data = self.results;
+    }
+    else{
+        NSArray *results = [[TMCache sharedCache] objectForKey:FEED_CACHE_NAME];
+        _data = results;
+    }
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

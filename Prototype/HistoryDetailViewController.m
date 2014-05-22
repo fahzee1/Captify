@@ -444,10 +444,11 @@
         self.hideSelectButtons = NO;
     }
     
-    self.retryButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:60];
-    [self.retryButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-refresh"] forState:UIControlStateNormal];
-    [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
-    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
+    self.retryButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    [self.retryButton setTitle:NSLocalizedString(@"Image Not Available", nil)  forState:UIControlStateNormal];
+    [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+    self.retryButton.userInteractionEnabled = NO;
+    //[self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
