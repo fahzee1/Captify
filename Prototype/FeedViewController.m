@@ -21,8 +21,9 @@
 
 @property (strong,nonatomic)NSArray *results;
 @property (strong,nonatomic)NSArray *data;
-@property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property(strong,nonatomic)UIRefreshControl *refreshControl;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (strong,nonatomic)UIRefreshControl *refreshControl;
+@property (strong,nonatomic)UIActivityIndicatorView *spinner;
 @property BOOL fetched;
 @property BOOL reloaded;
 @end
@@ -69,11 +70,18 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.collectionView addSubview:self.refreshControl];
     [self.refreshControl addTarget:self action:@selector(updateFeed) forControlEvents:UIControlEventValueChanged];
-  
     
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner.center = self.view.center;
+    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    [self.collectionView addSubview:self.spinner];
+    [self.collectionView bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
    
 
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -113,6 +121,7 @@
             if (self.refreshControl.isRefreshing){
                 [self.refreshControl endRefreshing];
             }
+            
         });
     }];
 
@@ -154,6 +163,10 @@
         if (!self.reloaded){
             [self.collectionView reloadData];
             self.reloaded = YES;
+            if (self.spinner.isAnimating){
+                [self.spinner stopAnimating];
+            }
+
         }
     });
     return _data;
