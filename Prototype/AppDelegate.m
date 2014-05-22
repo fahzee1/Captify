@@ -486,6 +486,7 @@
     NSLog(@"%@",userInfo);
     [PFPush handlePush:userInfo];
     
+    
     /*
     // get data from  [userInfo objectForKey:@"key of data"];
     // give it to controller that needs it
@@ -694,11 +695,13 @@
     MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
     self.mainVC = self.window.rootViewController;
     self.menuVC = menuVc;
-    self.sideVC = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuVC mainViewController:self.mainVC];
-    self.sideVC.shadowColor = [UIColor blackColor];
-    self.sideVC.edgeOffset = UIOffsetMake(18.0f, 0.0f);
-    self.sideVC.zoomScale = 0.6643f;//0.5643f;
-    self.window.rootViewController = self.sideVC;
+    if (![self.mainVC isKindOfClass:[TWTSideMenuViewController class]]){
+        self.sideVC = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuVC mainViewController:self.mainVC];
+        self.sideVC.shadowColor = [UIColor blackColor];
+        self.sideVC.edgeOffset = UIOffsetMake(18.0f, 0.0f);
+        self.sideVC.zoomScale = 0.6643f;//0.5643f;
+        self.window.rootViewController = self.sideVC;
+    }
 
 }
 
@@ -707,6 +710,7 @@
 {
     UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
     MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
+    [menuVc updateCurrentScreen:MenuHistoryScreen];
     self.mainVC = (HistoryContainerViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
     self.menuVC = menuVc;
     self.sideVC = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuVC mainViewController:self.mainVC];
@@ -821,14 +825,18 @@
             break;
 
         default:
-            [self setupHomeViewControllers];
+            //[self setupHomeViewControllers];
+            [self setupHistoryViewControllers];
+
             break;
     }
     
     
+    /*
     if (!isF){
         [self setupHistoryViewControllers];
     }
+     */
 
 }
 
