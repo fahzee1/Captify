@@ -15,6 +15,7 @@
 #import "FAImageView.h"
 #import "UIFont+FontAwesome.h"
 #import "JDStatusBarNotification.h"
+#import "SettingsViewController.h"
 
 
 @implementation User (Utils)
@@ -882,7 +883,9 @@
                                               styleName:JDStatusBarStyleError];
                 
                 if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
-                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Logging you out."];
+                    
+                    
                 }
 
             }

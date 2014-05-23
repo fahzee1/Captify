@@ -90,6 +90,7 @@
     [self.retryButton setTitle:NSLocalizedString(@"Image Not Available", nil) forState:UIControlStateNormal];
     [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     self.retryButton.userInteractionEnabled = NO;
+    self.retryButton.center = self.challengeImage.center;
     //[self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
     [self.challengeImage addSubview:self.retryButton];

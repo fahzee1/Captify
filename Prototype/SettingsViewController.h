@@ -14,5 +14,6 @@
 @interface SettingsViewController : UITableViewController
 
 
+- (void)logout;
 
 @end

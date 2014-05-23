@@ -12,7 +12,6 @@
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "HistoryReceivedCell.h"
-#import "FAImageView.h"
 #import "HistoryDetailViewController.h"
 #import "NSDate+TimeAgo.h"
 #import "Challenge+Utils.h"

@@ -450,6 +450,7 @@
     self.retryButton.userInteractionEnabled = NO;
     //[self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
+    self.retryButton.center = self.myImageView.center;
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
     

@@ -29,6 +29,7 @@
 @property (strong,nonatomic)UIRefreshControl *refreshControl;
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
 @property BOOL fetched;
+@property BOOL alertedError;
 @property BOOL reloaded;
 @end
 
@@ -169,7 +170,25 @@
     }
     else{
         NSArray *results = [[TMCache sharedCache] objectForKey:FEED_CACHE_NAME];
-        _data = results;
+        if ([results count] > 0){
+              _data = results;
+        }
+        else{
+                double delayInSeconds = 1.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!self.alertedError){
+                        [FeedViewController showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Explore feed is down. Try refreshing.", nil)];
+                        self.alertedError = YES;
+                    }
+
+                    });
+    
+                });
+            
+            _data = nil;
+        }
     }
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -353,6 +372,22 @@
     if ([menu isKindOfClass:[MenuViewController class]]){
         [((MenuViewController *)menu) setupColors];
     }
+}
+
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *a = [[UIAlertView alloc]
+                          initWithTitle:title
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil];
+        [a show];
+        
+    });
 }
 
 
