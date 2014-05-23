@@ -18,6 +18,7 @@
 #import "FUISwitch.h"
 #import "UIColor+FlatUI.h"
 #import <MessageUI/MessageUI.h>
+#import "HistoryContainerViewController.h"
 
 typedef void (^ShareToNetworksBlock) ();
 
@@ -897,12 +898,20 @@ typedef void (^ShareToNetworksBlock) ();
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         self.myChallenge.active = [NSNumber numberWithBool:NO];
         self.myChallenge.shared = [NSNumber numberWithBool:YES];
+        self.myPick.is_chosen = [NSNumber numberWithBool:YES];
         NSError *error;
         if(![self.myChallenge.managedObjectContext save:&error]){
             DLog(@"%@",error);
             
         }
-
+        
+        [self updateChallengeOnBackend];
+        
+        UIViewController *vc = self.navigationController.viewControllers[0];
+        if ([vc isKindOfClass:[HistoryContainerViewController class]]){
+            [((HistoryContainerViewController *)vc) showSentScreen];
+        }
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     });
     
