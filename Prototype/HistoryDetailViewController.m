@@ -230,8 +230,19 @@
 {
     [super viewDidAppear:animated];
     
-    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-    [self.scrollView setContentOffset:bottomOffset animated:YES];
+    if (IS_IPHONE5){
+        if ([self.data count] > 0){
+            CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+            [self.scrollView setContentOffset:bottomOffset animated:YES];
+
+        }
+        
+    }
+    else{
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+    }
+    
     
 
     
