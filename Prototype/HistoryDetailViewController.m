@@ -268,33 +268,7 @@
         
     }
     
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        int count = [[defaults valueForKey:@"makeButtonToolTip"] intValue];
-        
-        if (count < 2){
-            CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Make your own caption", nil)];
-            toolTip.backgroundColor = [UIColor whiteColor];
-            toolTip.textColor = [UIColor blackColor];
-            toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
-            toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
-            toolTip.hasGradientBackground = NO;
-            toolTip.preferredPointDirection = PointDirectionDown;
-            toolTip.dismissTapAnywhere = YES;
-            toolTip.hasShadow = NO;
-            toolTip.has3DStyle = NO;
-            toolTip.borderWidth = 0;
-            [toolTip autoDismissAnimated:YES atTimeInterval:5.0];
-            [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
-            
-            [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"makeButtonToolTip"];
-        }
-
-    });
     
-
     
     [self fetchUpdates];
     
@@ -599,6 +573,27 @@
                              [self.toolTip presentPointingAtView:self.finalCaptionLabel inView:self.myImageView animated:YES];
                              
                              [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"challengeToolTip"];
+                             
+                             
+                             double delayInSeconds = 6.0;
+                             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                 CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Or create your own", nil)];
+                                 toolTip.backgroundColor = [UIColor whiteColor];
+                                 toolTip.textColor = [UIColor blackColor];
+                                 toolTip.textFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+                                 toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
+                                 toolTip.hasGradientBackground = NO;
+                                 toolTip.preferredPointDirection = PointDirectionDown;
+                                 toolTip.dismissTapAnywhere = YES;
+                                 toolTip.hasShadow = NO;
+                                 toolTip.has3DStyle = NO;
+                                 toolTip.borderWidth = 0;
+                                 [toolTip autoDismissAnimated:YES atTimeInterval:5.0];
+                                 [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
+
+                             });
+                             
                          }
                          
                          //[self performSelector:@selector(dismissToolTipAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:5.0];
