@@ -135,6 +135,15 @@
     if (!self.pendingRequest){
         self.pendingRequest = YES;
         
+        
+        double delayInSeconds = 10.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            if ([self.refreshControl isRefreshing]){
+                  [self.refreshControl endRefreshing];
+            }
+        });
+        
         NSDate *lastFetch = [[NSUserDefaults standardUserDefaults] valueForKey:[Challenge fetchedHistoryKey]];
         [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:[Challenge fetchedHistoryKey]];
         NSMutableDictionary *params =[@{@"username": self.myUser.username,

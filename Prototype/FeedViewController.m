@@ -113,6 +113,14 @@
 {
 
     if (!self.fetched){
+        double delayInSeconds = 10.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            if ([self.refreshControl isRefreshing]){
+                [self.refreshControl endRefreshing];
+            }
+        });
+
     [Challenge getCurrentChallengeFeedWithBlock:^(BOOL wasSuccessful, id data) {
         if (wasSuccessful){
             self.results = data[@"data"];
