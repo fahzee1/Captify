@@ -52,7 +52,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:CAPTIFY_BG]];
 
     if (!self.currentScreen){
         self.currentScreen = [NSNumber numberWithInt:MenuHomeScreen];

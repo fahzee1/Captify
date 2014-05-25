@@ -207,6 +207,8 @@
                                                                      @"challenge_id":challenge_id,
                                                                      @"media_url":media_url
                                                                      };
+                                      
+                                          
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                             
@@ -408,7 +410,19 @@
         // if active show animating green filled circle, if not ahow circle outline
    
         
+        
         int active = [challenge.active intValue];
+        if (active == 1){
+            NSDate *created = challenge.timestamp;
+            NSInteger hours = [[[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:created toDate:[NSDate date] options:0] hour];
+            
+            if (hours >= 24){
+                NSError *error;
+                challenge.active = [NSNumber numberWithBool:NO];
+                [challenge.managedObjectContext save:&error];
+                active = [challenge.active intValue];
+            }
+        }
         int sentPick = [challenge.sentPick intValue];
                 
         if (active && !sentPick){

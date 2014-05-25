@@ -332,6 +332,18 @@
         Challenge *challenge = [self.data objectAtIndex:indexPath.section];
         User *sender = challenge.sender;
         int active = [challenge.active intValue];
+        if (active == 1){
+            NSDate *created = challenge.timestamp;
+            NSInteger hours = [[[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:created toDate:[NSDate date] options:0] hour];
+            
+            if (hours >= 24){
+                NSError *error;
+                challenge.active = [NSNumber numberWithBool:NO];
+                [challenge.managedObjectContext save:&error];
+                active = [challenge.active intValue];
+            }
+        }
+
         //int sentPick = [challenge.sentPick intValue];
         int shared = [challenge.shared intValue];
 

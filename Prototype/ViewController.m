@@ -67,15 +67,21 @@
 {
     //self.challengeNameLabel.font = [UIFont fontWithName:@"Optima-ExtraBlack" size:17];
     
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:CAPTIFY_BG]];
     
-    self.loginButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.loginButton.backgroundColor = [UIColor clearColor];
+    self.loginButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+    self.loginButton.layer.borderWidth = 2;
     self.loginButton.layer.cornerRadius = 5;
     [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.loginButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
     
-    self.registerButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    self.registerButton.backgroundColor = [UIColor clearColor];
+    self.registerButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     self.registerButton.layer.cornerRadius = 5;
-    [self.registerButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+    self.registerButton.layer.borderWidth = 2;
+    [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.registerButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
     
     CGRect facebookFrame = self.facebookButton.frame;
     if (!IS_IPHONE5){

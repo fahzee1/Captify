@@ -107,6 +107,7 @@
 @property BOOL captionMoved;
 @property int errorCount;
 @property BOOL captionIsSplit;
+@property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
 
 // filters
 @property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
@@ -230,17 +231,21 @@
 {
     [super viewDidAppear:animated];
     
-    if (IS_IPHONE5){
-        if ([self.data count] > 0){
+    if (!self.fromColorPicker){
+        if (IS_IPHONE5){
+            if ([self.data count] > 0){
+                CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+                [self.scrollView setContentOffset:bottomOffset animated:YES];
+
+            }
+            
+        }
+        else{
             CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
             [self.scrollView setContentOffset:bottomOffset animated:YES];
-
         }
         
-    }
-    else{
-        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-        [self.scrollView setContentOffset:bottomOffset animated:YES];
+        self.fromColorPicker = NO;
     }
     
     
@@ -435,7 +440,7 @@
     self.retryButton.userInteractionEnabled = NO;
     //[self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
-    self.retryButton.center = self.myImageView.center;
+    self.retryButton.center = self.myImageView.superview.center;
     [self.myImageView addSubview:self.retryButton];
     self.myImageView.userInteractionEnabled = YES;
     
@@ -575,7 +580,7 @@
                              [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"challengeToolTip"];
                              
                              
-                             double delayInSeconds = 6.0;
+                             double delayInSeconds = 5.3;
                              dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                              dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                                  CMPopTipView *toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Or create your own", nil)];
@@ -865,7 +870,9 @@
     colorPicker.selectedColor = [UIColor blackColor];
     colorPicker.title = NSLocalizedString(@"Caption Color", @"Color to use on caption");
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:colorPicker];
-    [self presentViewController:navVC animated:YES completion:nil];
+    [self presentViewController:navVC animated:YES completion:^{
+        self.fromColorPicker = YES;
+    }];
 }
 
 
@@ -1846,11 +1853,25 @@
          _errorLabel = [[UILabel alloc] init];
          _errorLabel.textColor = [UIColor whiteColor];
          _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-         _errorLabel.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
+        NSString *errorText;
+        if ([self.myChallenge.active intValue] == 1){
+           errorText = NSLocalizedString(@"No captions have been sent to this challenge", nil);
+        }
+        else{
+            errorText = NSLocalizedString(@"No captions were sent to this challenge", nil);
+        }
+        _errorLabel.text = errorText;
         _errorLabel.frame = CGRectMake(ivFrame.origin.x, ivFrame.size.height + 90, ivFrame.size.width, 40);
          _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
-         _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
+        if ([self.myChallenge.active intValue] == 1){
+            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
+        }
+        else{
+            
+            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 10, ivFrame.size.height + 120, ivFrame.size.width, 40);
+        }
+
 
     }
     
