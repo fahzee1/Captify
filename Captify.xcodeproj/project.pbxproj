@@ -54,6 +54,7 @@
 		112153B618983DB100EADE97 /* SSKeychain.strings in Resources */ = {isa = PBXBuildFile; fileRef = 112153B018983DB100EADE97 /* SSKeychain.strings */; };
 		112153B718983DB100EADE97 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B318983DB100EADE97 /* SSKeychain.m */; };
 		112153B818983DB100EADE97 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 112153B518983DB100EADE97 /* SSKeychainQuery.m */; };
+		1121A43D1934C9D400CD4EA8 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1121A43C1934C9D400CD4EA8 /* UserProfileViewController.m */; };
 		1124520418F30986006373B6 /* leaguegothic-regular-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */; };
 		1126C09118E9C4D100838484 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C09018E9C4D100838484 /* Notifications.m */; };
 		1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1126C0A818EA0E3E00838484 /* ChallengePicks.m */; };
@@ -491,6 +492,8 @@
 		112153B318983DB100EADE97 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		112153B418983DB100EADE97 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		112153B518983DB100EADE97 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		1121A43B1934C9D400CD4EA8 /* UserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
+		1121A43C1934C9D400CD4EA8 /* UserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
 		112451FF18F2EEF7006373B6 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
 		1124520318F30986006373B6 /* leaguegothic-regular-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "leaguegothic-regular-webfont.ttf"; path = "../../../leaguegothic-regular-webfont.ttf"; sourceTree = "<group>"; };
 		1126C08F18E9C4D100838484 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
@@ -1454,6 +1457,8 @@
 				118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */,
 				118D513918B66807001AA7FC /* SearchFriendsViewController.h */,
 				118D513A18B66807001AA7FC /* SearchFriendsViewController.m */,
+				1121A43B1934C9D400CD4EA8 /* UserProfileViewController.h */,
+				1121A43C1934C9D400CD4EA8 /* UserProfileViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -2776,6 +2781,7 @@
 				119BAEE318F639B500678A63 /* NSData+Format.m in Sources */,
 				1153E1CB18A9DF4800AD950E /* GPUImageTiltShiftFilter.m in Sources */,
 				1144915618AE8BEB009B47B6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
+				1121A43D1934C9D400CD4EA8 /* UserProfileViewController.m in Sources */,
 				115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */,
 				1153E18D18A9DF4800AD950E /* GPUImageLuminanceThresholdFilter.m in Sources */,
 				1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */,
