@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
+#import "AppDelegate.h"
 
 @interface FeedDetailViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *myImageView;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (strong, nonatomic) NSString *urlString;
 @property (strong, nonatomic) NSURL *facebookPicURL;
 @property (strong, nonatomic) NSString *profileUsername;
 @property (strong, nonatomic) NSNumber *facebookUser;
 
 @property (strong, nonatomic)UIView *topLabel;
+
+@property (strong, nonatomic)User *myUser;
 @end

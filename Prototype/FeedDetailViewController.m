@@ -9,7 +9,10 @@
 #import "FeedDetailViewController.h"
 #import "UIImageView+WebCache.h"
 #import "UIColor+HexValue.h"
+#import "UIFont+FontAwesome.h"
+#import "NSString+FontAwesome.h"
 #import "UserProfileViewController.h"
+#import "ParseNotifications.h"
 
 @interface FeedDetailViewController ()
 
@@ -41,6 +44,16 @@
                             }];
     
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+
+    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
+    [self.likeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] forState:UIControlStateNormal];
+    self.likeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    
+    CGRect likeFrame = self.likeButton.frame;
+    likeFrame.origin.y += 150;
+    self.likeButton.frame = likeFrame;
+    
     
     [self setupTopLabel];
 
@@ -131,4 +144,100 @@
         
     }
 }
+
+
+- (IBAction)tappedLikeButton:(UIButton *)sender
+{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *allLikes = [defaults objectForKey:@"allLikes"];
+    
+    if (![allLikes containsObject:self.urlString]){
+        
+        NSString *alert;
+        if (![self.myUser.username isEqualToString:self.profileUsername]){
+            alert = @"You liked your Captify pic!";
+        }
+        else{
+            alert = [NSString stringWithFormat:@"%@ likes your Captify pic!",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]];
+        }
+        
+        ParseNotifications *p = [ParseNotifications new];
+        
+        // notify chosen captions sender
+        [p sendNotification:alert
+                   toFriend:self.profileUsername
+                   withData:nil
+           notificationType:ParseNotificationNotifySelectedCaptionSender
+                      block:^(BOOL wasSuccessful) {
+                          if (wasSuccessful){
+                              sender.hidden = YES;
+                              [self showAlertWithTitle:NSLocalizedString(@"Success", nil) message:NSLocalizedString(@"Notification sent", nil)];
+                          }
+                      }];
+
+        
+        
+    }
+    else{
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Already sent notification", nil)];
+    }
+    
+   
+    if (!allLikes){
+        allLikes = [NSMutableArray array];
+        [allLikes addObject:self.urlString];
+    }
+    else if ([allLikes count] > 10){
+        [allLikes removeLastObject];
+        
+    }
+    
+    [defaults setObject:allLikes forKey:@"allLikes"];
+    
+
+    
+    
+    
+    
+}
+
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    UIAlertView *a = [[UIAlertView alloc]
+                      initWithTitle:title
+                      message:message
+                      delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil];
+    [a show];
+}
+
+
+
+
+
+
+
+
+
+
 @end

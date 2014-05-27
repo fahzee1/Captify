@@ -827,6 +827,12 @@ typedef void (^ShareToNetworksBlock) ();
                                            
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];
                                            self.myChallenge.active = [NSNumber numberWithBool:NO];
+                                           self.myPick.is_chosen = [NSNumber numberWithBool:YES];
+                                           
+                                           int playerScore = [self.myPick.player.score intValue];
+                                           playerScore += 10;
+                                           self.myPick.player.score = [NSString stringWithFormat:@"%d",playerScore];
+                                           
                                            NSError *error;
                                            if (![self.myChallenge.managedObjectContext save:&error]){
                                                DLog(@"%@",error);
@@ -914,14 +920,14 @@ typedef void (^ShareToNetworksBlock) ();
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.myChallenge.active = [NSNumber numberWithBool:NO];
-        self.myChallenge.shared = [NSNumber numberWithBool:YES];
-        self.myPick.is_chosen = [NSNumber numberWithBool:YES];
-        NSError *error;
-        if(![self.myChallenge.managedObjectContext save:&error]){
-            DLog(@"%@",error);
+        //self.myChallenge.active = [NSNumber numberWithBool:NO];
+        //self.myChallenge.shared = [NSNumber numberWithBool:YES];
+        //self.myPick.is_chosen = [NSNumber numberWithBool:YES];
+        //NSError *error;
+        //if(![self.myChallenge.managedObjectContext save:&error]){
+          //  DLog(@"%@",error);
             
-        }
+        //}
         
         [self updateChallengeOnBackend];
         

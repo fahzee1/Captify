@@ -1152,14 +1152,25 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="tif-29-Png">
-                                <rect key="frame" x="20" y="67" width="280" height="280"/>
+                                <rect key="frame" x="20" y="64" width="280" height="280"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QVA-kK-HLM">
+                                <rect key="frame" x="133" y="352" width="54" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Like">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tappedLikeButton:" destination="GtA-un-LzU" eventType="touchUpInside" id="0lI-6d-mAa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="VWf-zc-Z5Z"/>
                     <connections>
+                        <outlet property="likeButton" destination="QVA-kK-HLM" id="1W5-vE-yfg"/>
                         <outlet property="myImageView" destination="tif-29-Png" id="gc2-Jt-Qb9"/>
                     </connections>
                 </viewController>

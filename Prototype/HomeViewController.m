@@ -420,10 +420,78 @@
     [preview setTitle:@"Preview" forState:UIControlStateNormal];
     [preview addTarget:self action:@selector(tappedNextPreview:) forControlEvents:UIControlEventTouchUpInside];
     preview.frame = CGRectMake(115, 100, 60, 60);
-
     
+    UITextField *text = [[UITextField alloc] init];
+    text.frame = CGRectMake(30, 0, 150, 100);
+    text.text = @"enter text";
+    text.tag = 5;
+    text.backgroundColor = [UIColor clearColor];
+    
+    UIImage *image = [UIImage imageNamed:@"bubble"];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:image];
+    
+    iv.frame = CGRectZero;
+    iv.userInteractionEnabled = YES;
+    [iv addSubview:text];
+    
+    [UIView animateWithDuration:1
+                     animations:^{
+                         iv.frame = CGRectMake(50, 50, 200, 100);
+                     }];
+    
+    /*
+    UIButton *capture = [UIButton buttonWithType:UIButtonTypeSystem];
+    capture.frame = text.frame;
+    capture.backgroundColor = [UIColor clearColor];
+    capture.tag = 6;
+    [capture addTarget:self action:@selector(capture) forControlEvents:UIControlEventTouchUpInside];
+    */
+    
+    
+    
+    
+    
+    [self.view addSubview:iv];
+    //[self.view addSubview:capture];
     [self.view addSubview:preview];
     [self.view addSubview:menu];
+}
+
+- (void)capture
+{
+    UIView *view = [self.view viewWithTag:5];
+    [((UITextField *)view) becomeFirstResponder];
+    /*
+    CGRect currentFrame = self.bounds;
+    
+    CGContextSetLineJoin(context, kCGLineJoinRound);
+    CGContextSetLineWidth(context, strokeWidth);
+    CGContextSetStrokeColorWithColor(context, [MyPopupLayer popupBorderColor]);
+    CGContextSetFillColorWithColor(context, [MyPopupLayer popupBackgroundColor]);
+    
+    // Draw and fill the bubble
+    CGContextBeginPath(context);
+    CGContextMoveToPoint(context, borderRadius + strokeWidth + 0.5f, strokeWidth + HEIGHTOFPOPUPTRIANGLE + 0.5f);
+    CGContextAddLineToPoint(context, round(currentFrame.size.width / 2.0f - WIDTHOFPOPUPTRIANGLE / 2.0f) + 0.5f, HEIGHTOFPOPUPTRIANGLE + strokeWidth + 0.5f);
+    CGContextAddLineToPoint(context, round(currentFrame.size.width / 2.0f) + 0.5f, strokeWidth + 0.5f);
+    CGContextAddLineToPoint(context, round(currentFrame.size.width / 2.0f + WIDTHOFPOPUPTRIANGLE / 2.0f) + 0.5f, HEIGHTOFPOPUPTRIANGLE + strokeWidth + 0.5f);
+    CGContextAddArcToPoint(context, currentFrame.size.width - strokeWidth - 0.5f, strokeWidth + HEIGHTOFPOPUPTRIANGLE + 0.5f, currentFrame.size.width - strokeWidth - 0.5f, currentFrame.size.height - strokeWidth - 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, currentFrame.size.width - strokeWidth - 0.5f, currentFrame.size.height - strokeWidth - 0.5f, round(currentFrame.size.width / 2.0f + WIDTHOFPOPUPTRIANGLE / 2.0f) - strokeWidth + 0.5f, currentFrame.size.height - strokeWidth - 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, strokeWidth + 0.5f, currentFrame.size.height - strokeWidth - 0.5f, strokeWidth + 0.5f, HEIGHTOFPOPUPTRIANGLE + strokeWidth + 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, strokeWidth + 0.5f, strokeWidth + HEIGHTOFPOPUPTRIANGLE + 0.5f, currentFrame.size.width - strokeWidth - 0.5f, HEIGHTOFPOPUPTRIANGLE + strokeWidth + 0.5f, borderRadius - strokeWidth);
+    CGContextClosePath(context);
+    CGContextDrawPath(context, kCGPathFillStroke);
+    
+    // Draw a clipping path for the fill
+    CGContextBeginPath(context);
+    CGContextMoveToPoint(context, borderRadius + strokeWidth + 0.5f, round((currentFrame.size.height + HEIGHTOFPOPUPTRIANGLE) * 0.50f) + 0.5f);
+    CGContextAddArcToPoint(context, currentFrame.size.width - strokeWidth - 0.5f, round((currentFrame.size.height + HEIGHTOFPOPUPTRIANGLE) * 0.50f) + 0.5f, currentFrame.size.width - strokeWidth - 0.5f, currentFrame.size.height - strokeWidth - 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, currentFrame.size.width - strokeWidth - 0.5f, currentFrame.size.height - strokeWidth - 0.5f, round(currentFrame.size.width / 2.0f + WIDTHOFPOPUPTRIANGLE / 2.0f) - strokeWidth + 0.5f, currentFrame.size.height - strokeWidth - 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, strokeWidth + 0.5f, currentFrame.size.height - strokeWidth - 0.5f, strokeWidth + 0.5f, HEIGHTOFPOPUPTRIANGLE + strokeWidth + 0.5f, borderRadius - strokeWidth);
+    CGContextAddArcToPoint(context, strokeWidth + 0.5f, round((currentFrame.size.height + HEIGHTOFPOPUPTRIANGLE) * 0.50f) + 0.5f, currentFrame.size.width - strokeWidth - 0.5f, round((currentFrame.size.height + HEIGHTOFPOPUPTRIANGLE) * 0.50f) + 0.5f, borderRadius - strokeWidth);
+    CGContextClosePath(context);
+    CGContextClip(context);
+    */
 }
 
 - (void)setupStylesAndMore

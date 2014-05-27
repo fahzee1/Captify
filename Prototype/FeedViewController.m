@@ -349,10 +349,10 @@
         
         MZFormSheetController *formSheet;
         if (!IS_IPHONE5){
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 300) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:detailRoot];
         }
         else{
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
         }
         
         formSheet.shouldDismissOnBackgroundViewTap = YES;
