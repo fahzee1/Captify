@@ -411,7 +411,16 @@ typedef void (^ShareToNetworksBlock) ();
     composer.body = NSLocalizedString(@"Check out my pic from Captify!", nil);
     
     if ([MFMessageComposeViewController canSendAttachments]){
-        NSData *attachment = UIImageJPEGRepresentation(self.shareImage, 0.1);
+        
+        float compression;
+        if (!IS_IPHONE5){
+            compression = 0.5;
+        }
+        else{
+            compression = 0.3;
+        }
+
+        NSData *attachment = UIImageJPEGRepresentation(self.shareImage, compression);
         [composer addAttachmentData:attachment typeIdentifier:@"public.data" filename:[NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id]];
         [self presentViewController:composer animated:YES completion:^{
             [self.hud hide:YES];
@@ -778,8 +787,17 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)updateChallengeOnBackend
 {
-    return;
-    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, 0.3);
+    float compression;
+    if (!IS_IPHONE5){
+        compression = 0.5;
+    }
+    else{
+        compression = 0.3;
+    }
+
+    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
+    
+    
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id];
     
@@ -968,12 +986,14 @@ typedef void (^ShareToNetworksBlock) ();
             self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
 
         }
+            break;
             
         default:
             break;
     }
     
     [self dismissViewControllerAnimated:YES completion:^{
+        [self.hud hide:YES];
         if (result == MessageComposeResultSent){
              [self updateChallengeOnBackend];
         }
