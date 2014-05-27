@@ -17,6 +17,10 @@
 #import "AwesomeAPICLient.h"
 #import "MenuViewController.h"
 #import "TMCache.h"
+#import "FeedDetailViewController.h"
+#import "UIViewController+TargetViewController.h"
+#import "MZFormSheetController.h"
+
 
 
 #define FEED_CACHE_NAME @"feedCache"
@@ -181,23 +185,8 @@
         if ([results count] > 0){
               _data = results;
         }
-        else{
-                double delayInSeconds = 1.0;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!self.alertedError){
-                        [FeedViewController showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Explore feed is down. Try refreshing.", nil)];
-                        self.alertedError = YES;
-                    }
-
-                    });
-    
-                });
-            
-            _data = nil;
-        }
     }
+    
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -241,7 +230,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"collection called");
+    //DLog(@"collection called");
     FeedViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FeedCell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     cell.layer.borderWidth = 1.f;
@@ -322,6 +311,67 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    NSInteger count = [self.data count];
+    if (indexPath.row < count){
+        NSString *jsonString = [self.data objectAtIndex:indexPath.row];
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+        
+        
+        NSString *url = json[@"media_url"];
+        NSString *username = json[@"sender"][0][@"username"];
+        NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
+        NSURL *fbURL;
+        if ([is_facebook intValue] == 1){
+            
+            NSString *fbID = json[@"sender"][0][@"facebook_id"];
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",fbID];
+            fbURL = [NSURL URLWithString:fbString];
+        }
+        
+
+        
+        UIViewController *detailRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"feedDetailRoot"];
+        if ([detailRoot isKindOfClass:[UINavigationController class]]){
+            UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
+            if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
+                
+                ((FeedDetailViewController *)detailVC).urlString = url;
+                ((FeedDetailViewController *)detailVC).facebookUser = is_facebook;
+                ((FeedDetailViewController *)detailVC).profileUsername = username;
+                if ([is_facebook intValue] == 1 && fbURL){
+                    ((FeedDetailViewController *)detailVC).facebookPicURL = fbURL;
+                }
+                
+                
+            }
+        }
+        
+        MZFormSheetController *formSheet;
+        if (!IS_IPHONE5){
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 300) viewController:detailRoot];
+        }
+        else{
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:detailRoot];
+        }
+        
+        formSheet.shouldDismissOnBackgroundViewTap = YES;
+        formSheet.transitionStyle = MZFormSheetTransitionStyleBounce;
+        
+        [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+        [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+        [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+        
+        [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+            //
+        }];
+
+        
+        
+        
+
+    }
+
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
