@@ -141,6 +141,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.refreshControl.isRefreshing){
                 [self.refreshControl endRefreshing];
+                [self.collectionView reloadData];
             }
             
         });
@@ -321,6 +322,16 @@
         NSString *url = json[@"media_url"];
         NSString *username = json[@"sender"][0][@"username"];
         NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
+        NSString *score;
+        
+        @try {
+            score = json[@"sender"][0][@"score"];
+        }
+        @catch (NSException *exception) {
+            score = @"0";
+        }
+        
+        
         NSURL *fbURL;
         if ([is_facebook intValue] == 1){
             
@@ -339,6 +350,7 @@
                 ((FeedDetailViewController *)detailVC).urlString = url;
                 ((FeedDetailViewController *)detailVC).facebookUser = is_facebook;
                 ((FeedDetailViewController *)detailVC).profileUsername = username;
+                ((FeedDetailViewController *)detailVC).profileScore = score;
                 if ([is_facebook intValue] == 1 && fbURL){
                     ((FeedDetailViewController *)detailVC).facebookPicURL = fbURL;
                 }

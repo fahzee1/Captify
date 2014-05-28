@@ -18,7 +18,7 @@
 @property (strong, nonatomic) NSURL *facebookPicURL;
 @property (strong, nonatomic) NSString *profileUsername;
 @property (strong, nonatomic) NSNumber *facebookUser;
-
+@property (strong, nonatomic) NSString *profileScore;
 @property (strong, nonatomic)UIView *topLabel;
 
 @property (strong, nonatomic)User *myUser;

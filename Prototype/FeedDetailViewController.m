@@ -132,7 +132,7 @@
     
     UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
     if ([profile isKindOfClass:[UserProfileViewController class]]){
-        ((UserProfileViewController *)profile).scoreString = @"133";
+        ((UserProfileViewController *)profile).scoreString = self.profileScore;
         ((UserProfileViewController *)profile).usernameString = self.profileUsername;
         ((UserProfileViewController *)profile).profileURLString = self.facebookPicURL;
         ((UserProfileViewController *)profile).facebook_user = self.facebookUser;
