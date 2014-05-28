@@ -305,7 +305,7 @@
     // then show history screen
     
     
-    NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser.username stringByReplacingOccurrencesOfString:@"." withString:@"-"]];
+    NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
     /*
     [Challenge saveImage:thumbnail filename:thumbnail_path];
     [Challenge saveImage:self.image filename:image_path];
@@ -464,7 +464,7 @@
 {
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
-    [p sendNotification:[NSString stringWithFormat:@"Caption challenge from %@",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]]
+    [p sendNotification:[NSString stringWithFormat:@"Caption challenge from %@",[self.myUser displayName]]
               toFriends:self.allFriends
                withData:params
        notificationType:ParseNotificationCreateChallenge

@@ -134,6 +134,7 @@
             }
             
             
+            /*
             NSString *username;
             if (pick.player.username){
                 if ([pick.player.facebook_user intValue] == 1){
@@ -147,8 +148,9 @@
             else{
                 username = @"User";
             }
+             */
             
-            usernameLabel.text = username;
+            usernameLabel.text = [pick.player displayName];
             usernameLabel.textColor = [UIColor whiteColor];
             usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
             

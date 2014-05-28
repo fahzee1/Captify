@@ -42,6 +42,18 @@
     return @"User";
 }
 
+- (NSString *)displayName
+{
+    NSString *name;
+    if ([self.facebook_user intValue] == 1){
+        name = [[self.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+    }
+    else{
+        name = [self.username capitalizedString];
+    }
+    return name;
+}
+
 - (BOOL)isFacebookUser
 {
     return self.facebook_user ? YES:NO;

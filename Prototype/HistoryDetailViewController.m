@@ -1636,13 +1636,7 @@
                 usernameLabel.text = [@"You" capitalizedString];
             }
             else{
-                if ([pick.player.facebook_user intValue] == 1){
-                    usernameLabel.text = [[pick.player.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-                }
-                else{
-                    usernameLabel.text = [pick.player.username capitalizedString];
-                }
-
+                usernameLabel.text = [pick.player displayName];
             }
             
             usernameLabel.frame = CGRectMake(usernameLabel.frame.origin.x, usernameLabel.frame.origin.y, 176, 50);

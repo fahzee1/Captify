@@ -81,6 +81,8 @@
         CGRect navFrameBase = CGRectMake(50, 4, 40, 40);
         
         UIImageView *image = [[UIImageView alloc] init];
+        
+        
         if ([self.facebookUser intValue] == 1){
             [image setImageWithURL:self.facebookPicURL
                   placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
@@ -159,7 +161,7 @@
             alert = @"You liked your Captify pic!";
         }
         else{
-            alert = [NSString stringWithFormat:@"%@ likes your Captify pic!",[self.myUser.username stringByReplacingOccurrencesOfString:@"-" withString:@" "]];
+            alert = [NSString stringWithFormat:@"%@ likes your Captify pic!", [self.myUser displayName]];
         }
         
         ParseNotifications *p = [ParseNotifications new];

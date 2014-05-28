@@ -382,13 +382,8 @@
         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, 176, titleLabel.frame.size.height);
          */
         
-        usernameLabel.text = [sender.username capitalizedString];
-        if ([sender.facebook_user intValue] == 1){
-            usernameLabel.text = [[sender.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-        }
-        else{
-            usernameLabel.text = [sender.username capitalizedString];
-        }
+        
+        usernameLabel.text = [sender displayName];
         
         if ([usernameLabel.text length] >= 24){
             NSString *uString = [usernameLabel.text substringToIndex:23];

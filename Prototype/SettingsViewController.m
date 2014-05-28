@@ -611,7 +611,7 @@
         {
             if (indexPath.row == 0){
                 // username
-                cell.detailTextLabel.text = self.myUser.username;
+                cell.detailTextLabel.text = [self.myUser displayName];
             }
             
             if (indexPath.row == 1){
