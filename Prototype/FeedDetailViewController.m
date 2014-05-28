@@ -50,9 +50,9 @@
     [self.likeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] forState:UIControlStateNormal];
     self.likeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
     
-    CGRect likeFrame = self.likeButton.frame;
-    likeFrame.origin.y += 150;
-    self.likeButton.frame = likeFrame;
+    //CGRect likeFrame = self.likeButton.frame;
+    //likeFrame.origin.y += 150;
+    self.likeButton.frame = CGRectMake(self.myImageView.frame.size.width/2, self.view.frame.size.height - 50, self.likeButton.frame.size.width, self.likeButton.frame.size.height);
     
     
     [self setupTopLabel];
