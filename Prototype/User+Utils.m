@@ -54,6 +54,7 @@
     return name;
 }
 
+
 - (BOOL)isFacebookUser
 {
     return self.facebook_user ? YES:NO;
@@ -139,6 +140,11 @@
         is_contact = params[@"is_contact"];
     }
     
+    NSString *score = @"0";
+    if (params[@"score"]){
+        score = params[@"score"];
+    }
+    
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"username = %@",[params valueForKey:@"username"]];
@@ -169,6 +175,7 @@
     user.super_user = super_user;
     user.is_friend = is_friend;
     user.is_contactFriend = is_contact;
+    user.score = score;
     
     if (![user.managedObjectContext save:&error]){
         DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -227,6 +234,11 @@
     if (params[@"phone_number"]){
         phone_number = params[@"phone_number"];
     }
+    
+    NSString *score = @"0";
+    if (params[@"score"]){
+        score = params[@"score"];
+    }
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
     request.predicate = [NSPredicate predicateWithFormat:@"(username = %@)",[params valueForKey:@"username"]];
@@ -251,6 +263,7 @@
         user.username = username;
         user.email = email;
         user.phone_number = phone_number;
+        user.score = score;
         
         if (![user.managedObjectContext save:&error]){
             DLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -271,6 +284,7 @@
         user.super_user = super_user;
         user.facebook_id = facebook_id;
         user.is_friend = is_friend;
+        user.score = score;
         if (phone_number){
             user.phone_number = phone_number;
         }
