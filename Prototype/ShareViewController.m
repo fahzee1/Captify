@@ -10,16 +10,19 @@
 #import "NSString+FontAwesome.h"
 #import "UIFont+FontAwesome.h"
 #import "UIColor+HexValue.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "SocialFriends.h"
 #import "MBProgressHUD.h"
 #import "ParseNotifications.h"
 #import "MGInstagram.h"
 #import "FUISwitch.h"
 #import "UIColor+FlatUI.h"
-#import <MessageUI/MessageUI.h>
 #import "HistoryContainerViewController.h"
 #import "User+Utils.h"
+
+#import <Pinterest/Pinterest.h>
+#import <FacebookSDK/FacebookSDK.h>
+#import <MessageUI/MessageUI.h>
+
 
 typedef void (^ShareToNetworksBlock) ();
 
@@ -30,7 +33,7 @@ typedef void (^ShareToNetworksBlock) ();
 @property (weak, nonatomic) IBOutlet UILabel *myInstagramLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myTwitterLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myMessageLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *myPinterestButton;
 
 
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
@@ -42,17 +45,19 @@ typedef void (^ShareToNetworksBlock) ();
 @property  BOOL sendFB;
 @property BOOL sendTW;
 @property BOOL sendIG;
+@property BOOL sendPIN;
 
 // these should be marked as yes after posting
 // use for no duplicate posts
 @property  BOOL sentFB;
 @property BOOL sentTW;
 @property BOOL sentIG;
-
+@property BOOL sentPIN;
 
 @property BOOL shareFacebook;
 @property BOOL shareInstagram;
 @property BOOL shareTwitter;
+@property BOOL sharePinterest;
 
 @property BOOL haveNotified;
 
@@ -104,6 +109,14 @@ typedef void (^ShareToNetworksBlock) ();
     
     //reset 
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isPrivate"];
+    
+    UIButton* pinItButton = [Pinterest pinItButton];
+    [pinItButton addTarget:self
+                    action:@selector(pinIt:)
+          forControlEvents:UIControlEventTouchUpInside];
+    pinItButton.frame = self.myFacebookLabel.frame;
+    
+    [self.view addSubview:pinItButton];
     
     
 
@@ -249,6 +262,33 @@ typedef void (^ShareToNetworksBlock) ();
     
     
 
+    
+}
+
+- (void)pinItWithImageUrl:(NSURL *)url
+                sourceUrl:(NSURL *)sourceUrl
+           andDescription:(NSString *)description
+{
+    Pinterest *pinterst = [[Pinterest alloc] initWithClientId:PINTEREST_APPID];
+    if ([pinterst canPinWithSDK]){
+        
+        if (!url){
+            url = [NSURL URLWithString:@"http://placekitten.com/500/400"];
+        }
+        if (!description){
+            description = @"Pinning from Pin It Demo";
+        }
+        if (!sourceUrl){
+            sourceUrl = [NSURL URLWithString:@"http://placekitten.com"];
+        }
+    
+        [pinterst createPinWithImageURL:url
+                              sourceURL:sourceUrl
+                              description:description];
+    }
+    else{
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Can't pin to Pinterest with this device", nil)];
+    }
     
 }
 
@@ -409,7 +449,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     MFMessageComposeViewController *composer = [[MFMessageComposeViewController alloc] init];
     composer.messageComposeDelegate = self;
-    composer.body = NSLocalizedString(@"Check out my pic from Captify!", nil);
+    composer.body = [self shareCaption]; //NSLocalizedString(@"Check out my pic from Captify!", nil);
     
     if ([MFMessageComposeViewController canSendAttachments]){
         
@@ -440,6 +480,10 @@ typedef void (^ShareToNetworksBlock) ();
     }];
 }
 
+- (NSString *)shareCaption
+{
+    return [NSString stringWithFormat:@"Captify by %@",[self.myPick.player displayName]];
+}
 
 - (void)notifyFriends
 {
@@ -553,9 +597,9 @@ typedef void (^ShareToNetworksBlock) ();
 
     if (!self.sentFB){
         [self.friends postImageToFacebookFeed:self.shareImage
-                                      message:self.selectedCaption
-                                      caption:self.selectedCaption
-                                         name:self.selectedCaption
+                                      message:[self shareCaption]
+                                      caption:[self shareCaption]
+                                         name:[self shareCaption]
                                       albumID:nil
                                  facebookUser:[self.myChallenge.sender.facebook_user boolValue]
                                     feedBlock:^(BOOL wasSuccessful) {
@@ -611,7 +655,7 @@ typedef void (^ShareToNetworksBlock) ();
         if (self.sendTW){
             self.sendTW = NO;
             [self.friends postImageToTwitterFeed:self.shareImage
-                                         caption:self.selectedCaption
+                                         caption:[self shareCaption]
                                            block:^(BOOL wasSuccessful, BOOL isGranted) {
                                                dispatch_async(dispatch_get_main_queue(), ^{
                                                    [self.hud hide:YES];
@@ -662,7 +706,7 @@ typedef void (^ShareToNetworksBlock) ();
             [self.hud hide:YES];
             [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
             [MGInstagram postImage:self.shareImage
-                       withCaption:self.selectedCaption
+                       withCaption:[self shareCaption]
                             inView:self.scrollView
                           delegate:self];
         }
@@ -822,9 +866,23 @@ typedef void (^ShareToNetworksBlock) ();
     params[@"is_private"] = [NSNumber numberWithBool:isPrivate];
 
     [Challenge updateChallengeWithParams:params
-                                   block:^(BOOL wasSuccessful, NSString *message) {
+                                   block:^(BOOL wasSuccessful, NSString *mediaUrl) {
                                        [self.hud hide:YES];
                                        if (wasSuccessful){
+                                           // sending image url in message response
+                                           
+                                           if (self.sharePinterest){
+                                               DLog(@"share pinterest with media url");
+                                               if (mediaUrl){
+                                                   [self pinItWithImageUrl:[NSURL URLWithString:mediaUrl]
+                                                                 sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
+                                                            andDescription:[self shareCaption]];
+                                               }
+                                               else{
+                                                   DLog(@"no media url to share to pinterest");
+                                               }
+                                           }
+                                           
                                            
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];
                                            self.myChallenge.active = [NSNumber numberWithBool:NO];

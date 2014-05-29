@@ -492,14 +492,18 @@
              int code = [[responseObject valueForKey:@"code"] intValue];
              if (code == 1){
                  if (block){
-                     block(YES, @"Success!");
+                     NSString *url;
+                     if (responseObject[@"media_url"]){
+                         url = responseObject[@"media_url"];
+                     }
+                     block(YES, url);
                  }
              }
              
              if (code == -10){
                  DLog(@"%@",[responseObject valueForKey:@"message"]);
                  if (block){
-                     block(NO,@"Fail");
+                     block(NO,nil);
                  }
              }
          }
@@ -515,7 +519,7 @@
 
              DLog(@"%@",error);
              if (block){
-                 block(NO, error.localizedDescription);
+                 block(NO, nil);
              }
        }];
 }

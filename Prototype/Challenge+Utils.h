@@ -10,7 +10,7 @@
 #import "User.h"
 
 
-typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *message);
+typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *mediaUrl);
 typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message, id data);
 typedef void (^GetChallengeFeedBlock) (BOOL wasSuccessful, id data);
 

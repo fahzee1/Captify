@@ -42,6 +42,7 @@
  */
 
 #define SHARE_CONTROLS_CONTAINER 6466
+#define FINAL_CAPTION_TAG 3433
 
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
@@ -84,6 +85,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
 @property (strong, nonatomic)UIView *errorContainerView;
 @property (strong, nonatomic)UILabel *errorLabel;
+@property (strong, nonatomic)UIButton *errorMakeCaptionButton;
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
@@ -124,7 +126,7 @@
 
 @end
 
-#define FINAL_CAPTION_TAG 3433
+
 
 
 @implementation HistoryDetailViewController
@@ -1176,12 +1178,16 @@
 
 - (void)showAlertWithTextField
 {
+
     self.makeCaptionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make your own", nil)
-                                                    message:NSLocalizedString(@"Dont like any of the captions below? Create your own.", nil) delegate:self
+                                                    message:NSLocalizedString(@"Dont like any captions or haven't received any? Create your own", nil) delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                           otherButtonTitles:NSLocalizedString(@"Make Caption", nil), nil];
     self.makeCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [(UITextField *)[self.makeCaptionAlert textFieldAtIndex:0] setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
+    UITextField *textField = [self.makeCaptionAlert textFieldAtIndex:0];
+    [textField setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
+    textField.placeholder = NSLocalizedString(@"Enter caption", nil);
+    textField.delegate = self;
     [self.makeCaptionAlert show];
 
 }
@@ -1391,13 +1397,13 @@
                 double delayInSeconds = 2.0;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    NSString *message = [NSString stringWithFormat:@"Are you sure you want the caption \"%@\"? If so this challenge will be closed.",self.selectedCaption];
+                    NSString *message = [NSString stringWithFormat:@"Are you sure you want the caption \"%@\"?",self.selectedCaption];
                     self.confirmCaptionAlert = [[UIAlertView alloc]
-                                                initWithTitle:@"confirm"
+                                                initWithTitle:NSLocalizedString(@"Confirm", nil)
                                                 message:message
                                                 delegate:self
-                                                cancelButtonTitle:@"NO"
-                                                otherButtonTitles:@"YES", nil];
+                                                cancelButtonTitle:NSLocalizedString(@"No", nil)
+                                                otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
                     [self.confirmCaptionAlert show];
                 });
             }
@@ -1410,7 +1416,9 @@
             NSDictionary *params = @{@"username": self.myUser.username,
                                      @"challenge_id":self.myChallenge.challenge_id,
                                      @"answer":self.selectedCaption,
-                                     @"iMade":[NSNumber numberWithBool:YES]};
+                                     @"iMade":[NSNumber numberWithBool:YES],
+                                     @"date":[Challenge dateStringFromDate:[NSDate date]]};
+            
             [ChallengePicks sendCreatePickRequestWithParams:params
                                                       block:^(BOOL wasSuccessful, BOOL fail, NSString *message, NSString *pick_id) {
                                                           if (wasSuccessful){
@@ -1427,6 +1435,7 @@
                                                                   NSError *error;
                                                                   [self.myChallenge addPicksObject:pick];
                                                                   self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
+                                                                  self.selectedPick = pick;
                                                                   if (![self.myChallenge.managedObjectContext save:&error]){
                                                                       DLog(@"%@",error);
                                                                   }
@@ -1470,6 +1479,13 @@
 
                                                           dispatch_async(dispatch_get_main_queue(), ^{
                                                               [self.myTable reloadData];
+                                                              if ([self.data count] > 0){
+                                                                  [self.errorLabel removeFromSuperview];
+                                                                  self.errorLabel = nil;
+                                                                  [self.errorMakeCaptionButton removeFromSuperview];
+                                                                  self.errorMakeCaptionButton = nil;
+
+                                                              }
                                                           });
 
                                                       }];
@@ -1860,6 +1876,20 @@
         [_errorLabel sizeToFit];
         if ([self.myChallenge.active intValue] == 1){
             _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
+            
+            self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x, _errorLabel.frame.origin.y + 50, 203, 45);
+            [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
+            [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
+            self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+            self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
+            self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+            self.errorMakeCaptionButton.layer.borderWidth = 2;
+            self.errorMakeCaptionButton.layer.cornerRadius = 5;
+            [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.view addSubview:self.errorMakeCaptionButton];
         }
         else{
             

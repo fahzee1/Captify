@@ -14,7 +14,12 @@
 #import "UserProfileViewController.h"
 #import "ParseNotifications.h"
 
-@interface FeedDetailViewController ()
+#define NOTIFICATION_CREATE_TAG 112
+#define NOTIFICATION_ERROR_TAG 111
+#define NOTIFICATION_LIKE_BUTTON_TAG 110
+#define NOTFICATION_TEXT_LIMIT 10
+
+@interface FeedDetailViewController ()<UITextFieldDelegate,UIAlertViewDelegate>
 
 @end
 
@@ -150,42 +155,47 @@
 
 - (IBAction)tappedLikeButton:(UIButton *)sender
 {
+    [self showAlertWithTitle:NSLocalizedString(@"Send Notification", nil)
+                     message:NSLocalizedString(@"I think this photo is.. (one word)",nil)
+             forNotification:YES];
+    sender.tag = NOTIFICATION_LIKE_BUTTON_TAG;
     
+}
+
+- (void)sendNotificationWithMessage:(NSString *)message
+                          andButton:(UIButton *)button
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *allLikes = [defaults objectForKey:@"allLikes"];
     
     if (![allLikes containsObject:self.urlString]){
         
-        NSString *alert;
-        if (![self.myUser.username isEqualToString:self.profileUsername]){
-            alert = @"You liked your Captify pic!";
-        }
-        else{
-            alert = [NSString stringWithFormat:@"%@ likes your Captify pic!", [self.myUser displayName]];
-        }
-        
         ParseNotifications *p = [ParseNotifications new];
         
         // notify chosen captions sender
-        [p sendNotification:alert
+        [p sendNotification:message
                    toFriend:self.profileUsername
                    withData:nil
            notificationType:ParseNotificationNotifySelectedCaptionSender
                       block:^(BOOL wasSuccessful) {
                           if (wasSuccessful){
-                              sender.hidden = YES;
-                              [self showAlertWithTitle:NSLocalizedString(@"Success", nil) message:NSLocalizedString(@"Notification sent", nil)];
+                              button.hidden = YES;
+                              [self showAlertWithTitle:NSLocalizedString(@"Success", nil)
+                                               message:NSLocalizedString(@"Notification sent", nil)
+                                       forNotification:NO];
                           }
                       }];
-
+        
         
         
     }
     else{
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Already sent notification", nil)];
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil)
+                         message:NSLocalizedString(@"Already sent notification", nil)
+                 forNotification:NO];
     }
     
-   
+    
     if (!allLikes){
         allLikes = [NSMutableArray array];
         [allLikes addObject:self.urlString];
@@ -196,12 +206,7 @@
     }
     
     [defaults setObject:allLikes forKey:@"allLikes"];
-    
 
-    
-    
-    
-    
 }
 
 
@@ -222,15 +227,92 @@
 
 - (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
+           forNotification:(BOOL)notif
 
 {
-    UIAlertView *a = [[UIAlertView alloc]
-                      initWithTitle:title
-                      message:message
-                      delegate:nil
-                      cancelButtonTitle:@"Ok"
-                      otherButtonTitles:nil];
+    UIAlertView *a;
+    if (!notif){
+        a = [[UIAlertView alloc]
+             initWithTitle:title
+             message:message
+             delegate:nil
+             cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+             otherButtonTitles:nil];
+        a.tag = NOTIFICATION_ERROR_TAG;
+
+    }
+    else{
+        
+        a = [[UIAlertView alloc] initWithTitle:title
+                                       message:message
+                                      delegate:self
+                             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                             otherButtonTitles:NSLocalizedString(@"Send", nil), nil];
+        a.alertViewStyle = UIAlertViewStylePlainTextInput;
+        a.tag = NOTIFICATION_CREATE_TAG;
+        UITextField *alertTextField = [a textFieldAtIndex:0];
+        alertTextField.delegate = self;
+        [alertTextField setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
+        alertTextField.placeholder = NSLocalizedString(@"Enter 10 letters max", nil);
+        
+    }
+
     [a show];
+}
+
+
+#pragma -mark uitextfield delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    
+    if ([string isEqualToString:@" "]){
+        return  NO;
+    }
+    
+    if ([textField.text length] >= 10){
+        if ([string isEqualToString:@""]){
+            return YES;
+        }
+
+        return NO;
+    }
+    
+    if ([string isEqualToString:@""]){
+        return YES;
+    }
+
+    
+    
+    return YES;
+    
+}
+
+
+#pragma -mark uialertview delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == NOTIFICATION_CREATE_TAG){
+        if (alertView.delegate == self){
+            alertView.delegate = nil;
+        }
+        
+        if (buttonIndex == 1){
+            UIView *buttonView = [self.view viewWithTag:NOTIFICATION_LIKE_BUTTON_TAG];
+            if ([buttonView isKindOfClass:[UIButton class]]){
+                UIButton *button = (UIButton *)buttonView;
+                UITextField *alertTextField = [alertView textFieldAtIndex:0];
+                if (alertTextField.delegate == self){
+                    alertTextField.delegate = nil;
+                }
+                NSString *message = [NSString stringWithFormat:@"%@ thinks your photo is \"%@\"",[self.myUser displayName],alertTextField.text];
+                
+                [self sendNotificationWithMessage:message andButton:button];
+
+            }
+        }
+        
+    }
 }
 
 

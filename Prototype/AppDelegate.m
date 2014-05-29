@@ -132,6 +132,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:60*10];
+    
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [[UISegmentedControl appearance] setTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
@@ -509,6 +512,12 @@
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    // if error call completionHandler(UIBackgroundFetchResultFailed)
+    // if no data call completionHandler(UIBackgroundFetchResultNoData)
+    // if new data call completionHandler(UIBackgroundFetchResultNewData)
+    
+    
+    
     
 }
 

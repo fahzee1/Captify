@@ -17,6 +17,9 @@
     #import <Foundation/Foundation.h>
 #endif
 
+
+#define PINTEREST_APPID @"1438127"
+
 #define MY_APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
 #define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 #define IPHONE4_PAD 50

@@ -25,6 +25,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>pin1438127</string>
 				<string>fb679128588774304</string>
 			</array>
 		</dict>
