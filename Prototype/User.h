@@ -2,7 +2,7 @@
 //  User.h
 //  Captify
 //
-//  Created by CJ Ogbuehi on 5/1/14.
+//  Created by CJ Ogbuehi on 5/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * username;
+@property (nonatomic, retain) NSNumber * is_teamCaptify;
 @property (nonatomic, retain) NSSet *picks;
 @property (nonatomic, retain) NSSet *recipient_challenges;
 @property (nonatomic, retain) NSSet *sent_challenges;

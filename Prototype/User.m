@@ -2,7 +2,7 @@
 //  User.m
 //  Captify
 //
-//  Created by CJ Ogbuehi on 5/1/14.
+//  Created by CJ Ogbuehi on 5/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -28,6 +28,7 @@
 @dynamic sync_status;
 @dynamic timestamp;
 @dynamic username;
+@dynamic is_teamCaptify;
 @dynamic picks;
 @dynamic recipient_challenges;
 @dynamic sent_challenges;

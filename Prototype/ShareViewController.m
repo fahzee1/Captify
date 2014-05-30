@@ -95,6 +95,7 @@ typedef void (^ShareToNetworksBlock) ();
     self.sendTW = YES;
     self.sendFB = YES;
     self.sendIG = YES;
+    self.sendPIN = YES;
     [self setupShareStyles];
     
     if (!IS_IPHONE5){
@@ -310,9 +311,15 @@ typedef void (^ShareToNetworksBlock) ();
     
     if (self.sentPIN){
         self.sentPIN = NO;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        });
+        
+        if (self.shareInstagram){
+            [self sendInstagram];
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            });
+        }
 
     }
 
@@ -628,14 +635,9 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)shareToFacebookAndTwitterWithBlock:(ShareToNetworksBlock)block
 {
     
-    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook){
-        if (self.sharePinterest){
-            [self updateChallengeOnBackend];
-        }
-        else{
-            [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
-            return;
-        }
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
+        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
+        return;
     }
 
     
@@ -699,6 +701,11 @@ typedef void (^ShareToNetworksBlock) ();
         
     }
     
+    
+    if (self.sharePinterest){
+        self.sendPIN = YES;
+        [self updateChallengeOnBackend];
+    }
         
     if (self.shareInstagram){
         [self sendInstagram];
@@ -737,6 +744,14 @@ typedef void (^ShareToNetworksBlock) ();
                                                 else{
                                                     [self sendTwitterWithBlock:nil];
                                                 }
+                                            }
+                                            else if (self.sharePinterest){
+                                                // this block is updateChallengeOnBackend which
+                                                // is where pinterest code runs
+                                                if (block){
+                                                    block();
+                                                }
+
                                             }
                                             else if (self.shareInstagram){
                                                 [self sendInstagram];
@@ -785,7 +800,16 @@ typedef void (^ShareToNetworksBlock) ();
                                                    DLog(@"post to twitter success");
                                                    self.sentTW = YES;
                                                    
-                                                   if (self.shareInstagram){
+                                                   if (self.sharePinterest){
+                                                       // this block is updateChallengeOnBackend which
+                                                       // is where pinterest code runs
+
+                                                       if (block){
+                                                           block();
+                                                       }
+                                                   }
+                                                   
+                                                   else if (self.shareInstagram){
                                                        [self sendInstagram];
                                                    }
                                                    
@@ -846,8 +870,11 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)startShare
 {
-    // after share show success overlay or alert or something
-    // then pop to root
+    // share goes in this order...
+    // first try facebook
+    // then try twitter
+    // then try instagram (problem for pinterst)
+    
 
     [self saveImage];
     
@@ -1021,21 +1048,21 @@ typedef void (^ShareToNetworksBlock) ();
                                                
                                            }
                                            
-                                           if (self.sharePinterest){
-                                               if (mediaUrl){
+                                           if (self.sharePinterest && mediaUrl){
+                                               if ([self.friends hasPinterestAccess]){
                                                    self.sentPIN = YES;
-                                                
-                                                    [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
-                                                                                    sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
-                                                                               andDescription:[self shareCaption]];
-                                                    
-                                                   
-                                                   
+                                                   if (self.sendPIN){
+                                                       self.sendPIN = NO;
+                                                       [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
+                                                                                        sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
+                                                                                   andDescription:[self shareCaption]];
+                                                       return;
+                                                   }
                                                }
                                                else{
-                                                   DLog(@"no media url to share to pinterest");
+                                                   [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Download the Pinterest app to pin", nil)];
                                                }
-                                           }
+                                            }
 
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{

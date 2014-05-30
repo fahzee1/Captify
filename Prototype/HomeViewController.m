@@ -131,6 +131,9 @@
         }
     }
     
+    
+    [self createTeamCaptify];
+    
     /*
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
      NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
@@ -144,13 +147,14 @@
     
     //NSLog(@"%@",self.myUser);
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+    
         
         /*
          User *user = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.myUser.managedObjectContext];
         user.super_user = [NSNumber numberWithBool:NO];
         user.is_friend = [NSNumber numberWithBool:YES];
         user.facebook_user = [NSNumber numberWithBool:YES];
-        user.username = @"Allie-Lewis";
+        user.username = @"gumbo";
         NSError *e;
         [user.managedObjectContext save:&e];
         
@@ -159,7 +163,7 @@
         user2.super_user = [NSNumber numberWithBool:NO];
         user2.is_friend = [NSNumber numberWithBool:YES];
         user2.facebook_user = [NSNumber numberWithBool:YES];
-        user2.username = @"Alex-Scott";
+        user2.username = @"Ally-Allen";
         [user.managedObjectContext save:&e];
 
         
@@ -169,9 +173,9 @@
         User *user6 = [TestDataCreator createTestFriendWithName:@"square" facebook:NO fbID:0 inContext:self.myUser.managedObjectContext];
         User *user3 = [TestDataCreator createTestFriendWithName:@"circle" facebook:YES fbID:@"698982729" inContext:self.myUser.managedObjectContext];
         
-        */
         
-        /*
+        
+        
         User *user2 = [TestDataCreator createTestFriendWithName:@"gucci_77" facebook:YES fbID:[NSNumber numberWithInt:698982729] inContext:self.myUser.managedObjectContext];
         Challenge *challenge = [TestDataCreator createTestChallengeWithName:@"Making no noise yall boys aint making no noise" byUser:user2 toFriends:@[user,self.myUser] withID:@"0004"];
         
@@ -360,6 +364,46 @@
 
     });
     
+    
+}
+
+- (void)createTeamCaptify
+{
+     static int retrys = 0;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    
+    BOOL createdTeamCaptify = [defaults boolForKey:@"createdTeamCaptify"];
+    if (!createdTeamCaptify){
+        
+        if ([defaults valueForKey:@"username"]){
+            NSDictionary  *params = @{@"username": @"Team-Captify",
+                                      @"facebook_user":[NSNumber numberWithBool:NO],
+                                      @"is_contact":[NSNumber numberWithBool:YES],
+                                      @"is_teamCaptify":[NSNumber numberWithBool:YES]
+                                      };
+            
+            
+            User *captify = [User createFriendWithParams:params inMangedObjectContext:self.myUser.managedObjectContext];
+            if (captify){
+                [defaults setBool:YES forKey:@"createdTeamCaptify"];
+            }
+        }
+        else{
+            
+            retrys += 1;
+            if (retrys < 5){
+                double delayInSeconds = 5.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [self createTeamCaptify];
+                });
+            }
+            
+        }
+    }
+
     
 }
 

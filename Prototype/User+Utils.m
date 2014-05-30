@@ -75,6 +75,10 @@
 
     }
     
+    else if ([self.is_teamCaptify intValue] == 1){
+        iV.image = [UIImage imageNamed:CAPTIFY_LOGO];
+    }
+    
     else{
         iV.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
         /*
@@ -121,10 +125,14 @@
     
     NSString *username = params[@"username"];
     NSNumber *facebook_user = params[@"facebook_user"];
-    NSString *facebook_id = params[@"facebook_id"];
     NSNumber *private = [NSNumber numberWithBool:NO];
     NSNumber *super_user = [NSNumber numberWithBool:NO];
     NSNumber *is_friend = [NSNumber numberWithBool:YES];
+    
+    NSString *facebook_id = @"0";
+    if (params[@"facebook_id"]){
+        facebook_id = params[@"facebook_id"];
+    }
     
     NSString *email;
     if (params[@"email"]){
@@ -143,6 +151,11 @@
     NSString *score = @"0";
     if (params[@"score"]){
         score = params[@"score"];
+    }
+    
+    NSNumber *is_teamCaptify = [NSNumber numberWithBool:NO];
+    if (params[@"is_teamCaptify"]){
+        is_teamCaptify = params[@"is_teamCaptify"];
     }
     
     NSError *error;
@@ -176,6 +189,7 @@
     user.is_friend = is_friend;
     user.is_contactFriend = is_contact;
     user.score = score;
+    user.is_teamCaptify = is_teamCaptify;
     
     if (![user.managedObjectContext save:&error]){
         DLog(@"Unresolved error %@, %@", error, [error userInfo]);

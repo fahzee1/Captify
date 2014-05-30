@@ -369,7 +369,6 @@
 		11D4EDCA190D998C005B4981 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDC9190D998C005B4981 /* Parse.framework */; };
 		11D4EDCC190D99BD005B4981 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDCB190D99BD005B4981 /* CrashReporter.framework */; };
 		11D4EDCE190D9A16005B4981 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */; };
-		11D4EDD1191329CF005B4981 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D4EDD0191329CF005B4981 /* User.m */; };
 		11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6018B7090A00C129D6 /* cameraControls.xib */; };
 		11DC6B6318B7164200C129D6 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */; };
 		11DC6B6A18B717AA00C129D6 /* FAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6518B717AA00C129D6 /* FAImageView.m */; };
@@ -386,6 +385,7 @@
 		11E77B491938361D0018863A /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11E77B471938361D0018863A /* PinterestSDKResources.bundle */; };
 		11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DBA19097E01009B95F7 /* AdSupport.framework */; };
 		11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DC519097FBB009B95F7 /* libsqlite3.dylib */; };
+		11EC4C301938EB840014F287 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EC4C2F1938EB840014F287 /* User.m */; };
 		11ED4C52190569D400A2E9B5 /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4D190569D400A2E9B5 /* lookup.png */; };
 		11ED4C53190569D400A2E9B5 /* lookup_amatorka.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4E190569D400A2E9B5 /* lookup_amatorka.png */; };
 		11ED4C54190569D400A2E9B5 /* lookup_miss_etikate.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4F190569D400A2E9B5 /* lookup_miss_etikate.png */; };
@@ -1082,8 +1082,6 @@
 		11D4EDC9190D998C005B4981 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		11D4EDCB190D99BD005B4981 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "../../Downloads/PLCrashReporter-1.2-rc4/iOS Framework/CrashReporter.framework"; sourceTree = "<group>"; };
 		11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../Downloads/GoogleAnalyticsServicesiOS_3.06/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		11D4EDCF191329CF005B4981 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		11D4EDD0191329CF005B4981 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		11DC6B6018B7090A00C129D6 /* cameraControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cameraControls.xib; sourceTree = "<group>"; };
 		11DC6B6218B7164200C129D6 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fontawesome-webfont.ttf"; path = "../../fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		11DC6B6418B717AA00C129D6 /* FAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAImageView.h; sourceTree = "<group>"; };
@@ -1112,6 +1110,8 @@
 		11E83DC319097E9F009B95F7 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		11E83DC419097E9F009B95F7 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		11E83DC519097FBB009B95F7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		11EC4C2E1938EB840014F287 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		11EC4C2F1938EB840014F287 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		11ED4C4D190569D400A2E9B5 /* lookup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup.png; sourceTree = "<group>"; };
 		11ED4C4E190569D400A2E9B5 /* lookup_amatorka.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_amatorka.png; sourceTree = "<group>"; };
 		11ED4C4F190569D400A2E9B5 /* lookup_miss_etikate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_miss_etikate.png; sourceTree = "<group>"; };
@@ -1324,8 +1324,8 @@
 			isa = PBXGroup;
 			children = (
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
-				11D4EDCF191329CF005B4981 /* User.h */,
-				11D4EDD0191329CF005B4981 /* User.m */,
+				11EC4C2E1938EB840014F287 /* User.h */,
+				11EC4C2F1938EB840014F287 /* User.m */,
 				1188CDA819115DF700F6407C /* Challenge.h */,
 				1188CDA919115DF700F6407C /* Challenge.m */,
 				1126C0A718EA0E3E00838484 /* ChallengePicks.h */,
@@ -2576,6 +2576,7 @@
 				118EF1BC18FC6F4F00755552 /* UIToolbar+FlatUI.m in Sources */,
 				11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */,
 				113BD8D519250FE40099BEA0 /* UIViewController+TargetViewController.m in Sources */,
+				11EC4C301938EB840014F287 /* User.m in Sources */,
 				1153E18E18A9DF4800AD950E /* GPUImageLuminosity.m in Sources */,
 				1153E15018A9DF4800AD950E /* GPUImageChromaKeyBlendFilter.m in Sources */,
 				1153E1D118A9DF4800AD950E /* GPUImageTwoPassFilter.m in Sources */,
@@ -2774,7 +2775,6 @@
 				118EF1AA18FC6F4F00755552 /* FUIAlertView.m in Sources */,
 				1144E3E018EC6F0600DBCF3B /* JDStatusBarView.m in Sources */,
 				1153E1B718A9DF4800AD950E /* GPUImageShiTomasiFeatureDetectionFilter.m in Sources */,
-				11D4EDD1191329CF005B4981 /* User.m in Sources */,
 				11ABFCAC18C7D28300639A20 /* NEOColorPickerViewController.m in Sources */,
 				113BD8DF192514680099BEA0 /* NSInvocation+Copy.m in Sources */,
 				110730FD1876640F0065D77F /* main.m in Sources */,
