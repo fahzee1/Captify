@@ -350,7 +350,13 @@
                 ((FeedDetailViewController *)detailVC).urlString = url;
                 ((FeedDetailViewController *)detailVC).facebookUser = is_facebook;
                 ((FeedDetailViewController *)detailVC).profileUsername = username;
-                ((FeedDetailViewController *)detailVC).profileScore = score;
+                if ([score isKindOfClass:[NSNumber class]]){
+                    ((FeedDetailViewController *)detailVC).profileScore = [NSString stringWithFormat:@"%@",(NSNumber *)score];
+                }
+                else{
+                    ((FeedDetailViewController *)detailVC).profileScore = score;
+                }
+              
                 if ([is_facebook intValue] == 1 && fbURL){
                     ((FeedDetailViewController *)detailVC).facebookPicURL = fbURL;
                 }
