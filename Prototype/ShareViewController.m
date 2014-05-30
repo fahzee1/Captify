@@ -29,10 +29,10 @@ typedef void (^ShareToNetworksBlock) ();
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
-@property (weak, nonatomic) IBOutlet UILabel *myFacebookLabel;
-@property (weak, nonatomic) IBOutlet UILabel *myInstagramLabel;
-@property (weak, nonatomic) IBOutlet UILabel *myTwitterLabel;
-@property (weak, nonatomic) IBOutlet UILabel *myMessageLabel;
+@property (weak, nonatomic) IBOutlet UIButton *myFacebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *myInstagramButton;
+@property (weak, nonatomic) IBOutlet UIButton *myTwitterButton;
+@property (weak, nonatomic) IBOutlet UIButton *myMessageButton;
 @property (weak, nonatomic) IBOutlet UIButton *myPinterestButton;
 
 
@@ -98,11 +98,11 @@ typedef void (^ShareToNetworksBlock) ();
     [self setupShareStyles];
     
     if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 730);
+        self.scrollView.contentSize = CGSizeMake(320, 730+65);
         
     }
     else{
-        self.scrollView.contentSize = CGSizeMake(320, 630);
+        self.scrollView.contentSize = CGSizeMake(320, 630+65);
 
     }
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -110,13 +110,20 @@ typedef void (^ShareToNetworksBlock) ();
     //reset 
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isPrivate"];
     
+    /*
     UIButton* pinItButton = [Pinterest pinItButton];
     [pinItButton addTarget:self
-                    action:@selector(pinIt:)
+                    action:@selector(pinIt)
           forControlEvents:UIControlEventTouchUpInside];
-    pinItButton.frame = self.myFacebookLabel.frame;
+    pinItButton.frame = self.myFacebookButton.frame;
     
     [self.view addSubview:pinItButton];
+     */
+    
+    // need this for pinterest post
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleBecomingActive)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
     
     
 
@@ -138,7 +145,7 @@ typedef void (^ShareToNetworksBlock) ();
     CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
     [self.scrollView setContentOffset:bottomOffset animated:YES];
     
-    
+
     
 }
 
@@ -148,6 +155,14 @@ typedef void (^ShareToNetworksBlock) ();
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
       DLog(@"received memory warning here");
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationDidBecomeActiveNotification
+                                                  object:nil];
+    
 }
 
 
@@ -169,64 +184,62 @@ typedef void (^ShareToNetworksBlock) ();
     self.myShareButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
     [self.myShareButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     CGRect shareFrame = self.myShareButton.frame;
-    shareFrame.origin.y += 60;
+    shareFrame.origin.y += 120;
     self.myShareButton.frame = shareFrame;
     
-    UITapGestureRecognizer *tapFB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFB)];
-    tapFB.numberOfTapsRequired = 1;
-    tapFB.numberOfTouchesRequired = 1;
     
-    self.myFacebookLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-    self.myFacebookLabel.text = NSLocalizedString(@"Facebook", nil);//[NSString stringWithFormat:@"%@   Facebook",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
-    self.myFacebookLabel.textColor = [UIColor whiteColor];
-    self.myFacebookLabel.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myFacebookLabel.layer.borderWidth = 2;
-    self.myFacebookLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    self.myFacebookLabel.layer.cornerRadius = 5;
-    self.myFacebookLabel.userInteractionEnabled = YES;
-    [self.myFacebookLabel addGestureRecognizer:tapFB];
+    self.myFacebookButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    [self.myFacebookButton setTitle:NSLocalizedString(@"Facebook", nil) forState:UIControlStateNormal];
+    [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.myFacebookButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.myFacebookButton.layer.borderWidth = 2;
+    self.myFacebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myFacebookButton.layer.cornerRadius = 5;
+
     
     
-    UITapGestureRecognizer *tapIG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedInstagram)];
-    tapIG.numberOfTapsRequired = 1;
-    tapIG.numberOfTouchesRequired = 1;
-    
-    self.myInstagramLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-    self.myInstagramLabel.text = NSLocalizedString(@"Instagram", nil); //[NSString stringWithFormat:@"%@   Instagram",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-instagram"]];
+    self.myInstagramButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    [self.myInstagramButton setTitle:NSLocalizedString(@"Instagram", nil) forState:UIControlStateNormal];
   
-    self.myInstagramLabel.textColor = [UIColor whiteColor];
-    self.myInstagramLabel.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myInstagramLabel.layer.borderWidth = 2;
-    self.myInstagramLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    
-    self.myInstagramLabel.layer.cornerRadius = 5;
-    self.myInstagramLabel.userInteractionEnabled = YES;
-    [self.myInstagramLabel addGestureRecognizer:tapIG];
+    [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.myInstagramButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.myInstagramButton.layer.borderWidth = 2;
+    self.myInstagramButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myInstagramButton.layer.cornerRadius = 5;
     
     
-    UITapGestureRecognizer *tapTw = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedTwitter)];
-    self.myTwitterLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-    self.myTwitterLabel.text = NSLocalizedString(@"Twitter", nil); //[NSString stringWithFormat:@"%@   Twitter",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
+
+    self.myTwitterButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    [self.myTwitterButton setTitle:NSLocalizedString(@"Twitter", nil) forState:UIControlStateNormal];
     
-    self.myTwitterLabel.textColor = [UIColor whiteColor];
-    self.myTwitterLabel.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myTwitterLabel.layer.borderWidth = 2;
-    self.myTwitterLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    self.myTwitterLabel.layer.cornerRadius = 5;
-    self.myTwitterLabel.userInteractionEnabled = YES;
-    [self.myTwitterLabel addGestureRecognizer:tapTw];
+    [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.myTwitterButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.myTwitterButton.layer.borderWidth = 2;
+    self.myTwitterButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myTwitterButton.layer.cornerRadius = 5;
+
     
-    UITapGestureRecognizer *tapM = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedMessage)];
-    self.myMessageLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-    self.myMessageLabel.text = NSLocalizedString(@"Message", nil);//[NSString stringWithFormat:@"%@   Message",[NSString fontAwesomeIconStringForIconIdentifier:@"fa-comment"]];
+    self.myMessageButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    [self.myMessageButton setTitle:NSLocalizedString(@"Message", nil) forState:UIControlStateNormal];
     
-    self.myMessageLabel.textColor = [UIColor whiteColor];
-    self.myMessageLabel.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myMessageLabel.layer.borderWidth = 2;
-    self.myMessageLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-    self.myMessageLabel.layer.cornerRadius = 5;
-    self.myMessageLabel.userInteractionEnabled = YES;
-    [self.myMessageLabel addGestureRecognizer:tapM];
+    [self.myMessageButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.myMessageButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.myMessageButton.layer.borderWidth = 2;
+    self.myMessageButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myMessageButton.layer.cornerRadius = 5;
+
+    
+    
+    self.myPinterestButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    [self.myPinterestButton setTitle:NSLocalizedString(@"Pinterest", nil) forState:UIControlStateNormal];
+    
+    [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.myPinterestButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.myPinterestButton.layer.borderWidth = 2;
+    self.myPinterestButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myPinterestButton.layer.cornerRadius = 5;
+    
+
 
     
     
@@ -265,32 +278,60 @@ typedef void (^ShareToNetworksBlock) ();
     
 }
 
-- (void)pinItWithImageUrl:(NSURL *)url
-                sourceUrl:(NSURL *)sourceUrl
-           andDescription:(NSString *)description
+- (IBAction)tappedFacebook:(UIButton *)sender {
+    [self tappedFB];
+}
+
+- (IBAction)tappedInstagram:(UIButton *)sender {
+    [self tappedInstagram];
+}
+
+
+- (IBAction)tappedTwiiter:(UIButton *)sender {
+    [self tappedTwitter];
+}
+
+- (IBAction)tappedMessage:(UIButton *)sender {
+    [self tappedMessage];
+}
+
+- (IBAction)tappedPinterest:(UIButton *)sender {
+    [self tappedPinterest];
+}
+
+
+
+
+- (void)handleBecomingActive
+{
+    // because pinterest sdk actually sends you to their app
+    // to post, must detect when our app is active again to resume
+    // operations
+    
+    if (self.sentPIN){
+        self.sentPIN = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        });
+
+    }
+
+}
+
+
+
+- (void)pinIt
 {
     Pinterest *pinterst = [[Pinterest alloc] initWithClientId:PINTEREST_APPID];
     if ([pinterst canPinWithSDK]){
-        
-        if (!url){
-            url = [NSURL URLWithString:@"http://placekitten.com/500/400"];
-        }
-        if (!description){
-            description = @"Pinning from Pin It Demo";
-        }
-        if (!sourceUrl){
-            sourceUrl = [NSURL URLWithString:@"http://placekitten.com"];
-        }
-    
-        [pinterst createPinWithImageURL:url
-                              sourceURL:sourceUrl
-                              description:description];
+        self.sentPIN = YES;
+    [pinterst createPinWithImageURL:[NSURL URLWithString:@"http://placekitten.com/500/400"] sourceURL:[NSURL URLWithString:@"http://placekitten.com"] description:@"Pinning from Pin It Demo"];
     }
     else{
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Can't pin to Pinterest with this device", nil)];
+        [self showAlertWithTitle:@"error" message:@"cant send"];
     }
-    
 }
+
 
 - (void)changedPrivacy:(FUISwitch *)sender
 {
@@ -314,6 +355,7 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)tappedFB
 {
+
     if (!FBSession.activeSession.isOpen){
         [FBSession openActiveSessionWithPublishPermissions:@[@"publish_stream"]
                                            defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES
@@ -334,34 +376,72 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
 
+    if (![self.myChallenge.sender.facebook_user intValue] == 1){
     
-    self.shareFacebook = !self.shareFacebook;
-    if (self.shareFacebook){
-        self.myFacebookLabel.textColor = [UIColor colorWithHexString:CAPTIFY_FACEBOOK];
-    
+        [self.friends hasFacebookAccess:^(BOOL wasSuccessful) {
+            
+                if (wasSuccessful){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.shareFacebook = !self.shareFacebook;
+                        if (self.shareFacebook){
+                            [self.myFacebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK] forState:UIControlStateNormal];
+                            
+                        }
+                        else{
+                            [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                            
+                        }
+                        
+
+                    });
+                    
+                }
+                else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Make sure you've allowed Captify to use Facebook in iOS Settings > Privacy > Facebook", nil)];
+                    });
+
+                }
+            
+
+        }];
     }
+    // logged in with fbook
     else{
-        self.myFacebookLabel.textColor = [UIColor whiteColor];
-        
-        if (!self.shareTwitter && !self.shareInstagram){
+        self.shareFacebook = !self.shareFacebook;
+        if (self.shareFacebook){
+            [self.myFacebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK] forState:UIControlStateNormal];
+            
         }
-    }
-}
+        else{
+            [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+        }
+        
+     }
+    
+   }
 
 - (void)tappedInstagram
 {
 
 
+    if ([self.friends hasInstagramAccess]){
 
-    self.shareInstagram = !self.shareInstagram;
-    if (self.shareInstagram){
-        self.myInstagramLabel.textColor = [UIColor colorWithHexString:CAPTIFY_INSTAGRAM];
+        self.shareInstagram = !self.shareInstagram;
+        if (self.shareInstagram){
+            [self.myInstagramButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_INSTAGRAM] forState:UIControlStateNormal];
 
+        }
+        else{
+            [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            if (!self.shareTwitter && !self.shareFacebook){
+            }
+
+        }
     }
     else{
-        self.myInstagramLabel.textColor = [UIColor whiteColor];
-        if (!self.shareTwitter && !self.shareFacebook){
-        }
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Download the Instagram app to share", nil)];
 
     }
     
@@ -419,19 +499,54 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)tappedTwitter
 {
-    self.shareTwitter = !self.shareTwitter;
-    if (self.shareTwitter){
-        self.myTwitterLabel.textColor = [UIColor colorWithHexString:CAPTIFY_TWITTER];
-        //self.twitterDisplayLabel.textColor = [UIColor colorWithHexString:@"#00aced"];
+    [self.friends hasTwitterAccess:^(BOOL wasSuccessful) {
+        if (wasSuccessful){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.shareTwitter = !self.shareTwitter;
+                if (self.shareTwitter){
+                    [self.myTwitterButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_TWITTER] forState:UIControlStateNormal];
+                    
+                }
+                else{
+                    [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    if (!self.shareInstagram && !self.shareFacebook){
+                    }
+                    
+                }
+
+            });
+           
+        }
+        else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Make sure you've allowed Captify to use Twiiter in iOS Settings > Privacy > Twitter", nil)];
+        });
+
+        }
+    }];
+    
+}
+
+
+- (void)tappedPinterest
+{
+   
+    if ([self.friends hasPinterestAccess]){
+
+        self.sharePinterest = !self.sharePinterest;
+        if (self.sharePinterest){
+            [self.myPinterestButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_PINTEREST] forState:UIControlStateNormal];
+        }
+        else{
+            [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+        }
     }
     else{
-        self.myTwitterLabel.textColor = [UIColor whiteColor];
-        if (!self.shareInstagram && !self.shareFacebook){
-        }
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Download the Pinterest app to pin", nil)];
 
     }
 }
-
 - (void)tappedMessage
 {
     if(![MFMessageComposeViewController canSendText]) {
@@ -514,8 +629,13 @@ typedef void (^ShareToNetworksBlock) ();
 {
     
     if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook){
-        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
-        return;
+        if (self.sharePinterest){
+            [self updateChallengeOnBackend];
+        }
+        else{
+            [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
+            return;
+        }
     }
 
     
@@ -702,13 +822,14 @@ typedef void (^ShareToNetworksBlock) ();
 {
     if (self.sendIG){
         self.sendIG = NO;
-        if ([MGInstagram isAppInstalled] && [MGInstagram isImageCorrectSize:self.shareImage]){
+        if ([self.friends hasInstagramAccess] && [self.friends hasInstagramCorrectSize:self.shareImage]){
             [self.hud hide:YES];
-            [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
-            [MGInstagram postImage:self.shareImage
-                       withCaption:[self shareCaption]
-                            inView:self.scrollView
-                          delegate:self];
+            
+            
+            [self.friends postImageToInstagram:self.shareImage
+                                   withCaption:[self shareCaption]
+                                        inView:self.scrollView
+                                      delegate:self];
         }
         else
         {
@@ -742,7 +863,7 @@ typedef void (^ShareToNetworksBlock) ();
 - (IBAction)tappedShare:(UIButton *)sender {
     
     
-    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook){
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
         [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
         return;
     }
@@ -767,6 +888,15 @@ typedef void (^ShareToNetworksBlock) ();
         }
         else{
             shareString = [shareString stringByAppendingString:@" Instagram"];
+        }
+    }
+    
+    if (self.sharePinterest){
+        if (self.shareFacebook || self.shareTwitter || self.shareInstagram){
+            shareString = [shareString stringByAppendingString:@", Pinterest"];
+        }
+        else{
+            shareString = [shareString stringByAppendingString:@" Pinterest"];
         }
     }
 
@@ -871,19 +1001,7 @@ typedef void (^ShareToNetworksBlock) ();
                                        if (wasSuccessful){
                                            // sending image url in message response
                                            
-                                           if (self.sharePinterest){
-                                               DLog(@"share pinterest with media url");
-                                               if (mediaUrl){
-                                                   [self pinItWithImageUrl:[NSURL URLWithString:mediaUrl]
-                                                                 sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
-                                                            andDescription:[self shareCaption]];
-                                               }
-                                               else{
-                                                   DLog(@"no media url to share to pinterest");
-                                               }
-                                           }
-                                           
-                                           
+                    
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];
                                            self.myChallenge.active = [NSNumber numberWithBool:NO];
                                            self.myPick.is_chosen = [NSNumber numberWithBool:YES];
@@ -900,7 +1018,25 @@ typedef void (^ShareToNetworksBlock) ();
                                            if (!self.haveNotified){
                                                [self notifyFriends];
                                                self.haveNotified = YES;
+                                               
                                            }
+                                           
+                                           if (self.sharePinterest){
+                                               if (mediaUrl){
+                                                   self.sentPIN = YES;
+                                                
+                                                    [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
+                                                                                    sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
+                                                                               andDescription:[self shareCaption]];
+                                                    
+                                                   
+                                                   
+                                               }
+                                               else{
+                                                   DLog(@"no media url to share to pinterest");
+                                               }
+                                           }
+
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                [self.navigationController popToRootViewControllerAnimated:YES];

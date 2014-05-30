@@ -18,10 +18,100 @@
 @property (strong, nonatomic)NSMutableArray *tempAppUserList;
 @property (strong, nonatomic)NSMutableDictionary *appUserDict;
 
+@property BOOL twitterAccess;
+@property BOOL facebookAccess;
+
 @end
 
 @implementation SocialFriends
 
+
+
+- (void)hasFacebookAccess:(FacebookPostStatus)block
+{
+    // only use with users who didnt log in with fbook
+    
+    self.facebookAccess = NO;
+    
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    //specifiy APP id permissions
+    NSDictionary *options = @{ACFacebookAppIdKey:CAPTIFY_FACEBOOK_ID,
+                              ACFacebookPermissionsKey:@[@"publish_stream", @"publish_actions"],
+                              ACFacebookAudienceKey:ACFacebookAudienceEveryone};
+    
+    [accountStore requestAccessToAccountsWithType:facebookAccountType
+                                          options:options
+                                       completion:^(BOOL granted, NSError *error) {
+                                           if (granted){
+                                               self.facebookAccess = YES;
+                                               if (block){
+                                                   block(YES);
+                                               }
+                                           }
+                                           else{
+                                               if (block){
+                                                   block(NO);
+                                               }
+                                           }
+                                       }];
+    
+  
+    
+}
+
+
+- (void)hasTwitterAccess:(FacebookPostStatus)block;
+{
+    self.twitterAccess = NO;
+    
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [account requestAccessToAccountsWithType:accountType
+                                     options:nil
+                                  completion:^(BOOL granted, NSError *error) {
+                                      if (granted){
+                                          self.twitterAccess = YES;
+                                          if (block){
+                                              block(YES);
+                                          }
+                                      }
+                                      else{
+                                          if (block){
+                                              block(NO);
+                                          }
+                                      }
+                                  }];
+    
+
+}
+
+
+
+- (BOOL)hasPinterestAccess
+{
+    Pinterest *pinterst = [[Pinterest alloc] initWithClientId:PINTEREST_APPID];
+    if ([pinterst canPinWithSDK]){
+        return YES;
+    }
+    else{
+        return NO;
+    }
+    
+
+}
+
+- (BOOL)hasInstagramAccess
+{
+    return [MGInstagram isAppInstalled];
+}
+
+- (BOOL)hasInstagramCorrectSize:(UIImage *)image
+{
+    return [MGInstagram isImageCorrectSize:image];
+}
 
 
 - (void)allFriends:(FacebookFriendFetch)block;
@@ -558,9 +648,6 @@
 
 
 
-
-
-
 - (void)postImageToTwitterFeed:(UIImage *)image
                        caption:(NSString *)caption
                          block:(TwitterPostStatus)block
@@ -677,6 +764,34 @@
                               }
                         }];
 }
+
+
+- (void)postImageToPinterestWithUrl:(NSURL *)url
+                          sourceUrl:(NSURL *)sourceUrl
+                     andDescription:(NSString *)description
+{
+    Pinterest *pinterst = [[Pinterest alloc] initWithClientId:PINTEREST_APPID];
+    [pinterst createPinWithImageURL:url
+                          sourceURL:sourceUrl
+                        description:description];
+
+}
+
+
+- (void)postImageToInstagram:(UIImage *)image
+                 withCaption:(NSString *)caption
+                      inView:(UIView *)view
+                    delegate:(id<UIDocumentInteractionControllerDelegate>)delegate
+{
+    [MGInstagram setPhotoFileName:kInstagramOnlyPhotoFileName];
+    [MGInstagram postImage:image
+               withCaption:caption
+                    inView:view
+                  delegate:delegate];
+
+}
+
+
 
 
 - (void)showAlertWithTitle:(NSString *)title

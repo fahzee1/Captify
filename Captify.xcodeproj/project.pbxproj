@@ -376,14 +376,14 @@
 		11DC6B6B18B717AA00C129D6 /* NSString+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6718B717AA00C129D6 /* NSString+FontAwesome.m */; };
 		11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */; };
 		11DC6B6E18B71ECE00C129D6 /* previewControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DC6B6D18B71ECE00C129D6 /* previewControls.xib */; };
-		11DD2AA31937B2BF00E38EE7 /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11DD2AA01937B2BF00E38EE7 /* Pinterest.framework */; };
-		11DD2AA41937B2C000E38EE7 /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11DD2AA21937B2BF00E38EE7 /* PinterestSDKResources.bundle */; };
 		11DFE7AC18E0A0B700066E62 /* TestDataCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */; };
 		11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11DFE7AE18E0B54300066E62 /* ChallengePicks+Utils.m */; };
 		11E409811906ED14008C79F2 /* KiloGram_KG.otf in Resources */ = {isa = PBXBuildFile; fileRef = 11E409801906ED14008C79F2 /* KiloGram_KG.otf */; };
 		11E4098A1906EE8F008C79F2 /* AGENTORANGE.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 11E409891906EE8F008C79F2 /* AGENTORANGE.TTF */; };
 		11E4098C1906F06B008C79F2 /* Tribbon-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */; };
 		11E6D71118FF1F8000C47D25 /* MGInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E6D71018FF1F8000C47D25 /* MGInstagram.m */; };
+		11E77B481938361D0018863A /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E77B451938361D0018863A /* Pinterest.framework */; };
+		11E77B491938361D0018863A /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11E77B471938361D0018863A /* PinterestSDKResources.bundle */; };
 		11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DBA19097E01009B95F7 /* AdSupport.framework */; };
 		11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DC519097FBB009B95F7 /* libsqlite3.dylib */; };
 		11ED4C52190569D400A2E9B5 /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C4D190569D400A2E9B5 /* lookup.png */; };
@@ -1093,10 +1093,6 @@
 		11DC6B6818B717AA00C129D6 /* UIFont+FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FontAwesome.h"; sourceTree = "<group>"; };
 		11DC6B6918B717AA00C129D6 /* UIFont+FontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FontAwesome.m"; sourceTree = "<group>"; };
 		11DC6B6D18B71ECE00C129D6 /* previewControls.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewControls.xib; sourceTree = "<group>"; };
-		11DD2A9C1937B2AA00E38EE7 /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
-		11DD2A9E1937B2AA00E38EE7 /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
-		11DD2AA01937B2BF00E38EE7 /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
-		11DD2AA21937B2BF00E38EE7 /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
 		11DFE7AA18E0A0B700066E62 /* TestDataCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDataCreator.h; sourceTree = "<group>"; };
 		11DFE7AB18E0A0B700066E62 /* TestDataCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestDataCreator.m; sourceTree = "<group>"; };
 		11DFE7AD18E0B54300066E62 /* ChallengePicks+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChallengePicks+Utils.h"; sourceTree = "<group>"; };
@@ -1106,6 +1102,8 @@
 		11E4098B1906F06B008C79F2 /* Tribbon-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tribbon-B.ttf"; sourceTree = "<group>"; };
 		11E6D70F18FF1F8000C47D25 /* MGInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGInstagram.h; sourceTree = "<group>"; };
 		11E6D71018FF1F8000C47D25 /* MGInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGInstagram.m; sourceTree = "<group>"; };
+		11E77B451938361D0018863A /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
+		11E77B471938361D0018863A /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
 		11E83DBA19097E01009B95F7 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		11E83DBF19097E9F009B95F7 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		11E83DC019097E9F009B95F7 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
@@ -1180,7 +1178,7 @@
 				11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */,
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				11D4EDCA190D998C005B4981 /* Parse.framework in Frameworks */,
-				11DD2AA31937B2BF00E38EE7 /* Pinterest.framework in Frameworks */,
+				11E77B481938361D0018863A /* Pinterest.framework in Frameworks */,
 				11D4EDCE190D9A16005B4981 /* libGoogleAnalyticsServices.a in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
@@ -1238,7 +1236,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				11DD2A9B1937B2AA00E38EE7 /* Pinterest.embeddedframework */,
+				11E77B441938361D0018863A /* Pinterest.embeddedframework */,
 				11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */,
 				11D4EDCB190D99BD005B4981 /* CrashReporter.framework */,
 				11D4EDC9190D998C005B4981 /* Parse.framework */,
@@ -1355,7 +1353,6 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
-				11DD2A9F1937B2BF00E38EE7 /* Pinterest.embeddedframework */,
 				113BD8C019250FE40099BEA0 /* MZFormSheetController */,
 				11A302401919417F00882275 /* Address Book Wrappers */,
 				11E83DBE19097E9F009B95F7 /* GoogleAnalytics */,
@@ -2243,41 +2240,6 @@
 			path = CMPopTipView;
 			sourceTree = "<group>";
 		};
-		11DD2A9B1937B2AA00E38EE7 /* Pinterest.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				11DD2A9C1937B2AA00E38EE7 /* Pinterest.framework */,
-				11DD2A9D1937B2AA00E38EE7 /* Resources */,
-			);
-			name = Pinterest.embeddedframework;
-			path = ../../Downloads/PinItSDKiOS/Pinterest.embeddedframework;
-			sourceTree = "<group>";
-		};
-		11DD2A9D1937B2AA00E38EE7 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				11DD2A9E1937B2AA00E38EE7 /* PinterestSDKResources.bundle */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		11DD2A9F1937B2BF00E38EE7 /* Pinterest.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				11DD2AA01937B2BF00E38EE7 /* Pinterest.framework */,
-				11DD2AA11937B2BF00E38EE7 /* Resources */,
-			);
-			path = Pinterest.embeddedframework;
-			sourceTree = "<group>";
-		};
-		11DD2AA11937B2BF00E38EE7 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				11DD2AA21937B2BF00E38EE7 /* PinterestSDKResources.bundle */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		11DF518518F5F1ED008A3B0D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2313,6 +2275,23 @@
 				11E6D71018FF1F8000C47D25 /* MGInstagram.m */,
 			);
 			path = MGInstagram;
+			sourceTree = "<group>";
+		};
+		11E77B441938361D0018863A /* Pinterest.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				11E77B451938361D0018863A /* Pinterest.framework */,
+				11E77B461938361D0018863A /* Resources */,
+			);
+			path = Pinterest.embeddedframework;
+			sourceTree = "<group>";
+		};
+		11E77B461938361D0018863A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11E77B471938361D0018863A /* PinterestSDKResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		11E83DBE19097E9F009B95F7 /* GoogleAnalytics */ = {
@@ -2471,7 +2450,7 @@
 			files = (
 				112153B618983DB100EADE97 /* SSKeychain.strings in Resources */,
 				118EF1D018FC709C00755552 /* Lato-LightItalic.ttf in Resources */,
-				11DD2AA41937B2C000E38EE7 /* PinterestSDKResources.bundle in Resources */,
+				11E77B491938361D0018863A /* PinterestSDKResources.bundle in Resources */,
 				11ABFCA918C7D28300639A20 /* NEOColorPickerHSLViewController.xib in Resources */,
 				118EF1D118FC709C00755552 /* Lato-Regular.ttf in Resources */,
 				11ED4C7F1905B04F00A2E9B5 /* .gitignore in Resources */,
@@ -3038,6 +3017,7 @@
 					/Users/cjogbuehi/Downloads,
 					"/Users/cjogbuehi/Downloads/PLCrashReporter-1.2-rc4/iOS\\ Framework",
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
+					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
@@ -3063,6 +3043,7 @@
 					/Users/cjogbuehi/Downloads,
 					"/Users/cjogbuehi/Downloads/PLCrashReporter-1.2-rc4/iOS\\ Framework",
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
+					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";

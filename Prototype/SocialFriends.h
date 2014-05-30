@@ -10,6 +10,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
+#import "MGInstagram.h"
+#import <Pinterest/Pinterest.h>
 
 
 
@@ -24,6 +26,11 @@ typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
 @interface SocialFriends : NSObject
 
 
+- (void)hasFacebookAccess:(FacebookPostStatus)block;
+- (void)hasTwitterAccess:(FacebookPostStatus)block;
+- (BOOL)hasPinterestAccess;
+- (BOOL)hasInstagramAccess;
+- (BOOL)hasInstagramCorrectSize:(UIImage *)image;
 
 
 - (void)allFriends:(FacebookFriendFetch)block;
@@ -70,6 +77,16 @@ typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
 
 + (void)getFriendsUsernameWithID:(NSString *)ID
                            block:(FacebookFriendUsername)block;
+
+- (void)postImageToPinterestWithUrl:(NSURL *)url
+                         sourceUrl:(NSURL *)sourceUrl
+                    andDescription:(NSString *)description;
+
+
+- (void)postImageToInstagram:(UIImage *)image
+                 withCaption:(NSString *)caption
+                      inView:(UIView *)view
+                    delegate:(id<UIDocumentInteractionControllerDelegate>)delegate;
 
 
 // the methods below are used as phone number formatters

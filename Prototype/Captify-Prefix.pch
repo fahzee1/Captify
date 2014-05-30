@@ -62,6 +62,7 @@
 #define CAPTIFY_FACEBOOK @"#3B5998"
 #define CAPTIFY_INSTAGRAM @"#3f729b"
 #define CAPTIFY_TWITTER @"#00aced"
+#define CAPTIFY_PINTEREST @"#cb2027"
 
 // fonts
 
