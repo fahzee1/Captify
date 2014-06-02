@@ -537,12 +537,15 @@
     }
     self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
     self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:CAPTIFY_CAPTION_SIZE];
+    /*
     if ([self.finalCaptionLabel.text length] > 15){
         self.finalCaptionLabel.numberOfLines = 0;
         [self.finalCaptionLabel sizeToFit];
-    }
+    }*/
      
-    
+    self.finalCaptionLabel.numberOfLines = 0;
+    [self.finalCaptionLabel sizeToFit];
+
     self.finalCaptionLabel.textAlignment = NSTextAlignmentCenter;
     self.finalCaptionLabel.alpha = 0;
     [self.finalCaptionLabel addGestureRecognizer:press];
@@ -1142,12 +1145,19 @@
         {
             self.captionMoved = YES;
             view.center = point;
+            
+            view.backgroundColor = [UIColor clearColor];
+            view.layer.borderColor = [[UIColor whiteColor] CGColor];
+            view.layer.borderWidth = 2.f;
+            view.layer.cornerRadius = 10.f;
+            
         }
             break;
         case UIGestureRecognizerStateEnded:
         {
             //[self captionStoppedDragging];
             self.currentPoint = point;
+            view.layer.borderWidth = 0;
         }
             break;
             

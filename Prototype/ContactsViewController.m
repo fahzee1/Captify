@@ -206,17 +206,7 @@
 
         }
         
-        CGRect picFrame = ((FriendCell *)cell).myFriendPic.frame;
-        if ([self.indexPaths containsObject:indexPath]){
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            picFrame.origin.x += 15;
-        }
-        else{
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            picFrame.origin.x -= 15;
-        }
-        
-
+        [user getCorrectProfilePicWithImageView:((FriendCell *)cell).myFriendPic];
 
     }
     // search table not main table

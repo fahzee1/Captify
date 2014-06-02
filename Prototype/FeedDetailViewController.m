@@ -111,6 +111,7 @@
         [friendName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
         friendName.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+        friendName.titleLabel.textAlignment = NSTextAlignmentLeft;
         [friendName addTarget:self action:@selector(tappedUsernameLabel) forControlEvents:UIControlEventTouchUpInside];
         
         
