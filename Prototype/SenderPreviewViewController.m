@@ -316,10 +316,10 @@
         // create challenge in backend
     float compression;
     if (!IS_IPHONE5){
-        compression = 0.5;
+        compression = 0.7;
     }
     else{
-        compression = 0.3;
+        compression = 0.5;
     }
     
     NSData *imageData = UIImageJPEGRepresentation(self.image, compression);

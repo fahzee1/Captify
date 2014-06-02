@@ -991,10 +991,10 @@ typedef void (^ShareToNetworksBlock) ();
 {
     float compression;
     if (!IS_IPHONE5){
-        compression = 0.5;
+        compression = 0.7;
     }
     else{
-        compression = 0.3;
+        compression = 0.5;
     }
 
     NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
