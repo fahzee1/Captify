@@ -208,15 +208,24 @@
     
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
+    
+    [self makeHomeMenuDelegate];
+
+
+    
+    
+  
+    
+    
+}
+
+
+- (void)makeHomeMenuDelegate
+{
     MenuViewController *menu = (MenuViewController *)self.sideMenuViewController.menuViewController;
     menu.delegate = self;
-
-
-    
     
     self.sideMenuViewController.delegate = self;
-    
-    
 }
 
 - (void)shout
@@ -281,8 +290,8 @@
     [self.contactFetchTimer invalidate];
     self.contactFetchTimer = nil;
     
-    self.snapPicButton = nil;
-    self.topMenuButton = nil;
+    //self.snapPicButton = nil;
+    //self.topMenuButton = nil;
     //self.flashButton = nil;
     //self.rotateButton = nil;
     

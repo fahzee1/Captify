@@ -17,6 +17,8 @@ typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 + (NSString *)name;
 
 - (NSString *)displayName;
+- (NSString *)firstName;
+- (NSString *)lastName;
 
 - (BOOL)isFacebookUser;
 - (BOOL)isPrivate;

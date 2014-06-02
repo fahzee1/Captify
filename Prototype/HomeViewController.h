@@ -34,9 +34,13 @@
     @interface HomeViewController : UIViewController
 #endif
 
+
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
 @property (nonatomic, assign)BOOL showResults;
 @property (nonatomic,assign)BOOL success;
 @property (nonatomic,assign)BOOL goToLogin;
+
+
+- (void)makeHomeMenuDelegate;
 
 @end

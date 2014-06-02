@@ -15,7 +15,7 @@
 #import "ReceiverPreviewViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "UIColor+HexValue.h"
-#import "User.h"
+#import "User+Utils.h"
 #import "UIImageView+WebCache.h"
 #import "FAImageView.h"
 #import "HistoryDetailCell.h"
@@ -298,7 +298,7 @@
         image.frame = navFrameBase;
         
         UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-        friendName.text = [[self.sender stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+        friendName.text = self.sender;
         friendName.textColor = [UIColor whiteColor];
         friendName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
         

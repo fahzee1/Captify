@@ -342,6 +342,7 @@
         if ([home respondsToSelector:@selector(setMyUser:)]){
             ((HomeViewController *)home).myUser = user;
             ((HomeViewController *)home).goToLogin = NO;
+            [((HomeViewController *)home) makeHomeMenuDelegate];
         }
     }
     if (self.navigationController){

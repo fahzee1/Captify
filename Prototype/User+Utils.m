@@ -45,13 +45,39 @@
 - (NSString *)displayName
 {
     NSString *name;
-    if ([self.facebook_user intValue] == 1){
+    if ([self.facebook_user intValue] == 1 || [self.is_teamCaptify intValue]){
         name = [[self.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
     }
     else{
         name = [self.username capitalizedString];
     }
     return name;
+}
+
+- (NSString *)firstName
+{
+ 
+    if ([self.facebook_user intValue] == 1){
+        NSArray *splitName = [self.username componentsSeparatedByString:@"-"];
+        return [splitName firstObject];
+        
+    }
+    else{
+        return self.username;
+    }
+}
+
+- (NSString *)lastName
+{
+    if ([self.facebook_user intValue] == 1){
+        NSArray *splitName = [self.username componentsSeparatedByString:@"-"];
+        return [splitName lastObject];
+        
+    }
+    else{
+        return self.username;
+    }
+
 }
 
 
