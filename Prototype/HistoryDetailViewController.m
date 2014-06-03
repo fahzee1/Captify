@@ -253,26 +253,30 @@
     
 
     
-    if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
-        if ([self.myPick.first_open intValue] == 1){
-            UIImage *image = [self.view snapshotView:self.view];
-            CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
-            [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
+    if (!self.sentHistory){
+        if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
+            if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
+                if ([self.myPick.first_open intValue] == 1){
+                    UIImage *image = [self.view snapshotView:self.view];
+                    CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
+                    [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
+                    
+                    self.myPick.first_open = [NSNumber numberWithBool:NO];
+                    NSError *error;
+                    if (![self.myPick.managedObjectContext save:&error]){
+                        DLog(@"%@",error);
+                    }
             
-            self.myPick.first_open = [NSNumber numberWithBool:NO];
-            NSError *error;
-            if (![self.myPick.managedObjectContext save:&error]){
-                DLog(@"%@",error);
+                }
+                
+                
+
+                
+
+                
+                
             }
-    
         }
-        
-        
-
-        
-
-        
-        
     }
     
     
@@ -1741,8 +1745,15 @@
 
 - (NSArray *)data
 {
-    NSSet *picks = self.myChallenge.picks;
-    _data = [picks sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+    NSMutableSet *picks = [self.myChallenge.picks mutableCopy];
+    for (ChallengePicks *pick in picks){
+        if ([pick.player.username isEqualToString:self.myUser.username]){
+            [picks removeObject:pick];
+        }
+    }
+    
+    NSSortDescriptor *sortDate = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
+    _data = [picks sortedArrayUsingDescriptors:@[sortDate]];
     
     return _data;
 }
@@ -1899,7 +1910,7 @@
             self.errorMakeCaptionButton.layer.cornerRadius = 5;
             [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
             
-            [self.view addSubview:self.errorMakeCaptionButton];
+            [self.scrollView addSubview:self.errorMakeCaptionButton];
         }
         else{
             

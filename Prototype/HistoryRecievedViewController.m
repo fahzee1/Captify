@@ -505,6 +505,7 @@
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
+            ((HistoryDetailViewController *)vc).sentHistory = NO;
             ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
            
             

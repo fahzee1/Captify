@@ -61,12 +61,15 @@
     
     
     [self setupTopLabel];
+    
+ 
 
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
     [self setupTopLabel];
 }
 
@@ -127,7 +130,7 @@
         view.tag = SENDERPICANDNAME_TAG;
         self.topLabel = view;
     }
-    [self.navigationController.navigationBar addSubview:self.topLabel];
+    [self.view addSubview:self.topLabel];
 
     
     

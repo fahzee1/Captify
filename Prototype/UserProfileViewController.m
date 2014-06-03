@@ -64,6 +64,8 @@
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = leftButton;
+    
+    self.navigationController.navigationBarHidden = NO;
 
     
     

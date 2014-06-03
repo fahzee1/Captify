@@ -35,5 +35,7 @@
 @property (nonatomic, strong)NSURL *mediaURL;
 @property (strong, nonatomic)ChallengePicks *myPick;
 
+@property BOOL sentHistory;
+
 
 @end

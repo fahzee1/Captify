@@ -244,19 +244,25 @@
         }
     }
     
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (![self.indexPaths containsObject:indexPath]){
         [self.indexPaths addObject:indexPath];
+        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
         
     }
     else{
         [self.indexPaths removeObject:indexPath];
+        cell.backgroundColor = [UIColor whiteColor];
+
     }
     
-    [self.myTable reloadData];
+    //[self.myTable reloadData];
 
         
 }
+
+
 
 - (NSMutableArray *)indexPaths
 {
