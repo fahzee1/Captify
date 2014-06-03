@@ -795,8 +795,10 @@
             NSString *challenge_id;
             if (payload[@"challenge"]){
                 challenge_id = payload[@"challenge"];
+                NSString *channel = [((NSString *)challenge_id) stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+                NSString *_id = [channel stringByReplacingOccurrencesOfString:@" " withString:@"-"];
                 ParseNotifications *p = [ParseNotifications new];
-                [p addChannelWithChallengeID:challenge_id];
+                [p addChannelWithChallengeID:_id];
                 
                 UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
 
@@ -806,11 +808,14 @@
                 
             }
             
+            [self setupHistoryViewControllers];
+            
         }
             break;
         case ParseNotificationSendCaptionPick:
         {
             
+            [self setupHistoryViewControllers];
         }
             break;
         case ParseNotificationSenderChoseCaption:
@@ -831,7 +836,7 @@
             break;
         case ParseNotificationNotifySelectedCaptionSender:
         {
-            
+              [self setupHistoryViewControllers];
         }
             break;
 
