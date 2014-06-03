@@ -332,7 +332,7 @@
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     NSAssert([params valueForKey:@"active"], @"Must include active to create challenge");
 
-    
+    static int retrys = 0;
     Challenge *challenge;
     NSError *error;
     id sender = [NSString stringWithFormat:@"%@",[params valueForKey:@"sender"]];
@@ -407,8 +407,28 @@
         }
         // no user
         else{
-            DLog(@"user %@ hasnt been created, so challenge not created",sender);
+            DLog(@"user %@ hasnt been created, so creating now",sender);
             
+            if (retrys < 4){
+                retrys += 1;
+                
+                
+                NSMutableDictionary *params2 = [@{@"username":sender} mutableCopy];
+                
+                if (params[@"facebook_id"]){
+                    if (params[@"facebok_id"] != 0){
+                        params2[@"facebook_id"] = params[@"facebook_id"];
+                        params2[@"facebook_user"] = params[@"is_facebook"];
+                    }
+                }
+                
+                User *newUser =[User createFriendWithParams:params2
+                                      inMangedObjectContext:[params valueForKey:@"context"]];
+                if (newUser){
+                    [self createChallengeWithRecipientsWithParams:params];
+                }
+                
+            }
         }
 
     }

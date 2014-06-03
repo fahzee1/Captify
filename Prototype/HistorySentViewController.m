@@ -28,7 +28,8 @@
 @property (strong, nonatomic) NSArray *data;
 @property BOOL pendingRequest;
 @property (strong, nonatomic) Notifications *notifications;
-@property (strong, nonatomic)UIView *errorContainerView;
+@property (strong,nonatomic)UILabel *errorLabel;
+@property (strong,nonatomic)UIButton *errorPlay;
 @property (strong,  nonatomic)UIRefreshControl *refreshControl;
 @end
 
@@ -59,7 +60,7 @@
     
 
     if ([self.data count] == 0){
-        [self.myTable addSubview:self.errorContainerView];
+        [self.myTable addSubview:self.errorLabel];
     }
     
     if (!IS_IPHONE5){
@@ -227,17 +228,11 @@
                                         
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             if ([self.data count] > 0){
-                                                [self.errorContainerView removeFromSuperview];
-                                                self.errorContainerView = nil;
+                                                [self.errorPlay removeFromSuperview];
+                                                [self.errorLabel removeFromSuperview];
+                                                self.errorLabel = nil;
+                                                self.errorPlay = nil;
                                 
-                                            }
-                                            else{
-                                                /*
-                                                if ([self.data count] == 0){
-                                                    [self.myTable addSubview:self.errorContainerView];
-                                                }
-                                                 */
-
                                             }
                                             
 
@@ -509,8 +504,10 @@
                                               sent:YES];
     });
      */
+    
+    
     _data = [Challenge getHistoryChallengesForUser:self.myUser
-                                              sent:YES];
+                                                 sent:YES];
 
     
     return _data;
@@ -526,57 +523,45 @@
     return _notifications;
 }
 
-- (UIView *)errorContainerView
-{
-    if (!_errorContainerView){
-        
-       _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
-       _errorContainerView.layer.cornerRadius = 10;
-       _errorContainerView.layer.masksToBounds = YES;
-       _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        
-        CGRect containerFrame = _errorContainerView.frame;
-        containerFrame.size.width -= 15;
-        containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
-        containerFrame.origin.x += 7;
-        _errorContainerView.frame = containerFrame;
-        
-        UILabel *errorLabel = [[UILabel alloc] init];
-        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
-        errorLabel.numberOfLines = 0;
-        [errorLabel sizeToFit];
-        errorLabel.textColor = [UIColor whiteColor];
-        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width -20, 100);
-        
-        UIButton *play = [UIButton buttonWithType:UIButtonTypeSystem];
-        play.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        play.layer.cornerRadius = 10;
-        play.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        [play setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
-        [play setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        CGRect labelFrame = errorLabel.frame;
-        play.frame = CGRectMake(labelFrame.origin.x + 15, labelFrame.size.height + 45, 200, 50);
-        [play addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
-        
-        if (!IS_IPHONE5){
-            CGRect playFrame = play.frame;
-            playFrame.origin.y += 50;
-            play.frame = playFrame;
-        }
-        
 
+
+- (UILabel *)errorLabel
+{
+    if (!_errorLabel){
         
-        [_errorContainerView addSubview:errorLabel];
-        [_errorContainerView addSubview:play];
+        _errorLabel = [[UILabel alloc] init];
+        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        _errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
+        _errorLabel.numberOfLines = 0;
+        [_errorLabel sizeToFit];
+        _errorLabel.textColor = [UIColor whiteColor];
+        _errorLabel.frame = CGRectMake(35, 50, 300, 100);
+        
+        if ([self.data count] == 0){
+            self.errorPlay = [UIButton buttonWithType:UIButtonTypeSystem];
+            self.errorPlay.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+            self.errorPlay.layer.cornerRadius = 10;
+            self.errorPlay.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+            [self.errorPlay setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
+            [self.errorPlay setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+            CGRect labelFrame = _errorLabel.frame;
+            self.errorPlay.frame = CGRectMake(labelFrame.origin.x + 25, labelFrame.size.height + 65, 200, 50);
+            [self.errorPlay addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+            
+            if (!IS_IPHONE5){
+                CGRect playFrame = self.errorPlay.frame;
+                playFrame.origin.y += 50;
+                self.errorPlay.frame = playFrame;
+            }
+            
+            [self.myTable addSubview:self.errorPlay];
+        }
 
     }
     
-    return _errorContainerView;
+    
+    return _errorLabel;
 }
-
-
 
 
 @end

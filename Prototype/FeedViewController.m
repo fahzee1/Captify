@@ -246,41 +246,14 @@
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
 
-        NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
-        if ([is_facebook intValue] == 1){
-            
-            NSString *fbID = json[@"sender"][0][@"facebook_id"];
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",fbID];
-            NSURL * fbUrl = [NSURL URLWithString:fbString];
-            [cell.senderPic setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-            cell.senderPic.layer.masksToBounds = YES;
-            cell.senderPic.layer.cornerRadius = 15.f;
-        }
-        else{
-            cell.senderPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-        }
-       
-        // senderLabel and name are mismatched (to lazy to fix)
-        
-        cell.senderLabel.text = [json[@"name"] capitalizedString];
-        cell.senderLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
-        cell.senderLabel.textColor = [UIColor whiteColor];
-        if ([cell.senderLabel.text length] >= 24){
-            NSString *uString = [cell.senderLabel.text substringToIndex:23];
-            cell.senderLabel.text = [NSString stringWithFormat:@"%@...",uString];
-        }
-        
-        
-        
-        NSString *username = json[@"sender"][0][@"username"];
-        cell.name.text = [[username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+    
+        cell.name.text = [json[@"name"] capitalizedString];
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
         cell.name.textColor = [UIColor whiteColor];
         if ([cell.name.text length] >= 24){
             NSString *uString = [cell.name.text substringToIndex:23];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
         }
-        
         
         
         
@@ -298,8 +271,6 @@
        // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
 
         cell.myImageView.image = nil;
-        cell.senderPic.image = nil;
-        cell.senderLabel.text = nil;
         cell.name.text = nil;
         
     }

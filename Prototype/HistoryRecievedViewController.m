@@ -32,7 +32,8 @@
 @property BOOL pendingRequest;
 @property (strong, nonatomic) NSMutableArray *picksList;
 @property (strong,nonatomic) Notifications *notifications;
-@property (strong,nonatomic)UIView *errorContainerView;
+@property (strong,nonatomic)UILabel *errorLabel;
+@property (strong,nonatomic)UIButton *errorInvite;
 @property (strong,nonatomic)UIRefreshControl *refreshControl;
 
 @end
@@ -62,7 +63,7 @@
     [self.refreshControl addTarget:self action:@selector(fetchUpdates) forControlEvents:UIControlEventValueChanged];
     
     if ([self.cData count] == 0){
-        [self.myTable addSubview:self.errorContainerView];
+        [self.myTable addSubview:self.errorLabel];
     }
     
     if (!IS_IPHONE5){
@@ -120,14 +121,11 @@
 
 - (void)showInviteScreen
 {
-    // update the highlighted menu button to the screen we're about to show
-    UIViewController *menu = self.sideMenuViewController.menuViewController;
-    if ([menu isKindOfClass:[MenuViewController class]]){
-        [((MenuViewController *)menu) updateCurrentScreen:MenuFriendsScreen];
-    }
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
+    activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
+    [self presentViewController:activityVC animated:YES completion:nil];
 
-    UIViewController *inviteScreen = [self.storyboard instantiateViewControllerWithIdentifier:@"friendContainerRoot"];
-    [self.sideMenuViewController setMainViewController:inviteScreen animated:YES closeMenu:NO];
 }
 
 - (void)fetchUpdates
@@ -189,6 +187,9 @@
                                             NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
                                             
+                                            NSNumber *isFb;
+                                            NSString *fbID;
+                                            
                                             id sender_name = ch[@"sender"];
                                             NSString *sender;
                                             if ([sender_name isKindOfClass:[NSString class]]){
@@ -196,9 +197,11 @@
                                             }
                                             else{
                                                 sender = sender_name[0][@"username"];
+                                                isFb = sender_name[0][@"is_facebook"];
+                                                fbID = sender_name[0][@"facebook_id"];
                                             }
     
-                                            NSDictionary *params = @{@"sender": sender_name,
+                                            NSMutableDictionary *params = [@{@"sender": sender_name,
                                                                      @"context": self.myUser.managedObjectContext,
                                                                      @"recipients": recipients,
                                                                      @"recipients_count": recipients_count,
@@ -206,7 +209,11 @@
                                                                      @"active":active,
                                                                      @"challenge_id":challenge_id,
                                                                      @"media_url":media_url
-                                                                     };
+                                                                     } mutableCopy];
+                                            if (fbID){
+                                                params[@"facebook_user"] = isFb;
+                                                params[@"facebook_id"] = fbID;
+                                            }
                                       
                                           
                                             
@@ -257,8 +264,11 @@
                                             
                                             
                                             if ([self.cData count] > 0){
-                                                [self.errorContainerView removeFromSuperview];
-                                                 self.errorContainerView = nil;
+                                                [self.errorLabel removeFromSuperview];
+                                                [self.errorInvite removeFromSuperview];
+                                                self.errorInvite = nil;
+                                                self.errorLabel = nil;
+                                                
                                             }
                                             else{
                                                 /*
@@ -548,6 +558,7 @@
     
     _cData = [Challenge getHistoryChallengesForUser:self.myUser
                                                sent:NO];
+    
 
     
     return _cData;
@@ -577,54 +588,44 @@
     return _notifications;
 }
 
-- (UIView *)errorContainerView
+
+- (UILabel *)errorLabel
 {
-    if (!_errorContainerView){
+    if (!_errorLabel){
+        _errorLabel = [[UILabel alloc] init];
+        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        _errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
+        _errorLabel.numberOfLines = 0;
+        [_errorLabel sizeToFit];
+        _errorLabel.textColor = [UIColor whiteColor];
+        _errorLabel.frame = CGRectMake(35, 50, 300, 100);
         
-        _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
-        _errorContainerView.layer.cornerRadius = 10;
-        _errorContainerView.layer.masksToBounds = YES;
-        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        
-        CGRect containerFrame = _errorContainerView.frame;
-        containerFrame.size.width -= 15;
-        containerFrame.size.height -= 250;
-        containerFrame.origin.y += 25;
-        containerFrame.origin.x += 7;
-        _errorContainerView.frame = containerFrame;
-        
-        
-        UILabel *errorLabel = [[UILabel alloc] init];
-        errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
-        errorLabel.numberOfLines = 0;
-        [errorLabel sizeToFit];
-        errorLabel.textColor = [UIColor whiteColor];
-        errorLabel.frame = CGRectMake(15, 50, _errorContainerView.frame.size.width-20, 100);
-        
-        UIButton *invite = [UIButton buttonWithType:UIButtonTypeSystem];
-        invite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-        invite.layer.cornerRadius = 10;
-        invite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        [invite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
-        [invite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-        CGRect labelFrame = errorLabel.frame;
-        invite.frame = CGRectMake(labelFrame.origin.x + 15, labelFrame.size.height + 45, 200, 50);
-        [invite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
-        
-        if (!IS_IPHONE5){
-            CGRect inviteFrame = invite.frame;
-            inviteFrame.origin.y += 50;
-            invite.frame = inviteFrame;
+        if ([self.cData count] == 0){
+            self.errorInvite = [UIButton buttonWithType:UIButtonTypeSystem];
+            self.errorInvite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+            self.errorInvite.layer.cornerRadius = 10;
+            self.errorInvite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+            [self.errorInvite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
+            [self.errorInvite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+            CGRect labelFrame = _errorLabel.frame;
+            self.errorInvite.frame = CGRectMake(labelFrame.origin.x + 25, labelFrame.size.height + 65, 200, 50);
+            [self.errorInvite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
+            
+            if (!IS_IPHONE5){
+                CGRect inviteFrame = self.errorInvite.frame;
+                inviteFrame.origin.y += 50;
+                self.errorInvite.frame = inviteFrame;
+            }
+            
+            [self.myTable addSubview:self.errorInvite];
         }
         
-        
-        [_errorContainerView addSubview:errorLabel];
-        [_errorContainerView addSubview:invite];
-        
+
     }
     
-    return _errorContainerView;
+    
+    return _errorLabel;
+
 }
 
 

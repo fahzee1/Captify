@@ -83,7 +83,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *captionImageFilterLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
-@property (strong, nonatomic)UIView *errorContainerView;
 @property (strong, nonatomic)UILabel *errorLabel;
 @property (strong, nonatomic)UIButton *errorMakeCaptionButton;
 
@@ -321,6 +320,27 @@
                                  block:^(BOOL wasSuccessful, id data, NSString *message) {
                                      if (wasSuccessful){
                                          
+                                         
+                                         if (!self.myChallenge.image_path){
+                                             
+                                             if (data[@"media64"]){
+                                                 NSString *base64Media = data[@"media64"];
+                                                 NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Media options:0];
+                                                 self.myImageView.image = [UIImage imageWithData:data];
+                                             }
+
+                                             else if (data[@"media_url"]){
+                                                 NSString *url = data[@"media_url"];
+                                                 self.myChallenge.image_path = url;
+                                                 self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                 [self downloadImage];
+                                                 
+                                                 NSError *error;
+                                                 [self.myChallenge.managedObjectContext save:&error];
+                                             }
+                                             
+                                        }
+                                         
                                          // get picks
                                          id picks = [data valueForKey :@"picks"];
                                          NSData *jsonString = [picks dataUsingEncoding:NSUTF8StringEncoding];
@@ -362,8 +382,8 @@
                                          
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              if ([self.data count] > 0){
-                                                 [self.errorContainerView removeFromSuperview];
-                                                 self.errorContainerView = nil;
+                                                 [self.errorLabel removeFromSuperview];
+                                                 self.errorLabel = nil;
                                              }
                                              
                                              [self.myTable reloadData];
@@ -1745,6 +1765,7 @@
 
 - (NSArray *)data
 {
+    
     NSMutableSet *picks = [self.myChallenge.picks mutableCopy];
     for (ChallengePicks *pick in picks){
         if ([pick.player.username isEqualToString:self.myUser.username]){
@@ -1754,6 +1775,7 @@
     
     NSSortDescriptor *sortDate = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
     _data = [picks sortedArrayUsingDescriptors:@[sortDate]];
+     
     
     return _data;
 }
@@ -1844,39 +1866,6 @@
 }
 
 
-- (UIView *)errorContainerView
-{
-    if (!_errorContainerView){
-        
-        _errorContainerView = [[UIView alloc] initWithFrame:self.myTable.frame];
-        _errorContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
-        _errorContainerView.layer.cornerRadius = 10;
-        _errorContainerView.layer.masksToBounds = YES;
-        CGRect containerFrame = _errorContainerView.frame;
-        containerFrame.size.width -= 30;
-        containerFrame.size.height -= 30;
-        containerFrame.origin.x += 15;
-        containerFrame.origin.y += 15;
-        _errorContainerView.frame = containerFrame;
-        
-        CGRect bounds = _errorContainerView.bounds;
-        
-        UILabel *message = [[UILabel alloc] init];
-        message.textColor = [UIColor whiteColor];
-        message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-        message.text = NSLocalizedString(@"No captions have been sent to this challenge", nil);
-        message.numberOfLines = 0;
-        [message sizeToFit];
-        message.frame = CGRectMake(bounds.size.width/13, bounds.size.height/3, bounds.size.width, 40);
-        
-        [_errorContainerView addSubview:message];
-
-    }
-    
-    
-    return _errorContainerView;
-}
-
 - (UILabel *)errorLabel
 {
     if (!_errorLabel){
@@ -1899,7 +1888,7 @@
             _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
             
             self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x, _errorLabel.frame.origin.y + 50, 203, 45);
+              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x, _errorLabel.frame.origin.y + 60, 203, 45);
             [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
             [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];

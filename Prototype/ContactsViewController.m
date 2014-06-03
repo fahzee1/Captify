@@ -207,6 +207,13 @@
         }
         
         [user getCorrectProfilePicWithImageView:((FriendCell *)cell).myFriendPic];
+        
+        if ([self.indexPaths containsObject:indexPath]){
+             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else{
+             cell.accessoryType = UITableViewCellAccessoryNone;
+        }
 
     }
     // search table not main table
@@ -248,16 +255,16 @@
     
     if (![self.indexPaths containsObject:indexPath]){
         [self.indexPaths addObject:indexPath];
-        cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
         
     }
     else{
         [self.indexPaths removeObject:indexPath];
-        cell.backgroundColor = [UIColor whiteColor];
+        cell.accessoryType = UITableViewCellAccessoryNone;
 
     }
     
-    //[self.myTable reloadData];
+    [self.myTable reloadData];
 
         
 }
