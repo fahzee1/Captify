@@ -358,6 +358,11 @@
                                          
                                          // get picks
                                          id picks = [data valueForKey :@"picks"];
+                                         NSNumber *redis = data[@"redis"];
+                                         if ([redis intValue] == 1){
+                                             [self fetchRedisPicksWithData:picks];
+                                             return;
+                                         }
                                          NSData *jsonString = [picks dataUsingEncoding:NSUTF8StringEncoding];
                                          id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
                                          
@@ -410,6 +415,61 @@
         self.pendingRequest = NO;
         
     }
+}
+
+- (void)fetchRedisPicksWithData:(id)data
+{
+    for (NSString *jsonString in data){
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        id pickJson = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+        
+        NSString *caption = pickJson[@"answer"];
+        NSString *player = pickJson[@"player"];
+        NSNumber *is_chosen = pickJson[@"is_chosen"];
+        NSString *pick_id = pickJson[@"pick_id"];
+        NSString *facebook_id = pickJson[@"facebook_id"];
+        NSNumber *is_facebook = pickJson[@"is_facebook"];
+        
+        NSMutableDictionary *params = [@{@"player": player,
+                                         @"context":self.myUser.managedObjectContext,
+                                         @"is_chosen":is_chosen,
+                                         @"answer":caption,
+                                         @"pick_id":pick_id} mutableCopy];
+        
+        if (facebook_id && is_facebook){
+            params[@"is_facebook"] = is_facebook;
+            params[@"facebook_id"] = facebook_id;
+        }
+        
+        ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
+        
+        
+        if (pick){
+            [self.myChallenge addPicksObject:pick];
+            
+            NSError *error;
+            if (![self.myChallenge.managedObjectContext save:&error]){
+                DLog(@"%@",error);
+                
+            }
+            
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.data count] > 0){
+                [self.errorLabel removeFromSuperview];
+                self.errorLabel = nil;
+            }
+            
+            [self.myTable reloadData];
+        });
+
+
+
+    }
+    
+    return;
+    
 }
 
 

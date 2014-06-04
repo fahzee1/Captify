@@ -369,10 +369,19 @@
             }
             
             @try {
-                if (media_url){
+                if (![media_url isKindOfClass:[NSNull class]]){
                     challenge.image_path = media_url;
                 }
-                challenge.local_image_path = local_url;
+                else{
+                    challenge.image_path = @"";
+                }
+                
+                if (![local_url isKindOfClass:[NSNull class]]){
+                    challenge.local_image_path = local_url;
+                }
+                else{
+                    challenge.local_image_path = @"";
+                }
                 challenge.active = active; //active ? active : [NSNumber numberWithBool:YES];
                 
                 for (NSString *friend in [params valueForKey:@"recipients"]){

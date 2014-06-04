@@ -157,6 +157,13 @@
                                         // create json objects
                                         // create json objects
                                         id challenges = [data valueForKey:@"my_challenges"];
+                                        /*
+                                        NSNumber *redis = data[@"redis"];
+                                        if ([redis intValue] == 1){
+                                            
+                                            return;
+                                        }
+                                         */
                                         
                                         id json;
                                         if ([challenges isKindOfClass:[NSString class]]){
@@ -165,6 +172,13 @@
                                         }
                                         else if ([challenges isKindOfClass:[NSDictionary class]]){
                                             json = challenges;
+                                        }
+                                        
+                                        else if ([challenges isKindOfClass:[NSArray class]]){
+                                            NSNumber *redis = data[@"redis"];
+                                            if ([redis intValue] == 1){
+                                                [self fetchRedisUpdateWithData:challenges];
+                                            }
                                         }
                                         
                                         // get sender and create challenge from data
@@ -245,6 +259,41 @@
                                 }];
     }
     
+}
+
+
+- (void)fetchRedisUpdateWithData:(id)data
+{
+    for (NSString *jsonString in data){
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+        
+        NSString *challenge_id = json[@"id"];
+        NSString *name = json[@"name"];
+        NSNumber *active = json[@"is_active"];
+        NSNumber *recipients_count = json[@"recipients_count"];
+        NSArray *recipients = json[@"recipients"];
+        NSString *media_url = json[@"media_url"];
+        
+        NSDictionary *params = @{@"sender": self.myUser.username,
+                                 @"context": self.myUser.managedObjectContext,
+                                 @"recipients": recipients,
+                                 @"recipients_count": recipients_count,
+                                 @"challenge_name":name,
+                                 @"active":active,
+                                 @"challenge_id":challenge_id,
+                                 @"media_url":media_url
+                                 };
+        
+        
+       [Challenge createChallengeWithRecipientsWithParams:params];
+        
+        return;
+        
+        
+        
+
+    }
 }
 
 
