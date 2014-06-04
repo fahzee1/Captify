@@ -68,8 +68,8 @@
     
     if (!IS_IPHONE5){
         self.myTable.contentSize = CGSizeMake(320, 800);
+        self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 120, 0);
     }
-
     
     
 

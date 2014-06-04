@@ -210,6 +210,13 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
+    if (!IS_IPHONE5){
+        self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 150, 0);
+    }
+    
+    
+
+    
 
     
     
@@ -315,6 +322,13 @@
 
 - (void)fetchUpdates
 {
+    double delayInSeconds = 5.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.myTable reloadData];
+    });
+    
+    
     if (!self.pendingRequest){
         self.pendingRequest = YES;
         [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
