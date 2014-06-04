@@ -369,7 +369,9 @@
             }
             
             @try {
-                challenge.image_path = media_url;
+                if (media_url){
+                    challenge.image_path = media_url;
+                }
                 challenge.local_image_path = local_url;
                 challenge.active = active; //active ? active : [NSNumber numberWithBool:YES];
                 
@@ -676,6 +678,7 @@
 + (NSString *)createChallengeIDWithUser:(NSString *)user
 {
     NSString *uuid = [[NSUUID UUID] UUIDString];
+    user = [user stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     return [NSString stringWithFormat:@"%@-%@",user,uuid];
 }
 

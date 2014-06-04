@@ -369,22 +369,28 @@
                                                       if (wasSuccessful){
                                                           NSUInteger count = [self.allFriends count];
                                                           NSString *media_url = [data valueForKey:@"media"];
+                                                          if ([media_url isKindOfClass:[NSNull class]]){
+                                                              media_url = @"";
+                                                          }
                                                           
                                                           // save image locally in documents directory
                                                           NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
         
                                                           Challenge *challenge;
-                                                          NSDictionary *params;
+                                                          NSMutableDictionary *params;
                                                           @try {
-                                                              params = @{@"sender":self.myUser.username,
+                                                              params = [@{@"sender":self.myUser.username,
                                                                            @"context":self.myUser.managedObjectContext,
                                                                            @"recipients":self.allFriends,
                                                                            @"recipients_count":[NSNumber numberWithInteger:count],
                                                                            @"challenge_name":self.name,
                                                                            @"challenge_id":challenge_id,
-                                                                           @"media_url":media_url,
                                                                            @"local_media_url":localMediaName,
-                                                                          @"active":[NSNumber numberWithBool:YES]};
+                                                                          @"active":[NSNumber numberWithBool:YES]} mutableCopy];
+                                                              
+                                                              if (media_url){
+                                                                  params[@"media_url"] = media_url;
+                                                              }
                                                               
                                                               challenge = [Challenge createChallengeWithRecipientsWithParams:params];
 

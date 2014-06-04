@@ -33,8 +33,8 @@
 
 - (NSString *)formatChannelNameForParse:(NSString *)name
 {
-    [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    [name stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+    name = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    name = [name stringByReplacingOccurrencesOfString:@"." withString:@"-"];
     return name;
 }
 

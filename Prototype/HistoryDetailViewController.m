@@ -109,6 +109,7 @@
 @property int errorCount;
 @property BOOL captionIsSplit;
 @property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
+@property BOOL choseOwnCaption;
 
 // filters
 @property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
@@ -1447,6 +1448,7 @@
     else if (alertView == self.confirmCaptionAlert){
         if (buttonIndex == 1){
             self.makeButtonVisible = NO;
+            self.choseOwnCaption = YES;
             NSDictionary *params = @{@"username": self.myUser.username,
                                      @"challenge_id":self.myChallenge.challenge_id,
                                      @"answer":self.selectedCaption,
@@ -1767,9 +1769,16 @@
 {
     
     NSMutableSet *picks = [self.myChallenge.picks mutableCopy];
-    for (ChallengePicks *pick in picks){
-        if ([pick.player.username isEqualToString:self.myUser.username]){
-            [picks removeObject:pick];
+    
+    if (!self.choseOwnCaption){
+        ChallengePicks *pickToDelete;
+        for (ChallengePicks *pick in picks){
+            if ([pick.player.username isEqualToString:self.myUser.username]){
+                pickToDelete = pick;
+            }
+        }
+        if (pickToDelete){
+            [picks removeObject:pickToDelete];
         }
     }
     
@@ -1884,11 +1893,11 @@
         _errorLabel.frame = CGRectMake(ivFrame.origin.x, ivFrame.size.height + 90, ivFrame.size.width, 40);
          _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
-        if ([self.myChallenge.active intValue] == 1){
+        if ([self.myChallenge.active intValue] == 1 && [self.data count] == 0){
             _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
             
             self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x, _errorLabel.frame.origin.y + 60, 203, 45);
+              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x + 35, _errorLabel.frame.origin.y + 60, 203, 45);
             [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
             [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
