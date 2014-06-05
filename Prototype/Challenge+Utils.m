@@ -386,6 +386,9 @@
                 
                 for (NSString *friend in [params valueForKey:@"recipients"]){
                     User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
+                    [challenge addRecipientsObject:uFriend];
+                    
+                    /*
                     if (uFriend && uFriend.is_friend && !uFriend.super_user){
                         [challenge addRecipientsObject:uFriend];
                     }
@@ -393,16 +396,19 @@
                         DLog(@"%@ is either not there, not afriend, or a super user",friend);
                         
                     }
+                     */
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSError *error;
-                    if (![challenge.managedObjectContext save:&error]){
-                        DLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                        [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
-                        
-                        abort();
-                        
+                    if ([challenge.recipients count] > 0){
+                        if (![challenge.managedObjectContext save:&error]){
+                            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                            [Challenge showAlertWithTitle:@"Error" message:@"There was an unrecoverable error, the application will shut down now"];
+                            
+                            abort();
+                            
+                        }
                     }
                     
                 });

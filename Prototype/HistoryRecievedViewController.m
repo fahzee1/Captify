@@ -175,6 +175,14 @@
                                         else if ([challenges isKindOfClass:[NSDictionary class]]){
                                             json = challenges;
                                         }
+                                        else if ([challenges isKindOfClass:[NSArray class]]){
+                                            NSNumber *redis = data[@"redis"];
+                                            if ([redis intValue] == 1){
+                                                [self fetchRedisUpdateWithData:challenges];
+                                            }
+
+                                            
+                                        }
                                       
                                         
 
@@ -287,6 +295,65 @@
                                     
                                 }];
     }
+}
+
+- (void)fetchRedisUpdateWithData:(id)data
+{
+    for (NSString *jsonString in data){
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+        
+        NSString *challenge_id = json[@"id"];
+        NSString *name = json[@"name"];
+        NSNumber *active = json[@"is_active"];
+        NSNumber *recipients_count = json[@"recipients_count"];
+        NSArray *recipients = json[@"recipients"];
+        NSString *media_url = json[@"media_url"];
+        
+        NSNumber *isFb;
+        NSString *fbID;
+        
+        id sender_name = json[@"sender"];
+        NSString *sender;
+        if ([sender_name isKindOfClass:[NSString class]]){
+            sender = sender_name;
+        }
+        else{
+            sender = sender_name[0][@"username"];
+            isFb = sender_name[0][@"is_facebook"];
+            fbID = sender_name[0][@"facebook_id"];
+        }
+        
+        
+        if (!challenge_id || !name || !sender_name){
+            continue;
+        }
+        
+        NSMutableDictionary *params = [@{@"sender": sender,
+                                 @"context": self.myUser.managedObjectContext,
+                                 @"recipients": recipients,
+                                 @"recipients_count": recipients_count,
+                                 @"challenge_name":name,
+                                 @"active":active,
+                                 @"challenge_id":challenge_id,
+                                 @"media_url":media_url
+                                 } mutableCopy];
+        
+        if (fbID){
+            params[@"facebook_user"] = isFb;
+            params[@"facebook_id"] = fbID;
+        }
+        
+        
+        
+        [Challenge createChallengeWithRecipientsWithParams:params];
+        
+        return;
+    
+        
+        
+    }
+
 }
 
 #pragma -mark Uitableview delegate
