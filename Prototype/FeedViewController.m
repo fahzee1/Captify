@@ -307,7 +307,7 @@
         if ([is_facebook intValue] == 1){
             
             NSString *fbID = json[@"sender"][0][@"facebook_id"];
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",fbID];
+            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large",fbID];
             fbURL = [NSURL URLWithString:fbString];
         }
         

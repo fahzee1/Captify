@@ -331,6 +331,7 @@
     NSAssert([params valueForKey:@"recipients_count"], @"Must include recipients_count");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     NSAssert([params valueForKey:@"active"], @"Must include active to create challenge");
+    NSAssert([params valueForKey:@"sent"], @"Must include sent to create challenge");
 
     static int retrys = 0;
     Challenge *challenge;
@@ -344,6 +345,8 @@
     // check if exists first
     AppDelegate *delegate = [[AppDelegate alloc] init];
     User *myUser = delegate.myUser;
+    
+    NSNumber *sent = params[@"sent"];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
@@ -475,9 +478,11 @@
         challenge.active = active;
         
         if (![challenge.recipients containsObject:myUser]){
-            [challenge addRecipientsObject:myUser];
+            if ([sent intValue] == 0){
+                [challenge addRecipientsObject:myUser];
+            }
         }
-        
+    
         if (![challenge.managedObjectContext save:&error]){
             DLog(@"%@",error);
         }
@@ -486,9 +491,11 @@
     }
     
     if (![challenge.recipients containsObject:myUser]){
-        [challenge addRecipientsObject:myUser];
-        if (![challenge.managedObjectContext save:&error]){
-            DLog(@"%@",error);
+        if ([sent intValue] == 0){
+            [challenge addRecipientsObject:myUser];
+            if (![challenge.managedObjectContext save:&error]){
+                DLog(@"%@",error);
+            }
         }
 
     }

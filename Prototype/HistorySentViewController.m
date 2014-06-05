@@ -197,7 +197,8 @@
                                                                      @"challenge_name":name,
                                                                      @"active":active,
                                                                      @"challenge_id":challenge_id,
-                                                                     @"media_url":media_url
+                                                                     @"media_url":media_url,
+                                                                     @"sent":[NSNumber numberWithBool:YES]
                                                                      };
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
@@ -282,7 +283,8 @@
                                  @"challenge_name":name,
                                  @"active":active,
                                  @"challenge_id":challenge_id,
-                                 @"media_url":media_url
+                                 @"media_url":media_url,
+                                 @"sent":[NSNumber numberWithBool:YES]
                                  };
         
         

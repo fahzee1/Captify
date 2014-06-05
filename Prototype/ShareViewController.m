@@ -259,7 +259,7 @@ typedef void (^ShareToNetworksBlock) ();
     [privacySwitch addTarget:self action:@selector(changedPrivacy:) forControlEvents:UIControlEventValueChanged];
     
     CGRect privacyFrame = privacySwitch.frame;
-    privacyFrame.origin.x += 7;
+    privacyFrame.origin.x += 20;
     privacySwitch.frame = privacyFrame;
 
     

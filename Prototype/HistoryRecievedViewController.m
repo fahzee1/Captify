@@ -222,6 +222,8 @@
                                                 params[@"facebook_user"] = isFb;
                                                 params[@"facebook_id"] = fbID;
                                             }
+                                            
+                                            params[@"sent"] = [NSNumber numberWithBool:NO];
                                       
                                           
                                             
@@ -344,6 +346,7 @@
             params[@"facebook_id"] = fbID;
         }
         
+        params[@"sent"] = [NSNumber numberWithBool:NO];
         
         
         [Challenge createChallengeWithRecipientsWithParams:params];
