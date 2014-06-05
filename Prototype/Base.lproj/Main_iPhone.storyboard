@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -663,17 +663,6 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="jZL-vp-bZe">
-                                        <rect key="frame" x="20" y="195" width="306" height="2"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </progressView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5ix-nu-boc">
-                                        <rect key="frame" x="77" y="181" width="137" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Image Not Available">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -687,8 +676,6 @@
                         <outlet property="challengeNameLabel" destination="a0g-Se-Mjs" id="4wE-yT-zej"/>
                         <outlet property="countContainerView" destination="xcz-g9-7x4" id="T8G-QZ-IZ8"/>
                         <outlet property="countLabel" destination="zJf-wL-Pbd" id="7C7-GG-kuX"/>
-                        <outlet property="progressView" destination="jZL-vp-bZe" id="dul-2H-8Sa"/>
-                        <outlet property="retryButton" destination="5ix-nu-boc" id="K3z-Gc-3I1"/>
                         <outlet property="scrollView" destination="nnc-97-JrF" id="En2-n0-l5h"/>
                         <outlet property="viewResponsesButton" destination="LwR-Cd-ulw" id="yXw-al-Tus"/>
                     </connections>
@@ -964,17 +951,6 @@
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="hHm-Y5-RyZ">
-                                        <rect key="frame" x="27" y="238" width="306" height="2"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </progressView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ehe-p9-Arz">
-                                        <rect key="frame" x="93" y="224" width="137" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Image Not Available">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -985,8 +961,6 @@
                         <outlet property="finalCaptionLabel" destination="JCO-T2-asU" id="SAO-15-CBb"/>
                         <outlet property="myImageView" destination="Qec-Ea-y5I" id="5Os-hQ-A0n"/>
                         <outlet property="myTable" destination="iKZ-Da-fqU" id="15v-XD-AhW"/>
-                        <outlet property="progressView" destination="hHm-Y5-RyZ" id="uWN-Sm-Klf"/>
-                        <outlet property="retryButton" destination="ehe-p9-Arz" id="cyh-Nq-hDq"/>
                         <outlet property="scrollView" destination="H1C-Wj-Pac" id="NvZ-dm-dBV"/>
                         <outlet property="topLabel" destination="KXc-Zj-Xjg" id="9s0-Sk-CEc"/>
                         <segue destination="vDh-eo-ere" kind="push" identifier="goToShare" id="icQ-yI-S0p"/>

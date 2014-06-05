@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import "GPUImage.h"
+#import "User.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -18,7 +19,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-
+@property (nonatomic, retain)User *myUser;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
@@ -38,6 +39,9 @@
 + (NSData *)retrieveFileAtPath:(NSString *)path;
 
 + (BOOL)deleteFileAtPath:(NSString *)path;
+
++ (void)clearImageCaches;
+
 
 
 

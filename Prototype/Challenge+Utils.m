@@ -342,6 +342,8 @@
     
     User *user = [User getUserWithUsername:sender inContext:[params valueForKey:@"context"] error:&error];
     // check if exists first
+    AppDelegate *delegate = [[AppDelegate alloc] init];
+    User *myUser = delegate.myUser;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[Challenge name]];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@",[params valueForKey:@"challenge_name"]];
@@ -384,11 +386,18 @@
                 }
                 challenge.active = active; //active ? active : [NSNumber numberWithBool:YES];
                 
+                
+                /*
                 for (NSString *friend in [params valueForKey:@"recipients"]){
                     User *uFriend = [User getUserWithUsername:friend inContext:user.managedObjectContext error:&error];
-                    [challenge addRecipientsObject:uFriend];
+                    if (uFriend){
+                        [challenge addRecipientsObject:uFriend];
+                    }
+                    else{
+                         DLog(@"%@ is either not there, not afriend, or a super user",friend);
+                    }
                     
-                    /*
+                 
                     if (uFriend && uFriend.is_friend && !uFriend.super_user){
                         [challenge addRecipientsObject:uFriend];
                     }
@@ -396,8 +405,9 @@
                         DLog(@"%@ is either not there, not afriend, or a super user",friend);
                         
                     }
-                     */
+                 
                 }
+            */
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSError *error;
@@ -464,13 +474,26 @@
 
         challenge.active = active;
         
+        if (![challenge.recipients containsObject:myUser]){
+            [challenge addRecipientsObject:myUser];
+        }
+        
         if (![challenge.managedObjectContext save:&error]){
             DLog(@"%@",error);
         }
+        
         return challenge;
     }
-
     
+    if (![challenge.recipients containsObject:myUser]){
+        [challenge addRecipientsObject:myUser];
+        if (![challenge.managedObjectContext save:&error]){
+            DLog(@"%@",error);
+        }
+
+    }
+    
+
     return challenge;
 }
 

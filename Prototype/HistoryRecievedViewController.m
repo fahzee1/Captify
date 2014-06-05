@@ -348,7 +348,6 @@
         
         [Challenge createChallengeWithRecipientsWithParams:params];
         
-        return;
     
         
         
@@ -583,7 +582,7 @@
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
             ((HistoryDetailViewController *)vc).sentHistory = NO;
-            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).mediaURL = [challenge.image_path isEqualToString:@""] ? nil:[NSURL URLWithString:challenge.image_path];
            
             
             NSArray *allPicks = [challenge.picks allObjects];

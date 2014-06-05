@@ -14,6 +14,7 @@
 #import "FriendsContainerController.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "AppDelegate.h"
 
 
 @interface MenuViewController ()
@@ -83,7 +84,7 @@
     self.menuSettingsIcon.image = nil;
     self.menuInviteIcon.image = nil;
     
-    
+    [AppDelegate clearImageCaches];
     
     
     

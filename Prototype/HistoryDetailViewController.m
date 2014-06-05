@@ -86,8 +86,8 @@
 @property (strong, nonatomic)UILabel *errorLabel;
 @property (strong, nonatomic)UIButton *errorMakeCaptionButton;
 
-@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (strong, nonatomic) IBOutlet UIButton *retryButton;
+@property (strong, nonatomic)UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) UIButton *retryButton;
 @property (weak, nonatomic) IBOutlet UIButton *splitCaptionButton;
 @property (weak, nonatomic) IBOutlet UILabel *splitCaptionLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -187,7 +187,6 @@
         [self downloadImage];
     }
     else{
-        self.progressView.hidden = YES;
         self.myImageView.image = self.image;
     }
     
@@ -456,12 +455,15 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.myTable reloadData];
+            
             if ([self.data count] > 0){
                 [self.errorLabel removeFromSuperview];
                 self.errorLabel = nil;
+                [self.errorMakeCaptionButton removeFromSuperview];
+                self.errorMakeCaptionButton = nil;
             }
             
-            [self.myTable reloadData];
         });
 
 
@@ -535,14 +537,23 @@
         self.hideSelectButtons = NO;
     }
     
-    self.retryButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
-    [self.retryButton setTitle:NSLocalizedString(@"Image Not Available", nil)  forState:UIControlStateNormal];
+    self.retryButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    CGRect imageFrame = self.myImageView.frame;
+    self.retryButton.frame = CGRectMake(imageFrame.origin.x , imageFrame.size.height - 40, 300, 100);
+    self.retryButton.center = self.myImageView.center;
+    [self.retryButton setTitle:NSLocalizedString(@"Image not available. Tap to retry", nil) forState:UIControlStateNormal];
     [self.retryButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-    self.retryButton.userInteractionEnabled = NO;
-    //[self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
+    self.retryButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+    self.retryButton.titleLabel.numberOfLines = 0;
+    [self.retryButton.titleLabel sizeToFit];
+    CGRect retryFrame = self.retryButton.frame;
+    retryFrame.origin.x -= 35;
+    self.retryButton.frame = retryFrame;
+    [self.retryButton addTarget:self action:@selector(downloadImage) forControlEvents:UIControlEventTouchUpInside];
     self.retryButton.hidden = YES;
-    self.retryButton.center = self.myImageView.superview.center;
+    
     [self.myImageView addSubview:self.retryButton];
+    
     self.myImageView.userInteractionEnabled = YES;
     
 }
@@ -554,37 +565,121 @@
 
 - (void)downloadImage
 {
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner.center = self.myImageView.center;
+    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    CGRect spinnerFrame = self.spinner.frame;
+    spinnerFrame.origin.x -= 30;
+    self.spinner.frame = spinnerFrame;
+    [self.myImageView addSubview:self.spinner];
+    [self.spinner startAnimating];
+
+    if (!self.retryButton.isHidden){
+        self.retryButton.hidden = YES;
+    }
+    
     if (self.mediaURL){
         self.retryButton.hidden = YES;
-        self.progressView.hidden = NO;
-        self.progressView.progress = 0.f;
         [self.myImageView setImageWithURL:self.mediaURL
                          placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                  options:0
-                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                    self.progressView.hidden = NO;
-                                    long percent = receivedSize / expectedSize;
-                                    self.progressView.progress = (float)percent;
-                                     
-                                 }
                                 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    self.progressView.hidden = YES;
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [self.spinner stopAnimating];
+                                        self.spinner = nil;
+                                    });
+
                                     if (!image){
                                         double delayInSeconds = 2.0;
                                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                             self.retryButton.hidden = NO;
+                                            self.retryButton.hidden = NO;
                                         });
-                
+                                        
                                     }
                                     else{
                                         self.image = image;
                                     }
+
                                 }];
         
     }
+    else{
+        [self fetchMediaRedis];
+    }
 
 }
+
+- (void)fetchMediaRedis
+{
+    [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
+                             block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                 if (wasSuccessful){
+                                     if ([self.myChallenge.image_path isEqualToString:@""]){
+                                         
+                                         if (data[@"media64"]){
+                                             NSString *base64Media = data[@"media64"];
+                                             NSData *mediaData = [[NSData alloc] initWithBase64EncodedString:base64Media options:0];
+                                             if (mediaData){
+                                                 self.myImageView.image = [UIImage imageWithData:mediaData];
+                                             }
+                                             else{
+                                                 if (data[@"media_url"]){
+                                                     NSString *url = data[@"media_url"];
+                                                     self.myChallenge.image_path = url;
+                                                     self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                     [self downloadImage];
+                                                     
+                                                     NSError *error;
+                                                     [self.myChallenge.managedObjectContext save:&error];
+                                                 }
+                                                 
+                                             }
+                                         }
+                                         
+                                         else if (data[@"media_url"]){
+                                             NSString *url = data[@"media_url"];
+                                             self.myChallenge.image_path = url;
+                                             self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                             [self downloadImage];
+                                             
+                                             NSError *error;
+                                             [self.myChallenge.managedObjectContext save:&error];
+                                         }
+                                         
+                                         else{
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 double delayInSeconds = 2.0;
+                                                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                     [self.spinner stopAnimating];
+                                                     self.spinner = nil;
+                                                     self.retryButton.hidden = NO;
+                                                 });
+                                                 
+                                                 
+                                             });
+
+                                         }
+                                     }
+                                     
+                                     
+                                 }
+                                 else{
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         double delayInSeconds = 2.0;
+                                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                            [self.spinner stopAnimating];
+                                             self.spinner = nil;
+                                             self.retryButton.hidden = NO;
+                                         });
+                                         
+                                         
+                                     });
+                                 }
+                             }];
+}
+
 
 - (void)showShareScreen
 {

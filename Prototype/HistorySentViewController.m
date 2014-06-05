@@ -496,7 +496,7 @@
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
             ((HistoryDetailViewController *)vc).sentHistory = YES;
-            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).mediaURL = [challenge.image_path isEqualToString:@""] ? nil:[NSURL URLWithString:challenge.image_path];
             DLog(@"%@ is image path",challenge.image_path);
             
              [self.navigationController pushViewController:vc animated:YES];
@@ -510,7 +510,7 @@
             ((HistoryDetailViewController *)vc).image = challenge_image;
             ((HistoryDetailViewController *)vc).myChallenge = challenge;
             ((HistoryDetailViewController *)vc).myUser = self.myUser;
-            ((HistoryDetailViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+            ((HistoryDetailViewController *)vc).mediaURL = [challenge.image_path isEqualToString:@""] ? nil:[NSURL URLWithString:challenge.image_path];
             ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
             ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
             ((HistoryDetailViewController *)vc).sentHistory = YES;

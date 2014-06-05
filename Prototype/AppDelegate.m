@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import <CoreData/CoreData.h>
 #import "ViewController.h"
 #import "HomeViewController.h"
 #import "User+Utils.h"
@@ -18,12 +17,14 @@
 #import "TMCache.h"
 #import "HistoryContainerViewController.h"
 #import "HistoryRecievedViewController.h"
-#import <Parse/Parse.h>
 #import "ParseNotifications.h"
 #import "JDStatusBarNotification.h"
 #import "UIColor+HexValue.h"
 #import "Appirater.h"
+#import "SDImageCache.h"
 #import <CrashReporter/CrashReporter.h>
+#import <CoreData/CoreData.h>
+#import <Parse/Parse.h>
 
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
@@ -855,5 +856,29 @@
      */
 
 }
+
++ (void)clearImageCaches
+{
+    [[SDImageCache sharedImageCache] clearMemory];
+    [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] cleanDisk];
+}
+
+
+- (User *)myUser
+{
+    if (!_myUser){
+        NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+        NSURL *uri = [[NSUserDefaults standardUserDefaults] URLForKey:@"superuser"];
+        if (uri){
+            NSManagedObjectID *superuserID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+            NSError *error;
+            _myUser = (id) [context existingObjectWithID:superuserID error:&error];
+        }
+        
+    }
+    return _myUser;
+}
+
 
 @end
