@@ -163,7 +163,7 @@
 - (void)downloadImage
 {
     DLog(@"%@",self.mediaURL);
-    if (self.mediaURL){
+    if (self.mediaURL ){
         self.retryButton.hidden = YES;
         self.progressView.hidden = NO;
         self.progressView.progress = 0.f;
@@ -190,8 +190,56 @@
     }
     else{
         self.progressView.hidden = YES;
+        [self fetchMediaRedis];
+        
+        
     }
     
+}
+
+
+- (void)fetchMediaRedis
+{
+    [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
+                             block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                 if (wasSuccessful){
+                                     if ([self.myChallenge.image_path isEqualToString:@""]){
+                                         
+                                         if (data[@"media64"]){
+                                             NSString *base64Media = data[@"media64"];
+                                             NSData *mediaData = [[NSData alloc] initWithBase64EncodedString:base64Media options:0];
+                                             if (mediaData){
+                                                 self.challengeImage.image = [UIImage imageWithData:mediaData];
+                                             }
+                                             else{
+                                                  if (data[@"media_url"]){
+                                                     NSString *url = data[@"media_url"];
+                                                     self.myChallenge.image_path = url;
+                                                     self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                     [self downloadImage];
+                                                     
+                                                     NSError *error;
+                                                     [self.myChallenge.managedObjectContext save:&error];
+                                                 }
+
+                                             }
+                                         }
+                                         
+                                         else if (data[@"media_url"]){
+                                             NSString *url = data[@"media_url"];
+                                             self.myChallenge.image_path = url;
+                                             self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                             [self downloadImage];
+                                             
+                                             NSError *error;
+                                             [self.myChallenge.managedObjectContext save:&error];
+                                         }
+                                         
+                                     }
+
+                                     
+                                 }
+                             }];
 }
 
 

@@ -570,7 +570,7 @@
             ((ChallengeViewController *)vc).myUser = self.myUser;
             ((ChallengeViewController *)vc).name = challenge.name;
             ((ChallengeViewController *)vc).sender = [challenge.sender firstName];
-            ((ChallengeViewController *)vc).mediaURL = [NSURL URLWithString:challenge.image_path];
+            ((ChallengeViewController *)vc).mediaURL = [challenge.image_path isEqualToString:@""] ? nil:[NSURL URLWithString:challenge.image_path];
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
