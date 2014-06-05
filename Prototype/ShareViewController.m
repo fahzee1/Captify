@@ -99,11 +99,11 @@ typedef void (^ShareToNetworksBlock) ();
     [self setupShareStyles];
     
     if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 730+65);
+        self.scrollView.contentSize = CGSizeMake(320, 730+30);
         
     }
     else{
-        self.scrollView.contentSize = CGSizeMake(320, 630+65);
+        self.scrollView.contentSize = CGSizeMake(320, 630+30);
 
     }
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -185,7 +185,7 @@ typedef void (^ShareToNetworksBlock) ();
     self.myShareButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
     [self.myShareButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
     CGRect shareFrame = self.myShareButton.frame;
-    shareFrame.origin.y += 120;
+    shareFrame.origin.y += 80;
     self.myShareButton.frame = shareFrame;
     
     
@@ -246,7 +246,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     
     
-    FUISwitch *privacySwitch = [[FUISwitch alloc] initWithFrame:CGRectMake(shareFrame.origin.x,shareFrame.origin.y -50, 100, 35)];
+    FUISwitch *privacySwitch = [[FUISwitch alloc] initWithFrame:CGRectMake(shareFrame.origin.x,shareFrame.origin.y -85, 100, 35)];
     privacySwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE]; //[UIColor turquoiseColor];
     privacySwitch.offColor = [UIColor cloudsColor];
     privacySwitch.onBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];//[UIColor midnightBlueColor];
@@ -263,8 +263,8 @@ typedef void (^ShareToNetworksBlock) ();
     privacySwitch.frame = privacyFrame;
 
     
-    UILabel *privacyLabel = [[UILabel alloc] initWithFrame:CGRectMake(privacyFrame.origin.x + privacyFrame.size.width + 12,
-                                                                      privacyFrame.origin.y - privacyFrame.size.height/2, 200, 70)];
+    UILabel *privacyLabel = [[UILabel alloc] initWithFrame:CGRectMake(privacyFrame.origin.x,
+                                                                      privacyFrame.origin.y + privacyFrame.size.height - 20, 200, 70)];
     privacyLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];;
     privacyLabel.textColor = [UIColor whiteColor];
     privacyLabel.text = NSLocalizedString(@"Show in public feed?", nil);

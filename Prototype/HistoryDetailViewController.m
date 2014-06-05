@@ -710,6 +710,8 @@
     }
     
     self.captionIsSplit = NO;
+    
+    [self removeImageErrorViews];
 }
 
 
@@ -1280,13 +1282,25 @@
     }
 }
 
-
+- (void)removeImageErrorViews
+{
+    if (self.spinner){
+        [self.spinner removeFromSuperview];
+        self.spinner = nil;
+    }
+    
+    if (self.retryButton){
+        [self.retryButton removeFromSuperview];
+        self.retryButton = nil;
+    }
+}
 
 - (void)tappedCaption:(UITapGestureRecognizer *)gesture
 {
     switch (gesture.state) {
         case UIGestureRecognizerStateBegan:
         {
+            
             if (self.imageControls.hidden){
                 [self.finalCaptionLabel stopGlowing];
                 self.imageControls.hidden = NO;
