@@ -266,6 +266,11 @@
             ((UINavigationController *)historyNav).navigationBarHidden = NO;
             UIViewController *history = ((UINavigationController *)historyNav).topViewController;
             if ([history isKindOfClass:[HistoryContainerViewController class]]){
+                UIViewController *menu = self.sideMenuViewController.menuViewController;
+                if ([menu isKindOfClass:[MenuViewController class]]){
+                    [((MenuViewController *)menu) updateCurrentScreen:MenuHistoryScreen];
+                }
+                
                 ((HistoryContainerViewController *)history).showSentScreen = YES;
                 [self.sideMenuViewController setMainViewController:historyNav animated:YES closeMenu:YES];
             }

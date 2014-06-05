@@ -52,6 +52,7 @@
     NSUserDefaults *defaults =[NSUserDefaults standardUserDefaults];
     
     
+    /*
     // both local and remote notifcations are called from here when app is
     // is not in the foreground
     UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
@@ -69,6 +70,7 @@
         application.applicationIconBadgeNumber = 0;
         
     }
+     */
     
      application.applicationIconBadgeNumber = 0;
     
@@ -135,6 +137,8 @@
 {
     
     //[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:60*10];
+    
+      application.applicationIconBadgeNumber = 0;
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -504,7 +508,6 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
- 
     [self handlePushNotificationPayload:userInfo isForeground:NO];
 }
 
@@ -718,7 +721,7 @@
 }
 
 
-- (void)setupHistoryViewControllers
+- (void)setupHistoryViewControllersShowSent:(BOOL)sent
 {
     UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
     MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
@@ -729,6 +732,17 @@
     self.sideVC.shadowColor = [UIColor blackColor];
     self.sideVC.edgeOffset = UIOffsetMake(18.0f, 0.0f);
     self.sideVC.zoomScale = 0.6643f;//0.5643f;
+    
+    if (sent){
+        UIViewController *historyRoot = self.mainVC;
+        if ([historyRoot isKindOfClass:[UINavigationController class]]){
+            UIViewController *history = ((UINavigationController *)historyRoot).topViewController;
+            if ([history isKindOfClass:[HistoryContainerViewController class]]){
+                ((HistoryContainerViewController *)history).showSentScreen = YES;
+            }
+        }
+    }
+    
     self.window.rootViewController = self.sideVC;
     
 }
@@ -809,14 +823,14 @@
                 
             }
             
-            [self setupHistoryViewControllers];
+            [self setupHistoryViewControllersShowSent:NO];
             
         }
             break;
         case ParseNotificationSendCaptionPick:
         {
             
-            [self setupHistoryViewControllers];
+            [self setupHistoryViewControllersShowSent:YES];
         }
             break;
         case ParseNotificationSenderChoseCaption:
@@ -832,18 +846,18 @@
                
             }
             
-            [self setupHistoryViewControllers];
+            [self setupHistoryViewControllersShowSent:NO];
         }
             break;
         case ParseNotificationNotifySelectedCaptionSender:
         {
-              [self setupHistoryViewControllers];
+              [self setupHistoryViewControllersShowSent:NO];
         }
             break;
 
         default:
             //[self setupHomeViewControllers];
-            [self setupHistoryViewControllers];
+            [self setupHistoryViewControllersShowSent:NO];
 
             break;
     }
