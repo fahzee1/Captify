@@ -476,16 +476,8 @@
     
     int active = [challenge.active intValue];
     int shared = [challenge.shared intValue];
-    int firstOpen = [challenge.first_open intValue];
+
     
-    if (firstOpen){
-        [self.notifications removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
-        challenge.first_open = [NSNumber numberWithBool:NO];
-        NSError *error;
-        if (![challenge.managedObjectContext save:&error]){
-            DLog(@"%@",error);
-        }
-    }
 
     if (active && !shared){
 

@@ -176,7 +176,7 @@
              
              if (code == -12){
                  if (block){
-                     block(NO,NO,responseObject[@"message"],nil);
+                     block(NO,YES,responseObject[@"message"],nil);
                  }
                  return;
              }

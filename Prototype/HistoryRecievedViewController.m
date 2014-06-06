@@ -557,13 +557,7 @@
     Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
     int active = [challenge.active intValue];
     int sentPick = [challenge.sentPick intValue];
-    int firstOpen = [challenge.first_open intValue];
-    
-    if (firstOpen){
-        [self.notifications removeOneNotifFromView:self.navigationController.navigationBar atPoint:historyNOTIFPOINT];
-        challenge.first_open = [NSNumber numberWithBool:NO];
-        
-    }
+
 
     if (active && !sentPick){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];

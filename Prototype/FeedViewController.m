@@ -233,9 +233,9 @@
 {
     //DLog(@"collection called");
     FeedViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FeedCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     cell.layer.borderWidth = 1.f;
-    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     cell.layer.cornerRadius = 5.f;
     
     
@@ -249,10 +249,12 @@
     
         cell.name.text = [json[@"name"] capitalizedString];
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
-        cell.name.textColor = [UIColor whiteColor];
-        if ([cell.name.text length] >= 24){
-            NSString *uString = [cell.name.text substringToIndex:23];
+        cell.name.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        if ([cell.name.text length] >= 35){
+            NSString *uString = [cell.name.text substringToIndex:34];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
+            
+            //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
         }
         
         

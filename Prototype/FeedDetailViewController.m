@@ -48,10 +48,10 @@
                                 }
                             }];
     
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
-    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
-    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
+    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+    [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateHighlighted];
     [self.likeButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] forState:UIControlStateNormal];
     self.likeButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
     
@@ -111,8 +111,8 @@
         CGRect buttonFrame = CGRectMake(navFrameBase.origin.x - 5, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height);
         friendName.frame = buttonFrame;
         [friendName setTitle:[[self.profileUsername stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
-        [friendName setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
+        [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
         friendName.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
         friendName.titleLabel.textAlignment = NSTextAlignmentLeft;
         [friendName addTarget:self action:@selector(tappedUsernameLabel) forControlEvents:UIControlEventTouchUpInside];

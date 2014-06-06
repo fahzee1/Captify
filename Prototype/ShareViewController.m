@@ -1005,8 +1005,10 @@ typedef void (^ShareToNetworksBlock) ();
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id];
     
-    [self removeCurrentImageFromFiles];
-    [Challenge saveImage:imageData filename:mediaName];
+    BOOL removed = [self removeCurrentImageFromFiles];
+    if (removed){
+        [Challenge saveImage:imageData filename:mediaName];
+    }
     
     
     NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id,

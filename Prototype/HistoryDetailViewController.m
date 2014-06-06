@@ -369,7 +369,14 @@
                                              DLog(@"%@",pick);
                                              NSString *caption = pick[@"answer"];
                                              NSString *player = pick[@"player"];
-                                             NSNumber *is_chosen = pick[@"is_chosen"];
+                                             NSNumber *is_chosen;
+                                             if ([self.myChallenge.chose_own_caption intValue] == 1){
+                                                 is_chosen = [NSNumber numberWithBool:YES];
+                                             }
+                                             else{
+                                                 is_chosen = pick[@"is_chosen"];
+                                             }
+                                
                                              NSString *pick_id = pick[@"pick_id"];
                                              NSString *facebook_id = pick[@"facebook_id"];
                                              NSNumber *is_facebook = pick[@"is_facebook"];
@@ -892,6 +899,22 @@
     
 }
 
+- (void)hightlightViewOnTap:(UIView *)view
+                  withColor:(UIColor *)color
+                 originalColor:(UIColor *)resetColor
+{
+    if ([view isKindOfClass:[UIButton class]]){
+        UIButton *button = (UIButton *)view;
+        [button setTitleColor:color forState:UIControlStateNormal];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [button setTitleColor:resetColor forState:UIControlStateNormal];
+        });
+        
+    }
+}
+
 - (void)showNextButton
 {
 
@@ -925,6 +948,11 @@
 
 
 - (IBAction)tappedFont:(UIButton *)sender {
+    
+    [self hightlightViewOnTap:sender
+                    withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                originalColor:[UIColor whiteColor]];
+    
     [self.finalCaptionLabel stopGlowing];
     
     static NSInteger fontIndex = 0;
@@ -989,6 +1017,14 @@
 
 
 - (IBAction)tappedImageFilter:(UIButton *)sender {
+    
+    [self hightlightViewOnTap:sender
+                    withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                originalColor:[UIColor whiteColor]];
+    
+    if (!self.image){
+        return;
+    }
     
     static NSInteger filterIndex = 0;
     NSInteger total = [self.activeFilters count];
@@ -1082,6 +1118,11 @@
 
 
 - (IBAction)tappedRotate:(UIButton *)sender {
+    
+    [self hightlightViewOnTap:sender
+                    withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                originalColor:[UIColor whiteColor]];
+    
     [self.finalCaptionLabel stopGlowing];
     static int attempts = 0;
 
@@ -1150,6 +1191,10 @@
 }
 
 - (IBAction)tappedReverseRotate:(UIButton *)sender {
+    [self hightlightViewOnTap:sender
+                    withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                originalColor:[UIColor whiteColor]];
+    
     [self.finalCaptionLabel stopGlowing];
     static int attempts = 0;
     
@@ -1217,6 +1262,9 @@
 
 - (IBAction)splitCaptionButtonTapped:(UIButton *)sender
 {
+    [self hightlightViewOnTap:sender
+                    withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                originalColor:[UIColor whiteColor]];
 
     if (!self.captionIsSplit){
         self.splitCaptionLabel.text = NSLocalizedString(@"Join", nil);
@@ -1635,7 +1683,8 @@
     else if (alertView == self.confirmCaptionAlert){
         
         if (buttonIndex == 0){
-            [self reset];
+            [self.finalCaptionLabel stopGlowing];
+            self.finalCaptionLabel.text = @"";
         }
         else if (buttonIndex == 1){
             self.makeButtonVisible = NO;
@@ -1662,10 +1711,16 @@
                                                                   NSError *error;
                                                                   [self.myChallenge addPicksObject:pick];
                                                                   self.myChallenge.sentPick = [NSNumber numberWithBool:YES];
+                                                                  pick.is_chosen = [NSNumber numberWithBool:YES];
                                                                   self.selectedPick = pick;
+                                                                  //[pick.managedObjectContext save:&error];
                                                                   if (![self.myChallenge.managedObjectContext save:&error]){
                                                                       DLog(@"%@",error);
                                                                   }
+                                                                  
+                                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                                      [self.myTable reloadData];
+                                                                  });
                                                               }
                                                               
                                                               
@@ -1911,21 +1966,19 @@
             [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
             [selectButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             
-            if (self.hideSelectButtonsMax){
-                if ([pick.is_chosen intValue] == 1){
-                    selectButton.userInteractionEnabled = NO;
-                    selectButton.hidden = YES;
-                    cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
-                    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
-                    //cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-                    //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
-                    //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
-                }
-                else{
-                    selectButton.hidden = YES;
-                }
-          }
-            
+            if ([pick.is_chosen intValue] == 1){
+                selectButton.userInteractionEnabled = NO;
+                selectButton.hidden = YES;
+                cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+                cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+                //cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+                //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
+                //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
+            }
+            else{
+                selectButton.hidden = YES;
+            }
+        
            
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
