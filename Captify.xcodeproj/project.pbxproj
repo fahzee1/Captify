@@ -284,7 +284,6 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
-		1188CDAA19115DF700F6407C /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1188CDA919115DF700F6407C /* Challenge.m */; };
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
@@ -383,6 +382,7 @@
 		11E6D71118FF1F8000C47D25 /* MGInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E6D71018FF1F8000C47D25 /* MGInstagram.m */; };
 		11E77B481938361D0018863A /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E77B451938361D0018863A /* Pinterest.framework */; };
 		11E77B491938361D0018863A /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11E77B471938361D0018863A /* PinterestSDKResources.bundle */; };
+		11E77B4C19415C990018863A /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E77B4B19415C990018863A /* Challenge.m */; };
 		11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DBA19097E01009B95F7 /* AdSupport.framework */; };
 		11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E83DC519097FBB009B95F7 /* libsqlite3.dylib */; };
 		11EC4C301938EB840014F287 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EC4C2F1938EB840014F287 /* User.m */; };
@@ -948,8 +948,6 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChallengeViewController.m; sourceTree = "<group>"; };
-		1188CDA819115DF700F6407C /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
-		1188CDA919115DF700F6407C /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
 		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
 		118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriendsViewController.h; sourceTree = "<group>"; };
@@ -1102,6 +1100,8 @@
 		11E6D71018FF1F8000C47D25 /* MGInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGInstagram.m; sourceTree = "<group>"; };
 		11E77B451938361D0018863A /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
 		11E77B471938361D0018863A /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
+		11E77B4A19415C990018863A /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		11E77B4B19415C990018863A /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		11E83DBA19097E01009B95F7 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		11E83DBF19097E9F009B95F7 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		11E83DC019097E9F009B95F7 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
@@ -1326,8 +1326,8 @@
 				1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */,
 				11EC4C2E1938EB840014F287 /* User.h */,
 				11EC4C2F1938EB840014F287 /* User.m */,
-				1188CDA819115DF700F6407C /* Challenge.h */,
-				1188CDA919115DF700F6407C /* Challenge.m */,
+				11E77B4A19415C990018863A /* Challenge.h */,
+				11E77B4B19415C990018863A /* Challenge.m */,
 				1126C0A718EA0E3E00838484 /* ChallengePicks.h */,
 				1126C0A818EA0E3E00838484 /* ChallengePicks.m */,
 				1186B1BB188E38920082F35F /* User+Utils.h */,
@@ -2735,7 +2735,6 @@
 				1153E1BE18A9DF4800AD950E /* GPUImageSolidColorGenerator.m in Sources */,
 				113BD8DE192514680099BEA0 /* MZAppearance.m in Sources */,
 				11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */,
-				1188CDAA19115DF700F6407C /* Challenge.m in Sources */,
 				118EF1BB18FC6F4F00755552 /* UITableViewCell+FlatUI.m in Sources */,
 				118EF1AD18FC6F4F00755552 /* FUIPopoverBackgroundView.m in Sources */,
 				110593EB191BD74400866C92 /* FeedViewController.m in Sources */,
@@ -2794,6 +2793,7 @@
 				1153E1C018A9DF4800AD950E /* GPUImageSphereRefractionFilter.m in Sources */,
 				1153E16B18A9DF4800AD950E /* GPUImageFilterGroup.m in Sources */,
 				1186B1BD188E38920082F35F /* User+Utils.m in Sources */,
+				11E77B4C19415C990018863A /* Challenge.m in Sources */,
 				1153E19A18A9DF4800AD950E /* GPUImageNobleCornerDetectionFilter.m in Sources */,
 				118EF1AB18FC6F4F00755552 /* FUIButton.m in Sources */,
 				11DFE7AF18E0B54300066E62 /* ChallengePicks+Utils.m in Sources */,

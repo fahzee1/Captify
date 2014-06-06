@@ -620,12 +620,14 @@ typedef void (^ShareToNetworksBlock) ();
        notificationType:ParseNotificationSenderChoseCaption
                   block:nil];
     
-    // notify chosen captions sender
-    [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",[self.myChallenge.sender displayName]]
-               toFriend:self.myPick.player.username
-               withData:@{@"challenge_id": self.myChallenge.challenge_id}
-       notificationType:ParseNotificationNotifySelectedCaptionSender
-                  block:nil];
+    if (![self.myPick.player isEqual:self.myChallenge.sender]){
+        // notify chosen captions sender
+        [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",[self.myChallenge.sender displayName]]
+                   toFriend:self.myPick.player.username
+                   withData:@{@"challenge_id": self.myChallenge.challenge_id}
+           notificationType:ParseNotificationNotifySelectedCaptionSender
+                      block:nil];
+    }
     
     
 

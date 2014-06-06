@@ -109,7 +109,7 @@
 @property int errorCount;
 @property BOOL captionIsSplit;
 @property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
-@property BOOL choseOwnCaption;
+
 
 // filters
 @property (strong ,nonatomic)GPUImageGrayscaleFilter *grayScaleFilter;
@@ -428,6 +428,10 @@
         NSString *pick_id = pickJson[@"pick_id"];
         NSString *facebook_id = pickJson[@"facebook_id"];
         NSNumber *is_facebook = pickJson[@"is_facebook"];
+        
+        if (!caption || !player || !is_chosen){
+            continue;
+        }
         
         NSMutableDictionary *params = [@{@"player": player,
                                          @"context":self.myUser.managedObjectContext,
@@ -1629,9 +1633,13 @@
     }
     
     else if (alertView == self.confirmCaptionAlert){
-        if (buttonIndex == 1){
+        
+        if (buttonIndex == 0){
+            [self reset];
+        }
+        else if (buttonIndex == 1){
             self.makeButtonVisible = NO;
-            self.choseOwnCaption = YES;
+            self.myChallenge.chose_own_caption = [NSNumber numberWithBool:YES];
             NSDictionary *params = @{@"username": self.myUser.username,
                                      @"challenge_id":self.myChallenge.challenge_id,
                                      @"answer":self.selectedCaption,
@@ -1953,7 +1961,7 @@
     
     NSMutableSet *picks = [self.myChallenge.picks mutableCopy];
     
-    if (!self.choseOwnCaption){
+    if (!self.myChallenge.chose_own_caption){
         ChallengePicks *pickToDelete;
         for (ChallengePicks *pick in picks){
             if ([pick.player.username isEqualToString:self.myUser.username]){

@@ -2,7 +2,7 @@
 //  Challenge.h
 //  Captify
 //
-//  Created by CJ Ogbuehi on 4/30/14.
+//  Created by CJ Ogbuehi on 6/5/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -30,6 +30,7 @@
 @property (nonatomic, retain) NSNumber * sync_status;
 @property (nonatomic, retain) NSString * thumbnail_path;
 @property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSNumber * chose_own_caption;
 @property (nonatomic, retain) NSSet *picks;
 @property (nonatomic, retain) NSSet *recipients;
 @property (nonatomic, retain) User *sender;

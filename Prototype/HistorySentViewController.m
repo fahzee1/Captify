@@ -290,7 +290,6 @@
         
        [Challenge createChallengeWithRecipientsWithParams:params];
         
-        return;
         
         
         
