@@ -602,6 +602,7 @@
     [client POST:AwesomeAPIChallengeCreateString parameters:params
          success:^(NSURLSessionDataTask *task, id responseObject) {
              [client stopNetworkActivity];
+             /*
              NSString *media = responseObject[@"media"];
              // response is tastypie api automatic response
              // so just check if the media string was passed
@@ -615,6 +616,11 @@
                  if (block){
                      block(NO,NO,@"Fail",nil);
                  }
+             }
+              */
+             
+             if (block){
+                 block(YES,NO,@"Success",responseObject);
              }
         
         }
