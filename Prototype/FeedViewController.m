@@ -82,7 +82,7 @@
     
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.spinner.center = self.view.center;
-    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     [self.collectionView addSubview:self.spinner];
     [self.collectionView bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];

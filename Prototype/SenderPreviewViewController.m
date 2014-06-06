@@ -22,6 +22,7 @@
 #import "MBProgressHUD.h"
 #import "TWTSideMenuViewController.h"
 #import "MenuViewController.h"
+#import "AwesomeAPICLient.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
@@ -67,6 +68,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[AwesomeAPICLient sharedClient] startMonitoringConnection];
+    
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToPreview)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];

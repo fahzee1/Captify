@@ -52,18 +52,19 @@
     
     self.myScore.text = self.scoreString;
     self.myUsername.text = [[self.usernameString stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-    self.myScore.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myScore.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     self.myScore.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:18];
-    self.myUsername.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myUsername.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     self.myUsername.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:18];
     
     
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     self.navigationItem.title = NSLocalizedString(@"Profile", nil);
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popScreen)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = leftButton;
+    
     
     self.navigationController.navigationBarHidden = NO;
 

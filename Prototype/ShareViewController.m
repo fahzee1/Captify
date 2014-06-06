@@ -704,11 +704,14 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     
-    if (self.sharePinterest){
-        self.sendPIN = YES;
-        [self updateChallengeOnBackend];
+    if (!self.shareFacebook && !self.shareTwitter){
+    
+        if (self.sharePinterest){
+            self.sendPIN = YES;
+            [self updateChallengeOnBackend];
+        }
     }
-        
+    
     if (self.shareInstagram){
         [self sendInstagram];
         self.sendIG = YES;
