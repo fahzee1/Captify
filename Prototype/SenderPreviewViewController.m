@@ -390,7 +390,8 @@
                                                                            @"challenge_name":self.name,
                                                                            @"challenge_id":challenge_id,
                                                                            @"local_media_url":localMediaName,
-                                                                          @"active":[NSNumber numberWithBool:YES]} mutableCopy];
+                                                                          @"active":[NSNumber numberWithBool:YES],
+                                                                          @"sent":[NSNumber numberWithBool:YES]} mutableCopy];
                                                               
                                                               if (media_url){
                                                                   params[@"media_url"] = media_url;

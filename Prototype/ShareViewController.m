@@ -431,6 +431,10 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)tappedInstagram
 {
+    if (self.sharePinterest){
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry can't share to Pinterest and Instagram at the same time. Your image will be saved in your photo library, so share from there.", nil)];
+        return;
+    }
 
 
     if ([self.friends hasInstagramAccess]){
@@ -537,6 +541,12 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)tappedPinterest
 {
+    if (self.shareInstagram){
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry can't share to Pinterest and Instagram at the same time. Your image will be saved in your photo library, so share from there.", nil)];
+        return;
+    }
+    
+
    
     if ([self.friends hasPinterestAccess]){
 
@@ -622,7 +632,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     if (![self.myPick.player isEqual:self.myChallenge.sender]){
         // notify chosen captions sender
-        [p sendNotification:[NSString stringWithFormat:@"%@ chose your caption!",[self.myChallenge.sender displayName]]
+        [p sendNotification:[NSString stringWithFormat:@"You captified %@!",[self.myChallenge.sender displayName]]
                    toFriend:self.myPick.player.username
                    withData:@{@"challenge_id": self.myChallenge.challenge_id}
            notificationType:ParseNotificationNotifySelectedCaptionSender
@@ -704,17 +714,18 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     
+    if (self.shareInstagram){
+        [self sendInstagram];
+        self.sendIG = YES;
+    }
+
+    
     if (!self.shareFacebook && !self.shareTwitter){
     
         if (self.sharePinterest){
             self.sendPIN = YES;
             [self updateChallengeOnBackend];
         }
-    }
-    
-    if (self.shareInstagram){
-        [self sendInstagram];
-        self.sendIG = YES;
     }
     
     
@@ -1063,7 +1074,7 @@ typedef void (^ShareToNetworksBlock) ();
                                                        [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
                                                                                         sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
                                                                                    andDescription:[self shareCaption]];
-                                                       return;
+                    
                                                    }
                                                }
                                                else{

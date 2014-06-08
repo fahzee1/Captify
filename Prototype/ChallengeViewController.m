@@ -17,7 +17,6 @@
 #import "UIColor+HexValue.h"
 #import "User+Utils.h"
 #import "UIImageView+WebCache.h"
-#import "FAImageView.h"
 #import "HistoryDetailCell.h"
 #import "NSDate+TimeAgo.h"
 #import "UIFont+FontAwesome.h"
@@ -188,6 +187,7 @@
         self.retryButton.hidden = YES;
     }
     
+    [self fetchMediaRedisForPicks:YES];
     if (self.mediaURL ){
 
         [self.challengeImage setImageWithURL:self.mediaURL
@@ -213,7 +213,7 @@
         
     }
     else{
-        [self fetchMediaRedis];
+        [self fetchMediaRedisForPicks:NO];
         
         
     }
@@ -221,11 +221,28 @@
 }
 
 
-- (void)fetchMediaRedis
+- (void)fetchMediaRedisForPicks:(BOOL)getPicks
 {
     [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
                              block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     [self.spinner stopAnimating];
+                                     self.spinner = nil;
+                                 });
+
                                  if (wasSuccessful){
+                                     
+                                     if (getPicks){
+                                     
+                                         id picks = [data valueForKey :@"picks"];
+                                         NSNumber *redis = data[@"redis"];
+                                         if ([redis intValue] == 1){
+                                             [self fetchRedisPicksWithData:picks];
+                                             return;
+                                             
+                                         }
+                                     }
+
                                      if ([self.myChallenge.image_path isEqualToString:@""]){
                                          
                                          if (data[@"media64"]){
@@ -259,6 +276,7 @@
                                          }
                                          
                                      }
+                                     
 
                                      
                                  }
@@ -279,10 +297,86 @@
 }
 
 
+- (void)fetchRedisPicksWithData:(id)data
+{
+    for (NSString *jsonString in data){
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        id pickJson = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+        
+        NSString *caption = pickJson[@"answer"];
+        NSString *player = pickJson[@"player"];
+        NSNumber *is_chosen = pickJson[@"is_chosen"];
+        NSString *pick_id = pickJson[@"pick_id"];
+        NSString *facebook_id = pickJson[@"facebook_id"];
+        NSNumber *is_facebook = pickJson[@"is_facebook"];
+        
+        if (!caption || !player || !is_chosen){
+            continue;
+        }
+        
+        NSMutableDictionary *params = [@{@"player": player,
+                                         @"context":self.myUser.managedObjectContext,
+                                         @"is_chosen":is_chosen,
+                                         @"answer":caption,
+                                         @"pick_id":pick_id} mutableCopy];
+        
+        if (facebook_id && is_facebook){
+            params[@"is_facebook"] = is_facebook;
+            params[@"facebook_id"] = facebook_id;
+        }
+        
+        ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
+        
+        
+        if (pick){
+            [self.myChallenge addPicksObject:pick];
+            
+            NSError *error;
+            if (![self.myChallenge.managedObjectContext save:&error]){
+                DLog(@"%@",error);
+                
+            }
+            
+        }
+        
+        [self setupPickResponsesLabel];
+        
+        
+    }
+    
+    return;
+    
+
+}
+
+
 
 - (void)showPreviewScreen
 {
     [self textFieldShouldReturn:self.captionField];
+}
+
+
+- (void)setupPickResponsesLabel
+{
+    
+    NSString *responseText;
+    if ([self.data count] > 0){
+        if ([self.data count] == 1){
+            responseText = [NSString stringWithFormat:@"View %lu response",(unsigned long)self.data.count];
+        }
+        else{
+            responseText = [NSString stringWithFormat:@"View %lu responses",(unsigned long)self.data.count];
+            
+        }
+        self.viewResponsesButton.userInteractionEnabled = YES;
+    }
+    else{
+        responseText = NSLocalizedString(@"0 responses", nil);
+        self.viewResponsesButton.userInteractionEnabled = NO;
+    }
+    [self.viewResponsesButton setTitle:responseText forState:UIControlStateNormal];
+
 }
 
 - (void)setupStylesAndMore
@@ -294,22 +388,7 @@
     [self.viewResponsesButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
     self.viewResponsesButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
     
-    NSString *responseText;
-    if ([self.data count] > 0){
-        if ([self.data count] == 1){
-            responseText = [NSString stringWithFormat:@"View %lu response",(unsigned long)self.data.count];
-        }
-        else{
-            responseText = [NSString stringWithFormat:@"View %lu responses",(unsigned long)self.data.count];
-
-        }
-         self.viewResponsesButton.userInteractionEnabled = YES;
-    }
-    else{
-        responseText = NSLocalizedString(@"0 responses", nil);
-        self.viewResponsesButton.userInteractionEnabled = NO;
-    }
-    [self.viewResponsesButton setTitle:responseText forState:UIControlStateNormal];
+    [self setupPickResponsesLabel];
     
     self.challengeNameLabel.textColor = [UIColor whiteColor];
     if ([self.name length] > 35){
@@ -363,20 +442,10 @@
         view.backgroundColor = [UIColor clearColor];
         CGRect navFrameBase = CGRectMake(100, 8, 30, 30);
         
-        FAImageView *image = [[FAImageView alloc] init];
-        if (sender.facebook_user){
-            NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=small",sender.facebook_id];
-            NSURL * fbUrl = [NSURL URLWithString:fbString];
-            [image setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
-            
-        }
+        UIImageView *image = [[UIImageView alloc] init];
         
-        else{
-            image.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-          
-            
-        }
-
+        [sender getCorrectProfilePicWithImageView:image];
+        
         image.layer.masksToBounds = YES;
         image.layer.cornerRadius = 15.0f;
         image.frame = navFrameBase;

@@ -40,7 +40,7 @@
 	// Do any additional setup after loading the view.
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
-    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     
 }
@@ -88,9 +88,10 @@
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     
 }
+
 
 
 
@@ -99,10 +100,10 @@
 {
     static NSString *cellIdentifier = @"responsesCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
-    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
     
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

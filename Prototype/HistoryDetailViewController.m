@@ -109,6 +109,7 @@
 @property int errorCount;
 @property BOOL captionIsSplit;
 @property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
+@property double sizeValue; // used with uistepper for storing current size
 
 
 // filters
@@ -198,7 +199,7 @@
     if ([self.data count] > 0){
         int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+70);
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
         CGRect tableRect = self.myTable.frame;
         tableRect.size.height += height;
         self.myTable.frame = tableRect;
@@ -210,7 +211,7 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     if (!IS_IPHONE5){
-        self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 150, 0);
+        self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 170, 0);
     }
     
     
@@ -475,6 +476,8 @@
                 self.errorMakeCaptionButton = nil;
             }
             
+            [self viewDidAppear:YES];
+            
         });
 
 
@@ -608,7 +611,29 @@
                                         
                                     }
                                     else{
-                                        self.image = image;
+                                        if (self.sentHistory){
+                                            if (!self.myChallenge.local_image_path){
+                                                NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
+                                                NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
+                                                
+                                                float compression;
+                                                if (!IS_IPHONE5){
+                                                    compression = 0.7;
+                                                }
+                                                else{
+                                                    compression = 0.5;
+                                                }
+                                                
+                                                NSData *imageData = UIImageJPEGRepresentation(image, compression);
+                                                NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
+                                                if (localMediaName){
+                                                    self.myChallenge.local_image_path = localMediaName;
+                                                    NSError *error;
+                                                    [self.myChallenge.managedObjectContext save:&error];
+                                                }
+                                            }
+                                            
+                                        }
                                     }
 
                                 }];
@@ -868,7 +893,8 @@
     self.captionSizeStepper.tintColor = [UIColor whiteColor];
     self.captionSizeValue .textColor = [UIColor whiteColor];
     self.captionSizeStepper.value = 25;
-    [self.captionSizeStepper addTarget:self action:@selector(captionSizeChanged) forControlEvents:UIControlEventValueChanged];
+    self.sizeValue = 25;
+    [self.captionSizeStepper addTarget:self action:@selector(captionSizeChanged:) forControlEvents:UIControlEventValueChanged];
     
     
     self.captionFontTitle.textColor = [UIColor whiteColor];
@@ -967,8 +993,14 @@
         [self.finalCaptionLabel sizeToFit];
         
         CGRect frame = self.finalCaptionLabel.frame;
-        frame.size.width = self.finalCaptionLabel.superview.bounds.size.width;
-        self.finalCaptionLabel.frame = frame;
+        frame.size.width = self.finalCaptionLabel.superview.bounds.size.width - 25;
+        
+        if (CGRectContainsPoint(self.finalCaptionLabel.superview.bounds, frame.origin)){
+            self.finalCaptionLabel.frame = frame;
+        }
+        else{
+            self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y, frame.size.width, frame.size.height);
+        }
         
         
         fontIndex += 1;
@@ -1508,7 +1540,7 @@
 }
 
 
-- (void)captionSizeChanged
+- (void)captionSizeChanged:(UIStepper *)sender
 {
     [self.finalCaptionLabel stopGlowing];
     
@@ -1516,14 +1548,27 @@
     //CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
     //CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
     
+    
     if (!self.captionIsSplit){
-        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), 200);
+        //self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), self.finalCaptionLabel.frame.size.height +5);
+        
+        
+        if (sender.value > self.sizeValue){
+            if (self.finalCaptionLabel.frame.size.width < self.finalCaptionLabel.superview.frame.size.width){
+                 self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width + 5, self.finalCaptionLabel.frame.size.height +2);
+            }
+        }
+        else{
+        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width - 2, self.finalCaptionLabel.frame.size.height -1);
+        }
         if (self.captionMoved){
             self.finalCaptionLabel.center = self.currentPoint;
         }
         else{
             self.finalCaptionLabel.center = self.priorPoint;
         }
+        
+        self.sizeValue = sender.value;
        
     }
     else{
@@ -1975,11 +2020,7 @@
                 //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
                 //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];
             }
-            else{
-                selectButton.hidden = YES;
-            }
-        
-           
+                       
             /*
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:25]];
             [((HistoryDetailCell *)cell).mySelectButton.titleLabel setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"]];

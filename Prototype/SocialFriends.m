@@ -569,68 +569,77 @@
                                            if (granted){
                                                // post to feed
                                                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                                               ACAccount *facebookAccount = [accounts lastObject];
-                                               
-                                               NSDictionary *params1 = @{
-                                                                         @"message":message,
-                                                                         @"caption":caption,
-                                                                         @"name":name};
-                                               
-    
-                                               
-                                               SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                                                                           requestMethod:SLRequestMethodPOST
-                                                                                                     URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
-                                                                                              parameters:params1];
-                            
-                                               [feedRequest addMultipartData:UIImageJPEGRepresentation(image, 1.f)
-                                                                    withName:@"picture"
-                                                                        type:@"image/jpeg"
-                                                                    filename:nil];
-                                               
-                                               
-                                               feedRequest.account = facebookAccount;
-                                               [feedRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                                                    DLog(@"%@",urlResponse);
-                                                   if (error){
-                                                       NSLog(@"%@",error);
-                                                       if (fblock){
-                                                           fblock(NO);
+                                               if ([accounts count] > 0){
+                                                   ACAccount *facebookAccount = [accounts lastObject];
+                                                   
+                                                   NSDictionary *params1 = @{
+                                                                             @"message":message,
+                                                                             @"caption":caption,
+                                                                             @"name":name};
+                                                   
+        
+                                                   
+                                                   SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                                                               requestMethod:SLRequestMethodPOST
+                                                                                                         URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
+                                                                                                  parameters:params1];
+                                
+                                                   [feedRequest addMultipartData:UIImageJPEGRepresentation(image, 1.f)
+                                                                        withName:@"picture"
+                                                                            type:@"image/jpeg"
+                                                                        filename:nil];
+                                                   
+                                                   
+                                                   feedRequest.account = facebookAccount;
+                                                   [feedRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                                                        DLog(@"%@",urlResponse);
+                                                       if (error){
+                                                           NSLog(@"%@",error);
+                                                           if (fblock){
+                                                               fblock(NO);
+                                                           }
+                                                           return;
                                                        }
-                                                       return;
-                                                   }
-                                                   else{
-                                                       // successfully posted to feed now post to album
-                                                       NSString *albumString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId];
-                                                       NSString *finalAlbum = [albumString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                                                       NSURL *albumURL = [NSURL URLWithString:finalAlbum];
-                                                       NSDictionary *params2 = @{@"source": image};
-                                                       
-                                                       SLRequest *albumRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                                                                                    requestMethod:SLRequestMethodPOST
-                                                                                                              URL:albumURL
-                                                                                                       parameters:params2];
-                                                       [albumRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                                                           if (error){
-                                                                NSLog(@"%@",error);
-                                                               if (fblock){
-                                                                   fblock(NO);
+                                                       else{
+                                                           // successfully posted to feed now post to album
+                                                           NSString *albumString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",albumId];
+                                                           NSString *finalAlbum = [albumString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                                                           NSURL *albumURL = [NSURL URLWithString:finalAlbum];
+                                                           NSDictionary *params2 = @{@"source": image};
+                                                           
+                                                           SLRequest *albumRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                                                                        requestMethod:SLRequestMethodPOST
+                                                                                                                  URL:albumURL
+                                                                                                           parameters:params2];
+                                                           [albumRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                                                               if (error){
+                                                                    NSLog(@"%@",error);
+                                                                   if (fblock){
+                                                                       fblock(NO);
+                                                                   }
+                                                                   return;
                                                                }
-                                                               return;
-                                                           }
-                                                           else{
-                                                               if (fblock){
-                                                                   fblock(YES);
-                                                                   DLog(@"%ld status code",(long)[urlResponse statusCode]);
-                                                                   DLog(@"%@",urlResponse);
+                                                               else{
+                                                                   if (fblock){
+                                                                       fblock(YES);
+                                                                       DLog(@"%ld status code",(long)[urlResponse statusCode]);
+                                                                       DLog(@"%@",urlResponse);
+                                                                   }
+                                                                   return;
                                                                }
-                                                               return;
-                                                           }
-                                                       }];
+                                                           }];
 
-                                                       
-                                                    }
-                                               }];
+                                                           
+                                                        }
+                                                   }];
+                                               }
+                                               else{
+                                                   [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've added a Facebook account in iOS Settings > Privacy > Facebook", nil)];
+                                                   if (fblock){
+                                                       fblock(NO);
+                                                   }
+
+                                               }
                                                
                                                
                                            }
@@ -689,6 +698,12 @@
                                                   }
                                                   
                                               }];
+                                          }
+                                          else{
+                                            [self showAlertWithTitle:nil message:NSLocalizedString(@"Make sure you've added a Twiiter account in iOS Settings > Privacy > Twitter", nil)];
+                                              if (block){
+                                                  block(NO, NO);
+                                              }
                                           }
                                       }
                                       else{

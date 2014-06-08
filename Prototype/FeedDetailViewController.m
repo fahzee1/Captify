@@ -62,6 +62,12 @@
     
     [self setupTopLabel];
     
+    if (!IS_IPHONE5){
+        CGRect imageFrame = self.myImageView.frame;
+        imageFrame.origin.y += 10;
+        self.myImageView.frame = imageFrame;
+    }
+    
  
 
 }
@@ -108,13 +114,13 @@
         image.frame = navFrameBase;
         
         UIButton *friendName = [UIButton buttonWithType:UIButtonTypeSystem];
-        CGRect buttonFrame = CGRectMake(navFrameBase.origin.x - 5, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height);
+        CGRect buttonFrame = CGRectMake(navFrameBase.origin.x + image.frame.size.width + 10, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height);
         friendName.frame = buttonFrame;
         [friendName setTitle:[[self.profileUsername stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
         [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
         [friendName setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
         friendName.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-        friendName.titleLabel.textAlignment = NSTextAlignmentLeft;
+        friendName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [friendName addTarget:self action:@selector(tappedUsernameLabel) forControlEvents:UIControlEventTouchUpInside];
         
         
