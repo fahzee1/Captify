@@ -260,33 +260,7 @@
     
 
     
-    if (!self.sentHistory){
-        if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
-            if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
-                if ([self.myPick.first_open intValue] == 1){
-                    UIImage *image = [self.view snapshotView:self.view];
-                    CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
-                    [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
-                    
-                    self.myPick.first_open = [NSNumber numberWithBool:NO];
-                    NSError *error;
-                    if (![self.myPick.managedObjectContext save:&error]){
-                        DLog(@"%@",error);
-                    }
-            
-                }
-                
-                
-
-                
-
-                
-                
-            }
-        }
-    }
-    
-    
+    [self checkCaptionChosen];
     
     [self fetchUpdates];
     
@@ -319,6 +293,37 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+- (void)checkCaptionChosen
+{
+    if (!self.sentHistory){
+        if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
+            if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
+                if ([self.myPick.first_open intValue] == 1){
+                    UIImage *image = [self.view snapshotView:self.view];
+                    CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
+                    [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
+                    
+                    self.myPick.first_open = [NSNumber numberWithBool:NO];
+                    NSError *error;
+                    if (![self.myPick.managedObjectContext save:&error]){
+                        DLog(@"%@",error);
+                    }
+                    
+                }
+                
+                
+                
+                
+                
+                
+                
+            }
+        }
+    }
+    
+
+}
 
 - (void)fetchUpdates
 {
@@ -476,7 +481,7 @@
                 self.errorMakeCaptionButton = nil;
             }
             
-            [self viewDidAppear:YES];
+            [self checkCaptionChosen];
             
         });
 
@@ -1438,10 +1443,12 @@
             self.captionMoved = YES;
             view.center = point;
             
+            /*
             view.backgroundColor = [UIColor clearColor];
             view.layer.borderColor = [[UIColor whiteColor] CGColor];
             view.layer.borderWidth = 2.f;
             view.layer.cornerRadius = 10.f;
+             */
             
         }
             break;
@@ -1449,7 +1456,7 @@
         {
             //[self captionStoppedDragging];
             self.currentPoint = point;
-            view.layer.borderWidth = 0;
+            //view.layer.borderWidth = 0;
         }
             break;
             
@@ -1550,9 +1557,9 @@
     
     
     if (!self.captionIsSplit){
-        //self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), self.finalCaptionLabel.frame.size.height +5);
+        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), self.finalCaptionLabel.frame.size.height +5);
         
-        
+        /*
         if (sender.value > self.sizeValue){
             if (self.finalCaptionLabel.frame.size.width < self.finalCaptionLabel.superview.frame.size.width){
                  self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width + 5, self.finalCaptionLabel.frame.size.height +2);
@@ -1561,6 +1568,9 @@
         else{
         self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width - 2, self.finalCaptionLabel.frame.size.height -1);
         }
+         */
+        
+        
         if (self.captionMoved){
             self.finalCaptionLabel.center = self.currentPoint;
         }
@@ -1569,6 +1579,8 @@
         }
         
         self.sizeValue = sender.value;
+        //self.finalCaptionLabel.numberOfLines = 0;
+        //[self.finalCaptionLabel sizeToFit];
        
     }
     else{
