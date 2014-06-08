@@ -267,7 +267,7 @@ typedef void (^ShareToNetworksBlock) ();
                                                                       privacyFrame.origin.y + privacyFrame.size.height - 20, 200, 70)];
     privacyLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];;
     privacyLabel.textColor = [UIColor whiteColor];
-    privacyLabel.text = NSLocalizedString(@"Show in public feed?", nil);
+    privacyLabel.text = NSLocalizedString(@"Show in explore feed?", nil);
     
     
     

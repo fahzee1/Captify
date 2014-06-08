@@ -1831,7 +1831,7 @@
         <image name="active-history-screen" width="100" height="44"/>
         <image name="active_404" width="202" height="46"/>
         <image name="captify" width="640" height="302"/>
-        <image name="capture-white" width="94" height="88"/>
+        <image name="capture-white" width="94" height="96"/>
         <image name="challenge_placeholder" width="306" height="306"/>
         <image name="explore-white" width="92" height="93"/>
         <image name="history-white" width="94" height="94"/>
