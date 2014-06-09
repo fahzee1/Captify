@@ -397,6 +397,7 @@
 		11ED4C821905B04F00A2E9B5 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C5F1905B04F00A2E9B5 /* CHANGELOG.md */; };
 		11ED4C831905B04F00A2E9B5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11ED4C741905B04F00A2E9B5 /* README.md */; };
 		11EFDD741934E0EA0088F2BA /* FeedDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EFDD731934E0EA0088F2BA /* FeedDetailViewController.m */; };
+		11F4407B194654DF00788FE4 /* SettingsLegalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F4407A194654DF00788FE4 /* SettingsLegalViewController.m */; };
 		11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FA2F4018D79380000F6DB9 /* Contacts.m */; };
 		11FA2F4318D793DE000F6DB9 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FA2F4218D793DE000F6DB9 /* AddressBook.framework */; };
 		11FAA7FE18C6763900147E75 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FAA7FD18C6763900147E75 /* ShareViewController.m */; };
@@ -1157,6 +1158,8 @@
 		11ED4C7E1905B04F00A2E9B5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/AppiraterLocalizable.strings"; sourceTree = "<group>"; };
 		11EFDD721934E0EA0088F2BA /* FeedDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedDetailViewController.h; sourceTree = "<group>"; };
 		11EFDD731934E0EA0088F2BA /* FeedDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedDetailViewController.m; sourceTree = "<group>"; };
+		11F44079194654DF00788FE4 /* SettingsLegalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsLegalViewController.h; sourceTree = "<group>"; };
+		11F4407A194654DF00788FE4 /* SettingsLegalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsLegalViewController.m; sourceTree = "<group>"; };
 		11FA2F3F18D79380000F6DB9 /* Contacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contacts.h; sourceTree = "<group>"; };
 		11FA2F4018D79380000F6DB9 /* Contacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contacts.m; sourceTree = "<group>"; };
 		11FA2F4218D793DE000F6DB9 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1519,6 +1522,8 @@
 			children = (
 				119711D318ADE5EF008AD895 /* SettingsViewController.h */,
 				119711D418ADE5EF008AD895 /* SettingsViewController.m */,
+				11F44079194654DF00788FE4 /* SettingsLegalViewController.h */,
+				11F4407A194654DF00788FE4 /* SettingsLegalViewController.m */,
 				119711C918ADAAC3008AD895 /* MenuViewController.h */,
 				119711CA18ADAAC3008AD895 /* MenuViewController.m */,
 				11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */,
@@ -2696,6 +2701,7 @@
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
 				11A3024C1919417F00882275 /* ABGroup.m in Sources */,
+				11F4407B194654DF00788FE4 /* SettingsLegalViewController.m in Sources */,
 				1153E19E18A9DF4800AD950E /* GPUImageOpeningFilter.m in Sources */,
 				118EF1B718FC6F4F00755552 /* UIProgressView+FlatUI.m in Sources */,
 				110593F1191BED4F00866C92 /* FeedViewCell.m in Sources */,

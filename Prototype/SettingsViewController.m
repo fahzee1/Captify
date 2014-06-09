@@ -22,6 +22,9 @@
 #import "MenuViewController.h"
 #import "FUISwitch.h"
 #import "UIColor+FlatUI.h"
+#import "SettingsLegalViewController.h"
+#import "MZFormSheetController.h"
+#import "UserProfileViewController.h"
 
 
 #ifdef USE_GOOGLE_ANALYTICS
@@ -40,9 +43,10 @@
 #define SETTINGS_LOGOUT 6000
 #define SETTINGS_PRIVACY 7000
 #define SETTINGS_PRIVACY_SWITCH 8000
+#define SETTINGS_PROFILE 9000
 
 
-@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate, UIActionSheetDelegate>
+@interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,UITextFieldDelegate,TWTSideMenuViewControllerDelegate, UIActionSheetDelegate,UIWebViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
 @property (strong, nonatomic) User *myUser;
 
@@ -56,6 +60,7 @@
 
 @property (strong, nonatomic) UIView *editScreen;
 @property (weak, nonatomic) IBOutlet UIScrollView *editScrollView;
+@property (strong, nonatomic)UIWebView *webView;
 
 
 @end
@@ -446,7 +451,7 @@
         {
             // Profile section
             if (indexPath.row == 4){
-                
+                // edit profile
                 UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
                     UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
@@ -466,6 +471,53 @@
                 
                 
             }
+            
+            if (indexPath.row == 5){
+                // view profile
+                
+                NSURL *fbURL;
+                if ([self.myUser.facebook_user intValue] == 1){
+                    
+                    NSString *fbID = self.myUser.facebook_id;
+                    NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large",fbID];
+                    fbURL = [NSURL URLWithString:fbString];
+                }
+                
+                
+                UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
+                if ([profile isKindOfClass:[UserProfileViewController class]]){
+                    ((UserProfileViewController *)profile).scoreString = self.myUser.score;
+                    ((UserProfileViewController *)profile).usernameString = [self.myUser displayName];
+                    ((UserProfileViewController *)profile).profileURLString = fbURL;
+                    ((UserProfileViewController *)profile).facebook_user = self.myUser.facebook_user;
+                    
+                    
+                }
+
+                MZFormSheetController *formSheet;
+                if (!IS_IPHONE5){
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:profile];
+                }
+                else{
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:profile];
+                }
+                
+                formSheet.shouldDismissOnBackgroundViewTap = YES;
+                formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
+                
+                [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+                [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+                [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+                
+                [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+                    //
+                }];
+                
+                
+                
+                
+
+            }
         }
             break;
         case 2:
@@ -473,6 +525,9 @@
             // Support section
             if (indexPath.row == 0){
                 // Terms of service
+                
+                SettingsLegalViewController *legal = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsLegal"];
+                [self.navigationController pushViewController:legal animated:YES];
                 
             }
             
@@ -568,6 +623,16 @@
         editB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
     }
     
+    UIView *profileButton = [cell viewWithTag:SETTINGS_PROFILE];
+    if ([profileButton isKindOfClass:[UILabel class]]){
+        UILabel *profileB = (UILabel *)profileButton;
+        profileB.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        profileB.textColor = [UIColor whiteColor];
+        profileB.layer.cornerRadius = 5;
+        profileB.text = NSLocalizedString(@"View Profile", nil);
+        profileB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    }
+    
     UIView *logoutButton = [cell viewWithTag:SETTINGS_LOGOUT];
     if ([logoutButton isKindOfClass:[UILabel class]]){
         UILabel* logoutB = (UILabel *)logoutButton;
@@ -588,6 +653,8 @@
         inviteB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         
     }
+    
+    
     
     
 
@@ -652,6 +719,11 @@
                 // Edit profile button
                 cell.layer.borderWidth = 0;
             }
+            
+            if (indexPath.row == 5){
+                // view profile button
+                cell.layer.borderWidth = 0;
+            }
         }
             break;
             
@@ -659,7 +731,7 @@
         {
             if (indexPath.row == 0){
                 // TOS
-                cell.textLabel.text = NSLocalizedString(@"Terms of Service", nil);
+                cell.textLabel.text = NSLocalizedString(@"Legal", nil);
             }
             
             else if (indexPath.row == 1){
@@ -695,7 +767,7 @@
     }
     
     else if (indexPath.section == 1){
-        if (indexPath.row == 4){
+        if (indexPath.row == 4 || indexPath.row == 5){
             return 57.0;
         }
     }
@@ -795,6 +867,8 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
 }
+
+
 
 - (User *)myUser
 {
