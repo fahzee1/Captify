@@ -296,13 +296,14 @@
 
 - (void)checkCaptionChosen
 {
+    
     if (!self.sentHistory){
         if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
             if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
                 if ([self.myPick.first_open intValue] == 1){
                     UIImage *image = [self.view snapshotView:self.view];
                     CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
-                    [pop showSuccessBlur2WithImage:image sender:self.myChallenge.sender.username];
+                    [pop showSuccessBlur2WithImage:image sender:[self.myChallenge.sender firstName]];
                     
                     self.myPick.first_open = [NSNumber numberWithBool:NO];
                     NSError *error;
@@ -321,6 +322,9 @@
             }
         }
     }
+    
+    
+ 
     
 
 }

@@ -233,20 +233,21 @@
     
     self.center = CGPointMake(CGRectGetMidX(self.window.bounds), CGRectGetMidY(self.window.bounds));
     
-    
+    CGRect windowFrame = self.window.bounds;
     UILabel *title = [[UILabel alloc] init];
-    title.text = NSLocalizedString(@"Success", nil);
-    title.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:50];
-    title.frame = CGRectMake(60, 50, 300, 100);
+    title.text = NSLocalizedString(@"Success!", nil);
+    title.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:50];
+    title.frame = CGRectMake(windowFrame.size.width/5, 50, 300, 100);
     title.textColor = [UIColor whiteColor];
     
-    
+    CGRect titleFrame = title.frame;
     UILabel *message = [[UILabel alloc] init];
     message.text = [NSString stringWithFormat:@"%@ %@",sender,NSLocalizedString(@"selected your caption!", nil)];
-    message.font = [UIFont fontWithName:@"STHeitiTC-Medium" size:35];
-    message.frame = CGRectMake(30, 200, 300, 300);
+    message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:30];
+    //message.frame = CGRectMake(titleFrame.origin.x - 20, titleFrame.size.height + 30, 300, 300);
     message.numberOfLines = 0;
     [message sizeToFit];
+    message.frame = CGRectMake(titleFrame.origin.x - 35, titleFrame.size.height - 20, 300, 300);
     message.textColor = [UIColor whiteColor];
 
     [bIV addSubview:message];

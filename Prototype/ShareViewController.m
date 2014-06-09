@@ -623,6 +623,8 @@ typedef void (^ShareToNetworksBlock) ();
     ParseNotifications *p = [ParseNotifications new];
     
     NSString *channel = [self.myChallenge.challenge_id stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+    [p checkForChannelAndRemove:channel];
+    
     // notify all receipients of challenge
     [p sendNotification:[NSString stringWithFormat:@"%@ chose a caption!",[self.myChallenge.sender displayName]]
               toChannel:channel
@@ -638,6 +640,7 @@ typedef void (^ShareToNetworksBlock) ();
            notificationType:ParseNotificationNotifySelectedCaptionSender
                       block:nil];
     }
+    
     
     
 
