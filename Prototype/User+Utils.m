@@ -278,6 +278,9 @@
     NSString *score = @"0";
     if (params[@"score"]){
         score = params[@"score"];
+        if ([score isKindOfClass:[NSNumber class]]){
+            score = [NSString stringWithFormat:@"%@",(NSNumber *)score];
+        }
     }
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];

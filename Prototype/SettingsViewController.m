@@ -23,6 +23,7 @@
 #import "FUISwitch.h"
 #import "UIColor+FlatUI.h"
 #import "SettingsLegalViewController.h"
+#import "SettingsEditViewController.h"
 #import "MZFormSheetController.h"
 #import "UserProfileViewController.h"
 
@@ -452,6 +453,7 @@
             // Profile section
             if (indexPath.row == 4){
                 // edit profile
+                /*
                 UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
                     UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
@@ -467,6 +469,41 @@
                         editB.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
                     }
                 }
+                 */
+                
+           
+                UINavigationController *editRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsEditRoot"];
+                UIViewController *edit;
+                if ([editRoot isKindOfClass:[UINavigationController class]]){
+                    edit = (UINavigationController *)editRoot.topViewController;
+                    if ([edit isKindOfClass:[SettingsEditViewController class]]){
+                        ((SettingsEditViewController *)edit).myUser = self.myUser;
+                        ((SettingsEditViewController *)edit).myTable = self.myTable;
+                    }
+                }
+                
+                MZFormSheetController *formSheet;
+                if (!IS_IPHONE5){
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:editRoot];
+                }
+                else{
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:editRoot];
+                }
+                
+                ((SettingsEditViewController *)edit).controller = formSheet;
+                
+                formSheet.shouldDismissOnBackgroundViewTap = YES;
+                formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromBottom;
+                
+                [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+                [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+                [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+                
+                [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+                    //
+                }];
+
+                
 
                 
                 

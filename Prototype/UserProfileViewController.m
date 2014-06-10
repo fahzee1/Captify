@@ -44,7 +44,7 @@
                                 }];
     }
     else{
-        self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+        self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC_BIG];
     }
     
     self.myProfileImage.layer.masksToBounds = YES;
@@ -58,8 +58,10 @@
     self.myUsername.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:18];
     
     
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
+    //self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = NSLocalizedString(@"Profile", nil);
+    //self.navigationController.navigationBarHidden = NO;
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popScreen)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
@@ -72,6 +74,12 @@
     
 
     
+    
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
     
 }
 

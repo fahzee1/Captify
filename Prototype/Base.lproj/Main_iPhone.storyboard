@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -60,7 +60,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="642" y="-1385"/>
+            <point key="canvasLocation" x="1168" y="-1385"/>
         </scene>
         <!--Login View Controller - loginScreen-->
         <scene sceneID="Xto-I7-cUd">
@@ -97,7 +97,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d27-1a-rPZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zhd-FX-3fa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1994" y="-1602"/>
+            <point key="canvasLocation" x="2520" y="-1602"/>
         </scene>
         <!--Sign Up View Controller - signupScreen-->
         <scene sceneID="0eo-Rg-uzx">
@@ -140,7 +140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Arr-Hg-eag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1636" y="-1602"/>
+            <point key="canvasLocation" x="2162" y="-1602"/>
         </scene>
         <!--Phone Number View Controller - Phone Number-->
         <scene sceneID="fCq-JD-nVE">
@@ -643,6 +643,74 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EWT-Pj-Chp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-821" y="-1576"/>
+        </scene>
+        <!--Settings Edit View Controller - Edit-->
+        <scene sceneID="tNi-GM-NcX">
+            <objects>
+                <viewController id="Tb0-Nm-AVn" customClass="SettingsEditViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wbE-B3-Msr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="2ew-g1-6PS">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FSl-fw-gsu">
+                                        <rect key="frame" x="14" y="72" width="79" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oqx-Nj-IHP">
+                                        <rect key="frame" x="14" y="124" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cyZ-j0-BQG">
+                                        <rect key="frame" x="14" y="177" width="50" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" id="blZ-Ui-A8Z">
+                                        <rect key="frame" x="112" y="69" width="167" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" id="Z12-wY-OrS">
+                                        <rect key="frame" x="112" y="121" width="167" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" id="Kft-dO-IEW">
+                                        <rect key="frame" x="112" y="174" width="167" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit" id="lpd-xv-jFU"/>
+                    <connections>
+                        <outlet property="emailField" destination="Z12-wY-OrS" id="vhI-tt-hbd"/>
+                        <outlet property="emailLabel" destination="oqx-Nj-IHP" id="om2-vM-jtL"/>
+                        <outlet property="phoneField" destination="Kft-dO-IEW" id="VFJ-NB-FYk"/>
+                        <outlet property="phoneLabel" destination="cyZ-j0-BQG" id="M2I-hV-XNA"/>
+                        <outlet property="scrollView" destination="2ew-g1-6PS" id="iRw-jk-ihe"/>
+                        <outlet property="usernameField" destination="blZ-Ui-A8Z" id="OdP-qb-WxJ"/>
+                        <outlet property="usernameLabel" destination="FSl-fw-gsu" id="Ett-mb-Qce"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fQj-u7-vZe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-38" y="-1566"/>
         </scene>
         <!--Challenge View Controller - showChallengeScreen-->
         <scene sceneID="NVp-if-iSc">
@@ -1231,7 +1299,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="ck9-Hy-3vE"/>
                     <connections>
@@ -1266,7 +1334,7 @@
                                         <rect key="frame" x="27" y="414" width="306" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose friends to send too" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xvo-DG-rZm">
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose friends to send to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xvo-DG-rZm">
                                                 <rect key="frame" x="6" y="7" width="295" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1288,7 +1356,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pz3-cR-FE9">
-                                        <rect key="frame" x="26" y="462" width="145" height="40"/>
+                                        <rect key="frame" x="30" y="462" width="145" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Contacts">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1298,7 +1366,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gIv-4t-gGC">
-                                        <rect key="frame" x="187" y="462" width="145" height="40"/>
+                                        <rect key="frame" x="182" y="462" width="145" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Facebook">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1884,13 +1952,31 @@
             </objects>
             <point key="canvasLocation" x="-1187" y="-1576"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0KS-0p-ThU">
+            <objects>
+                <navigationController storyboardIdentifier="settingsEditRoot" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VB7-hq-XIZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gvD-lI-wlO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Tb0-Nm-AVn" kind="relationship" relationship="rootViewController" id="hv5-Wg-N69"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UkJ-ON-Wli" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-415" y="-1566"/>
+        </scene>
     </scenes>
     <resources>
         <image name="USER_ICON" width="60" height="61"/>
         <image name="active-history-screen" width="100" height="44"/>
         <image name="active_404" width="202" height="46"/>
         <image name="captify" width="640" height="302"/>
-        <image name="capture-white" width="94" height="96"/>
+        <image name="capture-white" width="90" height="88"/>
         <image name="challenge_placeholder" width="306" height="306"/>
         <image name="explore-white" width="92" height="93"/>
         <image name="history-white" width="94" height="94"/>

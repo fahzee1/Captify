@@ -48,7 +48,7 @@
                                 }
                             }];
     
-    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
 
     [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     [self.likeButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateHighlighted];
@@ -157,6 +157,8 @@
         [self.topLabel removeFromSuperview];
         
         [self.navigationController pushViewController:profile animated:YES];
+    
+       
         
         
     }

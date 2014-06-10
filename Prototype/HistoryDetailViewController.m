@@ -2027,11 +2027,19 @@
             [selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
             [selectButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             
-            if ([pick.is_chosen intValue] == 1){
+            
+            if (self.hideSelectButtonsMax){
+                
                 selectButton.userInteractionEnabled = NO;
                 selectButton.hidden = YES;
+
+            }
+            
+            if ([pick.is_chosen intValue] == 1){
                 cell.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
                 cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+                
+
                 //cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
                 //selectButton.titleLabel.font = [UIFont fontAwesomeFontOfSize:25];
                 //[selectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-trophy"] forState:UIControlStateNormal];

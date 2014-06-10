@@ -49,7 +49,9 @@
 #define CAPTIFY_ACTIVE_HISTORY @"active-history-screen"
 #define CAPTIFY_INACTIVE_HISTORY @"inactive-history-screen"
 #define CAPTIFY_CONTACT_PIC @"USER_ICON"
+#define CAPTIFY_CONTACT_PIC_BIG @"USER_ICON_BIG"
 #define CAPTIFY_CHALLENGE_PLACEHOLDER @"challenge_placeholder"
+#define CAPTIFY_CHOSEN_HISTORY @"chosen-history"
 #define CAPTIFY_LOGO @"captify"
 
 // colors

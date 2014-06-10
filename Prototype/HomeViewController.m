@@ -138,7 +138,7 @@
     
     [self createTeamCaptify];
     
-    /*
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[User name]];
      NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
     NSError *e;
@@ -147,7 +147,7 @@
     for (User *a in t){
         DLog(@"user:%@",a.username);
     }
-     */
+     
      
     
     //NSLog(@"%@",self.myUser);

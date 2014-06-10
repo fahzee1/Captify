@@ -498,6 +498,13 @@
             }
         }
         int sentPick = [challenge.sentPick intValue];
+        ChallengePicks *myPick;
+        NSArray *allPicks = [challenge.picks allObjects];
+        NSArray *picks = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
+        if (picks){
+            myPick = [picks firstObject];
+        }
+
                 
         if (active && !sentPick){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -517,6 +524,10 @@
              */
             
             [activeButton setImage:[UIImage imageNamed:CAPTIFY_ACTIVE_HISTORY] forState:UIControlStateNormal];
+        }
+        
+        else if ([myPick.is_chosen intValue] == 1){
+            [activeButton setImage:[UIImage imageNamed:CAPTIFY_CHOSEN_HISTORY] forState:UIControlStateNormal];
         }
         else{
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
