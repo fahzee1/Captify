@@ -38,10 +38,18 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] style:UIBarButtonItemStylePlain target:self action:@selector(closeScreen)];
+    
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    
+    self.navigationItem.leftBarButtonItem = leftButton;
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
-    self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    self.myTable.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];;
     self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.view.backgroundColor = [UIColor clearColor];
     
 }
 
@@ -64,7 +72,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)closeScreen
+{
+    [self.controller dismissAnimated:YES completionHandler:nil];
 
+}
 
 #pragma -mark Uitableview delegate
 
@@ -88,7 +100,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    header.contentView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    header.contentView.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
     
 }
 
@@ -100,10 +112,12 @@
 {
     static NSString *cellIdentifier = @"responsesCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-    cell.layer.borderWidth = 2;
+    //cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    //cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
-    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    cell.contentView.layer.cornerRadius = 10;
+    cell.backgroundView.layer.cornerRadius = 10;
+    cell.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
     
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -152,7 +166,7 @@
              */
             
             usernameLabel.text = [pick.player displayName];
-            usernameLabel.textColor = [UIColor whiteColor];
+            usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
             usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
             
             
@@ -160,14 +174,14 @@
             
             
             // set width and height so "sizeToFit" uses those constraints
-            captionLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            captionLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
             captionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
             captionLabel.frame = CGRectMake(captionLabel.frame.origin.x, captionLabel.frame.origin.y,176 , 30);
             captionLabel.numberOfLines = 0;
             [captionLabel sizeToFit];
             
             dateLabel.text = [pick.timestamp timeAgo];
-            dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            dateLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
             dateLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
             
             

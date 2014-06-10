@@ -153,6 +153,7 @@
         ((UserProfileViewController *)profile).usernameString = self.profileUsername;
         ((UserProfileViewController *)profile).profileURLString = self.facebookPicURL;
         ((UserProfileViewController *)profile).facebook_user = self.facebookUser;
+        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
         
         [self.topLabel removeFromSuperview];
         

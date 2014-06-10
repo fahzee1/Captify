@@ -9,9 +9,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Challenge+Utils.h"
+#import "MZFormSheetController.h"
 
 @interface ChallengeResponsesViewController : UIViewController
 
 @property (nonatomic, retain)Challenge *myChallenge;
-
+@property (strong,nonatomic) MZFormSheetController *controller;
 @end

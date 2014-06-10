@@ -495,8 +495,9 @@
 - (IBAction)tappedViewResponsesButton:(UIButton *)sender {
     
     UIViewController *responsesRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"challengeResponsesRoot"];
+    UIViewController *responsesVC;
     if ([responsesRoot isKindOfClass:[UINavigationController class]]){
-        UIViewController *responsesVC =  ((UINavigationController *)responsesRoot).topViewController;
+            responsesVC =  ((UINavigationController *)responsesRoot).topViewController;
         if ([responsesVC isKindOfClass:[ChallengeResponsesViewController class]]){
             ((ChallengeResponsesViewController *)responsesVC).myChallenge = self.myChallenge;
         }
@@ -510,6 +511,8 @@
     else{
         formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 350) viewController:responsesRoot];
     }
+    
+    ((ChallengeResponsesViewController *)responsesVC).controller = formSheet;
     
     formSheet.shouldDismissOnBackgroundViewTap = YES;
     formSheet.transitionStyle = MZFormSheetTransitionStyleSlideAndBounceFromRight;

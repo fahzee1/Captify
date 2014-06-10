@@ -180,17 +180,25 @@
     hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
     
-    NSString *name = self.usernameField.text;
+    //NSString *name = self.usernameField.text;
     NSString *phone = self.phoneField.text;
     NSString *email = self.emailField.text;
     
+    if (phone){
+         phone = [[phone componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"+0123456789"] invertedSet]] componentsJoinedByString:@""];
+    }
     
     BOOL change = NO;
+    /*
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"facebook_user"]){
         if (![name isEqualToString:self.myUser.username]){
             change = YES;
         }
     }
+     */
+    
+    
+    
     
     if (![phone isEqualToString:self.myUser.phone_number] && ![phone isEqualToString:SETTINGS_PHONE_DEFAULT]){
         change = YES;
@@ -203,7 +211,6 @@
     
     if (change){
         NSDictionary *params = @{@"username": self.myUser.username,
-                                 @"new_username": name,
                                  @"phone": phone,
                                  @"email": email};
         

@@ -19,4 +19,6 @@
 @property (strong, nonatomic) NSURL *profileURLString;
 @property (strong, nonatomic) NSNumber *facebook_user;
 
+@property float delaySetupWithTime;
+
 @end

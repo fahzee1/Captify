@@ -422,6 +422,9 @@
                                             }
                                             if (score){
                                                 params[@"score"] = score;
+                                                if ([score isKindOfClass:[NSNumber class]]){
+                                                    score = [NSString stringWithFormat:@"%@",(NSNumber *)score];
+                                                }
                                             }
                                             if (facebook){
                                                 params[@"facebook_user"] = facebook;

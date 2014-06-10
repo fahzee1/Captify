@@ -527,6 +527,7 @@
                     ((UserProfileViewController *)profile).usernameString = [self.myUser displayName];
                     ((UserProfileViewController *)profile).profileURLString = fbURL;
                     ((UserProfileViewController *)profile).facebook_user = self.myUser.facebook_user;
+                    ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
                     
                     
                 }
