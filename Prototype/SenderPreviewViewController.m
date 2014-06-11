@@ -39,9 +39,10 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *selectedFacebookFriends;
+@property (strong, nonatomic)NSMutableArray *selectedFacebookFriendsDict;
 @property (strong, nonatomic)NSMutableArray *selectedContactFriends;
 @property (strong, nonatomic)NSMutableArray *allFriends;
-
+@property (strong, nonatomic)NSMutableArray *allFriendsDict;
 @property (strong, nonatomic) NSArray *facebookFriendsArray;
 @property (strong, nonatomic)IBOutlet UIButton *bottomSendButton;
 @property CGPoint scrollStart;
@@ -288,6 +289,34 @@
 }
 
 
+- (void)addToRecents
+{
+    // add reciepints to users recent sends
+    NSUInteger count = [self.allFriendsDict count];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *recents = [defaults valueForKey:@"recents"];
+    NSArray *allFriendsCopy;
+    if ([recents count] > 0){
+        [allFriendsCopy arrayByAddingObjectsFromArray:recents];
+        if ([allFriendsCopy count] > 10){
+            allFriendsCopy = [allFriendsCopy subarrayWithRange:NSMakeRange(0, 10)];
+        }
+    }
+    else{
+        if (count > 10){
+            allFriendsCopy = [self.allFriendsDict subarrayWithRange:NSMakeRange(0, 10)];
+            
+        }
+        else{
+            allFriendsCopy = self.allFriendsDict;
+        }
+        
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setValue:allFriendsCopy forKey:@"recents"];
+}
+
+
 - (void)sendButtonTapped:(UIButton *)sender
 {
  
@@ -371,6 +400,8 @@
         [Challenge sendCreateChallengeRequestWithParams:apiParams
                                                   block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
                                                       if (wasSuccessful){
+                                    
+                                                          [self addToRecents];
                                                           NSUInteger count = [self.allFriends count];
                                                           NSString *media_url = [data valueForKey:@"media"];
                                                           if ([media_url isKindOfClass:[NSNull class]]){
@@ -602,9 +633,15 @@
     for (NSDictionary *friend in self.facebookFriendsArray){
         NSString *first = friend[@"first_name"];
         NSString *second = friend[@"last_name"];
+        NSString *fb_id = friend[@"id"];
         NSString *username = [NSString stringWithFormat:@"%@-%@",first,second];
         
+        NSDictionary *userDict = @{@"username": username,
+                                   @"is_facebook": [NSNumber numberWithBool:YES],
+                                   @"facebook_id": fb_id};
+        
         [self.selectedFacebookFriends addObject:username];
+        [self.selectedFacebookFriendsDict addObject:userDict];
     }
     
     
@@ -613,6 +650,9 @@
     [self dismissViewControllerAnimated:YES completion:^{
         [self.allFriends addObjectsFromArray:self.selectedContactFriends];
         [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
+        
+        [self.allFriendsDict addObjectsFromArray:self.selectedContactFriends];
+        [self.allFriendsDict addObjectsFromArray:self.selectedFacebookFriendsDict];
         
         [self editSendButton];
 
@@ -732,6 +772,15 @@
     return _selectedFacebookFriends;
 }
 
+- (NSMutableArray *)selectedFacebookFriendsDict
+{
+    if (!_selectedFacebookFriendsDict){
+        _selectedFacebookFriendsDict = [[NSMutableArray alloc] init];
+    }
+    
+    return _selectedFacebookFriendsDict;
+}
+
 
 - (NSMutableArray *)allFriends
 {
@@ -740,6 +789,15 @@
     }
     
     return _allFriends;
+}
+
+- (NSMutableArray *)allFriendsDict
+{
+    if (!_allFriendsDict){
+        _allFriendsDict = [[NSMutableArray alloc] init];
+    }
+    
+    return _allFriendsDict;
 }
 
 
