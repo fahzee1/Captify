@@ -1969,6 +1969,10 @@
                 
             }
             
+            else if ([pick.player.is_teamCaptify intValue] == 1){
+                imageView.image = [UIImage imageNamed:CAPTIFY_LOGO];
+            }
+            
             else{
                 imageView.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
                 /*
