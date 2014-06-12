@@ -295,16 +295,20 @@
     NSUInteger count = [self.allFriendsDict count];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *recents = [defaults valueForKey:@"recents"];
-    NSArray *allFriendsCopy;
+    NSMutableArray *allFriendsCopy = [NSMutableArray array];
+    
     if ([recents count] > 0){
-        [allFriendsCopy arrayByAddingObjectsFromArray:recents];
+        [allFriendsCopy addObjectsFromArray:recents];
+        [allFriendsCopy addObjectsFromArray:self.allFriendsDict];
         if ([allFriendsCopy count] > 10){
-            allFriendsCopy = [allFriendsCopy subarrayWithRange:NSMakeRange(0, 10)];
+            NSArray *choppedList = [allFriendsCopy subarrayWithRange:NSMakeRange(0, 10)];
+            allFriendsCopy = [choppedList mutableCopy];
         }
     }
     else{
         if (count > 10){
-            allFriendsCopy = [self.allFriendsDict subarrayWithRange:NSMakeRange(0, 10)];
+            NSArray *choppedList = [self.allFriendsDict subarrayWithRange:NSMakeRange(0, 10)];
+            allFriendsCopy = [choppedList mutableCopy];
             
         }
         else{
@@ -313,7 +317,10 @@
         
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:allFriendsCopy forKey:@"recents"];
+    NSArray *recentsList = [[NSSet setWithArray:allFriendsCopy] allObjects];
+    
+    
+    [[NSUserDefaults standardUserDefaults] setValue:recentsList forKey:@"recents"];
 }
 
 
@@ -603,6 +610,9 @@
             [self.allFriends addObjectsFromArray:self.selectedContactFriends];
             [self.allFriends addObjectsFromArray:self.selectedFacebookFriends];
             
+            [self.allFriendsDict addObjectsFromArray:self.selectedContactFriends];
+            [self.allFriendsDict addObjectsFromArray:self.selectedFacebookFriends];
+            
             [self editSendButton];
         }
         @catch (NSException *exception) {
@@ -628,6 +638,7 @@
  
     
     self.selectedFacebookFriends = nil;
+    self.selectedFacebookFriendsDict = nil;
     self.allFriends = nil;
     
     for (NSDictionary *friend in self.facebookFriendsArray){

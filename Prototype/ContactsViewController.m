@@ -63,7 +63,7 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.sections = [NSArray arrayWithObjects:@"Recents","A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
+    self.sections = [NSArray arrayWithObjects:@"Recents",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
 
     
     
@@ -146,6 +146,9 @@
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     if (tableView == self.myTable){
+        if ([self.sections containsObject:@"Recents"]){
+            return [self.sections subarrayWithRange:NSMakeRange(1, [self.sections count] -1)];
+        }
         return self.sections;
     }
     else{
@@ -162,6 +165,7 @@
         return 0;
     }
 }
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -208,12 +212,12 @@
                 
                 if ([(NSString *)friend isEqualToString:@"Team-Captify"]){
                     ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_LOGO];
-                     ((FriendCell *)cell).myFriendUsername.text = [friend stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+                     ((FriendCell *)cell).myFriendUsername.text = [[friend stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
                     
                 }
                 else{
                     ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-                    ((FriendCell *)cell).myFriendUsername.text = friend;
+                    ((FriendCell *)cell).myFriendUsername.text = [friend capitalizedString];
                 }
                 
        
@@ -224,7 +228,7 @@
                 
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",friend[@"facebook_id"]];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
-                ((FriendCell *)cell).myFriendUsername.text = friend[@"username"];
+                ((FriendCell *)cell).myFriendUsername.text = [(NSString *)friend[@"username"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
                 [((FriendCell *)cell).myFriendPic setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
             }
         
