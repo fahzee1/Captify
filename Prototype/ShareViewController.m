@@ -194,7 +194,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myFacebookButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.myFacebookButton.layer.borderWidth = 2;
-    self.myFacebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myFacebookButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myFacebookButton.layer.cornerRadius = 5;
 
     
@@ -205,7 +205,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myInstagramButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.myInstagramButton.layer.borderWidth = 2;
-    self.myInstagramButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myInstagramButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myInstagramButton.layer.cornerRadius = 5;
     
     
@@ -216,7 +216,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myTwitterButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.myTwitterButton.layer.borderWidth = 2;
-    self.myTwitterButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myTwitterButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myTwitterButton.layer.cornerRadius = 5;
 
     
@@ -226,7 +226,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myMessageButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myMessageButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.myMessageButton.layer.borderWidth = 2;
-    self.myMessageButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myMessageButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myMessageButton.layer.cornerRadius = 5;
 
     
@@ -237,7 +237,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myPinterestButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.myPinterestButton.layer.borderWidth = 2;
-    self.myPinterestButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.myPinterestButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myPinterestButton.layer.cornerRadius = 5;
     
 
@@ -391,11 +391,15 @@ typedef void (^ShareToNetworksBlock) ();
                     dispatch_async(dispatch_get_main_queue(), ^{
                         self.shareFacebook = !self.shareFacebook;
                         if (self.shareFacebook){
-                            [self.myFacebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK] forState:UIControlStateNormal];
-                            
+                            self.myFacebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_FACEBOOK] CGColor];
+                            [self.myFacebookButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK]];
+                            [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                         }
                         else{
+                            self.myFacebookButton.layer.borderColor = [[UIColor whiteColor] CGColor];
                             [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                            [self.myFacebookButton setBackgroundColor:[UIColor clearColor]];
+                            
                             
                         }
                         
@@ -417,11 +421,15 @@ typedef void (^ShareToNetworksBlock) ();
     else{
         self.shareFacebook = !self.shareFacebook;
         if (self.shareFacebook){
-            [self.myFacebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK] forState:UIControlStateNormal];
+            self.myFacebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_FACEBOOK] CGColor];
+            [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.myFacebookButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_FACEBOOK]];
             
         }
         else{
             [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.myFacebookButton setBackgroundColor:[UIColor clearColor]];
+            self.myFacebookButton.layer.borderColor = [[UIColor whiteColor] CGColor];
             
         }
         
@@ -441,11 +449,15 @@ typedef void (^ShareToNetworksBlock) ();
 
         self.shareInstagram = !self.shareInstagram;
         if (self.shareInstagram){
-            [self.myInstagramButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_INSTAGRAM] forState:UIControlStateNormal];
+            self.myInstagramButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_INSTAGRAM] CGColor];
+            [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.myInstagramButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_INSTAGRAM]];
 
         }
         else{
+            self.myInstagramButton.layer.borderColor = [[UIColor whiteColor] CGColor];
             [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.myInstagramButton setBackgroundColor:[UIColor clearColor]];
             if (!self.shareTwitter && !self.shareFacebook){
             }
 
@@ -515,11 +527,16 @@ typedef void (^ShareToNetworksBlock) ();
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.shareTwitter = !self.shareTwitter;
                 if (self.shareTwitter){
-                    [self.myTwitterButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_TWITTER] forState:UIControlStateNormal];
+                    self.myTwitterButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_TWITTER] CGColor];
+                    [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [self.myTwitterButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_TWITTER]];
+                    //[self.myTwitterButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_TWITTER] forState:UIControlStateNormal];
                     
                 }
                 else{
+                    self.myTwitterButton.layer.borderColor = [[UIColor whiteColor] CGColor];
                     [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [self.myTwitterButton setBackgroundColor:[UIColor clearColor]];
                     if (!self.shareInstagram && !self.shareFacebook){
                     }
                     
@@ -552,10 +569,15 @@ typedef void (^ShareToNetworksBlock) ();
 
         self.sharePinterest = !self.sharePinterest;
         if (self.sharePinterest){
-            [self.myPinterestButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_PINTEREST] forState:UIControlStateNormal];
+            self.myPinterestButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_PINTEREST] CGColor];
+            [self.myPinterestButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_PINTEREST]];
+            self.myPinterestButton.layer.borderColor = [[UIColor whiteColor] CGColor];
+        
         }
         else{
+            self.myPinterestButton.layer.borderColor = [[UIColor whiteColor] CGColor];
             [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.myPinterestButton setBackgroundColor:[UIColor clearColor]];
 
         }
     }
