@@ -23,6 +23,8 @@
 #import "TWTSideMenuViewController.h"
 #import "MenuViewController.h"
 #import "AwesomeAPICLient.h"
+#import "ABWrappers.h"
+#import "Contacts.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
@@ -99,6 +101,8 @@
     
 
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    [self fetchContacts2];
     
    
     
@@ -244,6 +248,112 @@
 
 
 }
+
+- (void)fetchContacts2
+{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        static int retrys = 0;
+        
+        if ([ABStandin authorizationStatus] != kABAuthorizationStatusAuthorized){
+            [ABStandin requestAccess];
+            
+            
+            if (retrys < 5){
+                double delayInSeconds = 10.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    retrys += 1;
+                    [self fetchContacts2];
+                });
+            }
+            
+            return;
+        }
+        
+        NSArray *contacts = [ABContactsHelper contacts];
+        NSMutableArray *list = [@[] mutableCopy];
+        
+        for (ABContact *contact in contacts){
+            DLog(@"%@ number is %@",contact.firstname,contact.phonenumbers);
+            NSString *formattedPhoneNumber = contact.phonenumbers;
+            NSString *phoneNumber = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"+0123456789"] invertedSet]] componentsJoinedByString:@""];
+            DLog(@"%@ formatted number is %@",contact.firstname,phoneNumber);
+            
+            if (contact.phonenumbers){
+                [list addObject:phoneNumber];
+            }
+        }
+        
+        
+        if ([list count] > 0 && self.myUser){
+            NSDictionary *params = @{@"username":self.myUser.username ,
+                                     @"action":@"getCF",
+                                     @"content":list};
+            
+            Contacts *c = [[Contacts alloc] init];
+            [c requestFriendsFromContactsList:params
+                                        block:^(BOOL success, id data) {
+                                            if (success){
+                                                for (id user in data[@"contacts"]){
+                                                    NSString *facebook_id;
+                                                    if (user[@"facebook_id"] == (id)[NSNull null] || user[@"facebook_id"] == nil){
+                                                        facebook_id = @"0";
+                                                    }
+                                                    else{
+                                                        facebook_id = user[@"facebook_id"];
+                                                    }
+                                                    
+                                                    NSDictionary *params;
+                                                    @try {
+                                                        params = @{@"username": user[@"username"],
+                                                                   @"facebook_user":user[@"is_facebook"],
+                                                                   @"facebook_id":facebook_id,
+                                                                   @"is_contact":[NSNumber numberWithBool:YES]};
+                                                        
+                                                    }
+                                                    @catch (NSException *exception) {
+                                                        DLog(@"%@",exception);
+                                                    }
+                                                    
+                                                    User *userCreated = [User createFriendWithParams:params
+                                                                               inMangedObjectContext:self.myUser.managedObjectContext];
+                                                    if (userCreated){
+                                                        DLog(@"successfully created %@", user[@"username"]);
+                                                    }
+                                                    else
+                                                    {
+                                                        DLog(@"failerd created %@", user[@"username"]);
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                            else{
+                                                DLog(@"no success");
+                                            }
+                                        }];
+            
+        }
+        else{
+            if (retrys < 10){
+                retrys += 1;
+                double delayInSeconds = 10.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [self fetchContacts2];
+                });
+                
+                
+            }
+        }
+        
+    });
+    
+    
+}
+
+
 
 - (IBAction)tappedContacts:(UIButton *)sender
 {

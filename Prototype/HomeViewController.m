@@ -125,6 +125,8 @@
         [self fetchContacts2];
         [defaults setBool:YES forKey:@"alreadyLogged"];
     }
+    
+    /*
     else{
         if (!self.contactFetchTimer){
             self.contactFetchTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 10
@@ -134,6 +136,7 @@
 
         }
     }
+     */
     
     
     [self createTeamCaptify];
