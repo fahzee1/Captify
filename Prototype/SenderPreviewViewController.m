@@ -28,7 +28,7 @@
 #define SCROLLPICMULTIPLY_VALUE 100
 #define SCROLLPICADD_VALUE 22
 
-@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate,ContactsControllerDelegate, UIActionSheetDelegate>
+@interface SenderPreviewViewController ()<FBViewControllerDelegate,FBFriendPickerDelegate,ContactsControllerDelegate, UIActionSheetDelegate, MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topLabel;
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
@@ -52,7 +52,7 @@
 @property (strong,nonatomic) FBFriendPickerViewController *facebookScreen;
 @property (strong,nonatomic) UIView *errorContainerView;
 
-
+@property BOOL hudWasHidden;
 @end
 
 @implementation SenderPreviewViewController
@@ -399,6 +399,16 @@
     hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
     hud.dimBackground = YES;
+    hud.delegate = self;
+    
+    double delayInSeconds = 30.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (!self.hudWasHidden){
+            hud.labelText = NSLocalizedString(@"Sheesh", nil);
+            hud.detailsLabelText = NSLocalizedString(@"Slow network connection. Be patient still sending.", nil);
+        }
+    });
  
 
     
@@ -628,6 +638,14 @@
 - (void)ContactViewControllerDataChanged:(ContactsViewController *)controller
 {
     //self.selectedContactFriends = controller.selection;
+}
+
+
+#pragma -mark Mbprogresshud
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    self.hudWasHidden = YES;
 }
 
 #pragma -mark FBFRIENDS delegate
@@ -934,6 +952,7 @@
     
     
 }
+
 
 
 

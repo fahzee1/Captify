@@ -187,12 +187,11 @@
                                             NSString *name = ch[@"name"];
                                             NSNumber *active = ch[@"is_active"];
                                             NSNumber *recipients_count = ch[@"recipients_count"];
-                                            NSArray *recipients = ch[@"recipients"];
+                                            //NSArray *recipients = ch[@"recipients"];
                                             NSString *media_url = ch[@"media_url"];
                                             
                                             NSDictionary *params = @{@"sender": self.myUser.username,
                                                                      @"context": self.myUser.managedObjectContext,
-                                                                     @"recipients": recipients,
                                                                      @"recipients_count": recipients_count,
                                                                      @"challenge_name":name,
                                                                      @"active":active,
@@ -273,12 +272,11 @@
         NSString *name = json[@"name"];
         NSNumber *active = json[@"is_active"];
         NSNumber *recipients_count = json[@"recipients_count"];
-        NSArray *recipients = json[@"recipients"];
+        //NSArray *recipients = json[@"recipients"];
         NSString *media_url = json[@"media_url"];
         
         NSDictionary *params = @{@"sender": self.myUser.username,
                                  @"context": self.myUser.managedObjectContext,
-                                 @"recipients": recipients,
                                  @"recipients_count": recipients_count,
                                  @"challenge_name":name,
                                  @"active":active,

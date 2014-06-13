@@ -173,15 +173,17 @@
 {
     DLog(@"%@",self.mediaURL);
     
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.spinner.center = self.challengeImage.center;
-    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    CGRect spinnerFrame = self.spinner.frame;
-    spinnerFrame.origin.x -= 20;
-    self.spinner.frame = spinnerFrame;
-    
-    [self.challengeImage addSubview:self.spinner];
-    [self.spinner startAnimating];
+    if (!self.spinner){
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.spinner.center = self.challengeImage.center;
+        self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        CGRect spinnerFrame = self.spinner.frame;
+        spinnerFrame.origin.x -= 20;
+        self.spinner.frame = spinnerFrame;
+        
+        [self.challengeImage addSubview:self.spinner];
+        [self.spinner startAnimating];
+    }
     
     if (!self.retryButton.isHidden){
         self.retryButton.hidden = YES;
@@ -203,6 +205,7 @@
                                            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                                            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                                                self.retryButton.hidden = NO;
+
                                                
                                            });
                                            
@@ -213,6 +216,7 @@
         
     }
     else{
+        
         [self fetchMediaRedisForPicks:NO];
         
         
@@ -221,9 +225,15 @@
 }
 
 
+
 - (void)fetchMediaRedisForPicks:(BOOL)getPicks
 {
-    [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
+    NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id} mutableCopy];
+    
+    if ([self.myChallenge.image_path isEqualToString:@""]){
+        params[@"grab_media"] = [NSNumber numberWithBool:YES];
+    }
+    [User fetchMediaBlobWithParams:params
                              block:^(BOOL wasSuccessful, id data, NSString *message) {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      [self.spinner stopAnimating];
@@ -238,7 +248,7 @@
                                          NSNumber *redis = data[@"redis"];
                                          if ([redis intValue] == 1){
                                              [self fetchRedisPicksWithData:picks];
-                                             return;
+                                             //return;
                                              
                                          }
                                      }
@@ -346,9 +356,9 @@
         [self setupPickResponsesLabel];
         
         
+        
     }
     
-    return;
     
 
 }

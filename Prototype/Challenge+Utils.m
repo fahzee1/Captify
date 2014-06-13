@@ -328,7 +328,7 @@
 {
     NSAssert([params valueForKey:@"sender"], @"Must include sender");
     NSAssert([params valueForKey:@"context"], @"Must include context");
-    NSAssert([params valueForKey:@"recipients"], @"Must include recipients");
+    //NSAssert([params valueForKey:@"recipients"], @"Must include recipients");
     NSAssert([params valueForKey:@"recipients_count"], @"Must include recipients_count");
     NSAssert([params valueForKey:@"challenge_name"], @"Must include name for challenge");
     NSAssert([params valueForKey:@"active"], @"Must include active to create challenge");

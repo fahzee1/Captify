@@ -136,17 +136,25 @@
             imageView.layer.cornerRadius = imageView.frame.size.height /2;
             
             
-            if (pick.player.facebook_user){
+            
+            [pick.player getCorrectProfilePicWithImageView:imageView];
+            
+            /*
+            if ([pick.player.facebook_user intValue] == 1){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
                 
             }
             
+            else if (pick.player.is_teamCaptify){
+                imageView.image = [UIImage imageNamed:CAPTIFY_LOGO];
+            }
             else{
                 imageView.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
                 
             }
+             */
             
             
             /*
@@ -168,6 +176,13 @@
             usernameLabel.text = [pick.player displayName];
             usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
             usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+            
+            if ([usernameLabel.text length] >= 24){
+                NSString *uString = [usernameLabel.text substringToIndex:23];
+                usernameLabel.text = [NSString stringWithFormat:@"%@...",uString];
+            }
+
+            
             
             
             captionLabel.text =[NSString stringWithFormat:@"\"%@\"",[pick.answer capitalizedString]];

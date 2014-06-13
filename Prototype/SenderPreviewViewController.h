@@ -36,5 +36,8 @@
 @property (weak) id <SenderPreviewDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 
+
+- (NSString *)redisReceivedKeyWithUsername:(NSString *)username;
+
 @end
 
