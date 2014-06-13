@@ -571,7 +571,7 @@ typedef void (^ShareToNetworksBlock) ();
         if (self.sharePinterest){
             self.myPinterestButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_PINTEREST] CGColor];
             [self.myPinterestButton setBackgroundColor:[UIColor colorWithHexString:CAPTIFY_PINTEREST]];
-            self.myPinterestButton.layer.borderColor = [[UIColor whiteColor] CGColor];
+            [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         }
         else{
