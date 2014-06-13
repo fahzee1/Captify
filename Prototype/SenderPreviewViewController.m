@@ -153,6 +153,11 @@
     self.myUser = nil;
 }
 
+- (BOOL)connected
+{
+    return [[AwesomeAPICLient sharedClient] connected];
+}
+
 - (void)popToPreview
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -345,153 +350,159 @@
     // then show history screen
     
     
-    NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
-    /*
-    [Challenge saveImage:thumbnail filename:thumbnail_path];
-    [Challenge saveImage:self.image filename:image_path];
-     */
     
-    
-    
-        // create challenge in backend
-    float compression;
-    if (!IS_IPHONE5){
-        compression = 0.7;
-    }
-    else{
-        compression = 0.5;
-    }
-    
-    NSData *imageData = UIImageJPEGRepresentation(self.image, compression);
-    NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
-    
-    NSMutableDictionary *apiParams;
-    NSString *mediaName;
-    @try {
-        apiParams = [@{@"username": self.myUser.username,
-                        @"is_picture":[NSNumber numberWithBool:YES],
-                        @"name":self.name,
-                        @"recipients":self.allFriends,
-                        @"challenge_id":challenge_id,
-                        } mutableCopy];
+    if ([self connected]){
+        NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
+        /*
+        [Challenge saveImage:thumbnail filename:thumbnail_path];
+        [Challenge saveImage:self.image filename:image_path];
+         */
         
-        mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
-        if (mediaData){
+        
+        
+            // create challenge in backend
+        float compression;
+        if (!IS_IPHONE5){
+            compression = 0.7;
+        }
+        else{
+            compression = 0.5;
+        }
+        
+        NSData *imageData = UIImageJPEGRepresentation(self.image, compression);
+        NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+        
+        NSMutableDictionary *apiParams;
+        NSString *mediaName;
+        @try {
+            apiParams = [@{@"username": self.myUser.username,
+                            @"is_picture":[NSNumber numberWithBool:YES],
+                            @"name":self.name,
+                            @"recipients":self.allFriends,
+                            @"challenge_id":challenge_id,
+                            } mutableCopy];
+            
             mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
-            NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
-            apiParams[@"media"] = media;
-            apiParams[@"media_name"] = mediaName;
+            if (mediaData){
+                mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
+                NSString *media = [NSString stringWithUTF8String:mediaData.bytes];
+                apiParams[@"media"] = media;
+                apiParams[@"media_name"] = mediaName;
+            }
+            
+
+
+        }
+        @catch (NSException *exception) {
+            DLog(@"%@",exception);
         }
         
+     
 
-
-    }
-    @catch (NSException *exception) {
-        DLog(@"%@",exception);
-    }
-    
- 
-
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"Sending", nil);
-    hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    hud.detailsLabelText = NSLocalizedString(@"Challenges are active for 24 hours", nil);
-    hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
-    hud.dimBackground = YES;
-    hud.delegate = self;
-    
-    double delayInSeconds = 30.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        if (!self.hudWasHidden){
-            hud.labelText = NSLocalizedString(@"Sheesh", nil);
-            hud.detailsLabelText = NSLocalizedString(@"Slow network connection. Be patient still sending.", nil);
-        }
-    });
- 
-
-    
-    if ([apiParams count] > 0 && mediaName){
-
-        [Challenge sendCreateChallengeRequestWithParams:apiParams
-                                                  block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
-                                                      if (wasSuccessful){
-                                    
-                                                          [self addToRecents];
-                                                          NSUInteger count = [self.allFriends count];
-                                                          NSString *media_url = [data valueForKey:@"media"];
-                                                          if ([media_url isKindOfClass:[NSNull class]]){
-                                                              media_url = @"";
-                                                          }
-                                                          
-                                                          // save image locally in documents directory
-                                                          NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"Sending", nil);
+        hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        hud.detailsLabelText = NSLocalizedString(@"Challenges are active for 24 hours", nil);
+        hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
+        hud.dimBackground = YES;
+        hud.delegate = self;
         
-                                                          Challenge *challenge;
-                                                          NSMutableDictionary *params;
-                                                          @try {
-                                                              params = [@{@"sender":self.myUser.username,
-                                                                           @"context":self.myUser.managedObjectContext,
-                                                                           @"recipients":self.allFriends,
-                                                                           @"recipients_count":[NSNumber numberWithInteger:count],
-                                                                           @"challenge_name":self.name,
-                                                                           @"challenge_id":challenge_id,
-                                                                           @"local_media_url":localMediaName,
-                                                                          @"active":[NSNumber numberWithBool:YES],
-                                                                          @"sent":[NSNumber numberWithBool:YES]} mutableCopy];
-                                                              
-                                                              if (media_url){
-                                                                  params[@"media_url"] = media_url;
-                                                              }
-                                                              
-                                                              challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+        double delayInSeconds = 30.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            if (!self.hudWasHidden){
+                hud.labelText = NSLocalizedString(@"Sheesh", nil);
+                hud.detailsLabelText = NSLocalizedString(@"Slow network connection. Be patient still sending.", nil);
+            }
+        });
+     
 
-                                                          }
-                                                          @catch (NSException *exception) {
-                                                              DLog(@"%@",exception);
-                                                          }
-                                                          @finally {
-                                                              if (challenge){
-                                                                  
-                                                                  [self.myUser addSent_challengesObject:challenge];
-                                                                  NSError *e;
-                                                                  [self.myUser.managedObjectContext save:&e];
-                                                                  
-                                                                  [hud hide:YES];
-                                                                  
-                                                                  // send notification
-                                                                  [self notifyFriendsWithParams:params];
-                                                                  
-                                                                  // leave screen
-                                                                  [self notifyDelegateAndGoHome];
-                                                              }
+        
+        if ([apiParams count] > 0 && mediaName){
 
-                                                          }
-                                                          
-                                                          
-                                                      }
-                                                      else{
-                                                          [hud hide:YES];
-                                                          if (fail){
-                                                              // 500
-                                                              if (message){
-                                                                  [self showAlertWithMessage:message];
+            [Challenge sendCreateChallengeRequestWithParams:apiParams
+                                                      block:^(BOOL wasSuccessful, BOOL fail, NSString *message, id data) {
+                                                          if (wasSuccessful){
+                                        
+                                                              [self addToRecents];
+                                                              NSUInteger count = [self.allFriends count];
+                                                              NSString *media_url = [data valueForKey:@"media"];
+                                                              if ([media_url isKindOfClass:[NSNull class]]){
+                                                                  media_url = @"";
                                                               }
-                                                              else{
-                                                                  [self showAlertWithMessage:@"There was an error sending your request"];
+                                                              
+                                                              // save image locally in documents directory
+                                                              NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
+            
+                                                              Challenge *challenge;
+                                                              NSMutableDictionary *params;
+                                                              @try {
+                                                                  params = [@{@"sender":self.myUser.username,
+                                                                               @"context":self.myUser.managedObjectContext,
+                                                                               @"recipients":self.allFriends,
+                                                                               @"recipients_count":[NSNumber numberWithInteger:count],
+                                                                               @"challenge_name":self.name,
+                                                                               @"challenge_id":challenge_id,
+                                                                               @"local_media_url":localMediaName,
+                                                                              @"active":[NSNumber numberWithBool:YES],
+                                                                              @"sent":[NSNumber numberWithBool:YES]} mutableCopy];
+                                                                  
+                                                                  if (media_url){
+                                                                      params[@"media_url"] = media_url;
+                                                                  }
+                                                                  
+                                                                  challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+
                                                               }
+                                                              @catch (NSException *exception) {
+                                                                  DLog(@"%@",exception);
+                                                              }
+                                                              @finally {
+                                                                  if (challenge){
+                                                                      
+                                                                      [self.myUser addSent_challengesObject:challenge];
+                                                                      NSError *e;
+                                                                      [self.myUser.managedObjectContext save:&e];
+                                                                      
+                                                                      [hud hide:YES];
+                                                                      
+                                                                      // send notification
+                                                                      [self notifyFriendsWithParams:params];
+                                                                      
+                                                                      // leave screen
+                                                                      [self notifyDelegateAndGoHome];
+                                                                  }
+
+                                                              }
+                                                              
+                                                              
                                                           }
                                                           else{
-                                                              // 200 but error
-                                                              [self showAlertWithMessage:@"There was an error sending your request"];
-                                                          }
-                                                          
+                                                              [hud hide:YES];
+                                                              if (fail){
+                                                                  // 500
+                                                                  if (message){
+                                                                      [self showAlertWithMessage:message];
+                                                                  }
+                                                                  else{
+                                                                      [self showAlertWithMessage:NSLocalizedString(@"There was an error sending your request",nil)];
+                                                                  }
+                                                              }
+                                                              else{
+                                                                  // 200 but error
+                                                                  [self showAlertWithMessage:NSLocalizedString(@"There was an error sending your request",nil)];
+                                                              }
+                                                              
 
-                                                      }
-                                                  }];
+                                                          }
+                                                      }];
+            
         
-    
+        }
+    }
+    else{
+        [self showAlertWithMessage:NSLocalizedString(@"No internet connection", nil)];
     }
     
 }

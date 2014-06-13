@@ -40,7 +40,7 @@
 
 - (BOOL)connected
 {
-    return [AFNetworkReachabilityManager sharedManager].isReachable;
+    return [AFNetworkReachabilityManager sharedManager].reachable;
 }
 
 - (void)startMonitoringConnection
