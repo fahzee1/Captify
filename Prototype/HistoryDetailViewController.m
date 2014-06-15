@@ -331,105 +331,107 @@
 
 - (void)fetchUpdates
 {
-    double delayInSeconds = 5.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.myTable reloadData];
-    });
-    
-    
-    if (!self.pendingRequest){
-        self.pendingRequest = YES;
-        [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
-                                 block:^(BOOL wasSuccessful, id data, NSString *message) {
-                                     if (wasSuccessful){
-                                         
-                                         
-                                         if (!self.myChallenge.image_path){
+    if (!self.hideSelectButtonsMax){
+        double delayInSeconds = 5.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.myTable reloadData];
+        });
+        
+        
+        if (!self.pendingRequest){
+            self.pendingRequest = YES;
+            [User fetchMediaBlobWithParams:@{@"challenge_id": self.myChallenge.challenge_id}
+                                     block:^(BOOL wasSuccessful, id data, NSString *message) {
+                                         if (wasSuccessful){
                                              
-                                             if (data[@"media64"]){
-                                                 NSString *base64Media = data[@"media64"];
-                                                 NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Media options:0];
-                                                 self.myImageView.image = [UIImage imageWithData:data];
-                                             }
+                                             
+                                             if (!self.myChallenge.image_path){
+                                                 if (!self.myImageView.image){
+                                                     if (data[@"media64"]){
+                                                         NSString *base64Media = data[@"media64"];
+                                                         NSData *data = [[NSData alloc] initWithBase64EncodedString:base64Media options:0];
+                                                         self.myImageView.image = [UIImage imageWithData:data];
+                                                     }
 
-                                             else if (data[@"media_url"]){
-                                                 NSString *url = data[@"media_url"];
-                                                 self.myChallenge.image_path = url;
-                                                 self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
-                                                 [self downloadImage];
+                                                     else if (data[@"media_url"]){
+                                                         NSString *url = data[@"media_url"];
+                                                         self.myChallenge.image_path = url;
+                                                         self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                         [self downloadImage];
+                                                         
+                                                         NSError *error;
+                                                         [self.myChallenge.managedObjectContext save:&error];
+                                                     }
+                                                 }
+                                            }
+                                             
+                                             // get picks
+                                             id picks = [data valueForKey :@"picks"];
+                                             NSNumber *redis = data[@"redis"];
+                                             if ([redis intValue] == 1){
+                                                 [self fetchRedisPicksWithData:picks];
+                                                 return;
+                                             }
+                                             NSData *jsonString = [picks dataUsingEncoding:NSUTF8StringEncoding];
+                                             id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
+                                             
+                                             for (id pick in json){
+                                                 DLog(@"%@",pick);
+                                                 NSString *caption = pick[@"answer"];
+                                                 NSString *player = pick[@"player"];
+                                                 NSNumber *is_chosen;
+                                                 if ([self.myChallenge.chose_own_caption intValue] == 1){
+                                                     is_chosen = [NSNumber numberWithBool:YES];
+                                                 }
+                                                 else{
+                                                     is_chosen = pick[@"is_chosen"];
+                                                 }
+                                    
+                                                 NSString *pick_id = pick[@"pick_id"];
+                                                 NSString *facebook_id = pick[@"facebook_id"];
+                                                 NSNumber *is_facebook = pick[@"is_facebook"];
                                                  
-                                                 NSError *error;
-                                                 [self.myChallenge.managedObjectContext save:&error];
-                                             }
-                                             
-                                        }
-                                         
-                                         // get picks
-                                         id picks = [data valueForKey :@"picks"];
-                                         NSNumber *redis = data[@"redis"];
-                                         if ([redis intValue] == 1){
-                                             [self fetchRedisPicksWithData:picks];
-                                             return;
-                                         }
-                                         NSData *jsonString = [picks dataUsingEncoding:NSUTF8StringEncoding];
-                                         id json = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:nil];
-                                         
-                                         for (id pick in json){
-                                             DLog(@"%@",pick);
-                                             NSString *caption = pick[@"answer"];
-                                             NSString *player = pick[@"player"];
-                                             NSNumber *is_chosen;
-                                             if ([self.myChallenge.chose_own_caption intValue] == 1){
-                                                 is_chosen = [NSNumber numberWithBool:YES];
-                                             }
-                                             else{
-                                                 is_chosen = pick[@"is_chosen"];
-                                             }
-                                
-                                             NSString *pick_id = pick[@"pick_id"];
-                                             NSString *facebook_id = pick[@"facebook_id"];
-                                             NSNumber *is_facebook = pick[@"is_facebook"];
-                                             
-                                             NSMutableDictionary *params = [@{@"player": player,
-                                                                       @"context":self.myUser.managedObjectContext,
-                                                                       @"is_chosen":is_chosen,
-                                                                       @"answer":caption,
-                                                                       @"pick_id":pick_id} mutableCopy];
-                                             
-                                             if (facebook_id && is_facebook){
-                                                 params[@"is_facebook"] = is_facebook;
-                                                 params[@"facebook_id"] = facebook_id;
-                                             }
-                                             
-                                             ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
-                                             if (pick){
-                                                 [self.myChallenge addPicksObject:pick];
+                                                 NSMutableDictionary *params = [@{@"player": player,
+                                                                           @"context":self.myUser.managedObjectContext,
+                                                                           @"is_chosen":is_chosen,
+                                                                           @"answer":caption,
+                                                                           @"pick_id":pick_id} mutableCopy];
                                                  
-                                                 NSError *error;
-                                                 if (![self.myChallenge.managedObjectContext save:&error]){
-                                                     DLog(@"%@",error);
+                                                 if (facebook_id && is_facebook){
+                                                     params[@"is_facebook"] = is_facebook;
+                                                     params[@"facebook_id"] = facebook_id;
+                                                 }
+                                                 
+                                                 ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
+                                                 if (pick){
+                                                     [self.myChallenge addPicksObject:pick];
+                                                     
+                                                     NSError *error;
+                                                     if (![self.myChallenge.managedObjectContext save:&error]){
+                                                         DLog(@"%@",error);
+                                                         
+                                                     }
                                                      
                                                  }
                                                  
                                              }
                                              
-                                         }
-                                         
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                             if ([self.data count] > 0){
-                                                 [self.errorLabel removeFromSuperview];
-                                                 self.errorLabel = nil;
-                                             }
-                                             
-                                             [self.myTable reloadData];
-                                         });
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 if ([self.data count] > 0){
+                                                     [self.errorLabel removeFromSuperview];
+                                                     self.errorLabel = nil;
+                                                 }
+                                                 
+                                                 [self.myTable reloadData];
+                                             });
 
-                                     }
+                                         }
+                
+                                     }];
+            self.pendingRequest = NO;
             
-                                 }];
-        self.pendingRequest = NO;
-        
+        }
     }
 }
 
@@ -670,12 +672,14 @@
                                              else{
                                                  if (data[@"media_url"]){
                                                      NSString *url = data[@"media_url"];
-                                                     self.myChallenge.image_path = url;
-                                                     self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
-                                                     [self downloadImage];
-                                                     
-                                                     NSError *error;
-                                                     [self.myChallenge.managedObjectContext save:&error];
+                                                     if (url && ![url isKindOfClass:[NSNull class]]){
+                                                         self.myChallenge.image_path = url;
+                                                         self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                         [self downloadImage];
+                                                         
+                                                         NSError *error;
+                                                         [self.myChallenge.managedObjectContext save:&error];
+                                                     }
                                                  }
                                                  
                                              }
@@ -683,12 +687,14 @@
                                          
                                          else if (data[@"media_url"]){
                                              NSString *url = data[@"media_url"];
-                                             self.myChallenge.image_path = url;
-                                             self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
-                                             [self downloadImage];
-                                             
-                                             NSError *error;
-                                             [self.myChallenge.managedObjectContext save:&error];
+                                             if (url && ![url isKindOfClass:[NSNull class]]){
+                                                 self.myChallenge.image_path = url;
+                                                 self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                 [self downloadImage];
+                                                 
+                                                 NSError *error;
+                                                 [self.myChallenge.managedObjectContext save:&error];
+                                             }
                                          }
                                          
                                          else{
