@@ -165,6 +165,20 @@
     }
 }
 
+- (void)savePicToLiked
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *myLiked = [[defaults valueForKey:@"likedPics"] mutableCopy];
+    if ([myLiked count] > 0){
+        [myLiked addObject:self.urlString];
+        [defaults setObject:[[NSSet setWithArray:myLiked] allObjects] forKey:@"likedPics"];
+        
+    }
+    else{
+        [defaults setObject:@[self.urlString] forKey:@"likedPics"];
+    }
+}
+
 
 - (IBAction)tappedLikeButton:(UIButton *)sender
 {
@@ -321,6 +335,7 @@
                 NSString *message = [NSString stringWithFormat:@"%@ thinks your photo is \"%@\"",[self.myUser displayName],alertTextField.text];
                 
                 [self sendNotificationWithMessage:message andButton:button];
+                [self savePicToLiked];
 
             }
         }

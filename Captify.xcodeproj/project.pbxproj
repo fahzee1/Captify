@@ -73,6 +73,7 @@
 		113BD8DE192514680099BEA0 /* MZAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8DB192514680099BEA0 /* MZAppearance.m */; };
 		113BD8DF192514680099BEA0 /* NSInvocation+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BD8DD192514680099BEA0 /* NSInvocation+Copy.m */; };
 		113EE17818BBD08E0095D876 /* SocialFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 113EE17718BBD08E0095D876 /* SocialFriends.m */; };
+		113F9FA0194D190B0051A58D /* LikedPicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113F9F9F194D190B0051A58D /* LikedPicsViewController.m */; };
 		113FF14C18E1F3A8005D5A82 /* HistoryRecievedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */; };
 		1144915318AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914C18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.m */; };
 		1144915418AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1144914E18AE8BEB009B47B6 /* TPKeyboardAvoidingScrollView.m */; };
@@ -534,6 +535,8 @@
 		113BD8DD192514680099BEA0 /* NSInvocation+Copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+Copy.m"; sourceTree = "<group>"; };
 		113EE17618BBD08E0095D876 /* SocialFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialFriends.h; sourceTree = "<group>"; };
 		113EE17718BBD08E0095D876 /* SocialFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialFriends.m; sourceTree = "<group>"; };
+		113F9F9E194D190B0051A58D /* LikedPicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikedPicsViewController.h; sourceTree = "<group>"; };
+		113F9F9F194D190B0051A58D /* LikedPicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikedPicsViewController.m; sourceTree = "<group>"; };
 		113FF14A18E1F3A8005D5A82 /* HistoryRecievedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecievedViewController.h; sourceTree = "<group>"; };
 		113FF14B18E1F3A8005D5A82 /* HistoryRecievedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryRecievedViewController.m; sourceTree = "<group>"; };
 		1144914B18AE8BEB009B47B6 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
@@ -1547,6 +1550,8 @@
 				110593EA191BD74400866C92 /* FeedViewController.m */,
 				11EFDD721934E0EA0088F2BA /* FeedDetailViewController.h */,
 				11EFDD731934E0EA0088F2BA /* FeedDetailViewController.m */,
+				113F9F9E194D190B0051A58D /* LikedPicsViewController.h */,
+				113F9F9F194D190B0051A58D /* LikedPicsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -2626,6 +2631,7 @@
 				11E6D71118FF1F8000C47D25 /* MGInstagram.m in Sources */,
 				11ABFCA818C7D28300639A20 /* NEOColorPickerHSLViewController.m in Sources */,
 				1153E1B918A9DF4800AD950E /* GPUImageSketchFilter.m in Sources */,
+				113F9FA0194D190B0051A58D /* LikedPicsViewController.m in Sources */,
 				1153E1A118A9DF4800AD950E /* GPUImageParallelCoordinateLineTransformFilter.m in Sources */,
 				1153E17518A9DF4800AD950E /* GPUImageHarrisCornerDetectionFilter.m in Sources */,
 				1153E1C618A9DF4800AD950E /* GPUImageTextureOutput.m in Sources */,

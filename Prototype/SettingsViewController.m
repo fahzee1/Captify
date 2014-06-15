@@ -26,7 +26,8 @@
 #import "SettingsEditViewController.h"
 #import "MZFormSheetController.h"
 #import "UserProfileViewController.h"
-
+#import "LikedPicsViewController.h"
+#import "FeedViewCell.h"
 
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
@@ -42,6 +43,7 @@
 #define SETTINGS_PHOTO_LABEL 4000
 #define SETTINGS_EDIT_BUTTON 5000
 #define SETTINGS_LOGOUT 6000
+#define SETTINGS_LIKED_PICS 6001
 #define SETTINGS_PRIVACY 7000
 #define SETTINGS_PRIVACY_SWITCH 8000
 #define SETTINGS_PROFILE 9000
@@ -587,7 +589,13 @@
         case 3:
         {
             // Actions
+            
             if (indexPath.row == 0){
+                // liked pics
+                LikedPicsViewController *likedVc = [self.storyboard instantiateViewControllerWithIdentifier:@"likedPicVC"];
+                [self.navigationController pushViewController:likedVc animated:YES];
+            }
+            if (indexPath.row == 1){
                // logout
                 
                 
@@ -692,6 +700,17 @@
         
     }
     
+    UIView *picsButton = [cell viewWithTag:SETTINGS_LIKED_PICS];
+    if ([picsButton isKindOfClass:[UILabel class]]){
+        UILabel *picsB = (UILabel *)picsButton;
+        picsB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor] ;
+        picsB.textColor = [UIColor whiteColor];
+        picsB.layer.cornerRadius = 5;
+        picsB.text = NSLocalizedString(@"View Liked Pics", nil);
+        picsB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    }
+
+    
     
     
     
@@ -782,7 +801,7 @@
         case 3:
         {
             // logout
-            if (indexPath.row == 0){
+            if (indexPath.row == 0 || indexPath.row == 1){
                 //cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 cell.layer.borderWidth = 0;
             }
