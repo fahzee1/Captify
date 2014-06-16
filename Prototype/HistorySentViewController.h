@@ -23,7 +23,7 @@ typedef void(^FetchRecentsBlock2)();
 #endif
 
 
-
+@property (strong, nonatomic) NSString *challenge_id;
 @property (nonatomic, retain)User *myUser;
 
 

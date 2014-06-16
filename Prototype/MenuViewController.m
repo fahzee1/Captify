@@ -204,7 +204,67 @@
     // invite doesnt change colors
     self.menuInviteIcon.image = [UIImage imageNamed:MENU_INVITE_INACTIVE];
     
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedIcon:)];
+    tap1.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedIcon:)];
+    tap2.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *tap3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedIcon:)];
+    tap3.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *tap4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedIcon:)];
+    tap4.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *tap5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedIcon:)];
+    tap5.numberOfTapsRequired = 1;
     
+    self.menuHomeIcon.userInteractionEnabled = YES;
+    self.menuHistoryIcon.userInteractionEnabled = YES;
+    self.menuFeedIcon.userInteractionEnabled = YES;
+    self.menuSettingsIcon.userInteractionEnabled = YES;
+    self.menuInviteIcon.userInteractionEnabled = YES;
+    
+    [self.menuHomeIcon addGestureRecognizer:tap1];
+    [self.menuHistoryIcon addGestureRecognizer:tap2];
+    [self.menuFeedIcon addGestureRecognizer:tap3];
+    [self.menuSettingsIcon addGestureRecognizer:tap4];
+    [self.menuInviteIcon addGestureRecognizer:tap5];
+
+}
+
+- (void)tappedIcon:(UITapGestureRecognizer *)sender
+{
+    switch (sender.view.tag) {
+        case MenuHomeIcon:
+        {
+            [self tappedMenuButton:self.menuCamera];
+        }
+            break;
+            
+        case MenuHistoryIcon:
+        {
+            [self tappedMenuButton:self.menuHistory];
+        }
+            break;
+            
+        case MenuFriendsIcon:
+        {
+            [self tappedMenuButton:self.menuFriends];
+        }
+            break;
+            
+        case MenuSettingIcon:
+        {
+            [self tappedMenuButton:self.menuSettings];
+        }
+            break;
+            
+        case MenuFeedIcon:
+        {
+            [self tappedMenuButton:self.menuFeed];
+        }
+            break;
+            
+        default:
+            break;
+    }
 
 }
 
@@ -214,6 +274,45 @@
     [self setupColors];
     
     
+}
+
+- (void)showScreen:(MenuScreenConstants)screen
+{
+    switch (screen) {
+        case MenuHomeScreen:
+        {
+            [self tappedMenuButton:self.menuCamera];
+        }
+            break;
+            
+        case MenuHistoryScreen:
+        {
+            [self tappedMenuButton:self.menuHistory];
+        }
+            break;
+            
+        case MenuFriendsScreen:
+        {
+            [self tappedMenuButton:self.menuFriends];
+        }
+            break;
+            
+        case MenuSettingsScreen:
+        {
+            [self tappedMenuButton:self.menuSettings];
+        }
+            break;
+            
+        case MenuFeedScreen:
+        {
+            [self tappedMenuButton:self.menuFeed];
+        }
+            break;
+            
+        default:
+            break;
+    }
+
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {

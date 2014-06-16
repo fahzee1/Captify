@@ -21,5 +21,6 @@
 
 
 @property BOOL showSentScreen;
+@property NSString *challenge_id;
 
 @end

@@ -67,6 +67,9 @@
         self.myTable.contentInset = UIEdgeInsetsMake(0, 0, 120, 0);
     }
 
+    if (self.challenge_id){
+        [self showDetailScreen];
+    }
     
 
 
@@ -116,6 +119,39 @@
 
     UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
     [self.sideMenuViewController setMainViewController:camera animated:YES closeMenu:NO];
+}
+
+
+- (void)showDetailScreen
+{
+    if (self.challenge_id){
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Challenge"];
+        request.shouldRefreshRefetchedObjects = YES;
+        request.fetchLimit = 1;
+        request.predicate = [NSPredicate predicateWithFormat:@"(challenge_id = %@)",self.challenge_id];
+        NSError *error;
+        Challenge *challenge = [[self.myUser.managedObjectContext executeFetchRequest:request error:&error] firstObject];
+        
+        if (challenge){
+            UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"historyDetail"];
+            if ([vc isKindOfClass:[HistoryDetailViewController class]]){
+                UIImage *challenge_image = [Challenge loadImagewithFileName:challenge.local_image_path];
+                ((HistoryDetailViewController *)vc).image = challenge_image;
+                ((HistoryDetailViewController *)vc).myChallenge = challenge;
+                ((HistoryDetailViewController *)vc).myUser = self.myUser;
+                ((HistoryDetailViewController *)vc).mediaURL = [challenge.image_path isEqualToString:@""] ? nil:[NSURL URLWithString:challenge.image_path];
+                ((HistoryDetailViewController *)vc).hideSelectButtons = YES;
+                ((HistoryDetailViewController *)vc).hideSelectButtonsMax = YES;
+                ((HistoryDetailViewController *)vc).sentHistory = YES;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+
+        
+    }
+    
+
 }
 
 - (void)fetchUpdates

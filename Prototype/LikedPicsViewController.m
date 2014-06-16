@@ -12,6 +12,8 @@
 #import "UIColor+HexValue.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "MenuViewController.h"
+#import "TWTSideMenuViewController.h"
 
 
 #define MY_IMAGE_TAG 2000
@@ -65,6 +67,14 @@
 - (void)popToSettings
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)showExplorePage
+{
+    UIViewController *menuVC = self.sideMenuViewController.menuViewController;
+    if ([menuVC isKindOfClass:[MenuViewController class]]){
+        [((MenuViewController *)menuVC) showScreen:MenuFeedScreen];
+    }
 }
 
 
@@ -147,6 +157,26 @@
 {
     if (!_data){
         _data = [[NSUserDefaults standardUserDefaults] valueForKey:@"likedPics"];
+
+        if ([_data count] == 0){
+            //[self.collectionView removeFromSuperview];
+            CGRect collectionFrame = self.collectionView.frame;
+            UIButton *exploreButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            exploreButton.frame = CGRectMake(collectionFrame.origin.x + 60, 100, 203, 45);
+            [exploreButton setTitle:NSLocalizedString(@"Start liking", nil) forState:UIControlStateNormal];
+            [exploreButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [exploreButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
+            exploreButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+            exploreButton.backgroundColor = [UIColor clearColor];
+            exploreButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+            exploreButton.layer.borderWidth = 2;
+            exploreButton.layer.cornerRadius = 5;
+            [exploreButton addTarget:self action:@selector(showExplorePage) forControlEvents:UIControlEventTouchUpInside];
+            
+            //[self.collectionView removeFromSuperview];
+            [self.view addSubview:exploreButton];
+            
+        }
     }
     
     return _data;

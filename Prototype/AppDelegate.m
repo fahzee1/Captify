@@ -722,6 +722,7 @@
 
 
 - (void)setupHistoryViewControllersShowSent:(BOOL)sent
+                             andChallangeID:(NSString *)challenge_id
 {
     UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
     MenuViewController *menuVc = (MenuViewController *)[mainBoard instantiateViewControllerWithIdentifier:@"menu"];
@@ -739,6 +740,7 @@
             UIViewController *history = ((UINavigationController *)historyRoot).topViewController;
             if ([history isKindOfClass:[HistoryContainerViewController class]]){
                 ((HistoryContainerViewController *)history).showSentScreen = YES;
+                ((HistoryContainerViewController *)history).challenge_id = challenge_id;
             }
         }
     }
@@ -746,6 +748,7 @@
     self.window.rootViewController = self.sideVC;
     
 }
+
 
 
 
@@ -823,14 +826,14 @@
                 
             }
             
-            [self setupHistoryViewControllersShowSent:NO];
+            [self setupHistoryViewControllersShowSent:NO andChallangeID:nil];
             
         }
             break;
         case ParseNotificationSendCaptionPick:
         {
             
-            [self setupHistoryViewControllersShowSent:YES];
+            [self setupHistoryViewControllersShowSent:YES andChallangeID:nil];
         }
             break;
         case ParseNotificationSenderChoseCaption:
@@ -846,18 +849,18 @@
                
             }
             
-            [self setupHistoryViewControllersShowSent:NO];
+            [self setupHistoryViewControllersShowSent:NO andChallangeID:nil];
         }
             break;
         case ParseNotificationNotifySelectedCaptionSender:
         {
-              [self setupHistoryViewControllersShowSent:NO];
+              [self setupHistoryViewControllersShowSent:NO andChallangeID:nil];
         }
             break;
 
         default:
             //[self setupHomeViewControllers];
-            [self setupHistoryViewControllersShowSent:NO];
+            [self setupHistoryViewControllersShowSent:NO andChallangeID:nil];
 
             break;
     }

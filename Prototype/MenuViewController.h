@@ -18,6 +18,16 @@ typedef enum{
     
 } MenuScreenConstants;
 
+typedef enum{
+    MenuHomeIcon = 2000,
+    MenuHistoryIcon,
+    MenuFeedIcon,
+    MenuSettingIcon,
+    MenuFriendsIcon,
+ 
+    
+} MenuScreenIcon;
+
 
 @protocol MenuDelegate <NSObject>
 
@@ -32,5 +42,7 @@ typedef enum{
 - (void)setupColors;
 
 - (void)updateCurrentScreen:(MenuScreenConstants)screen;
+
+- (void)showScreen:(MenuScreenConstants)screen;
 
 @end

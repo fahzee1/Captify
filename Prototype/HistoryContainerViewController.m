@@ -99,6 +99,11 @@
     [self.myContainerView addSubview:vc.view];
     self.currentController = vc;
     
+    if (self.challenge_id){
+        if ([vc isKindOfClass:[HistorySentViewController class]]){
+            ((HistorySentViewController *)vc).challenge_id = self.challenge_id;
+        }
+    }
     
     self.sideMenuViewController.delegate = self;
    
