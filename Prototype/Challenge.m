@@ -2,7 +2,7 @@
 //  Challenge.m
 //  Captify
 //
-//  Created by CJ Ogbuehi on 6/5/14.
+//  Created by CJ Ogbuehi on 6/15/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @dynamic active;
 @dynamic challenge_id;
+@dynamic chose_own_caption;
 @dynamic fields_count;
 @dynamic first_open;
 @dynamic image_path;
@@ -30,7 +31,7 @@
 @dynamic sync_status;
 @dynamic thumbnail_path;
 @dynamic timestamp;
-@dynamic chose_own_caption;
+@dynamic final_fetch;
 @dynamic picks;
 @dynamic recipients;
 @dynamic sender;

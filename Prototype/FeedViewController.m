@@ -344,6 +344,7 @@
         }
         else{
             formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
+            //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:detailRoot];
         }
         
         formSheet.shouldDismissOnBackgroundViewTap = YES;

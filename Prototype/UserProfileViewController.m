@@ -118,13 +118,13 @@
     // move username down to bring up
     CGRect usernameOriginal = self.myUsername.frame;
     CGRect newUsernameFrame = usernameOriginal;
-    newUsernameFrame.origin.y += 200;
+    newUsernameFrame.origin.y += 300;
     self.myUsername.frame = newUsernameFrame;
     
     // move score down to bring up
     CGRect scoreOriginal = self.myScore.frame;
     CGRect newScoreFrame = scoreOriginal;
-    newScoreFrame.origin.y += 200;
+    newScoreFrame.origin.y += 300;
     self.myScore.frame = newScoreFrame;
     
     [UIView animateWithDuration:1

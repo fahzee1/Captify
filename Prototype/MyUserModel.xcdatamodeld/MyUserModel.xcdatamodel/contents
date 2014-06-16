@@ -5,6 +5,7 @@
         <attribute name="challenge_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="chose_own_caption" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="fields_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="final_fetch" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="first_open" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="image_path" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="is_chosen" optional="YES" attributeType="Boolean" syncable="YES"/>

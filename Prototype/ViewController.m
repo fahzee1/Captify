@@ -155,7 +155,7 @@
                                           
                                           //get username
                                           [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                              [hud hide:YES];
+                                              //[hud hide:YES];
                                               if (!error){
                                                   DLog(@"%@",result);
                                                   NSNumber *fbookId;
@@ -244,13 +244,14 @@
                                                       // show homescreen call back handled in delegate
                                                       NSURLSessionDataTask *task = [User registerFacebookWithParams:params callback:^(BOOL wasSuccessful, id data, User *user, BOOL failure) {
                                                           
-                                                          [hud hide:YES];
+                                                          //[hud hide:YES];
                                                           if (wasSuccessful){
                                                               [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logged"];
                                                               [[NSUserDefaults standardUserDefaults] synchronize];
                                                               [self showHomeScreen:user];
                                                           }
                                                           else{
+                                                              [hud hide:YES];
                                                               [self alertErrorWithTitle:nil message:nil];
                                                           }
                                                           
@@ -263,6 +264,9 @@
                                                   
                                                   
                                                   
+                                              }
+                                              else{
+                                                   [hud hide:YES];
                                               }
                                           }];
                                       }];
