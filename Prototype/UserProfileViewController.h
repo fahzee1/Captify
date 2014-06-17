@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *myScore;
 
 @property (strong, nonatomic) NSString *usernameString;
+@property (strong, nonatomic) NSString *realUsernameString;
 @property (strong, nonatomic) NSString *scoreString;
 @property (strong, nonatomic) NSURL *profileURLString;
 @property (strong, nonatomic) NSNumber *facebook_user;

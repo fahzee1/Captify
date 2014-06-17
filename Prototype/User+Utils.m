@@ -1053,6 +1053,44 @@
 
 }
 
++ (void)fetchUserProfileWithData:(NSDictionary *)params
+                           block:(BlobFetchBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+
+    [client POST:AwesomeAPIProfileString
+      parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+         [client startNetworkActivity];
+          
+          if ([responseObject[@"code"] intValue] == 1){
+              if (block){
+                  block(YES,responseObject[@"json"],responseObject);
+              }
+          }
+          else{
+              if (block){
+                  block(NO,NO,nil);
+              }
+          }
+    }
+      failure:^(NSURLSessionDataTask *task, NSError *error) {
+         [client startNetworkActivity];
+          if (block){
+              block(NO,NO,nil);
+              
+              [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                         dismissAfter:2.0
+                                            styleName:JDStatusBarStyleError];
+              if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                  [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+              }
+
+          }
+    }];
+}
+
+
 + (void)showAlertWithTitle:(NSString *)title
                    message:(NSString *)message
 

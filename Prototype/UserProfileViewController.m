@@ -11,6 +11,7 @@
 #import "UIColor+HexValue.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "User+Utils.h"
 
 
 @interface UserProfileViewController ()
@@ -84,6 +85,25 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)fetchProfile
+{
+    [User fetchUserProfileWithData:@{@"username": self.realUsernameString}
+                             block:^(BOOL wasSuccessful, NSNumber *json, id data) {
+                                 if (wasSuccessful){
+                                     DLog(@"%@",data);
+                                     
+                                     if ([json intValue] == 1){
+                                         DLog(@"parse for json");
+                                     }
+                                     
+                                     else{
+                                         DLog(@"parse for non json");
+                                     }
+                                 }
+                             }];
 }
 
 - (void)popScreen
