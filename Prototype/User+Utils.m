@@ -1061,8 +1061,9 @@
 
     [client POST:AwesomeAPIProfileString
       parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-         [client startNetworkActivity];
+         [client stopNetworkActivity];
           
+          DLog(@"%@",responseObject);
           if ([responseObject[@"code"] intValue] == 1){
               if (block){
                   block(YES,responseObject[@"json"],responseObject);
@@ -1075,7 +1076,7 @@
           }
     }
       failure:^(NSURLSessionDataTask *task, NSError *error) {
-         [client startNetworkActivity];
+         [client stopNetworkActivity];
           if (block){
               block(NO,NO,nil);
               

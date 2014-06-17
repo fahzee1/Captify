@@ -62,7 +62,7 @@
     self.navigationController.navigationBarHidden = NO;
 
     
-    
+    [self fetchProfile];
 
     
     
@@ -90,8 +90,9 @@
 
 - (void)fetchProfile
 {
-    [User fetchUserProfileWithData:@{@"username": self.realUsernameString}
+    [User fetchUserProfileWithData:@{@"username": self.usernameString}
                              block:^(BOOL wasSuccessful, NSNumber *json, id data) {
+                                 //DLog(@"%@",data);
                                  if (wasSuccessful){
                                      DLog(@"%@",data);
                                      
