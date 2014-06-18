@@ -196,17 +196,7 @@
         [self.scrollView addSubview:self.errorLabel];
     }
     
-    if ([self.data count] > 0){
-        int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
-        int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
-        CGRect tableRect = self.myTable.frame;
-        tableRect.size.height += height;
-        self.myTable.frame = tableRect;
-    }
-    else{
-         self.scrollView.contentSize = CGSizeMake(320, 670);
-    }
+    [self adjustTableSize];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -291,6 +281,23 @@
 - (void)popToHistory
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (void)adjustTableSize
+{
+    if ([self.data count] > 0){
+        int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
+        int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
+        CGRect tableRect = self.myTable.frame;
+        tableRect.size.height += height;
+        self.myTable.frame = tableRect;
+    }
+    else{
+        self.scrollView.contentSize = CGSizeMake(320, 670);
+    }
+
 }
 
 
@@ -423,6 +430,8 @@
                                                  }
                                                  
                                                  [self.myTable reloadData];
+                                                 [self adjustTableSize];
+                                                 
                                              });
 
                                          }
@@ -497,6 +506,8 @@
                 [self.errorMakeCaptionButton removeFromSuperview];
                 self.errorMakeCaptionButton = nil;
             }
+            
+            [self adjustTableSize];
             
             [self checkCaptionChosen];
             
