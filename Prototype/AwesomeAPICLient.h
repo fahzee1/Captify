@@ -16,7 +16,7 @@
 //static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
 
 
-//static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.66:8000";
+//static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.72:8000";
 
 // live urls http and https versions
 

@@ -15,7 +15,7 @@
 
 
 @interface UserProfileViewController ()
-
+@property (strong, nonatomic)NSArray *sentMedia;
 
 @end
 
@@ -38,18 +38,6 @@
     self.myUsername.text = @"";
     self.myScore.text = @"";
     
-    if (self.delaySetupWithTime){
-        double delayInSeconds = self.delaySetupWithTime;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self setupScreen];
-        });
-    }
-    else{
-        [self setupScreen];
-    }
-    
-   
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.navigationItem.title = NSLocalizedString(@"Profile", nil);
     //self.navigationController.navigationBarHidden = NO;
@@ -98,11 +86,118 @@
                                      
                                      if ([json intValue] == 1){
                                          DLog(@"parse for json");
+                                         // get user data
+                                         id userString = data[@"user_data"];
+                                         NSData *userData = [userString dataUsingEncoding:NSUTF8StringEncoding];
+                                         NSDictionary *userJson = [NSJSONSerialization JSONObjectWithData:userData options:0 error:nil];
+                                         
+                                
+                                        // get users sent pics
+                                         NSArray *challengeList = data[@"challenge_data"];
+                                         NSMutableArray *challengeTemp = [NSMutableArray array];
+                                         for (NSString *challenge in challengeList){
+                                             NSData *challengeData = [challenge dataUsingEncoding:NSUTF8StringEncoding];
+                                             NSDictionary *challengeDict = [NSJSONSerialization JSONObjectWithData:challengeData options:0 error:nil];
+                                             NSString *media = challengeDict[@"media_url"];
+                                             if (media && ![media isKindOfClass:[NSNull class]]){
+                                                 [challengeTemp addObject:media];
+                                             }
+                                         }
+                                         
+                                         self.sentMedia = challengeTemp; // reload table
+                                         
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             NSString *username = userJson[@"username"];
+                                             NSString *score = userJson[@"score"];
+                                             NSString *facebook_id = userJson[@"facebook_id"];
+                                             NSNumber *facebook_user = userJson[@"facebook_user"];
+                                             
+
+                                             
+                                             self.scoreString = score;
+                                             self.facebook_user = facebook_user;
+                                             
+                                             
+                                             if ([facebook_user intValue] == 1){
+                                                 username = [[username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+                                                 
+                                                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large",facebook_id];
+                                                 NSURL *fbURL = [NSURL URLWithString:fbString];
+                                                 
+                                                 self.profileURLString = fbURL;
+                                                 
+                                             }
+                                             else{
+                                                 username = [username capitalizedString];
+                                             }
+                                             self.usernameString = username;
+                                             
+                                             
+                                             if (self.delaySetupWithTime){
+                                                 double delayInSeconds = self.delaySetupWithTime;
+                                                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                     [self setupScreen];
+                                                 });
+                                             }
+                                             else{
+                                                 [self setupScreen];
+                                             }
+                                             
+                                             
+
+                                         });
+                                         
+                                         
                                      }
                                      
                                      else{
                                          DLog(@"parse for non json");
-                                     }
+                                
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+
+                                             NSString *username = data[@"username"];
+                                             NSString *score = data[@"score"];
+                                             NSString *facebook_id = data[@"facebook_id"];
+                                             NSNumber *facebook_user = data[@"facebook_user"];
+                                             
+                                             self.scoreString = score;
+                                             self.facebook_user = facebook_user;
+
+                                             if ([facebook_user intValue] == 1){
+                                                 username = [[username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
+                                                 
+                                                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large",facebook_id];
+                                                 NSURL *fbURL = [NSURL URLWithString:fbString];
+                                                 
+                                                 self.profileURLString = fbURL;
+                                                 
+                                             }
+                                             else{
+                                                 username = [username capitalizedString];
+                                             }
+                                             self.usernameString = username;
+
+                                             
+                                             
+                                             if (self.delaySetupWithTime){
+                                                 double delayInSeconds = self.delaySetupWithTime;
+                                                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                     [self setupScreen];
+                                                 });
+                                             }
+                                             else{
+                                                 [self setupScreen];
+                                             }
+                                             
+
+                                             
+                                             
+                                         });
+                                         
+                                         
+                                    }
                                  }
                              }];
 }
@@ -190,4 +285,12 @@
 
 }
 
+
+- (NSArray *)sentMedia
+{
+    if (!_sentMedia){
+        _sentMedia = [NSArray array];
+    }
+    return _sentMedia;
+}
 @end
