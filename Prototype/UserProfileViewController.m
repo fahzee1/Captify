@@ -20,6 +20,7 @@
 @property (strong, nonatomic)NSArray *sentMedia;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -58,6 +59,7 @@
     self.navigationController.navigationBarHidden = NO;
 
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self fetchProfile];
 
     
@@ -83,6 +85,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)adjustTableSize
+{
+    if ([self.sentMedia count] > 0){
+        int height = 93 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+        int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
+        CGRect tableRect = self.collectionView.frame;
+        tableRect.size.height += height;
+        self.collectionView.frame = tableRect;
+    }
+    else{
+        self.scrollView.contentSize = CGSizeMake(320, 670);
+    }
+
+}
 
 - (void)fetchProfile
 {
@@ -153,7 +171,7 @@
                                              }
                                              
                                              [self.collectionView reloadData];
-                                             
+                                             [self adjustTableSize];
                                              
 
                                          });
@@ -202,7 +220,10 @@
                                              }
                                              
 
+                                             [self.collectionView reloadData];
+                                             [self adjustTableSize];
                                              
+
                                              
                                          });
                                          
@@ -431,7 +452,7 @@
         return size;
     }
     else{
-        return CGSizeMake(150, 160);
+        return CGSizeMake(140, 150);
     }
 }
 
@@ -445,7 +466,8 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(20, 5 , 20, 5);
+
+    return UIEdgeInsetsMake(20, 10 , 20, 15);
 }
 
 
