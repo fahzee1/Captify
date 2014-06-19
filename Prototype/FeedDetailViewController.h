@@ -22,4 +22,7 @@
 @property (strong, nonatomic)UIView *topLabel;
 
 @property (strong, nonatomic)User *myUser;
+@property BOOL showTopLabel;
+@property float delaySetupWithTime;
+
 @end

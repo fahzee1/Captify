@@ -21,5 +21,6 @@
 @property (strong, nonatomic) NSNumber *facebook_user;
 
 @property float delaySetupWithTime;
+@property BOOL fromExplorePage;
 
 @end

@@ -39,6 +39,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popScreen)];
+    [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = leftButton;
+
     
     [self.myImageView setImageWithURL:[NSURL URLWithString:self.urlString]
                      placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
@@ -60,8 +65,6 @@
     self.likeButton.frame = CGRectMake(self.myImageView.frame.size.width/2, self.view.frame.size.height - 50, self.likeButton.frame.size.width, self.likeButton.frame.size.height);
     
     
-    [self setupTopLabel];
-    
     if (!IS_IPHONE5){
         CGRect imageFrame = self.myImageView.frame;
         imageFrame.origin.y += 10;
@@ -75,8 +78,31 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-    [self setupTopLabel];
+    
+    if (self.showTopLabel){
+        [self setupTopLabel];
+        self.navigationController.navigationBarHidden = YES;
+
+    }
+    else{
+        self.navigationItem.title = NSLocalizedString(@"Photo", nil);
+        self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        self.navigationController.navigationBarHidden = NO;
+    }
+
+   
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [UIView animateWithDuration:1
+                     animations:^{
+                          self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
+                     }];
+  
+
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,6 +111,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)popScreen
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)setupTopLabel
 {
@@ -142,6 +172,11 @@
     
 }
 
+- (void)removeTopLabel
+{
+    self.topLabel.hidden = YES;
+}
+
 
 - (void)tappedUsernameLabel
 {
@@ -154,6 +189,7 @@
         ((UserProfileViewController *)profile).profileURLString = self.facebookPicURL;
         ((UserProfileViewController *)profile).facebook_user = self.facebookUser;
         ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
+        ((UserProfileViewController *)profile).fromExplorePage = YES;
         
         [self.topLabel removeFromSuperview];
         

@@ -13,6 +13,7 @@
 #import "NSString+FontAwesome.h"
 #import "User+Utils.h"
 #import "FeedViewCell.h"
+#import "FeedDetailViewController.h"
 
 
 
@@ -44,6 +45,11 @@
     self.collectionView.dataSource = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
     
+    // animate its display
+    self.collectionView.hidden = YES;
+    self.collectionView.alpha = 0;
+
+    
     self.myUsername.text = @"";
     self.myScore.text = @"";
     
@@ -57,9 +63,24 @@
     
     
     self.navigationController.navigationBarHidden = NO;
-
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    if (self.fromExplorePage){
+        CGRect imageFrame = self.myProfileImage.frame;
+        CGRect usernameFrame = self.myUsername.frame;
+        CGRect scoreFrame = self.myScore.frame;
+        
+        imageFrame.origin.x -= 17;
+        usernameFrame.origin.x -= 17;
+        scoreFrame.origin.x -= 17;
+        
+        self.myProfileImage.frame = imageFrame;
+        self.myUsername.frame = usernameFrame;
+        self.myScore.frame = scoreFrame;
+        
+        
+    }
+    
     [self fetchProfile];
 
     
@@ -76,7 +97,11 @@
 {
     [super viewDidAppear:animated];
     
-     self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
+    [UIView animateWithDuration:1
+                     animations:^{
+                         self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
+                     }];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,9 +114,15 @@
 - (void)adjustTableSize
 {
     if ([self.sentMedia count] > 0){
-        int height = 93 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+        int height;
+        if (!self.fromExplorePage){
+            height = 77 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+        }
+        else{
+            height = 70 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+        }
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight);
         CGRect tableRect = self.collectionView.frame;
         tableRect.size.height += height;
         self.collectionView.frame = tableRect;
@@ -274,6 +305,7 @@
     newScoreFrame.origin.y += 300;
     self.myScore.frame = newScoreFrame;
     
+    
     [UIView animateWithDuration:1
                           delay:0
          usingSpringWithDamping:0.5
@@ -299,7 +331,13 @@
                                                                   options:0
                                                                animations:^{
                                                                    self.myScore.frame = scoreOriginal;
-                                                               } completion:nil];
+                                                               } completion:^(BOOL finished) {
+                                                                   [UIView animateWithDuration:1
+                                                                                    animations:^{
+                                                                                        self.collectionView.hidden = NO;
+                                                                                        self.collectionView.alpha = 1;
+                                                                                    }];
+                                                               }];
                                           }];
                          
                      }];
@@ -351,8 +389,8 @@
         //DLog(@"row %ld is less then %ld so show",(long)indexPath.row,(long)count)
         NSString *media_url = [self.sentMedia objectAtIndex:indexPath.row];
         
-        /*
-        cell.name.text = [json[@"name"] capitalizedString];
+
+        cell.name.text = @"get this working";
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
         cell.name.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         if ([cell.name.text length] >= 35){
@@ -361,7 +399,14 @@
             
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
         }
-         */
+        
+        if (self.fromExplorePage){
+            // reposition name label cause cell is smaller
+            CGRect nameFrame = cell.name.frame;
+            nameFrame.origin.y += 7;
+            nameFrame.origin.x += 7;
+            cell.name.frame = nameFrame;
+        }
         
 
         [cell.myImageView setImageWithURL:[NSURL URLWithString:media_url]
@@ -397,31 +442,17 @@
         
         UIViewController *detailRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"feedDetailRoot"];
         
-        // show full screen
-        
-        /*
-        MZFormSheetController *formSheet;
-        if (!IS_IPHONE5){
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:detailRoot];
+        if ([detailRoot isKindOfClass:[UINavigationController class]]){
+            UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
+            if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
+                
+                ((FeedDetailViewController *)detailVC).urlString = media_url;
+                ((FeedDetailViewController *)detailVC).showTopLabel = NO;
+                [self.navigationController pushViewController:detailVC animated:YES];
+                
+                
+            }
         }
-        else{
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
-            //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:detailRoot];
-        }
-        
-        formSheet.shouldDismissOnBackgroundViewTap = YES;
-        formSheet.transitionStyle = MZFormSheetTransitionStyleBounce;
-        
-        [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
-        [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
-        [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
-        
-        [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
-            //
-        }];
-        
-        
-        */
         
         
     }
@@ -444,30 +475,42 @@
      return CGSizeMake(150, 150);
      }
      */
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[FeedViewCell class]]){
-        CGSize size = ((FeedViewCell *)cell).myImageView.frame.size;
-        size.height -= 50;
-        size.width -= 50;
-        return size;
-    }
-    else{
+    if (!self.fromExplorePage){
         return CGSizeMake(140, 150);
     }
+    else{
+        return CGSizeMake(120, 130);
+    }
+    
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 1.0;
+    if (!self.fromExplorePage){
+        return 1.0;
+    }
+    else{
+        return 2;
+    }
+
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+  
     return 7.0;
+    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-
-    return UIEdgeInsetsMake(20, 10 , 20, 15);
+    if (!self.fromExplorePage) {
+        return UIEdgeInsetsMake(20, 5 , 20, 5); //top,left,bottom/right
+    }
+    else{
+        return UIEdgeInsetsMake(0, 0 , 0, 45);
+    }
+    
+    
+    
 }
 
 

@@ -323,6 +323,7 @@
                 ((FeedDetailViewController *)detailVC).urlString = url;
                 ((FeedDetailViewController *)detailVC).facebookUser = is_facebook;
                 ((FeedDetailViewController *)detailVC).profileUsername = username;
+                ((FeedDetailViewController *)detailVC).showTopLabel = YES;
                 if ([score isKindOfClass:[NSNumber class]]){
                     ((FeedDetailViewController *)detailVC).profileScore = [NSString stringWithFormat:@"%@",(NSNumber *)score];
                 }
