@@ -112,8 +112,6 @@
     
 
     
-    
-    
      [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
     //DLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
