@@ -88,6 +88,7 @@
         self.navigationItem.title = NSLocalizedString(@"Photo", nil);
         self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         self.navigationController.navigationBarHidden = NO;
+        self.likeButton.hidden = YES;
     }
 
    

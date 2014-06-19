@@ -14,6 +14,7 @@
 #import "User+Utils.h"
 #import "FeedViewCell.h"
 #import "FeedDetailViewController.h"
+#import "AppDelegate.h"
 
 
 
@@ -22,6 +23,7 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong,nonatomic)UIActivityIndicatorView *spinner;
 
 @end
 
@@ -81,6 +83,17 @@
         
     }
     
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner.center = self.scrollView.center;
+    CGRect spinnerFrame = self.spinner.frame;
+    spinnerFrame.origin.y -= 100;
+    self.spinner.frame = spinnerFrame;
+    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];
+    [self.scrollView addSubview:self.spinner];
+    [self.scrollView bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+
+    
     [self fetchProfile];
 
     
@@ -108,6 +121,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    DLog(@"received memory warning");
+    
+    [AppDelegate clearImageCaches];
+
 }
 
 
@@ -156,12 +173,17 @@
                                              NSData *challengeData = [challenge dataUsingEncoding:NSUTF8StringEncoding];
                                              NSDictionary *challengeDict = [NSJSONSerialization JSONObjectWithData:challengeData options:0 error:nil];
                                              NSString *media = challengeDict[@"media_url"];
+                                             NSString *name = challengeDict[@"name"];
                                              if (media && ![media isKindOfClass:[NSNull class]]){
-                                                 [challengeTemp addObject:media];
+                                                 if (name && ![name isKindOfClass:[NSNull class]]){
+                                                     [challengeTemp addObject:@{@"media_url": media,@"name":name}];
+                                                 }
                                              }
                                          }
                                          
-                                         self.sentMedia = challengeTemp; // reload table
+                                         
+                                         self.sentMedia = [[NSSet setWithArray:challengeTemp] allObjects];
+                                         // reload table
                                          
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              NSString *username = userJson[@"username"];
@@ -189,6 +211,7 @@
                                              }
                                              self.usernameString = username;
                                              
+                                             [self.spinner stopAnimating];
                                              
                                              if (self.delaySetupWithTime){
                                                  double delayInSeconds = self.delaySetupWithTime;
@@ -238,6 +261,7 @@
                                              self.usernameString = username;
 
                                              
+                                            [self.spinner stopAnimating];
                                              
                                              if (self.delaySetupWithTime){
                                                  double delayInSeconds = self.delaySetupWithTime;
@@ -387,14 +411,16 @@
     NSInteger count = [self.sentMedia count];
     if (indexPath.row < count){
         //DLog(@"row %ld is less then %ld so show",(long)indexPath.row,(long)count)
-        NSString *media_url = [self.sentMedia objectAtIndex:indexPath.row];
+        NSDictionary *challengeDict = [self.sentMedia objectAtIndex:indexPath.row];
+        NSString *media_url = challengeDict[@"media_url"];
+        NSString *name = challengeDict[@"name"];
         
 
-        cell.name.text = @"get this working";
-        cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
+        cell.name.text = [name capitalizedString];
+        cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
         cell.name.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-        if ([cell.name.text length] >= 35){
-            NSString *uString = [cell.name.text substringToIndex:34];
+        if ([cell.name.text length] >= 30){
+            NSString *uString = [cell.name.text substringToIndex:29];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
             
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
@@ -437,8 +463,8 @@
     
     NSInteger count = [self.sentMedia count];
     if (indexPath.row < count){
-        NSString *media_url = [self.sentMedia objectAtIndex:indexPath.row];
-        
+        NSDictionary *challengeDict = [self.sentMedia objectAtIndex:indexPath.row];
+        NSString *media_url  = challengeDict[@"media_url"];
         
         UIViewController *detailRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"feedDetailRoot"];
         

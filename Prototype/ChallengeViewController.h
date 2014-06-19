@@ -25,7 +25,7 @@
 #endif
 
 @property (nonatomic, retain)User *myUser; //get managedobjectcontext from myuser
-@property (strong, nonatomic)NSString *myFriend; //temp for testing
+@property (strong, nonatomic)NSString *myFriend; 
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (strong, nonatomic)NSString *answer;
 @property (strong, nonatomic)NSString *name;

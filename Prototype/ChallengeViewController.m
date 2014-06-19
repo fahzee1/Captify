@@ -24,6 +24,7 @@
 #import "UIViewController+TargetViewController.h"
 #import "MZFormSheetController.h"
 #import "ChallengeResponsesViewController.h"
+#import "UserProfileViewController.h"
 
 #define TEST 1
 
@@ -473,7 +474,10 @@
             NSString *newString = [friendName.text substringToIndex:15];
             friendName.text = [NSString stringWithFormat:@"%@...",newString];
         }
-
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile)];
+        tap.numberOfTapsRequired = 1;
+        [friendName addGestureRecognizer:tap];
         
         [view addSubview:image];
         [view addSubview:friendName];
@@ -499,6 +503,39 @@
 {
     self.answer = self.captionField.text;
     
+}
+
+- (void)showProfile
+{
+    UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
+    if ([profile isKindOfClass:[UserProfileViewController class]]){
+        ((UserProfileViewController *)profile).usernameString = self.myFriend;
+        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
+        ((UserProfileViewController *)profile).fromExplorePage = YES;
+        
+    }
+    
+    MZFormSheetController *formSheet;
+    if (!IS_IPHONE5){
+        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:profile];
+    }
+    else{
+        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:profile];
+        //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:profile];
+    }
+    
+    formSheet.shouldDismissOnBackgroundViewTap = YES;
+    formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
+    
+    [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+    [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+    [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+    
+    [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+        //
+    }];
+    
+
 }
 
 
