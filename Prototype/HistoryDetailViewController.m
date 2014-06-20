@@ -627,49 +627,49 @@
     
     if (self.mediaURL){
         self.retryButton.hidden = YES;
-        [self.myImageView setImageWithURL:self.mediaURL
-                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        [self.spinner stopAnimating];
-                                        self.spinner = nil;
-                                    });
+        [self.myImageView sd_setImageWithURL:self.mediaURL
+                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           [self.spinner stopAnimating];
+                                           self.spinner = nil;
+                                       });
+                                       
+                                       if (!image){
+                                           double delayInSeconds = 2.0;
+                                           dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                           dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                               self.retryButton.hidden = NO;
+                                           });
+                                           
+                                       }
+                                       else{
+                                           if (self.sentHistory){
+                                               if (!self.myChallenge.local_image_path){
+                                                   NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
+                                                   NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
+                                                   
+                                                   float compression;
+                                                   if (!IS_IPHONE5){
+                                                       compression = 0.7;
+                                                   }
+                                                   else{
+                                                       compression = 0.5;
+                                                   }
+                                                   
+                                                   NSData *imageData = UIImageJPEGRepresentation(image, compression);
+                                                   NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
+                                                   if (localMediaName){
+                                                       self.myChallenge.local_image_path = localMediaName;
+                                                       NSError *error;
+                                                       [self.myChallenge.managedObjectContext save:&error];
+                                                   }
+                                               }
+                                               
+                                           }
+                                       }
 
-                                    if (!image){
-                                        double delayInSeconds = 2.0;
-                                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                            self.retryButton.hidden = NO;
-                                        });
-                                        
-                                    }
-                                    else{
-                                        if (self.sentHistory){
-                                            if (!self.myChallenge.local_image_path){
-                                                NSString *challenge_id = [Challenge createChallengeIDWithUser:[self.myUser displayName]];
-                                                NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",challenge_id];
-                                                
-                                                float compression;
-                                                if (!IS_IPHONE5){
-                                                    compression = 0.7;
-                                                }
-                                                else{
-                                                    compression = 0.5;
-                                                }
-                                                
-                                                NSData *imageData = UIImageJPEGRepresentation(image, compression);
-                                                NSString *localMediaName = [Challenge saveImage:imageData filename:mediaName];
-                                                if (localMediaName){
-                                                    self.myChallenge.local_image_path = localMediaName;
-                                                    NSError *error;
-                                                    [self.myChallenge.managedObjectContext save:&error];
-                                                }
-                                            }
-                                            
-                                        }
-                                    }
-
-                                }];
+                                   }];
         
     }
     else{
@@ -1994,7 +1994,7 @@
             if ([pick.player.facebook_user intValue] == 1){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
-                [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                [imageView sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
                 
             }
             

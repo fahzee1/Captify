@@ -10,8 +10,12 @@
 #import "SDWebImageDecoder.h"
 #import "UIImage+MultiFormat.h"
 #import <ImageIO/ImageIO.h>
+#import "SDWebImageManager.h"
 
-@interface SDWebImageDownloaderOperation ()
+@interface SDWebImageDownloaderOperation () {
+    BOOL _executing;
+    BOOL _finished;
+}
 
 @property (copy, nonatomic) SDWebImageDownloaderProgressBlock progressBlock;
 @property (copy, nonatomic) SDWebImageDownloaderCompletedBlock completedBlock;
@@ -35,6 +39,9 @@
     UIImageOrientation orientation;
     BOOL responseFromCached;
 }
+
+@synthesize executing = _executing;
+@synthesize finished = _finished;
 
 - (id)initWithRequest:(NSURLRequest *)request options:(SDWebImageDownloaderOptions)options progress:(void (^)(NSInteger, NSInteger))progressBlock completed:(void (^)(UIImage *, NSData *, NSError *, BOOL))completedBlock cancelled:(void (^)())cancelBlock {
     if ((self = [super init])) {
@@ -108,6 +115,13 @@
             self.completedBlock(nil, nil, [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey : @"Connection can't be initialized"}], YES);
         }
     }
+
+#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+    if (self.backgroundTaskId != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskId];
+        self.backgroundTaskId = UIBackgroundTaskInvalid;
+    }
+#endif
 }
 
 - (void)cancel {
@@ -122,6 +136,7 @@
 }
 
 - (void)cancelInternalAndStop {
+    if (self.isFinished) return;
     [self cancelInternal];
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
@@ -165,10 +180,20 @@
     [self didChangeValueForKey:@"isFinished"];
 }
 
+- (BOOL)isFinished
+{
+    return _finished;
+}
+
 - (void)setExecuting:(BOOL)executing {
     [self willChangeValueForKey:@"isExecuting"];
     _executing = executing;
     [self didChangeValueForKey:@"isExecuting"];
+}
+
+- (BOOL)isExecuting
+{
+    return _executing;
 }
 
 - (BOOL)isConcurrent {
@@ -195,7 +220,7 @@
         if (self.completedBlock) {
             self.completedBlock(nil, nil, [NSError errorWithDomain:NSURLErrorDomain code:[((NSHTTPURLResponse *)response) statusCode] userInfo:nil], YES);
         }
-
+        CFRunLoopStop(CFRunLoopGetCurrent());
         [self done];
     }
 }
@@ -261,7 +286,8 @@
 
             if (partialImageRef) {
                 UIImage *image = [UIImage imageWithCGImage:partialImageRef scale:1 orientation:orientation];
-                UIImage *scaledImage = [self scaledImageForKey:self.request.URL.absoluteString image:image];
+                NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:self.request.URL];
+                UIImage *scaledImage = [self scaledImageForKey:key image:image];
                 image = [UIImage decodedImageWithImage:scaledImage];
                 CGImageRelease(partialImageRef);
                 dispatch_main_sync_safe(^{
@@ -314,7 +340,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:SDWebImageDownloadStopNotification object:nil];
 
     SDWebImageDownloaderCompletedBlock completionBlock = self.completedBlock;
-
+    
+    if (![[NSURLCache sharedURLCache] cachedResponseForRequest:_request]) {
+        responseFromCached = NO;
+    }
+    
     if (completionBlock) {
         if (self.options & SDWebImageDownloaderIgnoreCachedResponse && responseFromCached) {
             completionBlock(nil, nil, nil, YES);
@@ -325,7 +355,8 @@
 
             UIImage *image = [UIImage sd_imageWithData:self.imageData];
 
-            image = [self scaledImageForKey:self.request.URL.absoluteString image:image];
+            NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:self.request.URL];
+            image = [self scaledImageForKey:key image:image];
 
             if (!image.images) // Do not force decod animated GIFs
             {

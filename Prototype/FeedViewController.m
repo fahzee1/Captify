@@ -264,13 +264,14 @@
         
         
         NSString *url = json[@"media_url"];
-        [cell.myImageView setImageWithURL:[NSURL URLWithString:url]
-                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    if (!image){
-                                        DLog(@"%@",error);
-                                    }
-                                }];
+        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
+                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                       if (!image){
+                                           DLog(@"%@",error);
+                                       }
+
+                                   }];
         
     }
     else{

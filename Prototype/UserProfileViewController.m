@@ -304,13 +304,14 @@
 - (void)setupScreen
 {
     if ([self.facebook_user intValue] == 1){
-        [self.myProfileImage setImageWithURL:self.profileURLString
-                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                       if (!image){
-                                           DLog(@"%@",error);
-                                       }
-                                   }];
+        [self.myProfileImage sd_setImageWithURL:self.profileURLString
+                               placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          if (!image){
+                                              DLog(@"%@",error);
+                                          }
+
+                                      }];
     }
     else{
         self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC_BIG];
@@ -443,14 +444,15 @@
         }
         
 
-        [cell.myImageView setImageWithURL:[NSURL URLWithString:media_url]
-                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                    if (!image){
-                                        DLog(@"%@",error);
-                                    }
-                                }];
-        
+        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media_url]
+                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                       if (!image){
+                                           DLog(@"%@",error);
+                                       }
+
+                                   }];
+    
     }
     else{
         // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
@@ -469,8 +471,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+
     
-    /*
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
     if (cell){
         if (((FeedViewCell *)cell).myImageView.image){
@@ -479,8 +481,10 @@
             if ([detailRoot isKindOfClass:[UINavigationController class]]){
                 UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
                 if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
+                    NSURL *mediaUrl = ((FeedViewCell *)cell).myImageView.imageURL;
                     ((FeedDetailViewController *)detailVC).showTopLabel = NO;
-                    ((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
+                    ((FeedDetailViewController *)detailVC).urlString = [mediaUrl absoluteString];
+                    //((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
                     [self.navigationController pushViewController:detailVC animated:YES];
                     return;
                     
@@ -489,7 +493,8 @@
             
         }
     }
-     */
+    
+    
 
     
     NSInteger count = [self.sentMedia count];
