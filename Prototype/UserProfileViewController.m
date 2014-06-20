@@ -143,6 +143,7 @@
     
     [AppDelegate clearImageCaches];
     self.sentMedia = nil;
+    
 
 }
 
@@ -155,7 +156,7 @@
             height = 77 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
         }
         else{
-            height = 70 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+            height = 77 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
         }
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
         self.scrollView.contentSize = CGSizeMake(320, scrollHeight);
@@ -200,8 +201,9 @@
                                              }
                                          }
                                          
+                                         NSArray *choppedList =[challengeTemp subarrayWithRange:NSMakeRange(0,10)];
                                          
-                                         self.sentMedia = [[NSSet setWithArray:challengeTemp] allObjects];
+                                         self.sentMedia = [[NSSet setWithArray:choppedList] allObjects];
                                          //[[NSUserDefaults standardUserDefaults] setObject:challengeTemp forKey:@"sentMedia"];
                                          // reload table
                                          
@@ -422,6 +424,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [self.sentMedia count];
+
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -488,8 +491,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-
     
+
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
     if (cell){
         if (((FeedViewCell *)cell).myImageView.image){
@@ -510,6 +513,7 @@
             
         }
     }
+     
     
     
 
@@ -537,7 +541,7 @@
     }
     else{
         
-        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Can't show photo due to low memory", nil)];
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Can't show photo due to low memory. Try stopping other apps running in the background.", nil)];
     }
     
 }

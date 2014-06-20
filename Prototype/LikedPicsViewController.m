@@ -103,16 +103,15 @@
     NSInteger count = [self.data count];
     if (indexPath.row < count){
         NSString *url = [self.data objectAtIndex:indexPath.row];
-            [cell.myImageView setImageWithURL:[NSURL URLWithString:url]
-                             placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                        if (!image){
-                                            DLog(@"%@",error);
-                                        }
-                                    }];
+        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
+                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                       if (!image){
+                                           DLog(@"%@",error);
+                                       }
 
-        
-        
+                                   }];
+                
     }
     return cell;
 }

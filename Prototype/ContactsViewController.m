@@ -229,7 +229,8 @@
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",friend[@"facebook_id"]];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 ((FriendCell *)cell).myFriendUsername.text = [(NSString *)friend[@"username"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
-                [((FriendCell *)cell).myFriendPic setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                [((FriendCell *)cell).myFriendPic sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+        
             }
         
             

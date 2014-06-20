@@ -100,6 +100,7 @@
     
     self.results = nil;
     self.data = nil;
+    [self.collectionView reloadData];
     
 }
 
