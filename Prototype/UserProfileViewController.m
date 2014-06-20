@@ -117,6 +117,12 @@
 
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sentMedia"];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -124,6 +130,7 @@
     DLog(@"received memory warning");
     
     [AppDelegate clearImageCaches];
+    self.sentMedia = nil;
 
 }
 
@@ -183,6 +190,7 @@
                                          
                                          
                                          self.sentMedia = [[NSSet setWithArray:challengeTemp] allObjects];
+                                         //[[NSUserDefaults standardUserDefaults] setObject:challengeTemp forKey:@"sentMedia"];
                                          // reload table
                                          
                                          dispatch_async(dispatch_get_main_queue(), ^{
@@ -482,6 +490,9 @@
         
         
     }
+    else{
+        [self showAlertWithTitle:@"Error" message:@"Sorry cant view photos due to low memory."];
+    }
     
 }
 
@@ -537,6 +548,22 @@
     
     
     
+}
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *a = [[UIAlertView alloc]
+                          initWithTitle:title
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil];
+        [a show];
+        
+    });
 }
 
 
