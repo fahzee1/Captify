@@ -191,24 +191,14 @@
 {
     // show user profile
     
-    UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
-    if ([profile isKindOfClass:[UserProfileViewController class]]){
-        ((UserProfileViewController *)profile).scoreString = self.profileScore;
-        ((UserProfileViewController *)profile).usernameString = self.profileUsername;
-        ((UserProfileViewController *)profile).profileURLString = self.facebookPicURL;
-        ((UserProfileViewController *)profile).facebook_user = self.facebookUser;
-        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
-        ((UserProfileViewController *)profile).fromExplorePage = YES;
-        
-        [self.topLabel removeFromSuperview];
-        
-        [self.navigationController pushViewController:profile animated:YES];
+    [User showProfileOnVC:self
+             withUsername:self.profileUsername
+               usingMZHud:NO
+          fromExplorePage:YES
+          showCloseButton:NO
+        delaySetupWithTme:0.8];
     
-       
-        
-        
-    }
-}
+   }
 
 - (void)savePicToLiked
 {

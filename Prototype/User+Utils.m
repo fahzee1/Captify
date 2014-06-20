@@ -16,6 +16,7 @@
 #import "UIFont+FontAwesome.h"
 #import "JDStatusBarNotification.h"
 #import "SettingsViewController.h"
+#import "UserProfileViewController.h"
 
 
 @implementation User (Utils)
@@ -1088,6 +1089,66 @@
 
           }
     }];
+}
+
+
++ (void)showProfileOnVC:(UIViewController *)controller
+           withUsername:(NSString *)name
+             usingMZHud:(BOOL)usingHud
+        fromExplorePage:(BOOL)explorePage
+        showCloseButton:(BOOL)showCloseButton
+      delaySetupWithTme:(float)delay
+{
+    UIStoryboard *mainBoard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+     UIViewController *profile = [mainBoard instantiateViewControllerWithIdentifier:@"profileScreen"];
+    
+    if ([profile isKindOfClass:[UserProfileViewController class]]){
+        ((UserProfileViewController *)profile).usernameString = name;
+        ((UserProfileViewController *)profile).delaySetupWithTime = delay;
+        ((UserProfileViewController *)profile).fromExplorePage = explorePage;
+        ((UserProfileViewController *)profile).showCloseButton = showCloseButton;
+        
+    }
+    
+    if (usingHud){
+        UIViewController *vcForHUD;
+        
+        if (showCloseButton){
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:profile];
+            vcForHUD = nav;
+        }
+        else{
+            vcForHUD = profile;
+        }
+        
+        MZFormSheetController *formSheet;
+        if (!IS_IPHONE5){
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:vcForHUD];
+        }
+        else{
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:vcForHUD];
+            //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:profile];
+        }
+        
+        ((UserProfileViewController *)profile).controller = formSheet;
+        
+        formSheet.shouldDismissOnBackgroundViewTap = YES;
+        formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
+        
+        [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
+        [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
+        [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
+        
+        [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
+            //
+        }];
+
+    }
+    else{
+        [controller.navigationController pushViewController:profile animated:YES];
+    }
+    
+   
 }
 
 

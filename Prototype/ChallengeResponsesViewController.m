@@ -87,15 +87,15 @@
     if ([sender.view isKindOfClass:[UILabel class]]){
         friend = ((UILabel *)sender.view).text;
     }
-    UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
-    if ([profile isKindOfClass:[UserProfileViewController class]]){
-        ((UserProfileViewController *)profile).usernameString = friend;
-        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
-        ((UserProfileViewController *)profile).fromExplorePage = YES;
-        
-    }
     
-    [self.navigationController pushViewController:profile animated:YES];
+    
+    [User showProfileOnVC:self
+             withUsername:friend
+               usingMZHud:NO
+          fromExplorePage:YES
+          showCloseButton:NO
+        delaySetupWithTme:0.8f];
+    
     
 }
 

@@ -72,4 +72,13 @@ typedef void (^ProfileFetchBlock) (BOOL wasSuccessful, NSNumber *json, id data);
 + (void)fetchUserProfileWithData:(NSDictionary *)params
                               block:(ProfileFetchBlock)block;
 
++(void)showProfileOnVC:(UIViewController *)controller
+          withUsername:(NSString *)name
+               usingMZHud:(BOOL)usingHud
+       fromExplorePage:(BOOL)explorePage
+       showCloseButton:(BOOL)showCloseButton
+     delaySetupWithTme:(float)delay;
+
+
+
 @end

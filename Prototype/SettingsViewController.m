@@ -517,53 +517,13 @@
             if (indexPath.row == 5){
                 // view profile
                 
-                NSURL *fbURL;
-                if ([self.myUser.facebook_user intValue] == 1){
-                    
-                    NSString *fbID = self.myUser.facebook_id;
-                    NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large",fbID];
-                    fbURL = [NSURL URLWithString:fbString];
-                }
                 
-                
-                UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
-                if ([profile isKindOfClass:[UserProfileViewController class]]){
-                    ((UserProfileViewController *)profile).scoreString = self.myUser.score;
-                    ((UserProfileViewController *)profile).usernameString = [self.myUser displayName];
-                    ((UserProfileViewController *)profile).profileURLString = fbURL;
-                    ((UserProfileViewController *)profile).facebook_user = self.myUser.facebook_user;
-                    ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
-                    ((UserProfileViewController *)profile).fromExplorePage = YES;
-                    ((UserProfileViewController *)profile).showCloseButton = YES;
-                    
-                }
-                
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:profile];
-
-                MZFormSheetController *formSheet;
-                if (!IS_IPHONE5){
-                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:nav];
-                }
-                else{
-                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:nav];
-                      //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:profile];
-                }
-                
-                ((UserProfileViewController *)profile).controller = formSheet;
-                
-                formSheet.shouldDismissOnBackgroundViewTap = YES;
-                formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
-                
-                [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
-                [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
-                [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
-                
-                [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
-                    //
-                }];
-                
-                
-                
+                [User showProfileOnVC:self
+                         withUsername:self.myUser.username
+                           usingMZHud:YES
+                      fromExplorePage:YES
+                      showCloseButton:YES
+                    delaySetupWithTme:0.8f];
                 
 
             }
