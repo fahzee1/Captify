@@ -15,4 +15,6 @@
 
 @property (nonatomic, retain)Challenge *myChallenge;
 @property (strong,nonatomic) MZFormSheetController *controller;
+
+@property (nonatomic, strong) NSString *myFriend;
 @end

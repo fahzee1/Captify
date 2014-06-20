@@ -15,6 +15,7 @@
 #import "User+Utils.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "UserProfileViewController.h"
 
 
 @interface ChallengeResponsesViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -77,6 +78,28 @@
     [self.controller dismissAnimated:YES completionHandler:nil];
 
 }
+
+
+
+- (void)showProfile:(UITapGestureRecognizer *)sender
+{
+    NSString *friend;
+    if ([sender.view isKindOfClass:[UILabel class]]){
+        friend = ((UILabel *)sender.view).text;
+    }
+    UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
+    if ([profile isKindOfClass:[UserProfileViewController class]]){
+        ((UserProfileViewController *)profile).usernameString = friend;
+        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
+        ((UserProfileViewController *)profile).fromExplorePage = YES;
+        
+    }
+    
+    [self.navigationController pushViewController:profile animated:YES];
+    
+}
+
+
 
 #pragma -mark Uitableview delegate
 
@@ -173,6 +196,10 @@
             }
              */
             
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile:)];
+            tap.numberOfTapsRequired = 1;
+            [usernameLabel addGestureRecognizer:tap];
+            usernameLabel.userInteractionEnabled = YES;
             usernameLabel.text = [pick.player displayName];
             usernameLabel.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
             usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];

@@ -505,39 +505,6 @@
 }
 
 
-- (void)showProfile
-{
-    UIViewController *profile = [self.storyboard instantiateViewControllerWithIdentifier:@"profileScreen"];
-    if ([profile isKindOfClass:[UserProfileViewController class]]){
-        ((UserProfileViewController *)profile).usernameString = self.myFriend;
-        ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
-        ((UserProfileViewController *)profile).fromExplorePage = YES;
-        
-    }
-    
-    MZFormSheetController *formSheet;
-    if (!IS_IPHONE5){
-        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:profile];
-    }
-    else{
-        formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:profile];
-        //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:profile];
-    }
-    
-    formSheet.shouldDismissOnBackgroundViewTap = YES;
-    formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
-    
-    [[MZFormSheetController sharedBackgroundWindow] setBackgroundBlurEffect:YES];
-    [[MZFormSheetController sharedBackgroundWindow] setBlurRadius:5.0];
-    [[MZFormSheetController sharedBackgroundWindow] setBackgroundColor:[UIColor clearColor]];
-    
-    [formSheet presentAnimated:YES completionHandler:^(UIViewController *presentedFSViewController) {
-        //
-    }];
-    
-
-}
-
 
 - (IBAction)tappedViewResponsesButton:(UIButton *)sender {
     
@@ -547,6 +514,7 @@
             responsesVC =  ((UINavigationController *)responsesRoot).topViewController;
         if ([responsesVC isKindOfClass:[ChallengeResponsesViewController class]]){
             ((ChallengeResponsesViewController *)responsesVC).myChallenge = self.myChallenge;
+            ((ChallengeResponsesViewController *)responsesVC).myFriend = self.myFriend;
         }
     }
     
