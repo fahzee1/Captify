@@ -466,7 +466,7 @@
         image.frame = navFrameBase;
         
         UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
-        friendName.text = self.sender;
+        friendName.text = [self.sender capitalizedString];
         friendName.textColor = [UIColor whiteColor];
         friendName.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
         
@@ -478,12 +478,14 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile)];
         tap.numberOfTapsRequired = 1;
         [friendName addGestureRecognizer:tap];
+        friendName.userInteractionEnabled = YES;
         
         [view addSubview:image];
         [view addSubview:friendName];
         view.userInteractionEnabled = NO;
         view.tag = SENDERPICANDNAME_TAG;
         self.topLabel = view;
+        self.topLabel.userInteractionEnabled = YES;
     }
     [self.navigationController.navigationBar addSubview:self.topLabel];
     
