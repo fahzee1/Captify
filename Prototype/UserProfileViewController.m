@@ -469,6 +469,29 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    
+    /*
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    if (cell){
+        if (((FeedViewCell *)cell).myImageView.image){
+            UIViewController *detailRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"feedDetailRoot"];
+            
+            if ([detailRoot isKindOfClass:[UINavigationController class]]){
+                UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
+                if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
+                    ((FeedDetailViewController *)detailVC).showTopLabel = NO;
+                    ((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
+                    [self.navigationController pushViewController:detailVC animated:YES];
+                    return;
+                    
+                }
+            }
+            
+        }
+    }
+     */
+
+    
     NSInteger count = [self.sentMedia count];
     if (indexPath.row < count){
         NSDictionary *challengeDict = [self.sentMedia objectAtIndex:indexPath.row];
@@ -491,7 +514,8 @@
         
     }
     else{
-        [self showAlertWithTitle:@"Error" message:@"Sorry cant view photos due to low memory."];
+        
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Can't show photo due to low memory", nil)];
     }
     
 }

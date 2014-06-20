@@ -475,17 +475,14 @@
             friendName.text = [NSString stringWithFormat:@"%@...",newString];
         }
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile)];
-        tap.numberOfTapsRequired = 1;
-        [friendName addGestureRecognizer:tap];
-        friendName.userInteractionEnabled = YES;
+      
         
         [view addSubview:image];
         [view addSubview:friendName];
         view.userInteractionEnabled = NO;
         view.tag = SENDERPICANDNAME_TAG;
         self.topLabel = view;
-        self.topLabel.userInteractionEnabled = YES;
+     
     }
     [self.navigationController.navigationBar addSubview:self.topLabel];
     
@@ -506,6 +503,7 @@
     self.answer = self.captionField.text;
     
 }
+
 
 - (void)showProfile
 {

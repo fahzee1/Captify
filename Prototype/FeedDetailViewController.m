@@ -45,13 +45,18 @@
     self.navigationItem.leftBarButtonItem = leftButton;
 
     
-    [self.myImageView setImageWithURL:[NSURL URLWithString:self.urlString]
-                     placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                if (!image){
-                                    DLog(@"%@",error);
-                                }
-                            }];
+    if (self.image){
+        self.myImageView.image = self.image;
+    }
+    else{
+        [self.myImageView setImageWithURL:[NSURL URLWithString:self.urlString]
+                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    if (!image){
+                                        DLog(@"%@",error);
+                                    }
+                                }];
+    }
     
     self.view.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
 
@@ -74,6 +79,8 @@
  
 
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated
 {

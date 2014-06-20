@@ -20,6 +20,8 @@
 @property (strong, nonatomic) NSNumber *facebookUser;
 @property (strong, nonatomic) NSString *profileScore;
 @property (strong, nonatomic)UIView *topLabel;
+@property (strong, nonatomic) UIImage *image;
+
 
 @property (strong, nonatomic)User *myUser;
 @property BOOL showTopLabel;
