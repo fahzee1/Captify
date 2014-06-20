@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MZFormSheetController.h"
 
 @interface UserProfileViewController : UIViewController
 
@@ -19,8 +20,10 @@
 @property (strong, nonatomic) NSString *scoreString;
 @property (strong, nonatomic) NSURL *profileURLString;
 @property (strong, nonatomic) NSNumber *facebook_user;
+@property (strong, nonatomic) MZFormSheetController *controller;
 
 @property float delaySetupWithTime;
 @property BOOL fromExplorePage;
+@property BOOL showCloseButton;
 
 @end

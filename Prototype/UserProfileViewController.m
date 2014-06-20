@@ -58,9 +58,21 @@
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.navigationItem.title = NSLocalizedString(@"Profile", nil);
     //self.navigationController.navigationBarHidden = NO;
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popScreen)];
+    
+    
+    UIBarButtonItem *leftButton;
+    if (!self.showCloseButton){
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popScreen)];
+
+    }
+    else{
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] style:UIBarButtonItemStylePlain target:self action:@selector(destroyScreen)];
+
+    }
+    
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
-                                         NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+
     self.navigationItem.leftBarButtonItem = leftButton;
     
     
@@ -299,6 +311,11 @@
 - (void)popScreen
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)destroyScreen
+{
+    [self.controller dismissAnimated:YES completionHandler:nil];
 }
 
 - (void)setupScreen

@@ -534,17 +534,22 @@
                     ((UserProfileViewController *)profile).facebook_user = self.myUser.facebook_user;
                     ((UserProfileViewController *)profile).delaySetupWithTime = 0.8f;
                     ((UserProfileViewController *)profile).fromExplorePage = YES;
+                    ((UserProfileViewController *)profile).showCloseButton = YES;
                     
                 }
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:profile];
 
                 MZFormSheetController *formSheet;
                 if (!IS_IPHONE5){
-                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:profile];
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 380) viewController:nav];
                 }
                 else{
-                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:profile];
+                    formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:nav];
                       //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:profile];
                 }
+                
+                ((UserProfileViewController *)profile).controller = formSheet;
                 
                 formSheet.shouldDismissOnBackgroundViewTap = YES;
                 formSheet.transitionStyle = MZFormSheetTransitionStyleSlideFromTop;
