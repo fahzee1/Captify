@@ -1054,7 +1054,7 @@
 }
 
 + (void)fetchUserProfileWithData:(NSDictionary *)params
-                           block:(BlobFetchBlock)block
+                           block:(ProfileFetchBlock)block
 {
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];
