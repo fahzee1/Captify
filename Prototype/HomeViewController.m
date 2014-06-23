@@ -110,7 +110,7 @@
 {
     [super viewDidLoad];
     
-
+    
     
      [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     

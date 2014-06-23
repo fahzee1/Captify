@@ -731,8 +731,10 @@
 + (NSString *)createChallengeIDWithUser:(NSString *)user
 {
     NSString *uuid = [[NSUUID UUID] UUIDString];
+    NSArray *uuidList = [uuid componentsSeparatedByString:@"-"];
+    NSString *finalUuid = [uuidList lastObject];
     user = [user stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    return [NSString stringWithFormat:@"%@-%@",user,uuid];
+    return [NSString stringWithFormat:@"%@-%@",user,finalUuid];
 }
 
 + (void)showAlertWithTitle:(NSString *)title

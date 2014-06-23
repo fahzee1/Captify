@@ -172,7 +172,8 @@
 
 - (void)fetchProfile
 {
-    [User fetchUserProfileWithData:@{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"] }
+    [User fetchUserProfileWithData:@{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                     @"forProfile":[NSNumber numberWithBool:YES]}
                              block:^(BOOL wasSuccessful, NSNumber *json, id data) {
                                  //DLog(@"%@",data);
                                  if (wasSuccessful){
@@ -201,9 +202,9 @@
                                              }
                                          }
                                          
-                                         NSArray *choppedList =[challengeTemp subarrayWithRange:NSMakeRange(0,10)];
+                                         self.sentMedia = challengeTemp;
                                          
-                                         self.sentMedia = [[NSSet setWithArray:choppedList] allObjects];
+                                             
                                          //[[NSUserDefaults standardUserDefaults] setObject:challengeTemp forKey:@"sentMedia"];
                                          // reload table
                                          
