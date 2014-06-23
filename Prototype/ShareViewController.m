@@ -772,7 +772,7 @@ typedef void (^ShareToNetworksBlock) ();
                                  facebookUser:[self.myChallenge.sender.facebook_user boolValue]
                                     feedBlock:^(BOOL wasSuccessful) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                            [self.hud hide:YES];
+                                            //[self.hud hide:YES];
                                         });
 
                                         if (wasSuccessful){
@@ -1067,7 +1067,7 @@ typedef void (^ShareToNetworksBlock) ();
 
     [Challenge updateChallengeWithParams:params
                                    block:^(BOOL wasSuccessful, NSString *mediaUrl) {
-                                       [self.hud hide:YES];
+                                       //[self.hud hide:YES];
                                        if (wasSuccessful){
                                            // sending image url in message response
                                            
@@ -1264,7 +1264,7 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     [self dismissViewControllerAnimated:YES completion:^{
-        [self.hud hide:YES];
+        //[self.hud hide:YES];
         if (result == MessageComposeResultSent){
              [self updateChallengeOnBackend];
         }
