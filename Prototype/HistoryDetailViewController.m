@@ -289,28 +289,35 @@
     if ([self.data count] > 0){
         int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+90);
+        int cushion = 90;
+        if (!IS_IPHONE5){
+            cushion = 150;
+        }
+        self.scrollView.contentSize = CGSizeMake(320, scrollHeight+cushion);
         CGRect tableRect = self.myTable.frame;
         tableRect.size.height += height;
         self.myTable.frame = tableRect;
         
-        if (!self.errorMakeCaptionButton){
-            self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 , height + 75, 203, 45);
-            [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
-            [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
-            self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-            self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
-            self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-            self.errorMakeCaptionButton.layer.borderWidth = 2;
-            self.errorMakeCaptionButton.layer.cornerRadius = 5;
-            [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
-            [self.myTable addSubview:self.errorMakeCaptionButton];
-        }
-        else{
-            self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 ,height + 75, 203, 45);
-            [self.myTable addSubview:self.errorMakeCaptionButton];
+        
+        if (!self.hideSelectButtonsMax){
+            if (!self.errorMakeCaptionButton){
+                self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+                self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 , height + 60, 203, 45);
+                [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
+                [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
+                self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+                self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
+                self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+                self.errorMakeCaptionButton.layer.borderWidth = 2;
+                self.errorMakeCaptionButton.layer.cornerRadius = 5;
+                [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+                [self.myTable addSubview:self.errorMakeCaptionButton];
+            }
+            else{
+                self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 ,height + 75, 203, 45);
+                [self.myTable addSubview:self.errorMakeCaptionButton];
+            }
         }
         
     }
@@ -1961,8 +1968,16 @@
             NSString *string = [NSString stringWithFormat:@" Choose your favorite caption"];
             title = NSLocalizedString(string, nil);
         }
+        
+        CGPoint labelPoint;
+        if ([title isEqualToString:@" Choose your favorite caption"]){
+            labelPoint = CGPointMake(container.frame.size.width/2, 5.0);
+        }
+        else{
+            labelPoint = CGPointMake(110, 5.0);
+        }
 
-        UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(container.frame.size.width/2, 5.0, 300, 50)];
+        UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(labelPoint.x, labelPoint.y, 300, 50)];
         titleLablel.text = title;
         titleLablel.numberOfLines = 0;
         [titleLablel sizeToFit];

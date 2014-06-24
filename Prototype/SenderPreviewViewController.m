@@ -819,16 +819,35 @@
 
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
-    /*
+    
     if (friendPicker == self.facebookScreen){
         BOOL installed = [user objectForKey:@"installed"] != nil;
+        if (installed){
+            @try {
+                NSString *fbID = user[@"id"];
+                NSDictionary *params = @{@"username": user[@"name"],
+                                         @"facebook_user":[NSNumber numberWithBool:YES],
+                                         @"facebook_id":fbID,
+                                         };
+                
+                NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
+                
+                [User createFriendWithParams:params inMangedObjectContext:context];
+                
+            }
+            @catch (NSException *exception) {
+                DLog(@"%@",exception);
+            }
+
+        }
         return installed;
     }
     else{
         return YES;
     }
-     */
+     
     
+    /*
     NSString *name = user[@"name"];
     BOOL should = [name hasPrefix:@"A"];
     if (should){
@@ -854,6 +873,7 @@
 #warning uncomment this to make sure only friends using app are shown.. mauybe show button to invite if none
     
     return YES;
+     */
 }
 
 - (void)friendPickerViewController:(FBFriendPickerViewController *)friendPicker handleError:(NSError *)error

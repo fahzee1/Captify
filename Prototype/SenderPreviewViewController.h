@@ -37,7 +37,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 
 
-- (NSString *)redisReceivedKeyWithUsername:(NSString *)username;
 
 @end
 
