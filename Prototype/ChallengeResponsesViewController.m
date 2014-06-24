@@ -137,9 +137,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     //cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
     //cell.layer.borderWidth = 2;
-    cell.layer.cornerRadius = 10;
-    cell.contentView.layer.cornerRadius = 10;
-    cell.backgroundView.layer.cornerRadius = 10;
+    //cell.layer.cornerRadius = 10;
+    //cell.contentView.layer.cornerRadius = 10;
+    //cell.backgroundView.layer.cornerRadius = 10;
     cell.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.5];
     
     

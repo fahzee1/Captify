@@ -510,7 +510,7 @@ NSString *const kGPUImageJFAVoronoiFragmentShaderString = SHADER_STRING
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, self.outputTextureOptions.magFilter);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, self.outputTextureOptions.minFilter);
     
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	GLenum status __unused = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     
     NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
     

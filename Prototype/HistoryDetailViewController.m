@@ -293,6 +293,26 @@
         CGRect tableRect = self.myTable.frame;
         tableRect.size.height += height;
         self.myTable.frame = tableRect;
+        
+        if (!self.errorMakeCaptionButton){
+            self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 , height + 75, 203, 45);
+            [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
+            [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
+            self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+            self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
+            self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+            self.errorMakeCaptionButton.layer.borderWidth = 2;
+            self.errorMakeCaptionButton.layer.cornerRadius = 5;
+            [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+            [self.myTable addSubview:self.errorMakeCaptionButton];
+        }
+        else{
+            self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 ,height + 75, 203, 45);
+            [self.myTable addSubview:self.errorMakeCaptionButton];
+        }
+        
     }
     else{
         self.scrollView.contentSize = CGSizeMake(320, 670);
@@ -854,6 +874,7 @@
                              [defaults setValue:[NSNumber numberWithInt:count +1] forKey:@"challengeToolTip"];
                              
                              
+                             /*
                              double delayInSeconds = 5.3    ;
                              dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                              dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -872,6 +893,7 @@
                                  [toolTip presentPointingAtView:self.makeButton inView:self.view animated:YES];
 
                              });
+                             */
                              
                          }
                          
@@ -1909,7 +1931,7 @@
     UIView *container;
     if (section == 0){
         container = [[UIView alloc] initWithFrame:CGRectMake(100, 0.0, 100, 60)];
-        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+        container.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         
         NSString *title;
         NSUInteger count = [self.data count];
@@ -1940,13 +1962,14 @@
             title = NSLocalizedString(string, nil);
         }
 
-        UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, 300, 50)];
+        UILabel *titleLablel = [[UILabel alloc] initWithFrame:CGRectMake(container.frame.size.width/2, 5.0, 300, 50)];
         titleLablel.text = title;
         titleLablel.numberOfLines = 0;
         [titleLablel sizeToFit];
         titleLablel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:15];
         titleLablel.textColor = [UIColor whiteColor];
         
+        /*
         if (!self.hideSelectButtonsMax){
             if (self.makeButtonVisible){        
                 self.makeButton = [[UIButton alloc] initWithFrame:CGRectMake(240.0, -5.0, 100, 50)];
@@ -1957,6 +1980,7 @@
                 [container addSubview:self.makeButton];
             }
         }
+         */
         
         [container addSubview:titleLablel];
     }

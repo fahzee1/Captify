@@ -132,7 +132,7 @@
     self.previewCaption.userInteractionEnabled = YES;
     self.previewImage.userInteractionEnabled = YES;
     
-    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
     
     

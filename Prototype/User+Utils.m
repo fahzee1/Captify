@@ -63,6 +63,10 @@
         return [splitName firstObject];
         
     }
+    else if ([self.is_teamCaptify intValue] == 1){
+        NSArray *splitName = [self.username componentsSeparatedByString:@"-"];
+        return [splitName lastObject];
+    }
     else{
         return self.username;
     }
@@ -70,7 +74,7 @@
 
 - (NSString *)lastName
 {
-    if ([self.facebook_user intValue] == 1){
+    if ([self.facebook_user intValue] == 1 || [self.is_teamCaptify intValue] == 1){
         NSArray *splitName = [self.username componentsSeparatedByString:@"-"];
         return [splitName lastObject];
         

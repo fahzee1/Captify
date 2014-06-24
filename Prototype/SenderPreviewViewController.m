@@ -195,7 +195,7 @@
     self.topLabel.frame = labelFrame;
     
 
-    self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.selectedContainerView.layer.cornerRadius = 5;
     self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
     

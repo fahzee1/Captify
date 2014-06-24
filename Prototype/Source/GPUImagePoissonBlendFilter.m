@@ -270,7 +270,7 @@ NSString *const kGPUImagePoissonBlendFragmentShaderString = SHADER_STRING
             [self notifyTargetsAboutNewOutputTexture];
         }
         
-        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        GLenum status __unused = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         
         NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
         

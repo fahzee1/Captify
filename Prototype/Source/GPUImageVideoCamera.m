@@ -891,7 +891,7 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageBufferWidth, imageBufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTexture, 0);
     
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	GLenum status __unused = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     [self notifyTargetsAboutNewOutputTexture];
 
     NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);

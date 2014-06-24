@@ -191,12 +191,11 @@
 
     
     [Appirater setAppId:@"865825526"];
-    [Appirater setDaysUntilPrompt:5];
+    [Appirater setDaysUntilPrompt:14];
     [Appirater setUsesUntilPrompt:4];
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
-    [Appirater setDebug:YES];
-#warning set deubg to no
+    [Appirater setDebug:NO];
     
      [Appirater appLaunched:YES];
     
@@ -208,7 +207,6 @@
         [[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
     }
     
-#warning add loggers
        
     return YES;
 }

@@ -385,10 +385,12 @@
             
         }
         self.viewResponsesButton.userInteractionEnabled = YES;
+        [self.viewResponsesButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     }
     else{
         responseText = NSLocalizedString(@"0 responses", nil);
         self.viewResponsesButton.userInteractionEnabled = NO;
+        [self.viewResponsesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     [self.viewResponsesButton setTitle:responseText forState:UIControlStateNormal];
 
@@ -432,7 +434,7 @@
     self.captionField.layer.cornerRadius = 5;
     
     
-    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.captionContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.captionContainerView.layer.cornerRadius = 5;
     
     self.countContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
@@ -464,6 +466,7 @@
         image.layer.masksToBounds = YES;
         image.layer.cornerRadius = 15.0f;
         image.frame = navFrameBase;
+        image.contentMode = UIViewContentModeScaleAspectFill;
         
         UILabel *friendName = [[UILabel alloc] initWithFrame:CGRectMake(navFrameBase.origin.x+45, navFrameBase.origin.y, navFrameBase.size.width+200, navFrameBase.size.height)];
         friendName.text = [self.sender capitalizedString];

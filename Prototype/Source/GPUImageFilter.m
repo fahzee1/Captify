@@ -375,7 +375,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
         
         //    NSLog(@"Filter size: %f, %f for filter: %@", currentFBOSize.width, currentFBOSize.height, self);
         
-        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        GLenum status __unused = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         
         NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
         glBindTexture(GL_TEXTURE_2D, 0);

@@ -56,7 +56,7 @@
     self.myTable.dataSource = self;
     self.myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.myTable.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    
+    self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.myTable addSubview:self.refreshControl];
@@ -408,7 +408,8 @@
 - (void)setCellColor:(UIColor *)color forCell:(UITableViewCell *)cell
 {
     cell.contentView.backgroundColor = color;
-    //cell.backgroundColor = color;
+    cell.backgroundColor = color;
+    
 }
 
 
@@ -419,7 +420,8 @@
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
-    cell.contentView.layer.cornerRadius = 10;
+    //cell.contentView.layer.cornerRadius = 10;
+    //cell.backgroundView.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
 
