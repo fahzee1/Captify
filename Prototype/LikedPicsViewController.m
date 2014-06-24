@@ -168,7 +168,7 @@
             exploreButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
             exploreButton.backgroundColor = [UIColor clearColor];
             exploreButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-            exploreButton.layer.borderWidth = 2;
+            exploreButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
             exploreButton.layer.cornerRadius = 5;
             [exploreButton addTarget:self action:@selector(showExplorePage) forControlEvents:UIControlEventTouchUpInside];
             

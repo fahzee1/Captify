@@ -309,7 +309,7 @@
                 self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
                 self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
                 self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-                self.errorMakeCaptionButton.layer.borderWidth = 2;
+                self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
                 self.errorMakeCaptionButton.layer.cornerRadius = 5;
                 [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
                 [self.myTable addSubview:self.errorMakeCaptionButton];
@@ -2285,7 +2285,7 @@
             self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
             self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
             self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-            self.errorMakeCaptionButton.layer.borderWidth = 2;
+            self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
             self.errorMakeCaptionButton.layer.cornerRadius = 5;
             [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
             

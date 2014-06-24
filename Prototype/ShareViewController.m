@@ -193,7 +193,7 @@ typedef void (^ShareToNetworksBlock) ();
     [self.myFacebookButton setTitle:NSLocalizedString(@"Facebook", nil) forState:UIControlStateNormal];
     [self.myFacebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myFacebookButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myFacebookButton.layer.borderWidth = 1;
+    self.myFacebookButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.myFacebookButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myFacebookButton.layer.cornerRadius = 5;
 
@@ -204,7 +204,7 @@ typedef void (^ShareToNetworksBlock) ();
   
     [self.myInstagramButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myInstagramButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myInstagramButton.layer.borderWidth = 1;
+    self.myInstagramButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.myInstagramButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myInstagramButton.layer.cornerRadius = 5;
     
@@ -215,7 +215,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     [self.myTwitterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myTwitterButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myTwitterButton.layer.borderWidth = 1;
+    self.myTwitterButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.myTwitterButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myTwitterButton.layer.cornerRadius = 5;
 
@@ -225,7 +225,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     [self.myMessageButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myMessageButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myMessageButton.layer.borderWidth = 1;
+    self.myMessageButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.myMessageButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myMessageButton.layer.cornerRadius = 5;
 
@@ -236,7 +236,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     [self.myPinterestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.myPinterestButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.myPinterestButton.layer.borderWidth = 1;
+    self.myPinterestButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.myPinterestButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.myPinterestButton.layer.cornerRadius = 5;
     

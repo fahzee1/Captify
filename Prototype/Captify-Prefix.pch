@@ -88,6 +88,7 @@
 
 // size
 #define CAPTIFY_CAPTION_SIZE 35
+#define CAPTIFY_BUTTON_LAYER 1
 
 // filters
 

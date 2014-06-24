@@ -208,7 +208,7 @@
     self.contactsButton.layer.cornerRadius = 5;
     self.contactsButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     self.contactsButton.titleLabel.text = NSLocalizedString(@"Contacts", nil);
-    self.contactsButton.layer.borderWidth = 2;
+    self.contactsButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.contactsButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
 
 
@@ -219,7 +219,7 @@
     self.facebookButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     self.facebookButton.titleLabel.text = NSLocalizedString(@"Facebook", nil);
     self.facebookButton.backgroundColor = [UIColor clearColor];
-    self.facebookButton.layer.borderWidth = 2;
+    self.facebookButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
     self.facebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
 
     
