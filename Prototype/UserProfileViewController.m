@@ -172,6 +172,7 @@
 
 - (void)fetchProfile
 {
+    if (self.usernameString){
     [User fetchUserProfileWithData:@{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"],
                                      @"forProfile":[NSNumber numberWithBool:YES]}
                              block:^(BOOL wasSuccessful, NSNumber *json, id data) {
@@ -309,6 +310,10 @@
                                     }
                                  }
                              }];
+    }
+    else{
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Error fetching users profile.", nil)];
+    }
 }
 
 - (void)popScreen

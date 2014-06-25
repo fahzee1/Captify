@@ -88,7 +88,7 @@
     [super viewWillAppear:animated];
     
     if (self.showTopLabel){
-        [self setupTopLabel];
+        [self setupTopAndBottomLabel];
         self.navigationController.navigationBarHidden = YES;
 
     }
@@ -112,6 +112,8 @@
   
 
     
+    DLog(@"%@ selected this caption", self.winnerUsername);
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -125,7 +127,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setupTopLabel
+- (void)setupTopAndBottomLabel
 {
     if (!self.topLabel){
         
@@ -175,6 +177,33 @@
         view.tag = SENDERPICANDNAME_TAG;
         self.topLabel = view;
     }
+    
+    if (self.winnerUsername){
+        CGRect imageRect = self.myImageView.frame;
+        if (!self.winnerLabel){
+            self.winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageRect.origin.x + 10, imageRect.size.height + 20, 100, 100)];
+            self.winnerLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+            self.winnerLabel.textColor = [UIColor whiteColor];
+            self.winnerLabel.text = NSLocalizedString(@"Captified by:", nil);
+        }
+        
+        if (!self.winnerLabelButton){
+            CGRect labelFrame = self.winnerLabel.frame;
+            self.winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            self.winnerLabelButton.frame = CGRectMake(labelFrame.size.width, labelFrame.origin.y, imageRect.size.width, 100);
+            self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+            [self.winnerLabelButton setTitle:self.winnerUsername forState:UIControlStateNormal];
+            //[self.winnerLabelButton setTitle:@"Mary Lou Rettin" forState:UIControlStateNormal];
+            [self.winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+            self.winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [self.winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+
+        
+        [self.view addSubview:self.winnerLabel];
+        [self.view addSubview:self.winnerLabelButton];
+    }
     [self.view addSubview:self.topLabel];
 
     
@@ -184,6 +213,7 @@
 - (void)removeTopLabel
 {
     self.topLabel.hidden = YES;
+    self.winnerLabelButton.hidden = YES;
 }
 
 
@@ -198,7 +228,21 @@
           showCloseButton:NO
         delaySetupWithTme:0.8];
     
-   }
+}
+
+- (void)tappedWinnerLabel
+{
+    // show user profile
+    
+    [User showProfileOnVC:self
+             withUsername:self.winnerUsername
+               usingMZHud:NO
+          fromExplorePage:YES
+          showCloseButton:NO
+        delaySetupWithTme:0.8];
+    
+}
+
 
 - (void)savePicToLiked
 {

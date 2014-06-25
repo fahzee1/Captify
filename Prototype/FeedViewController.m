@@ -302,6 +302,14 @@
         NSString *username = json[@"sender"][0][@"username"];
         NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
         NSString *score;
+        NSString *winnerUsername;
+        
+        @try {
+            winnerUsername = json[@"winner"];
+        }
+        @catch (NSException *exception) {
+            winnerUsername = @"";
+        }
         
         @try {
             score = json[@"sender"][0][@"score"];
@@ -330,6 +338,7 @@
                 ((FeedDetailViewController *)detailVC).facebookUser = is_facebook;
                 ((FeedDetailViewController *)detailVC).profileUsername = username;
                 ((FeedDetailViewController *)detailVC).showTopLabel = YES;
+                ((FeedDetailViewController *)detailVC).winnerUsername = winnerUsername;
                 if ([score isKindOfClass:[NSNumber class]]){
                     ((FeedDetailViewController *)detailVC).profileScore = [NSString stringWithFormat:@"%@",(NSNumber *)score];
                 }
