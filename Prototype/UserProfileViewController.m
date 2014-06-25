@@ -152,11 +152,15 @@
 {
     if ([self.sentMedia count] > 0){
         int height;
+        int cushion = 77;
+        if ([self.sentMedia count] < 3){
+            cushion = 95;
+        }
         if (!self.fromExplorePage){
-            height = 77 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+            height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
         }
         else{
-            height = 77 * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+            height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
         }
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
         self.scrollView.contentSize = CGSizeMake(320, scrollHeight);
