@@ -192,7 +192,7 @@
             self.winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
             self.winnerLabelButton.frame = CGRectMake(labelFrame.size.width, labelFrame.origin.y, imageRect.size.width, 100);
             self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-            [self.winnerLabelButton setTitle:self.winnerUsername forState:UIControlStateNormal];
+            [self.winnerLabelButton setTitle:[[self.winnerUsername stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
             //[self.winnerLabelButton setTitle:@"Mary Lou Rettin" forState:UIControlStateNormal];
             [self.winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             self.winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
