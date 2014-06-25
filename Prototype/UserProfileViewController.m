@@ -476,13 +476,14 @@
 
         [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media_url]
                             placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                     options:SDWebImageRefreshCached
                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                        if (!image){
                                            DLog(@"%@",error);
                                        }
 
                                    }];
-    
+          
     }
     else{
         // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
