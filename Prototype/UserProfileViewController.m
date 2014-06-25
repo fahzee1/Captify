@@ -403,9 +403,9 @@
     
     self.myScore.text = self.scoreString;
     self.myUsername.text = [[self.usernameString stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-    self.myScore.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.myScore.textColor = [UIColor whiteColor];
     self.myScore.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:18];
-    self.myUsername.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    self.myUsername.textColor = [UIColor whiteColor];
     self.myUsername.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:18];
     
     
