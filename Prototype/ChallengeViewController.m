@@ -265,12 +265,14 @@
                                              else{
                                                   if (data[@"media_url"]){
                                                      NSString *url = data[@"media_url"];
-                                                     self.myChallenge.image_path = url;
-                                                     self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
-                                                     [self downloadImage];
-                                                     
-                                                     NSError *error;
-                                                     [self.myChallenge.managedObjectContext save:&error];
+                                                      if (url && ![url isKindOfClass:[NSNull class]]){
+                                                         self.myChallenge.image_path = url;
+                                                         self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                         [self downloadImage];
+                                                         
+                                                         NSError *error;
+                                                         [self.myChallenge.managedObjectContext save:&error];
+                                                      }
                                                  }
 
                                              }
@@ -278,12 +280,14 @@
                                          
                                          else if (data[@"media_url"]){
                                              NSString *url = data[@"media_url"];
-                                             self.myChallenge.image_path = url;
-                                             self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
-                                             [self downloadImage];
+                                             if (url && ![url isKindOfClass:[NSNull class]]){
+                                                 self.myChallenge.image_path = url;
+                                                 self.mediaURL = [NSURL URLWithString:self.myChallenge.image_path];
+                                                 [self downloadImage];
+                                                 NSError *error;
+                                                 [self.myChallenge.managedObjectContext save:&error];
+                                             }
                                              
-                                             NSError *error;
-                                             [self.myChallenge.managedObjectContext save:&error];
                                          }
                                          
                                      }

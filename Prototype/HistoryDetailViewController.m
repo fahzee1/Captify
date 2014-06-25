@@ -231,19 +231,7 @@
     [super viewDidAppear:animated];
     
     if (!self.fromColorPicker){
-        if (IS_IPHONE5){
-            if ([self.data count] > 0){
-                CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-                [self.scrollView setContentOffset:bottomOffset animated:YES];
-
-            }
-            
-        }
-        else{
-            CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-            [self.scrollView setContentOffset:bottomOffset animated:YES];
-        }
-        
+        [self slideScreenToBottom];
         self.fromColorPicker = NO;
     }
     
@@ -283,6 +271,23 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+- (void)slideScreenToBottom
+{
+    if (IS_IPHONE5){
+        if ([self.data count] > 0){
+            CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+            [self.scrollView setContentOffset:bottomOffset animated:YES];
+            
+        }
+        
+    }
+    else{
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
+    }
+
+}
 
 - (void)adjustTableSize
 {
@@ -458,6 +463,8 @@
                                                  
                                                  [self.myTable reloadData];
                                                  [self adjustTableSize];
+                                                 [self slideScreenToBottom];
+                                                 [self checkCaptionChosen];
                                                  
                                              });
 
@@ -535,7 +542,7 @@
             }
             
             [self adjustTableSize];
-            
+            [self slideScreenToBottom];
             [self checkCaptionChosen];
             
         });
