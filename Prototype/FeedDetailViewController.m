@@ -68,7 +68,7 @@
     
     //CGRect likeFrame = self.likeButton.frame;
     //likeFrame.origin.y += 150;
-    self.likeButton.frame = CGRectMake(self.myImageView.frame.size.width/2, self.view.frame.size.height - 50, self.likeButton.frame.size.width, self.likeButton.frame.size.height);
+    self.likeButton.frame = CGRectMake(self.myImageView.frame.size.width/2, self.view.frame.size.height - 40, self.likeButton.frame.size.width, self.likeButton.frame.size.height);
     
     
     if (!IS_IPHONE5){
@@ -181,7 +181,7 @@
     if (self.winnerUsername){
         CGRect imageRect = self.myImageView.frame;
         if (!self.winnerLabel){
-            self.winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageRect.origin.x + 10, imageRect.size.height + 20, 100, 100)];
+            self.winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageRect.origin.x + 10, imageRect.size.height + 50, 100, 40)];
             self.winnerLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
             self.winnerLabel.textColor = [UIColor whiteColor];
             self.winnerLabel.text = NSLocalizedString(@"Captified by:", nil);
@@ -190,13 +190,16 @@
         if (!self.winnerLabelButton){
             CGRect labelFrame = self.winnerLabel.frame;
             self.winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            self.winnerLabelButton.frame = CGRectMake(labelFrame.size.width, labelFrame.origin.y, imageRect.size.width, 100);
+            self.winnerLabelButton.frame = CGRectMake(labelFrame.size.width - 5, labelFrame.origin.y, imageRect.size.width, 40);
             self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
             [self.winnerLabelButton setTitle:[[self.winnerUsername stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
             //[self.winnerLabelButton setTitle:@"Mary Lou Rettin" forState:UIControlStateNormal];
             [self.winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             self.winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             [self.winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel) forControlEvents:UIControlEventTouchUpInside];
+            
+
+            
         }
         
 

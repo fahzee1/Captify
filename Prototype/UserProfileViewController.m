@@ -156,6 +156,9 @@
         if ([self.sentMedia count] < 3){
             cushion = 95;
         }
+        else if (!IS_IPHONE5){
+            cushion = 110;
+        }
         if (!self.fromExplorePage){
             height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
         }
@@ -441,9 +444,9 @@
 {
     //DLog(@"collection called");
     FeedViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProfileMediaCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+    cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     cell.layer.borderWidth = 1.f;
-    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+    cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
     cell.layer.cornerRadius = 5.f;
     
     
@@ -457,9 +460,9 @@
 
         cell.name.text = [name capitalizedString];
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
-        cell.name.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-        if ([cell.name.text length] >= 30){
-            NSString *uString = [cell.name.text substringToIndex:29];
+        cell.name.textColor = [UIColor whiteColor];
+        if ([cell.name.text length] >= 25){
+            NSString *uString = [cell.name.text substringToIndex:24];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
             
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);

@@ -316,6 +316,11 @@
                                                         DLog(@"%@",exception);
                                                     }
                                                     
+                                                    
+                                                    if ([user[@"username"] isEqualToString:self.myUser.username])
+                                                    {
+                                                        return;
+                                                    }
                                                     User *userCreated = [User createFriendWithParams:params
                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
                                                     if (userCreated){
@@ -825,7 +830,13 @@
         if (installed){
             @try {
                 NSString *fbID = user[@"id"];
-                NSDictionary *params = @{@"username": user[@"name"],
+                NSString *fbName = user[@"name"];
+                fbName = [fbName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+                if ([fbName isEqualToString:self.myUser.username]){
+                    return NO;
+                }
+                
+                NSDictionary *params = @{@"username": fbName,
                                          @"facebook_user":[NSNumber numberWithBool:YES],
                                          @"facebook_id":fbID,
                                          };

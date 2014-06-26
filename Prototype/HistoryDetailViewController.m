@@ -43,6 +43,7 @@
 
 #define SHARE_CONTROLS_CONTAINER 6466
 #define FINAL_CAPTION_TAG 3433
+typedef void (^AnimationBlock) ();
 
 @interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
@@ -1034,6 +1035,22 @@
     
 }
 
+- (void)animateThisViewWithBlock:(AnimationBlock)block
+                 completionBlock:(AnimationBlock)cBlock
+                      forHowLong:(int)time
+{
+    [UIView animateWithDuration:time
+                     animations:^{
+                         if (block){
+                             block();
+                         }
+                     } completion:^(BOOL finished) {
+                         if (cBlock){
+                             cBlock();
+                         }
+                     }];
+}
+
 
 - (IBAction)tappedDone:(id)sender {
     //self.imageControls.hidden = YES;
@@ -1068,13 +1085,17 @@
         CGRect frame = self.finalCaptionLabel.frame;
         frame.size.width = self.finalCaptionLabel.superview.bounds.size.width - 25;
         
-        if (CGRectContainsPoint(self.finalCaptionLabel.superview.bounds, frame.origin)){
-            self.finalCaptionLabel.frame = frame;
-        }
-        else{
-            self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y, frame.size.width, frame.size.height);
-        }
         
+        [self animateThisViewWithBlock:^{
+            if (CGRectContainsPoint(self.finalCaptionLabel.superview.bounds, frame.origin)){
+                self.finalCaptionLabel.frame = frame;
+            }
+            else{
+                self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y, frame.size.width, frame.size.height);
+            }
+            
+        } completionBlock:nil forHowLong:1];
+       
         
         fontIndex += 1;
         
@@ -1235,51 +1256,57 @@
     
     
     if (!self.captionIsSplit){
-        if (!attempts){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
-        }
+        [self animateThisViewWithBlock:^{
+            if (!attempts){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+            }
+            
+            if (attempts == 1){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+            }
+            
+            if (attempts == 2){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+            }
+            
+            if (attempts == 3){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+            }
+            
+            
+            if (attempts == 4){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+            }
+            
+        } completionBlock:nil forHowLong:1];
         
-        if (attempts == 1){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
-        }
-        
-        if (attempts == 2){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-        }
-        
-        if (attempts == 3){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
-        }
-        
-        
-        if (attempts == 4){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
-        }
-    
     }
     else{
         for (UIView *view in self.myImageView.subviews){
             if ([view isKindOfClass:[UILabel class]]){
-                if (!attempts){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
-                }
-                
-                if (attempts == 1){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
-                }
-                
-                if (attempts == 2){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-                }
-                
-                if (attempts == 3){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
-                }
-                
-                
-                if (attempts == 4){
-                    [view setTransform:CGAffineTransformMakeRotation(0)];
-                }
+                [self animateThisViewWithBlock:^{
+                    if (!attempts){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+                    }
+                    
+                    if (attempts == 1){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+                    }
+                    
+                    if (attempts == 2){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+                    }
+                    
+                    if (attempts == 3){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+                    }
+                    
+                    
+                    if (attempts == 4){
+                        [view setTransform:CGAffineTransformMakeRotation(0)];
+                    }
+                    
+                } completionBlock:nil forHowLong:1];
             }
         }
 
@@ -1306,50 +1333,56 @@
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
     
     if (!self.captionIsSplit){
-        if (!attempts){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
-        }
-        
-        if (attempts == 1){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
-        }
-        
-        if (attempts == 2){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-        }
-        
-        if (attempts == 3){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
-        }
-        
-        
-        if (attempts == 4){
-            [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
-        }
+        [self animateThisViewWithBlock:^{
+            if (!attempts){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+            }
+            
+            if (attempts == 1){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
+            }
+            
+            if (attempts == 2){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+            }
+            
+            if (attempts == 3){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+            }
+            
+            
+            if (attempts == 4){
+                [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+            }
+
+        } completionBlock:nil forHowLong:1];
     }
     else{
         for (UIView *view in self.myImageView.subviews){
             if ([view isKindOfClass:[UILabel class]]){
-                if (!attempts){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
-                }
-                
-                if (attempts == 1){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
-                }
-                
-                if (attempts == 2){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
-                }
-                
-                if (attempts == 3){
-                    [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
-                }
-                
-                
-                if (attempts == 4){
-                    [view setTransform:CGAffineTransformMakeRotation(0)];
-                }
+                [self animateThisViewWithBlock:^{
+                    if (!attempts){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
+                    }
+                    
+                    if (attempts == 1){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
+                    }
+                    
+                    if (attempts == 2){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
+                    }
+                    
+                    if (attempts == 3){
+                        [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
+                    }
+                    
+                    
+                    if (attempts == 4){
+                        [view setTransform:CGAffineTransformMakeRotation(0)];
+                    }
+                    
+                } completionBlock:nil forHowLong:1];
             }
         }
 

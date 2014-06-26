@@ -176,10 +176,11 @@
             params[@"date"] = [Challenge dateStringFromDate:lastFetch];
         }
 
+        /*
         if (1){
             params[@"test"] = [NSNumber numberWithBool:YES];
-#warning remove this test when going live
         }
+         */
 
         [User fetchUserBlobWithParams:params
                                 block:^(BOOL wasSuccessful, id data, NSString *message) {

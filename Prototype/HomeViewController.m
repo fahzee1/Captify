@@ -317,13 +317,6 @@
     
 }
 
-#warning this might give me issue, remove if it does
-- (void)setView:(UIView *)view
-{
-    [super setView:view];
-    
-    
-}
 
 - (void)testNotifs
 {
@@ -809,6 +802,12 @@
                                                     @catch (NSException *exception) {
                                                         DLog(@"%@",exception);
                                                     }
+                                                    
+                                                    if ([user[@"username"] isEqualToString:self.myUser.username])
+                                                    {
+                                                        return;
+                                                    }
+
                                                     
                                                     User *userCreated = [User createFriendWithParams:params
                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
