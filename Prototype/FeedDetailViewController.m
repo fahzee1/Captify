@@ -77,6 +77,7 @@
         self.myImageView.frame = imageFrame;
     }
     
+    
  
 
 }
@@ -89,7 +90,9 @@
     
     if (self.showTopLabel){
         [self setupTopAndBottomLabel];
+        [self animateTopLabels];
         self.navigationController.navigationBarHidden = YES;
+        self.likeButton.hidden = YES;
 
     }
     else{
@@ -126,6 +129,42 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)animateTopLabels
+{
+    self.topLabel.hidden = YES;
+    self.topLabel.alpha = 0;
+    CGRect topFrame = self.topLabel.frame;
+    int cusion = 20;
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(topFrame.origin.x +cusion, topFrame.origin.y +15, topFrame.size.width, topFrame.size.height)];
+    nameLabel.text = [self.name capitalizedString];
+    nameLabel.numberOfLines = 0;
+    [nameLabel sizeToFit];
+    nameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    nameLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:nameLabel];
+    
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [UIView animateWithDuration:1
+                         animations:^{
+                             nameLabel.alpha = 0;
+                             nameLabel.hidden = YES;
+                             [nameLabel removeFromSuperview];
+                         } completion:^(BOOL finished) {
+                             [UIView animateWithDuration:1
+                                              animations:^{
+                                                  self.topLabel.hidden = NO;
+                                                  self.topLabel.alpha = 1;
+                                              } completion:nil];
+                         }];
+    });
+    
+    
+    
+}
+
 
 - (void)setupTopAndBottomLabel
 {

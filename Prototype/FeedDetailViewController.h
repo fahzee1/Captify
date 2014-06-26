@@ -24,6 +24,7 @@
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic)UIButton *winnerLabelButton;
 @property (strong, nonatomic)UILabel *winnerLabel;
+@property (strong, nonatomic) NSString *name;
 
 @property (strong, nonatomic)User *myUser;
 @property BOOL showTopLabel;

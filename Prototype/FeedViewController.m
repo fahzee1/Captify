@@ -114,6 +114,9 @@
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
+
+
+
 - (void)updateFeed
 {
     self.fetched = NO;
@@ -303,6 +306,7 @@
         
         
         NSString *url = json[@"media_url"];
+        NSString *name = json[@"name"];
         NSString *username = json[@"sender"][0][@"username"];
         NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
         NSString *score;
@@ -343,6 +347,7 @@
                 ((FeedDetailViewController *)detailVC).profileUsername = username;
                 ((FeedDetailViewController *)detailVC).showTopLabel = YES;
                 ((FeedDetailViewController *)detailVC).winnerUsername = winnerUsername;
+                ((FeedDetailViewController *)detailVC).name = name;
                 if ([score isKindOfClass:[NSNumber class]]){
                     ((FeedDetailViewController *)detailVC).profileScore = [NSString stringWithFormat:@"%@",(NSNumber *)score];
                 }
@@ -360,13 +365,13 @@
         
         MZFormSheetController *formSheet;
         if (!IS_IPHONE5){
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 390) viewController:detailRoot];
             CGPoint point = formSheet.formSheetWindow.frame.origin;
             point.y -= 35;
             formSheet.formSheetWindow.frame = CGRectMake(point.x, point.y, formSheet.formSheetWindow.frame.size.width, formSheet.formSheetWindow.frame.size.height);
         }
         else{
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 410) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
             //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:detailRoot];
         }
         
