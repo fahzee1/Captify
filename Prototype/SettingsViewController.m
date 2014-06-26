@@ -664,7 +664,7 @@
         inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
         inviteB.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         inviteB.text = NSLocalizedString(@"Invite Friends!", nil);
-        inviteB.layer.cornerRadius = 20;
+        inviteB.layer.cornerRadius = 5;
         inviteB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
         
     }
