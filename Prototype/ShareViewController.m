@@ -18,6 +18,7 @@
 #import "UIColor+FlatUI.h"
 #import "HistoryContainerViewController.h"
 #import "User+Utils.h"
+#import "AppDelegate.h"
 
 #import <Pinterest/Pinterest.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -80,6 +81,10 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [AppDelegate clearImageCaches];
+#warning might give issues test
     
 	// Do any additional setup after loading the view.
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToDetail)];

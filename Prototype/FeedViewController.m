@@ -20,7 +20,6 @@
 #import "FeedDetailViewController.h"
 #import "UIViewController+TargetViewController.h"
 #import "MZFormSheetController.h"
-#import "AppDelegate.h"
 
 
 
@@ -54,8 +53,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
-
-    [AppDelegate clearImageCaches];
     
     self.sideMenuViewController.delegate = self;
     

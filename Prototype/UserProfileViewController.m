@@ -515,10 +515,10 @@
             if ([detailRoot isKindOfClass:[UINavigationController class]]){
                 UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
                 if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
-                    NSURL *mediaUrl = ((FeedViewCell *)cell).myImageView.imageURL;
+                    //NSURL *mediaUrl = ((FeedViewCell *)cell).myImageView.imageURL;
                     ((FeedDetailViewController *)detailVC).showTopLabel = NO;
-                    ((FeedDetailViewController *)detailVC).urlString = [mediaUrl absoluteString];
-                    //((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
+                    //((FeedDetailViewController *)detailVC).urlString = [mediaUrl absoluteString];
+                    ((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
                     [self.navigationController pushViewController:detailVC animated:YES];
                     return;
                     

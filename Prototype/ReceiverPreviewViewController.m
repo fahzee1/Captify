@@ -15,6 +15,7 @@
 #import "ParseNotifications.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
+#import "AppDelegate.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -41,6 +42,10 @@
     // for challenge name/title
     
     [super viewDidLoad];
+    
+    [AppDelegate clearImageCaches];
+#warning might have issues test
+    
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToChallenge)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
@@ -228,6 +233,7 @@
                                                       
                                                   }
                                                   else{
+                                                      
                                                       if (fail){
                                                             [self showAlertWithTitle:@"Error" message:message];
                                                           
@@ -255,8 +261,17 @@
                                                           }
 
                                                           
-                                                           self.errorCount += 1;
+                                                        self.errorCount += 1;
                                                       }
+                                                      
+                                                      // if is no longer active is in error message
+                                                      // mark challenge inactive
+                                                      if ([message rangeOfString:@"is no longer active" options:NSCaseInsensitiveSearch].location != NSNotFound){
+                                                          self.myChallenge.active = [NSNumber numberWithBool:NO];
+                                                          NSError *error;
+                                                          [self.myChallenge.managedObjectContext save:&error];
+                                                      }
+
                                                   }
                                               }];
     
