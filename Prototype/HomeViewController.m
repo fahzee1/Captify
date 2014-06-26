@@ -900,7 +900,7 @@
                                                                      DLog(@"%@",exception);
                                                                 }
                                                                 
-                                                                BOOL create = [User createFriendWithParams:params
+                                                                User *create = [User createFriendWithParams:params
                                                                                        inMangedObjectContext:self.myUser.managedObjectContext];
                                                                 if (create){
                                                                     DLog(@"successfully created %@", user[@"username"]);

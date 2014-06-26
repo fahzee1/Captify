@@ -150,10 +150,12 @@
             params[@"date"] = [Challenge dateStringFromDate:lastFetch];
         }
         
+        /*
         if (1){
             params[@"test"] = [NSNumber numberWithBool:YES];
 #warning remove this test when going live
         }
+         */
 
         [User fetchUserBlobWithParams:params
                                 block:^(BOOL wasSuccessful, id data, NSString *message) {
@@ -668,8 +670,8 @@
 {
     if (!_errorLabel){
         _errorLabel = [[UILabel alloc] init];
-        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        _errorLabel.text = @"Awww! None of your friends have sent you a challenge. You should try inviting them!";
+        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+        _errorLabel.text = NSLocalizedString(@"No active challenges. Try inviting friends.", nil);
         _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
         _errorLabel.textColor = [UIColor whiteColor];
@@ -677,13 +679,15 @@
         
         if ([self.cData count] == 0){
             self.errorInvite = [UIButton buttonWithType:UIButtonTypeSystem];
-            self.errorInvite.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-            self.errorInvite.layer.cornerRadius = 10;
+            self.errorInvite.backgroundColor = [UIColor clearColor];
+            self.errorInvite.layer.cornerRadius = 5;
             self.errorInvite.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+            self.errorInvite.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+            self.errorInvite.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
             [self.errorInvite setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
-            [self.errorInvite setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+            [self.errorInvite setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             CGRect labelFrame = _errorLabel.frame;
-            self.errorInvite.frame = CGRectMake(labelFrame.origin.x + 25, labelFrame.size.height + 65, 200, 50);
+            self.errorInvite.frame = CGRectMake(labelFrame.origin.x + 33, labelFrame.size.height + 65, 175, 45);
             [self.errorInvite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
             
             if (!IS_IPHONE5){

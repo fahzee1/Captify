@@ -607,8 +607,8 @@
     if (!_errorLabel){
         
         _errorLabel = [[UILabel alloc] init];
-        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-        _errorLabel.text = @"Sheesh! Somebody needs to start sending their friends challenges!";
+        _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+        _errorLabel.text = NSLocalizedString(@"No active challenges. Play captify below.", nil);
         _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
         _errorLabel.textColor = [UIColor whiteColor];
@@ -616,13 +616,15 @@
         
         if ([self.data count] == 0){
             self.errorPlay = [UIButton buttonWithType:UIButtonTypeSystem];
-            self.errorPlay.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-            self.errorPlay.layer.cornerRadius = 10;
-            self.errorPlay.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-            [self.errorPlay setTitle:NSLocalizedString(@"Start", nil) forState:UIControlStateNormal];
-            [self.errorPlay setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+            [self.errorPlay setBackgroundColor:[UIColor clearColor]];
+            self.errorPlay.layer.cornerRadius = 5;
+            self.errorPlay.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
+            self.errorPlay.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
+            self.errorPlay.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+            [self.errorPlay setTitle:NSLocalizedString(@"Play", nil) forState:UIControlStateNormal];
+            [self.errorPlay setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             CGRect labelFrame = _errorLabel.frame;
-            self.errorPlay.frame = CGRectMake(labelFrame.origin.x + 25, labelFrame.size.height + 65, 200, 50);
+            self.errorPlay.frame = CGRectMake(labelFrame.origin.x + 33, labelFrame.size.height + 65, 175, 45);
             [self.errorPlay addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
             
             if (!IS_IPHONE5){

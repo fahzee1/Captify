@@ -251,7 +251,7 @@
 
 - (void)fetchContacts2
 {
-    
+ 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         static int retrys = 0;
         
@@ -319,7 +319,7 @@
                                                     
                                                     if ([user[@"username"] isEqualToString:self.myUser.username])
                                                     {
-                                                        return;
+                                                        continue;
                                                     }
                                                     User *userCreated = [User createFriendWithParams:params
                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
