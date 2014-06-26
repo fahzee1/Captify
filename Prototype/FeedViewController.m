@@ -365,13 +365,13 @@
         
         MZFormSheetController *formSheet;
         if (!IS_IPHONE5){
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 390) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
             CGPoint point = formSheet.formSheetWindow.frame.origin;
             point.y -= 35;
             formSheet.formSheetWindow.frame = CGRectMake(point.x, point.y, formSheet.formSheetWindow.frame.size.width, formSheet.formSheetWindow.frame.size.height);
         }
         else{
-            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 400) viewController:detailRoot];
+            formSheet = [[MZFormSheetController alloc] initWithSize:CGSizeMake(280, 410) viewController:detailRoot];
             //formSheet = [[MZFormSheetController alloc] initWithSize:self.view.frame.size viewController:detailRoot];
         }
         

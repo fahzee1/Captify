@@ -92,7 +92,6 @@
         [self setupTopAndBottomLabel];
         [self animateTopLabels];
         self.navigationController.navigationBarHidden = YES;
-        self.likeButton.hidden = YES;
 
     }
     else{
@@ -303,10 +302,15 @@
 
 - (IBAction)tappedLikeButton:(UIButton *)sender
 {
+    /*
     [self showAlertWithTitle:NSLocalizedString(@"Show Love", nil)
                      message:NSLocalizedString(@"I think this photo is.. (one word)",nil)
              forNotification:YES];
     sender.tag = NOTIFICATION_LIKE_BUTTON_TAG;
+     */
+    
+    [self sendNotificationWithMessage:nil andButton:sender];
+    
     
 }
 
@@ -317,6 +321,8 @@
     NSMutableArray *allLikes = [defaults objectForKey:@"allLikes"];
     
     if (![allLikes containsObject:self.urlString]){
+        
+        /*
         
         ParseNotifications *p = [ParseNotifications new];
         
@@ -333,13 +339,19 @@
                                        forNotification:NO];
                           }
                       }];
+         */
         
+        [self savePicToLiked];
         
+        [self showAlertWithTitle:NSLocalizedString(@"Success", nil)
+                         message:NSLocalizedString(@"Saved to liked photos", nil)
+                 forNotification:NO];
+        button.hidden = YES;
         
     }
     else{
         [self showAlertWithTitle:NSLocalizedString(@"Error", nil)
-                         message:NSLocalizedString(@"Already sent notification", nil)
+                         message:NSLocalizedString(@"Already liked photo", nil)
                  forNotification:NO];
     }
     
