@@ -54,6 +54,8 @@
 	// Do any additional setup after loading the view.
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
+
+    
     self.sideMenuViewController.delegate = self;
     
     self.collectionView.delegate = self;
@@ -271,7 +273,7 @@
         NSString *url = json[@"media_url"];
         [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
                             placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                     options:SDWebImageRefreshCached //image changes after caption is on image
+                                     options:SDWebImageRefreshCached
                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                        if (!image){
                                            DLog(@"%@",error);

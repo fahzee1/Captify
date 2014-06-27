@@ -15,7 +15,7 @@
 #import "ParseNotifications.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
-#import "AppDelegate.h"
+
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -43,8 +43,6 @@
     
     [super viewDidLoad];
     
-    [AppDelegate clearImageCaches];
-#warning might have issues test
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToChallenge)];
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],

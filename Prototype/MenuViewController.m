@@ -316,9 +316,16 @@
 }
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {
+    
+    if (sender.tag != MenuFriendsScreen){
+        [sender setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateNormal];
+    }
+    
     switch (sender.tag) {
         case MenuHomeScreen:
         {
+            self.menuHomeIcon.image = [UIImage imageNamed:MENU_HOME_ACTIVE];
+            
             UIViewController *camera = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHomeNavigation"];
             if ([self isAlreadyMainVC:camera.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
@@ -337,6 +344,7 @@
         }
         case MenuHistoryScreen:
         {
+               self.menuHistoryIcon.image = [UIImage imageNamed:MENU_HISTORY_ACTIVE];
             UIViewController *history = [self.storyboard instantiateViewControllerWithIdentifier:@"rootHistoryNew"];
             if ([self isAlreadyMainVC:history.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
@@ -377,7 +385,8 @@
             
         case MenuSettingsScreen:
         {
-
+            self.menuSettingsIcon.image = [UIImage imageNamed:MENU_SETTINGS_ACTIVE];
+            
             UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsRoot"];
             if([self isAlreadyMainVC:settings.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
@@ -395,6 +404,7 @@
             
         case MenuFeedScreen:
         {
+            self.menuFeedIcon.image = [UIImage imageNamed:MENU_EXPLORE_ACTIVE];
             UIViewController *feed = [self.storyboard instantiateViewControllerWithIdentifier:@"feedRoot"];
             if([self isAlreadyMainVC:feed.childViewControllers[0]]){
                 [self.sideMenuViewController closeMenuAnimated:YES completion:nil];

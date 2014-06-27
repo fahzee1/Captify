@@ -45,13 +45,7 @@
 
 - (NSString *)displayName
 {
-    NSString *name;
-    if ([self.facebook_user intValue] == 1 || [self.is_teamCaptify intValue]){
-        name = [[self.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
-    }
-    else{
-        name = [self.username capitalizedString];
-    }
+    NSString *name = [[self.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
     return name;
 }
 
