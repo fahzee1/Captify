@@ -22,6 +22,7 @@
 #import "UIColor+HexValue.h"
 #import "TWTSideMenuViewController.h"
 #import "MenuViewController.h"
+#import "AppDelegate.h"
 
 @interface HistorySentViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
@@ -109,8 +110,15 @@
 }
 
 
-- (void)showHomeScreen
+- (void)showHomeScreen:(UIButton *)sender
 {
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor clearColor]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
+
     // update the highlighted menu button to the screen we're about to show
     UIViewController *menu = self.sideMenuViewController.menuViewController;
     if ([menu isKindOfClass:[MenuViewController class]]){

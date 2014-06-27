@@ -30,7 +30,7 @@
 #import "UISlider+FlatUI.h"
 #import "UIStepper+FlatUI.h"
 #import "UIColor+FlatUI.h"
-
+#import "AppDelegate.h"
 
 /*
  mark challenge as done when complete
@@ -317,7 +317,7 @@ typedef void (^AnimationBlock) ();
                 self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
                 self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
                 self.errorMakeCaptionButton.layer.cornerRadius = 5;
-                [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+                [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption:) forControlEvents:UIControlEventTouchUpInside];
                 [self.myTable addSubview:self.errorMakeCaptionButton];
             }
             else{
@@ -1573,8 +1573,15 @@ typedef void (^AnimationBlock) ();
 
 
 
-- (void)makeCaption
+- (void)makeCaption:(UIButton *)sender
 {
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor clearColor]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
+    
     [self showAlertWithTextField];
 }
 
@@ -2332,7 +2339,7 @@ typedef void (^AnimationBlock) ();
             self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
             self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
             self.errorMakeCaptionButton.layer.cornerRadius = 5;
-            [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption) forControlEvents:UIControlEventTouchUpInside];
+            [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption:) forControlEvents:UIControlEventTouchUpInside];
             
             [self.scrollView addSubview:self.errorMakeCaptionButton];
         }

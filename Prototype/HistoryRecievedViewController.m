@@ -119,9 +119,15 @@
 }
 
 
-- (void)showInviteScreen
+- (void)showInviteScreen:(UIButton *)sender
 {
-    
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor clearColor]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
+
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[INVITE_TEXT] applicationActivities:nil];
     activityVC.excludedActivityTypes = @[UIActivityTypePrint,UIActivityTypeCopyToPasteboard,UIActivityTypeSaveToCameraRoll];
     [self presentViewController:activityVC animated:YES completion:nil];
@@ -689,7 +695,7 @@
             [self.errorInvite setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             CGRect labelFrame = _errorLabel.frame;
             self.errorInvite.frame = CGRectMake(labelFrame.origin.x + 33, labelFrame.size.height + 65, 175, 45);
-            [self.errorInvite addTarget:self action:@selector(showInviteScreen) forControlEvents:UIControlEventTouchUpInside];
+            [self.errorInvite addTarget:self action:@selector(showInviteScreen:) forControlEvents:UIControlEventTouchUpInside];
             
             if (!IS_IPHONE5){
                 CGRect inviteFrame = self.errorInvite.frame;

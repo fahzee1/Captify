@@ -14,6 +14,7 @@
 #import "NSString+FontAwesome.h"
 #import "MenuViewController.h"
 #import "TWTSideMenuViewController.h"
+#import "AppDelegate.h"
 
 
 #define MY_IMAGE_TAG 2000
@@ -69,8 +70,15 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)showExplorePage
+- (void)showExplorePage:(UIButton *)sender
 {
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor clearColor]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
+
     UIViewController *menuVC = self.sideMenuViewController.menuViewController;
     if ([menuVC isKindOfClass:[MenuViewController class]]){
         [((MenuViewController *)menuVC) showScreen:MenuFeedScreen];
@@ -170,7 +178,7 @@
             exploreButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
             exploreButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
             exploreButton.layer.cornerRadius = 5;
-            [exploreButton addTarget:self action:@selector(showExplorePage) forControlEvents:UIControlEventTouchUpInside];
+            [exploreButton addTarget:self action:@selector(showExplorePage:) forControlEvents:UIControlEventTouchUpInside];
             
             //[self.collectionView removeFromSuperview];
             [self.view addSubview:exploreButton];
