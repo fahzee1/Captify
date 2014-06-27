@@ -196,6 +196,11 @@
                               context:context
                                 error:&error];
         
+        user.facebook_user = facebook_user;
+        user.facebook_id = facebook_id;
+        NSError *error;
+        [user.managedObjectContext save:&error];
+        
         return user;
     }
     
