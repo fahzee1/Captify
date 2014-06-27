@@ -159,13 +159,13 @@
         
         ((FriendCell*)cell).myFriendUsername.text = user.username;
         ((FriendCell *)cell).myFriendScore.text = user.score;
-        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER];
     }
     else{
         static NSString *CellIdentifier = @"friendCells";
         cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         ((FriendCell*)cell).myFriendUsername.text  = [self.filteredList objectAtIndex:indexPath.row];
-        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER];
 
         
         }

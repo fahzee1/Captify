@@ -178,7 +178,7 @@
         
         if ([self.facebookUser intValue] == 1){
             [image sd_setImageWithURL:self.facebookPicURL
-                     placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                     placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
                 
         }
         

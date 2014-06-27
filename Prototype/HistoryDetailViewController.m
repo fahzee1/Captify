@@ -2073,7 +2073,7 @@ typedef void (^AnimationBlock) ();
             if ([pick.player.facebook_user intValue] == 1){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
-                [imageView sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                [imageView sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
                 
             }
             

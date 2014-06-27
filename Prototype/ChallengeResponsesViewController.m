@@ -166,7 +166,7 @@
             if ([pick.player.facebook_user intValue] == 1){
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
-                [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                [imageView setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
                 
             }
             

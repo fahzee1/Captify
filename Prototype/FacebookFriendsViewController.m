@@ -122,7 +122,7 @@
     NSString *picURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",[sectionArray objectAtIndex:indexPath.row][@"fbook_id"]];
     NSURL *url = [NSURL URLWithString:picURL];
     
-    [((AddFriendCell *)cell).addFriendPic sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+    [((AddFriendCell *)cell).addFriendPic sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
     
     ((AddFriendCell *)cell).addFriendName.text = [sectionArray objectAtIndex:indexPath.row][@"name"];
     

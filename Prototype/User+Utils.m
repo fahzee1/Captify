@@ -96,7 +96,7 @@
     if ([self.facebook_user intValue] == 1){
         NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",self.facebook_id];
         NSURL * fbUrl = [NSURL URLWithString:fbString];
-        [iV sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+        [iV sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
 
     }
     
@@ -847,7 +847,7 @@
     // sizes are small, large, and
     NSString *picUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture",user.facebook_id];
     NSURL *picURLData = [NSURL URLWithString:picUrlString];
-    [iv sd_setImageWithURL:picURLData placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+    [iv sd_setImageWithURL:picURLData placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
     
      
 }

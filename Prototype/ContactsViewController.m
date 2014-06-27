@@ -229,7 +229,7 @@
                 NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",friend[@"facebook_id"]];
                 NSURL * fbUrl = [NSURL URLWithString:fbString];
                 ((FriendCell *)cell).myFriendUsername.text = [(NSString *)friend[@"username"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
-                [((FriendCell *)cell).myFriendPic sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:@"profile-placeholder"]];
+                [((FriendCell *)cell).myFriendPic sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
         
             }
         
@@ -270,7 +270,7 @@
         //((FriendTableViewCell*)cell).myFriendUsername.text = user.username;
          ((FriendCell*)cell).myFriendUsername.text =[self.filteredList objectAtIndex:indexPath.row];
         ((FriendCell *)cell).myFriendScore.text = @"176";
-        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:@"profile-placeholder"];
+        ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER];
         
     }
    
