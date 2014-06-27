@@ -105,7 +105,7 @@
     recommendFB.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
     recommendFB.numberOfLines = 0;
     [recommendFB sizeToFit];
-    recommendFB.frame = CGRectMake(facebookFrame.origin.x +18, facebookFrame.origin.y - 66, facebookFrame.size.width - 20, 80);
+    recommendFB.frame = CGRectMake(facebookFrame.origin.x +18, facebookFrame.origin.y - 66, facebookFrame.size.width - 33, 80);
     
     [self.view addSubview:recommendFB];
 
