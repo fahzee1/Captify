@@ -642,7 +642,7 @@
     self.previewTextField.borderStyle = UITextBorderStyleNone;
     self.previewTextField.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.previewTextField.textColor = [UIColor whiteColor];
-    self.previewTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"Enter title of your caption challenge!", @"Textfield placeholder text") attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.previewTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"Enter a title for your caption challenge", @"Textfield placeholder text") attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     self.previewTextField.layer.cornerRadius = 5;
     
     self.previewTextFieldIcon.font = [UIFont fontWithName:kFontAwesomeFamilyName size:35];

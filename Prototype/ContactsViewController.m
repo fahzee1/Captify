@@ -332,11 +332,12 @@
         User *user = [sectionArray objectAtIndex:indexPath.row];
         if ([user isKindOfClass:[User class]]){
             
-            if ([self.selection containsObject:user.username]){
-                [self.selection removeObject:user.username];
+#warning using display name instead of username might give problems test
+            if ([self.selection containsObject:[user displayName]]){
+                [self.selection removeObject:[user displayName]];
             }
             else{
-                [self.selection addObject:user.username];
+                [self.selection addObject:[user displayName]];
             }
             
             if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerDataChanged:)]){

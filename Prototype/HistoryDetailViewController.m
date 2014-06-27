@@ -999,21 +999,7 @@ typedef void (^AnimationBlock) ();
     
 }
 
-- (void)hightlightViewOnTap:(UIView *)view
-                  withColor:(UIColor *)color
-                 originalColor:(UIColor *)resetColor
-{
-    if ([view isKindOfClass:[UIButton class]]){
-        UIButton *button = (UIButton *)view;
-        [button setTitleColor:color forState:UIControlStateNormal];
-        double delayInSeconds = 0.3;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [button setTitleColor:resetColor forState:UIControlStateNormal];
-        });
-        
-    }
-}
+
 
 - (void)showNextButton
 {
@@ -1050,6 +1036,25 @@ typedef void (^AnimationBlock) ();
                          }
                      }];
 }
+
+- (void)hightlightViewOnTap:(UIView *)view
+                  withColor:(UIColor *)color
+              originalColor:(UIColor *)resetColor
+{
+    if ([view isKindOfClass:[UIButton class]]){
+        UIButton *button = (UIButton *)view;
+        [button setTitleColor:color forState:UIControlStateNormal];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [button setTitleColor:resetColor forState:UIControlStateNormal];
+        });
+        
+    }
+    
+}
+
+
 
 
 - (IBAction)tappedDone:(id)sender {

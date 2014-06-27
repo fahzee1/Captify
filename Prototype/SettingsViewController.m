@@ -28,6 +28,7 @@
 #import "UserProfileViewController.h"
 #import "LikedPicsViewController.h"
 #import "FeedViewCell.h"
+#import "AppDelegate.h"
 
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
@@ -408,28 +409,36 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
      [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+     UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
     switch (indexPath.section) {
         case 0:
         {
             if (indexPath.row == 0){
                 // invite friends
                 
-                UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
                 if (cell){
                     UIView *inviteButton = [cell viewWithTag:SETTINGS_INVITE];
                     if ([inviteButton isKindOfClass:[UILabel class]]){
                         UILabel *inviteB = (UILabel *)inviteButton;
+                        
+                        [AppDelegate hightlightViewOnTap:inviteB
+                                               withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                                               textColor:[UIColor whiteColor]
+                                           originalColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                                       originalTextColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                                                withWait:0.3];
+                        /*
                         inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
                         inviteB.textColor = [UIColor whiteColor];
                         
                         double delayInSeconds = 0.8;
                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+                           inviteB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
                             inviteB.textColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
                         });
+                         */
                         
                     }
                 }
@@ -475,7 +484,14 @@
                     }
                 }
                  */
-                
+                if (cell){
+                    UIView *editButton = [cell viewWithTag:SETTINGS_EDIT_BUTTON];
+                    [AppDelegate hightlightViewOnTap:editButton
+                                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                                           textColor:[UIColor whiteColor]
+                                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                                   originalTextColor:[UIColor whiteColor] withWait:0.3];
+                }
            
                 UINavigationController *editRoot = [self.storyboard instantiateViewControllerWithIdentifier:@"settingsEditRoot"];
                 UIViewController *edit;
@@ -517,6 +533,14 @@
             if (indexPath.row == 5){
                 // view profile
                 
+                if (cell){
+                     UIView *profileButton = [cell viewWithTag:SETTINGS_PROFILE];
+                    [AppDelegate hightlightViewOnTap:profileButton
+                                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                                           textColor:[UIColor whiteColor]
+                                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                                   originalTextColor:[UIColor whiteColor] withWait:0.3];
+                }
                 
                 [User showProfileOnVC:self
                          withUsername:self.myUser.username
@@ -561,27 +585,32 @@
             
             if (indexPath.row == 0){
                 // liked pics
+                
+                if (cell){
+                    UIView *likedButton = [cell viewWithTag:SETTINGS_LIKED_PICS];
+                    [AppDelegate hightlightViewOnTap:likedButton
+                                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                                           textColor:[UIColor whiteColor]
+                                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                                   originalTextColor:[UIColor whiteColor] withWait:0.3];
+                }
+
                 LikedPicsViewController *likedVc = [self.storyboard instantiateViewControllerWithIdentifier:@"likedPicVC"];
                 [self.navigationController pushViewController:likedVc animated:YES];
             }
             if (indexPath.row == 1){
                // logout
-                
-                
-                UITableViewCell *cell = [self.myTable cellForRowAtIndexPath:indexPath];
+            
                 if (cell){
                     UIView *logoutButton = [cell viewWithTag:SETTINGS_LOGOUT];
-                    if ([logoutButton isKindOfClass:[UILabel class]]){
-                        UILabel *logoutB = (UILabel *)logoutButton;
-                        logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
-                        double delayInSeconds = 2.0;
-                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            logoutB.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-                        });
-                        
-                    }
+                    [AppDelegate hightlightViewOnTap:logoutButton
+                                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                                           textColor:[UIColor whiteColor]
+                                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                                   originalTextColor:[UIColor whiteColor] withWait:0.3];
                 }
+
+                
                 
                 
                 UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil

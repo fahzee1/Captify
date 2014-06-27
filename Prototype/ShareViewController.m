@@ -18,6 +18,7 @@
 #import "UIColor+FlatUI.h"
 #import "HistoryContainerViewController.h"
 #import "User+Utils.h"
+#import "AppDelegate.h"
 
 #import <Pinterest/Pinterest.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -932,6 +933,13 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (IBAction)tappedShare:(UIButton *)sender {
     
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                   originalTextColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                            withWait:0.3];
+
     
     if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
         [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];

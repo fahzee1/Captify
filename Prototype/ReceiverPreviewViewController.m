@@ -15,7 +15,7 @@
 #import "ParseNotifications.h"
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
-
+#import "AppDelegate.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -183,6 +183,13 @@
 
 - (IBAction)sendRecieverPick:(UIButton *)sender
 {
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                   originalTextColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                            withWait:0.3];
+    
     NSString *date = [ChallengePicks dateStringFromDate:[NSDate date]];
     NSDictionary *params = @{@"username": self.myUser.username,
                              @"challenge_id":self.myChallenge.challenge_id,

@@ -447,6 +447,13 @@
 - (void)sendButtonTapped:(UIButton *)sender
 {
  
+    [AppDelegate hightlightViewOnTap:sender
+                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                           textColor:[UIColor whiteColor]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                   originalTextColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                            withWait:0.3];
+
     UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)

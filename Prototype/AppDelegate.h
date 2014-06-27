@@ -42,6 +42,12 @@
 
 + (void)clearImageCaches;
 
++ (void)hightlightViewOnTap:(UIView *)view
+                  withColor:(UIColor *)color
+                  textColor:(UIColor *)textColor
+              originalColor:(UIColor *)resetColor
+          originalTextColor:(UIColor *)resetText
+                   withWait:(float)wait;
 
 
 

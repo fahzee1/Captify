@@ -138,7 +138,9 @@
     
     //[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:60*10];
     
-      application.applicationIconBadgeNumber = 0;
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -490,7 +492,9 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
-    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSLog(@"%@",userInfo);
     [PFPush handlePush:userInfo];
     
@@ -506,6 +510,9 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [self handlePushNotificationPayload:userInfo isForeground:NO];
 }
 
@@ -877,6 +884,42 @@
     [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
     [[SDImageCache sharedImageCache] cleanDisk];
+}
+
++ (void)hightlightViewOnTap:(UIView *)view
+                  withColor:(UIColor *)color
+                  textColor:(UIColor *)textColor
+              originalColor:(UIColor *)resetColor
+          originalTextColor:(UIColor *)resetText
+                   withWait:(float)wait
+{
+    if ([view isKindOfClass:[UIButton class]]){
+        UIButton *button = (UIButton *)view;
+        [button setTitleColor:textColor forState:UIControlStateNormal];
+        button.backgroundColor = color;
+        double delayInSeconds = wait;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [button setTitleColor:resetText forState:UIControlStateNormal];
+            button.backgroundColor = resetColor;
+        });
+        
+    }
+    
+    else if ([view isKindOfClass:[UILabel class]]){
+        UILabel *label = (UILabel *)view;
+        label.textColor = textColor;
+        label.backgroundColor = color;
+        double delayInSeconds = wait;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            label.textColor = resetText;
+            label.backgroundColor = resetColor;
+        });
+
+        
+    }
+    
 }
 
 

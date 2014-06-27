@@ -196,11 +196,14 @@
                               context:context
                                 error:&error];
         
-        user.facebook_user = facebook_user;
-        user.facebook_id = facebook_id;
-        NSError *error;
-        [user.managedObjectContext save:&error];
-        
+        if (!user.facebook_id || [user.facebook_id isEqualToString:@"0"]){
+            user.facebook_user = facebook_user;
+            user.facebook_id = facebook_id;
+            NSError *error;
+            [user.managedObjectContext save:&error];
+
+        }
+
         return user;
     }
     
