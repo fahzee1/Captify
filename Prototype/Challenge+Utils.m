@@ -448,10 +448,8 @@
                 NSMutableDictionary *params2 = [@{@"username":sender} mutableCopy];
                 
                 if (params[@"facebook_id"]){
-                    if (params[@"facebok_id"] != 0){
                         params2[@"facebook_id"] = params[@"facebook_id"];
-                        params2[@"facebook_user"] = params[@"is_facebook"];
-                    }
+                        params2[@"facebook_user"] = params[@"facebook_user"];
                 }
                 
                 User *newUser =[User createFriendWithParams:params2

@@ -633,7 +633,7 @@
             [self.errorPlay setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             CGRect labelFrame = _errorLabel.frame;
             self.errorPlay.frame = CGRectMake(labelFrame.origin.x + 33, labelFrame.size.height + 65, 175, 45);
-            [self.errorPlay addTarget:self action:@selector(showHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+            [self.errorPlay addTarget:self action:@selector(showHomeScreen:) forControlEvents:UIControlEventTouchUpInside];
             
             if (!IS_IPHONE5){
                 CGRect playFrame = self.errorPlay.frame;
