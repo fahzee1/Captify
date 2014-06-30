@@ -409,7 +409,7 @@
             
             retrys += 1;
             if (retrys < 10){
-                double delayInSeconds = 5.0;
+                double delayInSeconds = 30.0;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                     [self createTeamCaptify];
@@ -1582,7 +1582,7 @@
     }
     
     if (stringCount > 0){
-        self.previewCountLabel.text = [NSString stringWithFormat:@"%d",TITLE_LIMIT - stringCount];
+        self.previewCountLabel.text = [NSString stringWithFormat:@"%ld",TITLE_LIMIT - stringCount];
     }
     else{
         self.previewCountLabel.text = [NSString stringWithFormat:@"%d",TITLE_LIMIT];
