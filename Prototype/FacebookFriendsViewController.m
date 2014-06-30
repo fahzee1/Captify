@@ -149,7 +149,7 @@
                             message:@"Come up with something catchy"
                               block:^(BOOL wasSuccessful, FBWebDialogResult result) {
                                   if (wasSuccessful){
-                                      DLog(@"%u",result);
+                                      DLog(@"%lu",result);
                                   }
                               }];
 }

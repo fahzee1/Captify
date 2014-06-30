@@ -461,8 +461,8 @@
         cell.name.text = [name capitalizedString];
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:11];
         cell.name.textColor = [UIColor whiteColor];
-        if ([cell.name.text length] >= 25){
-            NSString *uString = [cell.name.text substringToIndex:24];
+        if ([cell.name.text length] >= 20){
+            NSString *uString = [cell.name.text substringToIndex:19];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
             
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
