@@ -203,9 +203,10 @@
         [friendName addTarget:self action:@selector(tappedUsernameLabel) forControlEvents:UIControlEventTouchUpInside];
         
         
-        if ([friendName.titleLabel.text length] >= 16){
-            NSString *newString = [friendName.titleLabel.text substringToIndex:15];
-            friendName.titleLabel.text = [NSString stringWithFormat:@"%@...",newString];
+        if ([friendName.titleLabel.text length] >= 17){
+            //NSString *newString = [friendName.titleLabel.text substringToIndex:15];
+            //friendName.titleLabel.text = [NSString stringWithFormat:@"%@...",newString];
+             friendName.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
         }
         
         
@@ -235,7 +236,9 @@
             [self.winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
             self.winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             [self.winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel) forControlEvents:UIControlEventTouchUpInside];
-            
+            if ([self.winnerLabelButton.titleLabel.text length] >= 17){
+                self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+            }
 
             
         }

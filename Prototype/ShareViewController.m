@@ -27,7 +27,7 @@
 
 typedef void (^ShareToNetworksBlock) ();
 
-@interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate, UIActionSheetDelegate>
+@interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate, UIActionSheetDelegate,UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UIButton *myFacebookButton;
@@ -35,8 +35,8 @@ typedef void (^ShareToNetworksBlock) ();
 @property (weak, nonatomic) IBOutlet UIButton *myTwitterButton;
 @property (weak, nonatomic) IBOutlet UIButton *myMessageButton;
 @property (weak, nonatomic) IBOutlet UIButton *myPinterestButton;
-
-
+@property (strong,nonatomic) NSString *caption;
+@property (strong, nonatomic)UIAlertView *chooseCaptionAlert;
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)MBProgressHUD *hud;
@@ -768,9 +768,9 @@ typedef void (^ShareToNetworksBlock) ();
 
     if (!self.sentFB){
         [self.friends postImageToFacebookFeed:self.shareImage
-                                      message:[self shareCaption]
-                                      caption:[self shareCaption]
-                                         name:[self shareCaption]
+                                      message:self.caption
+                                      caption:self.caption
+                                         name:self.caption
                                       albumID:nil
                                  facebookUser:[self.myChallenge.sender.facebook_user boolValue]
                                     feedBlock:^(BOOL wasSuccessful) {
@@ -834,7 +834,7 @@ typedef void (^ShareToNetworksBlock) ();
         if (self.sendTW){
             self.sendTW = NO;
             [self.friends postImageToTwitterFeed:self.shareImage
-                                         caption:[self shareCaption]
+                                         caption:self.caption
                                            block:^(BOOL wasSuccessful, BOOL isGranted) {
                                                dispatch_async(dispatch_get_main_queue(), ^{
                                                    [self.hud hide:YES];
@@ -895,7 +895,7 @@ typedef void (^ShareToNetworksBlock) ();
             
             
             [self.friends postImageToInstagram:self.shareImage
-                                   withCaption:[self shareCaption]
+                                   withCaption:self.caption
                                         inView:self.scrollView
                                       delegate:self];
         }
@@ -921,6 +921,10 @@ typedef void (^ShareToNetworksBlock) ();
     
 
     [self saveImage];
+    
+    if (!self.caption){
+        // alert for caption
+    }
     
     [self shareToFacebookAndTwitterWithBlock:^{
     
@@ -1108,7 +1112,7 @@ typedef void (^ShareToNetworksBlock) ();
                                                        self.sendPIN = NO;
                                                        [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
                                                                                         sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
-                                                                                   andDescription:[self shareCaption]];
+                                                                                   andDescription:self.caption];
                     
                                                    }
                                                }
@@ -1154,6 +1158,25 @@ typedef void (^ShareToNetworksBlock) ();
 
     });
 }
+
+
+- (void)showAlertWithTextField
+{
+    
+    self.chooseCaptionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Caption", nil)
+                                                       message:NSLocalizedString(@"Write your share caption!", nil) delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                             otherButtonTitles:NSLocalizedString(@"Save", nil), nil];
+    self.chooseCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *textField = [self.chooseCaptionAlert textFieldAtIndex:0];
+    [textField setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
+    textField.placeholder = NSLocalizedString(@"Enter caption", nil);
+    textField.delegate = self;
+    textField.text = [self shareCaption];
+    [self.chooseCaptionAlert show];
+    
+}
+
 
 
 #pragma -mark uiactionsheet delegate
@@ -1281,5 +1304,18 @@ typedef void (^ShareToNetworksBlock) ();
     }];
 }
 
+#pragma -mark Uialertview delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView == self.chooseCaptionAlert){
+        if (buttonIndex == 1){
+            self.caption = [alertView textFieldAtIndex:0].text;
+        }
+        else{
+            self.caption = [self shareCaption];
+        }
+    }
+}
 
 @end
