@@ -924,6 +924,8 @@ typedef void (^ShareToNetworksBlock) ();
     
     if (!self.caption){
         // alert for caption
+        [self showAlertWithTextField];
+        return;
     }
     
     [self shareToFacebookAndTwitterWithBlock:^{
@@ -1315,6 +1317,8 @@ typedef void (^ShareToNetworksBlock) ();
         else{
             self.caption = [self shareCaption];
         }
+        
+        [self startShare];
     }
 }
 
