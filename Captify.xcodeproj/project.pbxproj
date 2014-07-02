@@ -49,6 +49,8 @@
 		110B087B18CF867300EC850F /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087A18CF867300EC850F /* Accounts.framework */; };
 		110B087D18CF896900EC850F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087C18CF896900EC850F /* Social.framework */; };
 		1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */ = {isa = PBXBuildFile; fileRef = 1114293918BDBAFD00D36F0D /* DraggableCaption.m */; };
+		1115F18119645DD100A68BCE /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1115F18019645DD100A68BCE /* Instabug.bundle */; };
+		1115F18319645DD800A68BCE /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1115F18219645DD800A68BCE /* Instabug.framework */; };
 		11176DED18B7F6E600FA69B7 /* HistoryReceivedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */; };
 		111C561A18B1DC6700B8B113 /* SenderPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111C561918B1DC6700B8B113 /* SenderPreviewViewController.m */; };
 		1121284718C5A8AF0033E026 /* shareControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1121284618C5A8AF0033E026 /* shareControls.xib */; };
@@ -329,8 +331,6 @@
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
 		11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525618EDE52700557A5B /* StoreKit.framework */; };
 		11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525818EDE53000557A5B /* SystemConfiguration.framework */; };
-		11AAC21E1963968D0050E37E /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC21D1963968D0050E37E /* Instabug.framework */; };
-		11AAC220196396D20050E37E /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11AAC21F196396D20050E37E /* Instabug.bundle */; };
 		11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC221196396F70050E37E /* CoreMotion.framework */; };
 		11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC223196397040050E37E /* CoreTelephony.framework */; };
 		11AAC226196397550050E37E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC225196397550050E37E /* GLKit.framework */; };
@@ -497,6 +497,8 @@
 		110B087C18CF896900EC850F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		1114293818BDBAFD00D36F0D /* DraggableCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableCaption.h; sourceTree = "<group>"; };
 		1114293918BDBAFD00D36F0D /* DraggableCaption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableCaption.m; sourceTree = "<group>"; };
+		1115F18019645DD100A68BCE /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
+		1115F18219645DD800A68BCE /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
 		11176DEB18B7F6E600FA69B7 /* HistoryReceivedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryReceivedCell.h; sourceTree = "<group>"; };
 		11176DEC18B7F6E600FA69B7 /* HistoryReceivedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryReceivedCell.m; sourceTree = "<group>"; };
 		111C561818B1DC6700B8B113 /* SenderPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderPreviewViewController.h; sourceTree = "<group>"; };
@@ -1025,8 +1027,6 @@
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		11A8525618EDE52700557A5B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		11A8525818EDE53000557A5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		11AAC21D1963968D0050E37E /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
-		11AAC21F196396D20050E37E /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
 		11AAC221196396F70050E37E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		11AAC223196397040050E37E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		11AAC225196397550050E37E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -1203,9 +1203,9 @@
 				11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */,
 				11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */,
 				11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */,
-				11AAC21E1963968D0050E37E /* Instabug.framework in Frameworks */,
 				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
 				11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */,
+				1115F18319645DD800A68BCE /* Instabug.framework in Frameworks */,
 				11D4EDC8190D9942005B4981 /* FacebookSDK.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */,
@@ -1265,12 +1265,12 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1115F18219645DD800A68BCE /* Instabug.framework */,
+				1115F18019645DD100A68BCE /* Instabug.bundle */,
 				11AAC227196397700050E37E /* CoreFoundation.framework */,
 				11AAC225196397550050E37E /* GLKit.framework */,
 				11AAC223196397040050E37E /* CoreTelephony.framework */,
 				11AAC221196396F70050E37E /* CoreMotion.framework */,
-				11AAC21F196396D20050E37E /* Instabug.bundle */,
-				11AAC21D1963968D0050E37E /* Instabug.framework */,
 				11E77B441938361D0018863A /* Pinterest.embeddedframework */,
 				11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */,
 				11D4EDCB190D99BD005B4981 /* CrashReporter.framework */,
@@ -2515,7 +2515,7 @@
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				11ED4C54190569D400A2E9B5 /* lookup_miss_etikate.png in Resources */,
 				11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */,
-				11AAC220196396D20050E37E /* Instabug.bundle in Resources */,
+				1115F18119645DD100A68BCE /* Instabug.bundle in Resources */,
 				11ED4C821905B04F00A2E9B5 /* CHANGELOG.md in Resources */,
 				119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */,
 				11ED4C55190569D400A2E9B5 /* lookup_soft_elegance_1.png in Resources */,
@@ -3067,6 +3067,7 @@
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify,
+					/Users/cjogbuehi/ios/Captify,
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3098,6 +3099,7 @@
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify,
+					/Users/cjogbuehi/ios/Captify,
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

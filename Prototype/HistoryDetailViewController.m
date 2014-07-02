@@ -2314,7 +2314,7 @@ typedef void (^AnimationBlock) ();
           CGRect ivFrame = self.myImageView.frame;
          _errorLabel = [[UILabel alloc] init];
          _errorLabel.textColor = [UIColor whiteColor];
-         _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+         _errorLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
         NSString *errorText;
         if ([self.myChallenge.active intValue] == 1){
            errorText = NSLocalizedString(@"No captions have been sent to this challenge", nil);
@@ -2327,7 +2327,7 @@ typedef void (^AnimationBlock) ();
          _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
         if ([self.myChallenge.active intValue] == 1 && [self.data count] == 0){
-            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 20, ivFrame.size.height + 120, ivFrame.size.width, 40);
+            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 10, ivFrame.size.height + 120, ivFrame.size.width, 40);
             
             self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
               self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x + 35, _errorLabel.frame.origin.y + 60, 203, 45);
@@ -2345,7 +2345,7 @@ typedef void (^AnimationBlock) ();
         }
         else{
             
-            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 10, ivFrame.size.height + 120, ivFrame.size.width, 40);
+            _errorLabel.frame = CGRectMake(ivFrame.origin.x + 25, ivFrame.size.height + 120, ivFrame.size.width, 40);
         }
 
 
