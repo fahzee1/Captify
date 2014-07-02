@@ -329,6 +329,12 @@
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
 		11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525618EDE52700557A5B /* StoreKit.framework */; };
 		11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525818EDE53000557A5B /* SystemConfiguration.framework */; };
+		11AAC21E1963968D0050E37E /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC21D1963968D0050E37E /* Instabug.framework */; };
+		11AAC220196396D20050E37E /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11AAC21F196396D20050E37E /* Instabug.bundle */; };
+		11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC221196396F70050E37E /* CoreMotion.framework */; };
+		11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC223196397040050E37E /* CoreTelephony.framework */; };
+		11AAC226196397550050E37E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC225196397550050E37E /* GLKit.framework */; };
+		11AAC228196397700050E37E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC227196397700050E37E /* CoreFoundation.framework */; };
 		11AB2E4618AA7DF400B511E1 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */; };
 		11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2E4B18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m */; };
 		11AB2E5018AAA61000B511E1 /* AFNetworking+AutoRetry.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2E4C18AAA61000B511E1 /* AFNetworking+AutoRetry.podspec */; };
@@ -1019,6 +1025,12 @@
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		11A8525618EDE52700557A5B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		11A8525818EDE53000557A5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		11AAC21D1963968D0050E37E /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
+		11AAC21F196396D20050E37E /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
+		11AAC221196396F70050E37E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		11AAC223196397040050E37E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		11AAC225196397550050E37E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		11AAC227196397700050E37E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		11AB2E4418AA7DF400B511E1 /* UIColor+HexValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexValue.h"; sourceTree = "<group>"; };
 		11AB2E4518AA7DF400B511E1 /* UIColor+HexValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexValue.m"; sourceTree = "<group>"; };
 		11AB2E4A18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPSessionManager+AutoRetry.h"; sourceTree = "<group>"; };
@@ -1181,29 +1193,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11AAC228196397700050E37E /* CoreFoundation.framework in Frameworks */,
+				11AAC226196397550050E37E /* GLKit.framework in Frameworks */,
+				1153DFE618A9DEFA00AD950E /* OpenGLES.framework in Frameworks */,
+				11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */,
+				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
+				1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */,
+				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
+				11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */,
+				11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */,
 				11E83DC619097FBB009B95F7 /* libsqlite3.dylib in Frameworks */,
+				11AAC21E1963968D0050E37E /* Instabug.framework in Frameworks */,
 				1186B16A188E2D0E0082F35F /* CoreData.framework in Frameworks */,
 				11E83DBB19097E01009B95F7 /* AdSupport.framework in Frameworks */,
 				11D4EDC8190D9942005B4981 /* FacebookSDK.framework in Frameworks */,
-				11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
 				11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */,
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				11D4EDCA190D998C005B4981 /* Parse.framework in Frameworks */,
 				11E77B481938361D0018863A /* Pinterest.framework in Frameworks */,
 				11D4EDCE190D9A16005B4981 /* libGoogleAnalyticsServices.a in Frameworks */,
-				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */,
 				11D4EDCC190D99BD005B4981 /* CrashReporter.framework in Frameworks */,
-				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */,
-				1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */,
 				1191605818E788FC00C25E36 /* MessageUI.framework in Frameworks */,
 				11FA2F4318D793DE000F6DB9 /* AddressBook.framework in Frameworks */,
 				110B087D18CF896900EC850F /* Social.framework in Frameworks */,
 				110B087B18CF867300EC850F /* Accounts.framework in Frameworks */,
 				1153DFE818A9DF0400AD950E /* AVFoundation.framework in Frameworks */,
-				1153DFE618A9DEFA00AD950E /* OpenGLES.framework in Frameworks */,
 				1153DFE318A9DEEE00AD950E /* CoreMedia.framework in Frameworks */,
 				1153DFE418A9DEEE00AD950E /* CoreVideo.framework in Frameworks */,
 				110730F31876640F0065D77F /* CoreGraphics.framework in Frameworks */,
@@ -1248,6 +1265,12 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11AAC227196397700050E37E /* CoreFoundation.framework */,
+				11AAC225196397550050E37E /* GLKit.framework */,
+				11AAC223196397040050E37E /* CoreTelephony.framework */,
+				11AAC221196396F70050E37E /* CoreMotion.framework */,
+				11AAC21F196396D20050E37E /* Instabug.bundle */,
+				11AAC21D1963968D0050E37E /* Instabug.framework */,
 				11E77B441938361D0018863A /* Pinterest.embeddedframework */,
 				11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */,
 				11D4EDCB190D99BD005B4981 /* CrashReporter.framework */,
@@ -2492,6 +2515,7 @@
 				1107310C187664100065D77F /* Images.xcassets in Resources */,
 				11ED4C54190569D400A2E9B5 /* lookup_miss_etikate.png in Resources */,
 				11DC6B6118B7090A00C129D6 /* cameraControls.xib in Resources */,
+				11AAC220196396D20050E37E /* Instabug.bundle in Resources */,
 				11ED4C821905B04F00A2E9B5 /* CHANGELOG.md in Resources */,
 				119BAEE018F4FD2F00678A63 /* American Captain.otf in Resources */,
 				11ED4C55190569D400A2E9B5 /* lookup_soft_elegance_1.png in Resources */,
@@ -3042,6 +3066,7 @@
 					"/Users/cjogbuehi/Downloads/PLCrashReporter-1.2-rc4/iOS\\ Framework",
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
+					/Users/cjogbuehi/iphone/Captify,
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3072,6 +3097,7 @@
 					"/Users/cjogbuehi/Downloads/PLCrashReporter-1.2-rc4/iOS\\ Framework",
 					/Users/cjogbuehi/ios/Captify/Prototype/Pinterest.embeddedframework,
 					/Users/cjogbuehi/iphone/Captify/Pinterest.embeddedframework,
+					/Users/cjogbuehi/iphone/Captify,
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

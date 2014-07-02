@@ -25,6 +25,7 @@
 #import <CrashReporter/CrashReporter.h>
 #import <CoreData/CoreData.h>
 #import <Parse/Parse.h>
+#import <Instabug/Instabug.h>
 
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
@@ -158,7 +159,10 @@
                                                               NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateDisabled];
      */
    
-    
+    [Instabug startWithToken:@"030fec824f91225989cf6376fc5ffe72" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventShake];
+    [Instabug setEmailIsRequired:YES];
+    [Instabug setCommentPlaceholder:@"Please describe the issue in detail so we can get it fixed ASAP."];
+    [Instabug setiPhoneShakingThreshold:1.5];
     
     [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
                   clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
