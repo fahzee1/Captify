@@ -139,7 +139,12 @@
     nameLabel.text = [self.name capitalizedString];
     nameLabel.numberOfLines = 0;
     [nameLabel sizeToFit];
-    nameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    UIFont *font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
+    if ([nameLabel.text length] >= TITLE_LIMIT - 5){
+        font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+    }
+    
+    nameLabel.font = font;
     nameLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:nameLabel];
     

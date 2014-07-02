@@ -261,10 +261,9 @@
         cell.name.text = [json[@"name"] capitalizedString];
         cell.name.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:12];
         cell.name.textColor = [UIColor whiteColor];
-        if ([cell.name.text length] >= 35){
-            NSString *uString = [cell.name.text substringToIndex:34];
+        if ([cell.name.text length] >= TITLE_LIMIT - 5){
+            NSString *uString = [cell.name.text substringToIndex:TITLE_LIMIT - 6];
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
-            
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
         }
         
