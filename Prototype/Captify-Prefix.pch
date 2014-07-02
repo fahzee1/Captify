@@ -109,8 +109,8 @@
 #define USE_GOOGLE_ANALYTICS 1
 
 
-#define MENU_HOME_ACTIVE @"capture-blue"
-#define MENU_HOME_INACTIVE @"capture-white"
+#define MENU_HOME_ACTIVE @"captify-blue"
+#define MENU_HOME_INACTIVE @"captify-white"
 #define MENU_EXPLORE_ACTIVE @"explore-blue"
 #define MENU_EXPLORE_INACTIVE @"explore-white"
 #define MENU_HISTORY_ACTIVE @"history-blue"

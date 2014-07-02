@@ -1165,15 +1165,15 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)showAlertWithTextField
 {
     
-    self.chooseCaptionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Caption", nil)
-                                                       message:NSLocalizedString(@"Write your share caption!", nil) delegate:self
+    self.chooseCaptionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Share Caption", nil)
+                                                       message:NSLocalizedString(@"Choose your caption!", nil) delegate:self
                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                              otherButtonTitles:NSLocalizedString(@"Save", nil), nil];
     self.chooseCaptionAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField *textField = [self.chooseCaptionAlert textFieldAtIndex:0];
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
     textField.placeholder = NSLocalizedString(@"Enter caption", nil);
-    textField.delegate = self;
+    //textField.delegate = self;
     textField.text = [self shareCaption];
     [self.chooseCaptionAlert show];
     
