@@ -33,6 +33,7 @@
 @property (strong,nonatomic)UIRefreshControl *refreshControl;
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
 @property BOOL fetched;
+@property BOOL refreshedImages;
 @property BOOL alertedError;
 @property BOOL reloaded;
 @end
@@ -209,26 +210,33 @@
         _data = finalResults;
     }
     
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        if (!self.reloaded){
-            [self.collectionView reloadData];
-            self.reloaded = YES;
-            if (self.spinner.isAnimating){
-                [self.spinner stopAnimating];
-            }
-
-        }
-        
-        // need to do a refresh to get updated image with caption
-        double delayInSeconds = 3.0;
+    if (!self.refreshedImages){
+        double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.collectionView reloadData];
-        });
+            if (!self.reloaded){
+                [self.collectionView reloadData];
+                self.reloaded = YES;
+                if (self.spinner.isAnimating){
+                    [self.spinner stopAnimating];
+                }
 
-    });
+            }
+            
+            // need to do a refresh to get updated image with caption
+            double delayInSeconds = 3.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [AppDelegate clearImageCaches];
+                [self.collectionView reloadData];
+                DLog(@"reload");
+        
+            });
+
+        });
+        
+        self.refreshedImages = YES;
+    }
     return _data;
 }
 
