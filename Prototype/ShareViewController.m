@@ -1066,7 +1066,8 @@ typedef void (^ShareToNetworksBlock) ();
                                                            options:0 error:&error];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
-        [((MenuViewController *)menuVC) showExplorePageWithLatestJson:jsonString];
+        [((MenuViewController *)menuVC) showExplorePageWithLatestJson:jsonString
+                                                             andImage:self.shareImageView.image];
     }
 
 }

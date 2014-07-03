@@ -223,6 +223,7 @@
 
             }
             
+            /*
             // need to do a refresh to get updated image with caption
             double delayInSeconds = 3.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -232,6 +233,7 @@
                 DLog(@"reload");
         
             });
+             */
 
         });
         
@@ -305,17 +307,21 @@
         
         
        
+        if (indexPath.row == 0 && self.latestImage){
+            cell.myImageView.image = self.latestImage;
+        }
+        else{
+            NSString *url = json[@"media_url"];
+            [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
+                                placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                         options:SDWebImageRefreshCached
+                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                           if (!image){
+                                               DLog(@"%@",error);
+                                           }
 
-        NSString *url = json[@"media_url"];
-        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
-                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                     options:SDWebImageRefreshCached
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       if (!image){
-                                           DLog(@"%@",error);
-                                       }
-
-                                   }];
+                                       }];
+        }
         
         
         

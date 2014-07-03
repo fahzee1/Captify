@@ -317,6 +317,7 @@
 }
 
 - (void)showExplorePageWithLatestJson:(NSString *)json
+                             andImage:(UIImage *)image
 {
     self.menuFeedIcon.image = [UIImage imageNamed:MENU_EXPLORE_ACTIVE];
     UIViewController *feed = [self.storyboard instantiateViewControllerWithIdentifier:@"feedRoot"];
@@ -333,6 +334,7 @@
             UIViewController *feed2 = ((UINavigationController *)feed).topViewController;
             if ([feed2 isKindOfClass:[FeedViewController class]]){
                 ((FeedViewController *)feed2).lastestJson = json;
+                ((FeedViewController *)feed2).latestImage = image;
             }
         }
         
