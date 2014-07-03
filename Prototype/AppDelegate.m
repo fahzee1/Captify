@@ -276,6 +276,10 @@
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
+    
     [Appirater appEnteredForeground:YES];
 }
 
@@ -517,10 +521,10 @@
     
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
     {
-           [self handlePushNotificationPayload:userInfo isForeground:NO];
+           [self handlePushNotificationPayload:userInfo isForeground:YES];
     }
 
-    else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive || [[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+    else
     {
         UILocalNotification *localNotification = [[UILocalNotification alloc] init];
         localNotification.userInfo = userInfo;
@@ -528,6 +532,8 @@
         localNotification.alertBody = body;
         localNotification.fireDate = [NSDate date];
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        
+         [self handlePushNotificationPayload:userInfo isForeground:NO];
     }
     
     

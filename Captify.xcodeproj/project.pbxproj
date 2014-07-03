@@ -329,7 +329,6 @@
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
-		11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525618EDE52700557A5B /* StoreKit.framework */; };
 		11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525818EDE53000557A5B /* SystemConfiguration.framework */; };
 		11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC221196396F70050E37E /* CoreMotion.framework */; };
 		11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11AAC223196397040050E37E /* CoreTelephony.framework */; };
@@ -1026,7 +1025,6 @@
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		11A8525618EDE52700557A5B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		11A8525818EDE53000557A5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		11AAC221196396F70050E37E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		11AAC223196397040050E37E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -1210,7 +1208,6 @@
 				1115F18319645DD800A68BCE /* Instabug.framework in Frameworks */,
 				11D4EDC8190D9942005B4981 /* FacebookSDK.framework in Frameworks */,
 				11A8525518EDE50300557A5B /* libz.dylib in Frameworks */,
-				11A8525718EDE52700557A5B /* StoreKit.framework in Frameworks */,
 				1186B153188B38DC0082F35F /* Security.framework in Frameworks */,
 				11D4EDCA190D998C005B4981 /* Parse.framework in Frameworks */,
 				11E77B481938361D0018863A /* Pinterest.framework in Frameworks */,
@@ -1284,7 +1281,6 @@
 				11E83DBA19097E01009B95F7 /* AdSupport.framework */,
 				112451FF18F2EEF7006373B6 /* CrashReporter.framework */,
 				11A8525818EDE53000557A5B /* SystemConfiguration.framework */,
-				11A8525618EDE52700557A5B /* StoreKit.framework */,
 				11A8525418EDE50300557A5B /* libz.dylib */,
 				11A8525218EDE4F700557A5B /* CoreLocation.framework */,
 				11A8525018EDE4EA00557A5B /* CFNetwork.framework */,
@@ -2433,6 +2429,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
 						};
 					};
 					11073110187664100065D77F = {
@@ -3061,8 +3060,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Christopher Ogbuehi (7URB9G5384)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Ogbuehi (7URB9G5384)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/cjogbuehi/Documents/FacebookSDK,
@@ -3082,7 +3081,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = Captify;
-				PROVISIONING_PROFILE = "6E12B91D-680B-4A0E-A439-2EC8E3C5838C";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3093,8 +3092,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Christopher Ogbuehi (DBY4FT9M5T)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Christopher Ogbuehi (DBY4FT9M5T)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/cjogbuehi/Documents/FacebookSDK,
@@ -3113,7 +3112,7 @@
 				LIBRARY_SEARCH_PATHS = /Users/cjogbuehi/Downloads/GoogleAnalyticsServicesiOS_3.06;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Captify;
-				PROVISIONING_PROFILE = "6E12B91D-680B-4A0E-A439-2EC8E3C5838C";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
