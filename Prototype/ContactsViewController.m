@@ -217,7 +217,7 @@
                 }
                 else{
                     ((FriendCell *)cell).myFriendPic.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-                    ((FriendCell *)cell).myFriendUsername.text = [friend capitalizedString];
+                    ((FriendCell *)cell).myFriendUsername.text = [[friend stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
                 }
                 
        

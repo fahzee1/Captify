@@ -2095,7 +2095,7 @@
         <image name="capture-white" width="90" height="88"/>
         <image name="challenge_placeholder" width="306" height="306"/>
         <image name="explore-white" width="92" height="93"/>
-        <image name="history-white" width="94" height="94"/>
+        <image name="history-white" width="90" height="88"/>
         <image name="invite-white" width="90" height="88"/>
         <image name="settings-white" width="90" height="88"/>
     </resources>

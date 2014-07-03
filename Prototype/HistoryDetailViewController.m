@@ -109,6 +109,7 @@ typedef void (^AnimationBlock) ();
 @property BOOL captionMoved;
 @property int errorCount;
 @property BOOL captionIsSplit;
+@property BOOL viewApeared;
 @property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
 @property double sizeValue; // used with uistepper for storing current size
 
@@ -231,17 +232,17 @@ typedef void (^AnimationBlock) ();
 {
     [super viewDidAppear:animated];
     
+    
     if (!self.fromColorPicker){
-        [self slideScreenToBottom];
         self.fromColorPicker = NO;
+        
+        [self slideScreenToBottom];
+        [self fetchUpdates];
     }
-    
-    
 
     
     [self checkCaptionChosen];
-    
-    [self fetchUpdates];
+
     
 }
 
@@ -465,6 +466,9 @@ typedef void (^AnimationBlock) ();
                                                  [self.myTable reloadData];
                                                  [self adjustTableSize];
                                                  [self slideScreenToBottom];
+                                                 
+                                                 
+
                                                  [self checkCaptionChosen];
                                                  
                                              });

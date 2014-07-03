@@ -501,11 +501,40 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    NSLog(@"%@",userInfo);
-    [PFPush handlePush:userInfo];
+    if ([userInfo objectForKey:@"badge"]) {
+        NSInteger badgeNumber = [[userInfo objectForKey:@"badge"] integerValue];
+        [application setApplicationIconBadgeNumber:badgeNumber];
+    }
+    
+    NSString *body;
+    if ([userInfo objectForKey:@"body"]){
+        body = [userInfo objectForKey:@"body"];
+    }
+    else{
+        body = NSLocalizedString(@"New Captify", nil);
+    }
+    
+    
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+    {
+           [self handlePushNotificationPayload:userInfo isForeground:NO];
+    }
+
+    else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive || [[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+    {
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.userInfo = userInfo;
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        localNotification.alertBody = body;
+        localNotification.fireDate = [NSDate date];
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    }
+    
+    
+
+    
+    DLog(@"%@ 11",userInfo);
+    //[PFPush handlePush:userInfo];
     
     
     /*
@@ -522,12 +551,14 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    [self handlePushNotificationPayload:userInfo isForeground:NO];
+    //[self handlePushNotificationPayload:userInfo isForeground:NO];
+    
+    DLog(@"%@ 22",userInfo);
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    
+      [self handlePushNotificationPayload:notification.userInfo isForeground:NO];
 }
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
