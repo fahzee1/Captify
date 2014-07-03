@@ -10,4 +10,8 @@
 
 @interface FeedViewController : UIViewController
 
+
+@property (strong,nonatomic)UIImage *latestImage;
+@property (strong,nonatomic)NSString *lastestJson;
+
 @end

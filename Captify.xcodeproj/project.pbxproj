@@ -3073,7 +3073,7 @@
 					/Users/cjogbuehi/iphone/Captify,
 					/Users/cjogbuehi/ios/Captify,
 				);
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Captify-Info.plist";
@@ -3105,7 +3105,7 @@
 					/Users/cjogbuehi/iphone/Captify,
 					/Users/cjogbuehi/ios/Captify,
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Prototype/Captify-Prefix.pch";
 				INFOPLIST_FILE = "Prototype/Captify-Info.plist";

@@ -19,6 +19,8 @@
 #import "HistoryContainerViewController.h"
 #import "User+Utils.h"
 #import "AppDelegate.h"
+#import "MenuViewController.h"
+#import "TWTSideMenuViewController.h"
 
 #import <Pinterest/Pinterest.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -1044,6 +1046,31 @@ typedef void (^ShareToNetworksBlock) ();
     return removed;
 }
 
+- (void)showExplorePage
+{
+    UIViewController *menuVC = self.sideMenuViewController.menuViewController;
+    if ([menuVC isKindOfClass:[MenuViewController class]]){
+        
+        // create json string that mimics the response we
+        // get from the server on explore page
+        NSDictionary *dict = @{@"media_url": self.myChallenge.image_path,
+                               @"name":self.myChallenge.name,
+                               @"winner":self.myPick.player.username,
+                               @"sender":@[ @{@"username": self.myChallenge.sender.username,
+                                              @"is_facebook":self.myChallenge.sender.facebook_user,
+                                              @"facebook_id":self.myChallenge.sender.facebook_id}]
+                               };
+        
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                           options:0 error:&error];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        [((MenuViewController *)menuVC) showExplorePageWithLatestJson:jsonString];
+    }
+
+}
+
 - (void)updateChallengeOnBackend
 {
     float compression;
@@ -1125,7 +1152,14 @@ typedef void (^ShareToNetworksBlock) ();
 
                                            
                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                               [self.navigationController popToRootViewControllerAnimated:YES];
+                                               if (isPrivate){
+                                                  [self.navigationController popToRootViewControllerAnimated:YES];
+                                               }
+                                               else{
+                                                  [self showExplorePage];
+                                               }
+                                           
+                
                                            });
                                            
                                        }

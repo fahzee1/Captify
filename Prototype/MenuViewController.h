@@ -45,4 +45,6 @@ typedef enum{
 
 - (void)showScreen:(MenuScreenConstants)screen;
 
+- (void)showExplorePageWithLatestJson:(NSString *)json;
+
 @end

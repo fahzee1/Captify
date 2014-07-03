@@ -90,7 +90,8 @@
     [self.collectionView bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
    
-
+    
+   
 }
 
 
@@ -199,6 +200,15 @@
         }
     }
     
+    if (self.lastestJson){
+        NSMutableArray *mutableResults = [NSMutableArray array];
+        [mutableResults addObject:self.lastestJson];
+        [mutableResults addObjectsFromArray:_data];
+        
+        NSArray *finalResults = [NSArray arrayWithArray:mutableResults];
+        _data = finalResults;
+    }
+    
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -210,6 +220,14 @@
             }
 
         }
+        
+        // need to do a refresh to get updated image with caption
+        double delayInSeconds = 3.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.collectionView reloadData];
+        });
+
     });
     return _data;
 }
@@ -237,6 +255,11 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    
+    if (self.lastestJson){
+        return 21;
+    }
+    
     return 20;
 }
 
@@ -250,9 +273,14 @@
     cell.layer.cornerRadius = 5.f;
     
     
+    
+    
+    
     NSInteger count = [self.data count];
     if (indexPath.row < count){
         //DLog(@"row %ld is less then %ld so show",(long)indexPath.row,(long)count)
+        
+        
         NSString *jsonString = [self.data objectAtIndex:indexPath.row];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
@@ -268,7 +296,8 @@
         }
         
         
-        
+       
+
         NSString *url = json[@"media_url"];
         [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:url]
                             placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
@@ -279,6 +308,9 @@
                                        }
 
                                    }];
+        
+        
+        
         
     }
     else{

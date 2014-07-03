@@ -15,6 +15,7 @@
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
 #import "AppDelegate.h"
+#import "FeedViewController.h"
 
 
 @interface MenuViewController ()
@@ -314,6 +315,33 @@
     }
 
 }
+
+- (void)showExplorePageWithLatestJson:(NSString *)json
+{
+    self.menuFeedIcon.image = [UIImage imageNamed:MENU_EXPLORE_ACTIVE];
+    UIViewController *feed = [self.storyboard instantiateViewControllerWithIdentifier:@"feedRoot"];
+    if([self isAlreadyMainVC:feed.childViewControllers[0]]){
+        [self.sideMenuViewController closeMenuAnimated:YES completion:nil];
+    }
+    else{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menuShowingAnotherScreen)]){
+            [self.delegate menuShowingAnotherScreen];
+        }
+        self.currentScreen = [NSNumber numberWithInt:MenuFeedScreen];
+        
+        if ([feed isKindOfClass:[UINavigationController class]]){
+            UIViewController *feed2 = ((UINavigationController *)feed).topViewController;
+            if ([feed2 isKindOfClass:[FeedViewController class]]){
+                ((FeedViewController *)feed2).lastestJson = json;
+            }
+        }
+        
+        [self.sideMenuViewController setMainViewController:feed animated:YES closeMenu:YES];
+    }
+
+}
+
+
 
 - (IBAction)tappedMenuButton:(UIButton *)sender {
     
