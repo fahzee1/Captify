@@ -26,6 +26,8 @@
 #import <CoreData/CoreData.h>
 #import <Parse/Parse.h>
 #import <Instabug/Instabug.h>
+#import <NewRelicAgent/NewRelic.h>
+
 
 #ifdef USE_GOOGLE_ANALYTICS
     #import "GAI.h"
@@ -163,6 +165,9 @@
     [Instabug setEmailIsRequired:YES];
     [Instabug setCommentPlaceholder:@"Please describe the issue in detail so we can get it fixed ASAP."];
     [Instabug setiPhoneShakingThreshold:1.5];
+    
+    
+    [NewRelicAgent startWithApplicationToken:@"AA8bf8afa1c4ec185948e41ec43207f71974da8f0e"];
     
     [Parse setApplicationId:@"xxbSUgVg8edEcPkBv3qjTZssvdbsEbMKmv2qiz9j"
                   clientKey:@"3jceFiEc5Kgfm6tSqCITIuWIcu0MHFht7ksGgQX7"];
