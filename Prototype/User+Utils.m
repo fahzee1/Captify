@@ -961,7 +961,7 @@
                                               styleName:JDStatusBarStyleError];
                 
                 if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
-                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Logging you out."];
+                    [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out and logging back in"];
                     
                     
                 }

@@ -1130,6 +1130,19 @@
     [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
     
+    //try and add a crop area
+    CGRect viewFrame = self.view.frame;
+    UIView *cropSqaure = [[UIView alloc] init];
+    viewFrame.size.height -= 150;
+    cropSqaure.frame = viewFrame;
+    cropSqaure.backgroundColor = [UIColor clearColor];
+    cropSqaure.layer.borderColor = [[UIColor whiteColor] CGColor];
+    cropSqaure.layer.borderWidth = 2;
+    
+    [self.view addSubview:cropSqaure];
+#warning now make crop square draggable
+
+    
     [self setupPreviewStylesAndMore];
     [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
     
@@ -1653,7 +1666,9 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+#warning undo this if i dont like image size
+        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
         [self setupImagePreviewScreen];
     }
     
