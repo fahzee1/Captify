@@ -505,14 +505,14 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
-    if ([userInfo objectForKey:@"badge"]) {
-        NSInteger badgeNumber = [[userInfo objectForKey:@"badge"] integerValue];
+    if (userInfo[@"badge"]) {
+        NSInteger badgeNumber = [userInfo[@"badge"] integerValue];
         [application setApplicationIconBadgeNumber:badgeNumber];
     }
     
     NSString *body;
-    if ([userInfo objectForKey:@"body"]){
-        body = [userInfo objectForKey:@"body"];
+    if (userInfo[@"alert"]){
+        body = userInfo[@"alert"][@"body"];
     }
     else{
         body = NSLocalizedString(@"New Captify", nil);

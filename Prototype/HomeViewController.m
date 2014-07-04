@@ -1130,17 +1130,6 @@
     [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
     
-    //try and add a crop area
-    CGRect viewFrame = self.view.frame;
-    UIView *cropSqaure = [[UIView alloc] init];
-    viewFrame.size.height -= 150;
-    cropSqaure.frame = viewFrame;
-    cropSqaure.backgroundColor = [UIColor clearColor];
-    cropSqaure.layer.borderColor = [[UIColor whiteColor] CGColor];
-    cropSqaure.layer.borderWidth = 2;
-    
-    [self.view addSubview:cropSqaure];
-#warning now make crop square draggable
 
     
     [self setupPreviewStylesAndMore];

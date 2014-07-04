@@ -393,6 +393,10 @@
                 ((FeedDetailViewController *)detailVC).showTopLabel = YES;
                 ((FeedDetailViewController *)detailVC).winnerUsername = winnerUsername;
                 ((FeedDetailViewController *)detailVC).name = name;
+                if (indexPath.row == 0 && self.latestImage){
+                    ((FeedDetailViewController *)detailVC).image = self.latestImage;
+                }
+
                 if ([score isKindOfClass:[NSNumber class]]){
                     ((FeedDetailViewController *)detailVC).profileScore = [NSString stringWithFormat:@"%@",(NSNumber *)score];
                 }
