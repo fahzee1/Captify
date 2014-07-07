@@ -36,8 +36,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *chooseFriendsLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *contactsButton;
-
+@property (weak, nonatomic) IBOutlet UILabel *contactsLabelArrow;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UILabel *facebookLabelArrow;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic)NSMutableArray *selectedFacebookFriends;
@@ -197,30 +198,35 @@
 
     self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     self.selectedContainerView.layer.cornerRadius = 5;
-    self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:12];
     
     
  
 
-    self.contactsButton.backgroundColor = [UIColor clearColor];
+    self.contactsButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     [self.contactsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.contactsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
-    self.contactsButton.layer.cornerRadius = 5;
     self.contactsButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     self.contactsButton.titleLabel.text = NSLocalizedString(@"Contacts", nil);
-    self.contactsButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
-    self.contactsButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.contactsButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    
+    self.contactsLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:13];
+    self.contactsLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@" fa-chevron-right"];
+    self.contactsLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
 
 
     [self.facebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.facebookButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
-    self.facebookButton.layer.cornerRadius = 5;
     self.facebookButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     self.facebookButton.titleLabel.text = NSLocalizedString(@"Facebook", nil);
-    self.facebookButton.backgroundColor = [UIColor clearColor];
-    self.facebookButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
-    self.facebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] CGColor];
+    self.facebookButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+    self.facebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    
+    self.facebookLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:13];
+    self.facebookLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@" fa-chevron-right"];
+    self.facebookLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+
 
     
 

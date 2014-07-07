@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="28T-IA-JOx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -1429,13 +1429,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="BLk-ml-3C2">
-                                        <rect key="frame" x="27" y="414" width="306" height="35"/>
+                                        <rect key="frame" x="27" y="406" width="306" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose friends to send to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xvo-DG-rZm">
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose friends to send to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xvo-DG-rZm">
                                                 <rect key="frame" x="6" y="7" width="295" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1453,9 +1453,10 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pz3-cR-FE9">
-                                        <rect key="frame" x="30" y="462" width="145" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pz3-cR-FE9">
+                                        <rect key="frame" x="20" y="442" width="320" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.42962482889999998" green="1" blue="0.75235681210000005" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Contacts">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1463,9 +1464,10 @@
                                             <action selector="tappedContacts:" destination="CIB-k1-SZa" eventType="touchUpInside" id="hvc-CO-uDG"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gIv-4t-gGC">
-                                        <rect key="frame" x="182" y="462" width="145" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gIv-4t-gGC">
+                                        <rect key="frame" x="20" y="480" width="320" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.1160214899" green="1" blue="0.69494551800000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Facebook">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1473,6 +1475,19 @@
                                             <action selector="tappedFacebook:" destination="CIB-k1-SZa" eventType="touchUpInside" id="IY3-Sg-TRs"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ny7-Zd-kTN">
+                                        <rect key="frame" x="291" y="449" width="46" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hFE-BW-q8d">
+                                        <rect key="frame" x="291" y="484" width="46" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -1483,7 +1498,9 @@
                         <outlet property="bottomSendButton" destination="ZfO-rl-vjy" id="9Hk-rC-3cs"/>
                         <outlet property="chooseFriendsLabel" destination="Xvo-DG-rZm" id="R5e-Eh-fId"/>
                         <outlet property="contactsButton" destination="Pz3-cR-FE9" id="mdD-ry-s4U"/>
+                        <outlet property="contactsLabelArrow" destination="Ny7-Zd-kTN" id="qcP-Vh-PbO"/>
                         <outlet property="facebookButton" destination="gIv-4t-gGC" id="BNN-9H-lI9"/>
+                        <outlet property="facebookLabelArrow" destination="hFE-BW-q8d" id="o5w-ew-ksO"/>
                         <outlet property="previewImage" destination="yio-gN-AAU" id="Rwl-Zu-DGj"/>
                         <outlet property="scrollView" destination="rEd-0F-Gyh" id="Hnv-wM-dyc"/>
                         <outlet property="selectedContainerView" destination="BLk-ml-3C2" id="dmW-yF-q4x"/>
