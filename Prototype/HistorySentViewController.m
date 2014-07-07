@@ -323,6 +323,7 @@
             NSString *createdString = json[@"challenge_created"];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
             NSDate *created = [dateFormatter dateFromString:createdString];
             //"2014-06-25T20:40:56.823Z"
             NSMutableDictionary *params = [@{@"sender": self.myUser.username,

@@ -321,6 +321,7 @@
         NSString *createdString = json[@"challenge_created"];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
         NSDate *created = [dateFormatter dateFromString:createdString];
         
         NSNumber *isFb;
