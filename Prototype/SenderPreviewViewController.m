@@ -832,6 +832,7 @@
 - (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
 {
     
+    
     if (friendPicker == self.facebookScreen){
         BOOL installed = [user objectForKey:@"installed"] != nil;
         if (installed){

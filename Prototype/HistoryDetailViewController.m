@@ -109,9 +109,13 @@ typedef void (^AnimationBlock) ();
 @property BOOL captionMoved;
 @property int errorCount;
 @property BOOL captionIsSplit;
+@property BOOL captionIsRotated;
 @property BOOL viewApeared;
 @property BOOL fromColorPicker; // flag so we dont scroll screen down coming from color picker
 @property double sizeValue; // used with uistepper for storing current size
+@property int rotateAttempts;
+@property int reverseRotateAttempts;
+@property int filterAttempts;
 
 
 // filters
@@ -823,6 +827,9 @@ typedef void (^AnimationBlock) ();
     self.captionIsSplit = NO;
     
     [self removeImageErrorViews];
+    [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    self.rotateAttempts = 0;
+    self.reverseRotateAttempts = 0;
 }
 
 
@@ -1160,10 +1167,10 @@ typedef void (^AnimationBlock) ();
         return;
     }
     
-    static NSInteger filterIndex = 0;
+    
     NSInteger total = [self.activeFilters count];
     
-    id filter = [self.activeFilters objectAtIndex:filterIndex];
+    id filter = [self.activeFilters objectAtIndex:self.filterAttempts];
     switch ([filter intValue]) {
             
         case CAPTIFY_FILTER_GRAYSCALE:
@@ -1229,10 +1236,10 @@ typedef void (^AnimationBlock) ();
     
     
     
-    filterIndex += 1;
+    self.filterAttempts += 1;
     
-    if (filterIndex >= total){
-        filterIndex = 0;
+    if (self.filterAttempts >= total){
+       self.filterAttempts = 0;
     }
 
     
@@ -1253,37 +1260,39 @@ typedef void (^AnimationBlock) ();
 
 - (IBAction)tappedRotate:(UIButton *)sender {
     
+    self.captionIsRotated = YES;
     [self hightlightViewOnTap:sender
                     withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
                 originalColor:[UIColor whiteColor]];
     
     [self.finalCaptionLabel stopGlowing];
-    static int attempts = 0;
+
 
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
     
     
     if (!self.captionIsSplit){
         [self animateThisViewWithBlock:^{
-            if (!attempts){
+            if (!self.rotateAttempts){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
             }
             
-            if (attempts == 1){
+            if (self.rotateAttempts == 1){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
             }
             
-            if (attempts == 2){
+            if (self.rotateAttempts== 2){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
             }
             
-            if (attempts == 3){
+            if (self.rotateAttempts == 3){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
             }
             
             
-            if (attempts == 4){
+            if (self.rotateAttempts == 4){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+                 self.captionIsRotated = NO;
             }
             
         } completionBlock:nil forHowLong:1];
@@ -1293,25 +1302,26 @@ typedef void (^AnimationBlock) ();
         for (UIView *view in self.myImageView.subviews){
             if ([view isKindOfClass:[UILabel class]]){
                 [self animateThisViewWithBlock:^{
-                    if (!attempts){
+                    if (!self.rotateAttempts){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
                     }
                     
-                    if (attempts == 1){
+                    if (self.rotateAttempts== 1){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
                     }
                     
-                    if (attempts == 2){
+                    if (self.rotateAttempts == 2){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
                     }
                     
-                    if (attempts == 3){
+                    if (self.rotateAttempts == 3){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
                     }
                     
                     
-                    if (attempts == 4){
+                    if (self.rotateAttempts == 4){
                         [view setTransform:CGAffineTransformMakeRotation(0)];
+                        self.captionIsRotated = NO;
                     }
                     
                 } completionBlock:nil forHowLong:1];
@@ -1320,10 +1330,10 @@ typedef void (^AnimationBlock) ();
 
     }
     
-    attempts += 1;
+    self.rotateAttempts += 1;
     
-    if (attempts > 4){
-        attempts = 0;
+    if (self.rotateAttempts > 4){
+        self.rotateAttempts = 0;
     }
 
     
@@ -1331,36 +1341,38 @@ typedef void (^AnimationBlock) ();
 }
 
 - (IBAction)tappedReverseRotate:(UIButton *)sender {
+    
+    self.captionIsRotated = YES;
     [self hightlightViewOnTap:sender
                     withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
                 originalColor:[UIColor whiteColor]];
     
     [self.finalCaptionLabel stopGlowing];
-    static int attempts = 0;
     
     //[self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-12)];
     
     if (!self.captionIsSplit){
         [self animateThisViewWithBlock:^{
-            if (!attempts){
+            if (!self.reverseRotateAttempts){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
             }
             
-            if (attempts == 1){
+            if (self.reverseRotateAttempts == 1){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-2)];
             }
             
-            if (attempts == 2){
+            if (self.reverseRotateAttempts == 2){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
             }
             
-            if (attempts == 3){
+            if (self.reverseRotateAttempts == 3){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
             }
             
             
-            if (attempts == 4){
+            if (self.reverseRotateAttempts== 4){
                 [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+                 self.captionIsRotated = NO;
             }
 
         } completionBlock:nil forHowLong:1];
@@ -1369,25 +1381,26 @@ typedef void (^AnimationBlock) ();
         for (UIView *view in self.myImageView.subviews){
             if ([view isKindOfClass:[UILabel class]]){
                 [self animateThisViewWithBlock:^{
-                    if (!attempts){
+                    if (!self.reverseRotateAttempts){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/4)];
                     }
                     
-                    if (attempts == 1){
+                    if (self.reverseRotateAttempts == 1){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/2)];
                     }
                     
-                    if (attempts == 2){
+                    if (self.reverseRotateAttempts == 2){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/-1)];
                     }
                     
-                    if (attempts == 3){
+                    if (self.reverseRotateAttempts == 3){
                         [view setTransform:CGAffineTransformMakeRotation(-M_PI/-4)];
                     }
                     
                     
-                    if (attempts == 4){
+                    if (self.reverseRotateAttempts == 4){
                         [view setTransform:CGAffineTransformMakeRotation(0)];
+                        self.captionIsRotated = NO;
                     }
                     
                 } completionBlock:nil forHowLong:1];
@@ -1396,10 +1409,10 @@ typedef void (^AnimationBlock) ();
 
     }
     
-    attempts += 1;
+    self.reverseRotateAttempts += 1;
     
-    if (attempts > 4){
-        attempts = 0;
+    if (self.reverseRotateAttempts > 4){
+        self.reverseRotateAttempts = 0;
     }
 
 }
@@ -1671,20 +1684,12 @@ typedef void (^AnimationBlock) ();
     //CGFloat width = CGRectGetMaxX(self.myImageView.bounds);
     //CGFloat height = CGRectGetMaxY(self.myImageView.bounds);
     
+    if (self.captionIsRotated){
+        [self.finalCaptionLabel setTransform:CGAffineTransformMakeRotation(0)];
+    }
     
     if (!self.captionIsSplit){
         self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), self.finalCaptionLabel.frame.size.height +5);
-        
-        /*
-        if (sender.value > self.sizeValue){
-            if (self.finalCaptionLabel.frame.size.width < self.finalCaptionLabel.superview.frame.size.width){
-                 self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width + 5, self.finalCaptionLabel.frame.size.height +2);
-            }
-        }
-        else{
-        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,self.finalCaptionLabel.frame.size.width - 2, self.finalCaptionLabel.frame.size.height -1);
-        }
-         */
         
         
         if (self.captionMoved){

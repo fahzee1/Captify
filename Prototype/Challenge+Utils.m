@@ -362,6 +362,9 @@
             challenge.sender = user;
             challenge.recipients_count = [params valueForKey:@"recipients_count"];
             challenge.challenge_id = [params valueForKey:@"challenge_id"];
+            if ([params valueForKey:@"created"]){
+                challenge.timestamp = [params valueForKey:@"created"];
+            }
             
             NSString *media_url = [params valueForKey:@"media_url"];
             NSString *local_url = [params valueForKey:@"local_media_url"];

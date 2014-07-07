@@ -318,6 +318,10 @@
         NSNumber *recipients_count = json[@"recipients_count"];
         //NSArray *recipients = json[@"recipients"];
         NSString *media_url = json[@"media_url"];
+        NSString *createdString = json[@"challenge_created"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        NSDate *created = [dateFormatter dateFromString:createdString];
         
         NSNumber *isFb;
         NSString *fbID;
@@ -350,6 +354,10 @@
         if (fbID){
             params[@"facebook_user"] = isFb;
             params[@"facebook_id"] = fbID;
+        }
+        
+        if (created){
+            params[@"created"] = created;
         }
         
         params[@"sent"] = [NSNumber numberWithBool:NO];

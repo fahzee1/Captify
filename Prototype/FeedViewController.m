@@ -208,6 +208,9 @@
         
         NSArray *finalResults = [NSArray arrayWithArray:mutableResults];
         _data = finalResults;
+        
+        [[TMCache sharedCache] removeObjectForKey:FEED_CACHE_NAME];
+        [[TMCache sharedCache] setObject:_data forKey:FEED_CACHE_NAME];
     }
     
     if (!self.refreshedImages){
@@ -266,7 +269,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     
-    if (self.lastestJson){
+    if (self.lastestJson || [self.data count] == 21){
         return 21;
     }
     

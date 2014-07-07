@@ -21,4 +21,5 @@
 + (UIImage *)imageWithRoundedCornersSize:(float)cornerRadius usingImage:(UIImage *)original;
 
 +(UIImage*)imageCrop:(UIImage*)original;
+
 @end

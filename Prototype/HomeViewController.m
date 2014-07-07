@@ -1089,7 +1089,7 @@
     [self.snapper captureStillImageAsynchronouslyFromConnection:vc
                                               completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                                                   NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                                                   self.previewOriginalSnapshot = [UIImage imageWithData:data];
+                                                   self.previewOriginalSnapshot = [UIImage imageCrop:[UIImage imageWithData:data]];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
                                                       
                                                       
@@ -1130,7 +1130,6 @@
     [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
     
-
     
     [self setupPreviewStylesAndMore];
     [self performSelector:@selector(animateTextFieldUp:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0f];
@@ -1655,9 +1654,7 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
-#warning undo this if i dont like image size
-        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
+        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
         [self setupImagePreviewScreen];
     }
     

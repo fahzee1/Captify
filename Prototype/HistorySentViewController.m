@@ -313,28 +313,40 @@
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         id json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
         
-        NSString *challenge_id = json[@"id"];
-        NSString *name = json[@"name"];
-        NSNumber *active = json[@"is_active"];
-        NSNumber *recipients_count = json[@"recipients_count"];
-        //NSArray *recipients = json[@"recipients"];
-        NSString *media_url = json[@"media_url"];
-        
-        NSDictionary *params = @{@"sender": self.myUser.username,
-                                 @"context": self.myUser.managedObjectContext,
-                                 @"recipients_count": recipients_count,
-                                 @"challenge_name":name,
-                                 @"active":active,
-                                 @"challenge_id":challenge_id,
-                                 @"media_url":media_url,
-                                 @"sent":[NSNumber numberWithBool:YES]
-                                 };
-        
-        
-       [Challenge createChallengeWithRecipientsWithParams:params];
-        
-        
-        
+        @try {
+            NSString *challenge_id = json[@"id"];
+            NSString *name = json[@"name"];
+            NSNumber *active = json[@"is_active"];
+            NSNumber *recipients_count = json[@"recipients_count"];
+            //NSArray *recipients = json[@"recipients"];
+            NSString *media_url = json[@"media_url"];
+            NSString *createdString = json[@"challenge_created"];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            NSDate *created = [dateFormatter dateFromString:createdString];
+            //"2014-06-25T20:40:56.823Z"
+            NSMutableDictionary *params = [@{@"sender": self.myUser.username,
+                                     @"context": self.myUser.managedObjectContext,
+                                     @"recipients_count": recipients_count,
+                                     @"challenge_name":name,
+                                     @"active":active,
+                                     @"challenge_id":challenge_id,
+                                     @"media_url":media_url,
+                                     @"sent":[NSNumber numberWithBool:YES]
+                                     } mutableCopy];
+            if (created){
+                params[@"created"] = created;
+            }
+            
+            
+            [Challenge createChallengeWithRecipientsWithParams:params];
+            
+            
+
+        }
+        @catch (NSException *e) {
+            return;
+        }
         
 
     }
