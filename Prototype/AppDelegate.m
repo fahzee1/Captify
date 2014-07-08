@@ -539,7 +539,7 @@
     }
     
     
-
+     [self handlePushNotificationPayload:userInfo isForeground:NO];
     
     DLog(@"%@ 11",userInfo);
     //[PFPush handlePush:userInfo];
@@ -559,7 +559,7 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    //[self handlePushNotificationPayload:userInfo isForeground:NO];
+    [self handlePushNotificationPayload:userInfo isForeground:NO];
     
     DLog(@"%@ 22",userInfo);
 }
