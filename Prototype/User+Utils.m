@@ -100,9 +100,10 @@
 
     }
     
-    else if ([self.is_teamCaptify intValue] == 1){
+    else if ([self.is_teamCaptify intValue] == 1 || [self.username isEqualToString:@"Team-Captify"]){
         iV.image = [UIImage imageNamed:CAPTIFY_LOGO];
     }
+
     
     else{
         iV.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
@@ -113,6 +114,7 @@
          */
 
     }
+    
 }
 
 + (BOOL)validPhoneNumber:(NSString *)number
@@ -199,6 +201,7 @@
         if (!user.facebook_id || [user.facebook_id isEqualToString:@"0"]){
             user.facebook_user = facebook_user;
             user.facebook_id = facebook_id;
+            user.is_teamCaptify = is_teamCaptify;
             NSError *error;
             [user.managedObjectContext save:&error];
 
