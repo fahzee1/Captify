@@ -206,11 +206,6 @@
 
     
     
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
-        PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
-        [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
-      }
-
     
     self.navigationController.delegate = self;
     self.navigationController.navigationBarHidden = YES;
@@ -286,6 +281,14 @@
         self.showHistory = NO;
 
     }
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+        PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+        if (![currentOnstallation valueForKey:@"username"]){
+            [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+        }
+    }
+
     
     //[self testNotifs];
 }

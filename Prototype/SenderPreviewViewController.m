@@ -94,7 +94,7 @@
     self.topLabel.text = self.name;
     self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
     if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 675);
+        self.scrollView.contentSize = CGSizeMake(320, 700);
     }
     else{
         self.scrollView.contentSize = CGSizeMake(320, 620);
@@ -209,9 +209,16 @@
     self.contactsButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
     self.contactsButton.titleLabel.text = NSLocalizedString(@"Contacts", nil);
     self.contactsButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    self.contactsButton.titleEdgeInsets = UIEdgeInsetsMake(0, 13, 0, 0);
+    [AppDelegate hightlightViewOnTap:self.contactsButton
+                           withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                           textColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
     
-    self.contactsLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:13];
-    self.contactsLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@" fa-chevron-right"];
+    self.contactsLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    self.contactsLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
     self.contactsLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
 
@@ -222,9 +229,17 @@
     self.facebookButton.titleLabel.text = NSLocalizedString(@"Facebook", nil);
     self.facebookButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     self.facebookButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+    self.facebookButton.titleEdgeInsets = UIEdgeInsetsMake(0, 13, 0, 0);
+    [AppDelegate hightlightViewOnTap:self.facebookButton
+                           withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                           textColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
+                   originalTextColor:[UIColor whiteColor]
+                            withWait:0.3];
+
     
-    self.facebookLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:13];
-    self.facebookLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@" fa-chevron-right"];
+    self.facebookLabelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+    self.facebookLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
     self.facebookLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
 
@@ -237,6 +252,7 @@
     }
     else{
         self.facebookButton.layer.opacity = 0.6f;
+        self.facebookLabelArrow.layer.opacity = 0.6f;
         self.facebookButton.userInteractionEnabled = NO;
     }
     

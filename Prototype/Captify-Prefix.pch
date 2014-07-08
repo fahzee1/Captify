@@ -44,7 +44,7 @@
 #endif
 
 
-#define CAPTIFY_TIMEZONE @"America/New_York"
+#define CAPTIFY_TIMEZONE @"UTC"
 #define CAPTIFY_FACEBOOK_ID @"679128588774304"
 
 //images

@@ -353,6 +353,9 @@
 
                                       }];
     }
+    else if ([self.usernameString isEqualToString:@"Team-Captify"]){
+        self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_LOGO];
+    }
     else{
         self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC_BIG];
     }
