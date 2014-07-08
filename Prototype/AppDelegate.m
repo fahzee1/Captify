@@ -456,6 +456,8 @@
         PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
         [currentOnstallation setDeviceTokenFromData:deviceToken];
         [currentOnstallation saveInBackground];
+
+        
     }
     
     

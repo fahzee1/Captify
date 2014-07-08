@@ -213,6 +213,8 @@
     [self makeHomeMenuDelegate];
 
 
+
+
     
     
   
@@ -282,11 +284,13 @@
 
     }
     
+    
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
         PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
-        if (![currentOnstallation valueForKey:@"username"]){
-            [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
-        }
+        [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+        [currentOnstallation saveInBackground];
+        
+        
     }
 
     

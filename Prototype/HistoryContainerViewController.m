@@ -19,6 +19,7 @@
 #import "UIFont+FlatUI.h"
 #import "UIColor+FlatUI.h"
 #import "AwesomeAPICLient.h"
+#import <Parse/Parse.h>
 
 @interface HistoryContainerViewController ()<TWTSideMenuViewControllerDelegate>
 
@@ -106,6 +107,13 @@
     }
     
     self.sideMenuViewController.delegate = self;
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+        PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
+        [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+    }
+    
+
    
     
     
