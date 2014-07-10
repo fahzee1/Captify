@@ -353,7 +353,7 @@
 
                                       }];
     }
-    else if ([self.usernameString isEqualToString:@"Team-Captify"]){
+    else if ([self.usernameString isEqualToString:@"Team-Captify"] || [self.usernameString isEqualToString:@"Team Captify"]){
         self.myProfileImage.image = [UIImage imageNamed:CAPTIFY_LOGO];
     }
     else{
