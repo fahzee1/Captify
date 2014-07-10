@@ -84,7 +84,7 @@ typedef void (^ShareToNetworksBlock) ();
 {
     [super viewDidLoad];
     
-
+    [AppDelegate clearImageCaches];
     
 	// Do any additional setup after loading the view.
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToDetail)];
@@ -1089,7 +1089,7 @@ typedef void (^ShareToNetworksBlock) ();
         compression = 0.5;
     }
 
-    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
+    NSData *imageData = UIImageJPEGRepresentation(self.shareImageView.image, compression);
     
     
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];

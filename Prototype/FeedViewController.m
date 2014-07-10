@@ -55,7 +55,7 @@
 	// Do any additional setup after loading the view.
     [[AwesomeAPICLient sharedClient] startMonitoringConnection];
     
-    [AppDelegate clearImageCaches];
+    //[AppDelegate clearImageCaches];
     
     self.sideMenuViewController.delegate = self;
     
