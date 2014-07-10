@@ -559,7 +559,14 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    [self handlePushNotificationPayload:userInfo isForeground:NO];
+    
+    if (application.applicationState == UIApplicationStateActive){
+         [self handlePushNotificationPayload:userInfo isForeground:YES];
+    }
+    else{
+         [self handlePushNotificationPayload:userInfo isForeground:NO];
+    }
+   
     
     DLog(@"%@ 22",userInfo);
 }
