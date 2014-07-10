@@ -27,7 +27,8 @@
     self.active = [NSNumber numberWithBool:YES];
     self.sentPick = [NSNumber numberWithBool:NO];
     self.shared = [NSNumber numberWithBool:NO];
-    self.first_open = [NSNumber numberWithBool:YES];
+    self.first_open = [NSNumber numberWithInt:3];
+#warning make first open doesnt give issues
     self.chose_own_caption = [NSNumber numberWithBool:NO];
     self.final_fetch = [NSNumber numberWithBool:NO];
     

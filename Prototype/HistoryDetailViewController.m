@@ -344,12 +344,14 @@ typedef void (^AnimationBlock) ();
     if (!self.sentHistory){
         if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
             if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
-                if ([self.myPick.first_open intValue] == 1){
+                if ([self.myPick.first_open intValue] > 0){
                     UIImage *image = [self.view snapshotView:self.view];
                     CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
                     [pop showSuccessBlur2WithImage:image sender:[self.myChallenge.sender firstName]];
                     
-                    self.myPick.first_open = [NSNumber numberWithBool:NO];
+                    int current = [self.myPick.first_open intValue];
+                    int new = current - 1;
+                    self.myPick.first_open = [NSNumber numberWithInt:new];
                     NSError *error;
                     if (![self.myPick.managedObjectContext save:&error]){
                         DLog(@"%@",error);
