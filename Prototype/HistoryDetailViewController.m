@@ -2070,7 +2070,7 @@ typedef void (^AnimationBlock) ();
 {
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     if ([pick.answer length] > 40){
-        return 110;
+        return 130;
     }
     else{
         return 93;
@@ -2111,7 +2111,7 @@ typedef void (^AnimationBlock) ();
                 
             }
             
-            else if ([pick.player.is_teamCaptify intValue] == 1){
+            else if ([pick.player.is_teamCaptify intValue] == 1 || [pick.player.username isEqualToString:@"Team-Captify"]){
                 imageView.image = [UIImage imageNamed:CAPTIFY_LOGO];
             }
             

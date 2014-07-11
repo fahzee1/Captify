@@ -124,7 +124,7 @@
 {
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     if ([pick.answer length] > 40){
-        return 110;
+        return 130;
     }
     else{
         return 93;

@@ -108,10 +108,15 @@
     self.previewCaption.text = [self.caption capitalizedString];
     self.previewCaption.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
     self.previewCaption.textAlignment = NSTextAlignmentCenter;
-    self.previewCaption.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
+    UIFont *font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:35];
+    if ([self.caption length] > 40){
+        font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:29];
+    }
+    self.previewCaption.font = font;
     self.previewCaption.numberOfLines = 0;
     [self.previewCaption sizeToFit];
-    self.previewCaption.frame = CGRectMake(captionRect.origin.x, captionRect.origin.y, 300, 100);
+    self.previewCaption.frame = CGRectMake(captionRect.origin.x - 17, captionRect.origin.y - 100, self.previewImage.bounds.size.width - 5, 200);
+    self.previewImage.clipsToBounds = YES;
     
     
     if ([self.challengeName length] > 35){

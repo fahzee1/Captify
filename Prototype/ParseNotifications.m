@@ -74,7 +74,7 @@
     [push setQuery:pushQuery];
     
     NSMutableDictionary *payload = [@{@"alert":message,
-                                      @"badge": @"Increment",
+                                      @"badge": @1,
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
     if (data[@"challenge_id"]){
@@ -138,7 +138,7 @@
     [push setQuery:pushQuery];
     
     NSMutableDictionary *payload = [@{@"alert":message,
-                                      @"badge": @"Increment",
+                                      @"badge": @1,
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
     if (data[@"challenge_id"]){
@@ -180,7 +180,7 @@
     
     [push setChannel:newName];
     NSMutableDictionary *payload = [@{@"alert":message,
-                                      @"badge": @"Increment",
+                                      @"badge": @1,
                                       @"type":[NSNumber numberWithInt:type]} mutableCopy];
     
     if (data[@"challenge_id"]){
