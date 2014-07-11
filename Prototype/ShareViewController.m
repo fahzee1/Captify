@@ -924,6 +924,15 @@ typedef void (^ShareToNetworksBlock) ();
 
     [self saveImage];
     
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isPrivate"];
+        [self updateChallengeOnBackend];
+        return;
+    }
+    
+
+    
+    
     if (!self.caption){
         // alert for caption
         [self showAlertWithTextField];
@@ -947,12 +956,6 @@ typedef void (^ShareToNetworksBlock) ();
                        originalColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
                    originalTextColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY]
                             withWait:0.3];
-
-    
-    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
-        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
-        return;
-    }
 
     
     NSString *shareString = @"Share to";
@@ -985,6 +988,13 @@ typedef void (^ShareToNetworksBlock) ();
             shareString = [shareString stringByAppendingString:@" Pinterest"];
         }
     }
+    
+    
+    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
+        shareString = [shareString stringByAppendingString:@" Captify"];
+    }
+    
+
 
     
     UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:nil
@@ -1089,7 +1099,7 @@ typedef void (^ShareToNetworksBlock) ();
         compression = 0.5;
     }
 
-    NSData *imageData = UIImageJPEGRepresentation(self.shareImageView.image, compression);
+    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
     
     
     NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
