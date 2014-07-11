@@ -2066,6 +2066,17 @@ typedef void (^AnimationBlock) ();
 
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
+    if ([pick.answer length] > 40){
+        return 110;
+    }
+    else{
+        return 93;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"historyDetailCell";
@@ -2076,6 +2087,7 @@ typedef void (^AnimationBlock) ();
     cell.layer.cornerRadius = 10;
     cell.contentView.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+
 
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     

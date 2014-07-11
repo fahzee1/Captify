@@ -46,6 +46,8 @@
 
 #define CAPTIFY_TIMEZONE @"UTC"
 #define CAPTIFY_FACEBOOK_ID @"679128588774304"
+#define RACKSPACE_USERNAME @"cjogbuehi"
+#define RACKSPACE_APIKEY @"8f331476559e8f3c5255714ad8a1bcfd"
 
 //images
 #define CAPTIFY_ACTIVE_HISTORY @"active-history-screen"

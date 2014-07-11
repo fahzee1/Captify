@@ -1102,7 +1102,7 @@ typedef void (^ShareToNetworksBlock) ();
     NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
     
     
-    NSData *mediaData = [imageData base64EncodedDataWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSData *mediaData = [imageData base64EncodedDataWithOptions:0];
     NSString *mediaName = [NSString stringWithFormat:@"%@.jpg",self.myChallenge.challenge_id];
     
     BOOL removed = [self removeCurrentImageFromFiles];

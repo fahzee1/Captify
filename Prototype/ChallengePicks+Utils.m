@@ -20,7 +20,7 @@
     // put defaults here
     
     self.timestamp = [NSDate date];
-    self.first_open = [NSNumber numberWithBool:YES];
+    self.first_open = [NSNumber numberWithInt:15];
 
 }
 

@@ -120,6 +120,17 @@
     return 5;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
+    if ([pick.answer length] > 40){
+        return 110;
+    }
+    else{
+        return 93;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
