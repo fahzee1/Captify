@@ -225,10 +225,26 @@
                                          // reload table
                                          
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             NSString *username = userJson[@"username"];
-                                             NSString *score = userJson[@"score"];
-                                             NSString *facebook_id = userJson[@"facebook_id"];
-                                             NSNumber *facebook_user = userJson[@"facebook_user"];
+                                             NSString *username;
+                                             NSString *score;
+                                             NSString *facebook_id;
+                                             NSNumber *facebook_user;
+                                             if (userJson){
+                                                 username = userJson[@"username"];
+                                                 score = userJson[@"score"];
+                                                 facebook_id = userJson[@"facebook_id"];
+                                                 facebook_user = userJson[@"facebook_user"];
+                                             }
+                                             else{
+                                                 username = self.usernameString;
+                                                 score = @"0";
+                                                 if ([username isEqualToString:@"Team-Captify"]){
+                                                     score = @"1000000000000";
+                                                 }
+                                                 facebook_user = [NSNumber numberWithBool:NO];
+                                                 
+                                             }
+                                           
                                              
 
                                              
@@ -419,9 +435,13 @@
                      }];
     
     
-    if (self.scoreString){
+    if ([self.scoreString isKindOfClass:[NSNumber class]]){
+        self.myScore.text = [NSString stringWithFormat:@"%@",self.scoreString];
+    }
+    else if ([self.scoreString isKindOfClass:[NSString class]]){
         self.myScore.text = self.scoreString;
     }
+    
     if (self.usernameString){
         self.myUsername.text = [[self.usernameString stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
     }

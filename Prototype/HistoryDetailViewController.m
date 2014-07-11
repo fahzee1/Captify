@@ -350,8 +350,8 @@ typedef void (^AnimationBlock) ();
                     [pop showSuccessBlur2WithImage:image sender:[self.myChallenge.sender firstName]];
                     
                     int current = [self.myPick.first_open intValue];
-                    int new = current - 1;
-                    self.myPick.first_open = [NSNumber numberWithInt:new];
+                    current -= 1;
+                    self.myPick.first_open = [NSNumber numberWithInt:current];
                     NSError *error;
                     if (![self.myPick.managedObjectContext save:&error]){
                         DLog(@"%@",error);

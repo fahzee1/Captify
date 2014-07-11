@@ -561,8 +561,6 @@
 + (NSURLSessionDataTask *)registerWithParams:(NSDictionary *)params
                                     callback:(AwesomeAPICompleteBlock)block;
 {
-    NSParameterAssert(params);
-    NSAssert([params count] == 5 || [params count] == 4, @"4 parameters not being passed. Dict passed was %@",params);
     
     AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
     [client startNetworkActivity];

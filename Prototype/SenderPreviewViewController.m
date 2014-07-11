@@ -350,6 +350,7 @@
                                                     {
                                                         continue;
                                                     }
+                                                    
                                                     User *userCreated = [User createFriendWithParams:params
                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
                                                     if (userCreated){
