@@ -256,6 +256,7 @@
 		1153E1DE18A9DF4800AD950E /* GPUImagePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12D18A9DF4800AD950E /* GPUImagePicture.m */; };
 		1153E1DF18A9DF4800AD950E /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E12F18A9DF4800AD950E /* GPUImageView.m */; };
 		1153E1E918A9E04600AD950E /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1153E1E818A9E04600AD950E /* UIView+Screenshot.m */; };
+		11554C8419708EEE0086369C /* NSString+utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11554C8319708EEE0086369C /* NSString+utils.m */; };
 		115D939018B28312006A1C02 /* SenderFriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 115D938F18B28312006A1C02 /* SenderFriendsCell.m */; };
 		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
@@ -902,6 +903,8 @@
 		1153E12F18A9DF4800AD950E /* GPUImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageView.m; sourceTree = "<group>"; };
 		1153E1E718A9E04600AD950E /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		1153E1E818A9E04600AD950E /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		11554C8219708EEE0086369C /* NSString+utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+utils.h"; sourceTree = "<group>"; };
+		11554C8319708EEE0086369C /* NSString+utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+utils.m"; sourceTree = "<group>"; };
 		115D938E18B28312006A1C02 /* SenderFriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFriendsCell.h; sourceTree = "<group>"; };
 		115D938F18B28312006A1C02 /* SenderFriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFriendsCell.m; sourceTree = "<group>"; };
 		11600E2D18C10983002D46B0 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
@@ -1608,6 +1611,8 @@
 				119BAEE218F639B500678A63 /* NSData+Format.m */,
 				110593EF191BED4F00866C92 /* FeedViewCell.h */,
 				110593F0191BED4F00866C92 /* FeedViewCell.m */,
+				11554C8219708EEE0086369C /* NSString+utils.h */,
+				11554C8319708EEE0086369C /* NSString+utils.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2595,6 +2600,7 @@
 				1153E19518A9DF4800AD950E /* GPUImageMotionBlurFilter.m in Sources */,
 				1153E15F18A9DF4800AD950E /* GPUImageDilationFilter.m in Sources */,
 				1153E18218A9DF4800AD950E /* GPUImageKuwaharaRadius3Filter.m in Sources */,
+				11554C8419708EEE0086369C /* NSString+utils.m in Sources */,
 				116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */,
 				118EF1B618FC6F4F00755552 /* UIPopoverController+FlatUI.m in Sources */,
 				1153E1A218A9DF4800AD950E /* GPUImagePerlinNoiseFilter.m in Sources */,

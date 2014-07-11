@@ -38,6 +38,7 @@
 #import "ParseNotifications.h"
 #import "ABWrappers.h"
 #import "AwesomeAPICLient.h"
+#import "NSString+utils.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -1091,6 +1092,12 @@
 
 - (void)snapPhoto
 {
+    if ([self.flashButton.titleLabel.text containsString:@"On"]){
+        [self turnOnFlash];
+    }
+    else if ([self.flashButton.titleLabel.text containsString:@"Off"]){
+        [self turnOffFlash];
+    }
     AVCaptureConnection *vc = [self.snapper connectionWithMediaType:AVMediaTypeVideo];
     [self.snapper captureStillImageAsynchronouslyFromConnection:vc
                                               completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
@@ -1210,6 +1217,35 @@
 
 }
 
+- (void)turnOnFlash
+{
+    if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
+        if (!self.cameraDevice.flashActive){
+        // turn on
+        NSError *error;
+        [self.cameraDevice lockForConfiguration:&error];
+        [self.cameraDevice setFlashMode:AVCaptureFlashModeOn];
+        [self.cameraDevice unlockForConfiguration];
+        [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+        }
+
+    }
+
+}
+
+- (void)turnOffFlash
+{
+  if ([self.cameraDevice isFlashModeSupported:AVCaptureFlashModeOn]){
+    if (self.cameraDevice.flashActive){
+      NSError *error;
+      [self.cameraDevice lockForConfiguration:&error];
+      [self.cameraDevice setFlashMode:AVCaptureFlashModeOff];
+      [self.cameraDevice unlockForConfiguration];
+      [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ Off", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
+    }
+
+  }
+}
 
 - (void)toggleFlash
 {

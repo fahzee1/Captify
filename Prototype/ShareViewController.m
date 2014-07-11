@@ -991,7 +991,7 @@ typedef void (^ShareToNetworksBlock) ();
     
     
     if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
-        shareString = [shareString stringByAppendingString:@" Captify"];
+        shareString = @"Share";
     }
     
 

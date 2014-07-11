@@ -16,6 +16,7 @@
 #import "UIFont+FontAwesome.h"
 #import "NSString+FontAwesome.h"
 #import "AppDelegate.h"
+#import "NSString+utils.h"
 
 @interface ReceiverPreviewViewController ()<MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -277,7 +278,7 @@
                                                       
                                                       // if is no longer active is in error message
                                                       // mark challenge inactive
-                                                      if ([message rangeOfString:@"is no longer active" options:NSCaseInsensitiveSearch].location != NSNotFound){
+                                                      if ([message containsString:@"longer active"]){
                                                           self.myChallenge.active = [NSNumber numberWithBool:NO];
                                                           NSError *error;
                                                           [self.myChallenge.managedObjectContext save:&error];
