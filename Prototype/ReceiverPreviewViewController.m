@@ -279,9 +279,14 @@
                                                       // if is no longer active is in error message
                                                       // mark challenge inactive
                                                       if ([message containsString:@"longer active"]){
-                                                          self.myChallenge.active = [NSNumber numberWithBool:NO];
+                                                          self.myChallenge.active = [NSNumber numberWithInt:0];
+                                                          self.myChallenge.fields_count = [NSNumber numberWithInt:333]; // use this field since its not being used, used to mark the challenge inactive since server sends back active
                                                           NSError *error;
-                                                          [self.myChallenge.managedObjectContext save:&error];
+                                                          if (![self.myChallenge.managedObjectContext save:&error]){
+                                                              DLog(@"%@",error);
+                                                          }
+
+                                                          [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }
 
                                                   }

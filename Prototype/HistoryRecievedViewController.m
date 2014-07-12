@@ -456,7 +456,8 @@
     cell.layer.borderWidth = 2;
     cell.layer.cornerRadius = 10;
     cell.contentView.layer.cornerRadius = 10;
-    //cell.backgroundView.layer.cornerRadius = 10;
+    cell.backgroundView.layer.cornerRadius = 10;
+    cell.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
 
@@ -533,6 +534,7 @@
             }
         }
         int sentPick = [challenge.sentPick intValue];
+        
         ChallengePicks *myPick;
         NSArray *allPicks = [challenge.picks allObjects];
         NSArray *picks = [allPicks filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"player.username == %@",self.myUser.username]];
@@ -540,8 +542,9 @@
             myPick = [picks firstObject];
         }
 
-                
-        if (active && !sentPick){
+        int hackishCheck = [challenge.fields_count intValue];
+        
+        if (active && !sentPick && !hackishCheck){
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             /*
             if (![activeButton.layer animationForKey:@"historyActive"]){
@@ -603,9 +606,10 @@
     Challenge *challenge = [self.cData objectAtIndex:indexPath.section];
     int active = [challenge.active intValue];
     int sentPick = [challenge.sentPick intValue];
+    int hackishCheck = [challenge.fields_count intValue];
 
-
-    if (active && !sentPick){
+    
+    if (active && !sentPick && hackishCheck != 333){
         UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"showChallenge"];
         if ([vc isKindOfClass:[ChallengeViewController class]]){
             ((ChallengeViewController *)vc).myChallenge = challenge;
@@ -634,6 +638,10 @@
             if (pick && [pick isKindOfClass:[ChallengePicks class]]){
                 ((ChallengePicks *)pick).challenge.is_chosen = [NSNumber numberWithBool:YES];
                 ((HistoryDetailViewController *)vc).myPick = (ChallengePicks *)pick;
+            }
+            
+            if (hackishCheck == 333){
+                challenge.active = [NSNumber numberWithBool:NO];
             }
             
 
