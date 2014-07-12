@@ -13,6 +13,7 @@
 typedef void (^ChallengeUpdateBlock) (BOOL wasSuccessful, NSString *mediaUrl);
 typedef void (^SendChallengeRequestBlock) (BOOL wasSuccessful,BOOL fail, NSString *message, id data);
 typedef void (^GetChallengeFeedBlock) (BOOL wasSuccessful, id data);
+typedef void (^DeleteChallengeBlock) (BOOL wasSuccessful);
 
 @interface Challenge (Utils)
 
@@ -55,6 +56,9 @@ typedef void (^GetChallengeFeedBlock) (BOOL wasSuccessful, id data);
                                        block:(SendChallengeRequestBlock)block;
  
 + (void)getCurrentChallengeFeedWithBlock:(GetChallengeFeedBlock)block;
+
++ (void)deleteChallengeWithParams:(NSDictionary *)params
+                            block:(DeleteChallengeBlock)block;
 
 
 + (Challenge *) createTestChallengeWithUser:(User *)user;
