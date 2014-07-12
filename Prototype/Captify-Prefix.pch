@@ -93,6 +93,8 @@
 // size
 #define CAPTIFY_CAPTION_SIZE 35
 #define CAPTIFY_BUTTON_LAYER 1
+#define CAPTIFY_ROUNDED_CORNERS 0
+#define CAPTIFY_BORDER_SIZE 1
 
 // filters
 

@@ -86,6 +86,7 @@ typedef void (^AnimationBlock) ();
 @property (weak, nonatomic) IBOutlet UIButton *captionImageFilterButton;
 @property (strong, nonatomic)UILabel *errorLabel;
 @property (strong, nonatomic)UIButton *errorMakeCaptionButton;
+@property (strong, nonatomic)UILabel *errorMakeCaptionTitle;
 
 @property (strong, nonatomic)UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) UIButton *retryButton;
@@ -297,11 +298,19 @@ typedef void (^AnimationBlock) ();
 - (void)adjustTableSize
 {
     if ([self.data count] > 0){
-        int height = 93 * (int)[self.data count]; //cell height times amount of cells to add to scrollview
+        int t = 95;
+        if ([self.data count] == 1){
+            t = 93;
+        }
+        if ([self.data count] > 6){
+            t = 97;
+        }
+
+        int height = t * (int)[self.data count]; //cell height times amount of cells to add to scrollview
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
-        int cushion = 90;
+        int cushion = 120;
         if (!IS_IPHONE5){
-            cushion = 150;
+            cushion = 190;
         }
         self.scrollView.contentSize = CGSizeMake(320, scrollHeight+cushion);
         CGRect tableRect = self.myTable.frame;
@@ -310,22 +319,40 @@ typedef void (^AnimationBlock) ();
         
         
         if (!self.hideSelectButtonsMax){
+            //CGRect ivFrame = self.myImageView.frame;
+            CGFloat width = self.view.frame.size.width;
             if (!self.errorMakeCaptionButton){
                 self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-                self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 , height + 60, 203, 45);
-                [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
+                self.errorMakeCaptionButton.frame = CGRectMake(0 , height + 90, width, 45);
+                self.errorMakeCaptionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                self.errorMakeCaptionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+                [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own meme", nil) forState:UIControlStateNormal];
                 [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
                 self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-                self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
-                self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-                self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
-                self.errorMakeCaptionButton.layer.cornerRadius = 5;
-                [self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption:) forControlEvents:UIControlEventTouchUpInside];
+                self.errorMakeCaptionButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+                self.errorMakeCaptionButton.layer.cornerRadius = 0;
+                [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption:) forControlEvents:UIControlEventTouchUpInside];
+
+                CGRect buttonFrame = self.errorMakeCaptionButton.frame;
+                self.errorMakeCaptionTitle = [[UILabel alloc] init];
+                self.errorMakeCaptionTitle.frame = CGRectMake(12, buttonFrame.origin.y - 50, buttonFrame.size.width, 70);
+                self.errorMakeCaptionTitle.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:13];
+                self.errorMakeCaptionTitle.text = NSLocalizedString(@"Don't want to play the challenge?", nil);
+                self.errorMakeCaptionTitle.textColor = [UIColor whiteColor];
+
+                UILabel *labelArrow = [[UILabel alloc] init];
+                labelArrow.frame = CGRectMake(buttonFrame.size.width - 25, 2, 70, buttonFrame.size.height);
+                labelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+                labelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
+                labelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+
+                [self.errorMakeCaptionButton addSubview:labelArrow];
+                [self.myTable addSubview:self.errorMakeCaptionTitle];
                 [self.myTable addSubview:self.errorMakeCaptionButton];
             }
             else{
-                self.errorMakeCaptionButton.frame = CGRectMake(tableRect.origin.x + 40 ,height + 75, 203, 45);
+                
+                self.errorMakeCaptionButton.frame = CGRectMake(0 , height + 90, width, 45);
                 [self.myTable addSubview:self.errorMakeCaptionButton];
             }
         }
@@ -344,14 +371,12 @@ typedef void (^AnimationBlock) ();
     if (!self.sentHistory){
         if (![self.myPick.challenge.sender.username isEqualToString:self.myUser.username]){
             if ([self.myPick.is_chosen intValue] == 1 && self.hideSelectButtonsMax){
-                if ([self.myPick.first_open intValue] > 0){
+                if ([self.myPick.first_open intValue] == 1){
                     UIImage *image = [self.view snapshotView:self.view];
                     CJPopup *pop = [[CJPopup alloc] initWithFrame:self.view.frame];
                     [pop showSuccessBlur2WithImage:image sender:[self.myChallenge.sender firstName]];
                     
-                    int current = [self.myPick.first_open intValue];
-                    current -= 1;
-                    self.myPick.first_open = [NSNumber numberWithInt:current];
+                    self.myPick.first_open = [NSNumber numberWithInt:0];
                     NSError *error;
                     if (![self.myPick.managedObjectContext save:&error]){
                         DLog(@"%@",error);
@@ -377,7 +402,21 @@ typedef void (^AnimationBlock) ();
 
 - (void)fetchUpdates
 {
-    if (!self.hideSelectButtonsMax){
+    // check to see if any of the challenge picks have
+    // been chosen to determine to check for chosen caption
+    BOOL fetch = YES;
+    if (self.myChallenge){
+        NSArray *picks = self.myChallenge.picks.allObjects;
+        for (ChallengePicks *pick in picks){
+            if ([pick.is_chosen intValue] == 1){
+                fetch = NO;
+                break;
+            }
+        }
+    }
+    
+    if (fetch){
+         DLog(@"we dont have chosen caption, fetch")
         double delayInSeconds = 5.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -485,17 +524,9 @@ typedef void (^AnimationBlock) ();
             
         }
     }
-    else{
-        if ([self.myChallenge.final_fetch intValue] == 0){
-            self.hideSelectButtonsMax = NO;
-            [self fetchUpdates];
-            
-            self.myChallenge.final_fetch = [NSNumber numberWithBool:YES];
-            NSError *error;
-            [self.myChallenge.managedObjectContext save:&error];
+       else{
+            DLog(@"we have chosen caption, dont fetch")
             self.hideSelectButtonsMax = YES;
-
-        }
     }
 }
 
@@ -511,6 +542,13 @@ typedef void (^AnimationBlock) ();
         NSString *pick_id = pickJson[@"pick_id"];
         NSString *facebook_id = pickJson[@"facebook_id"];
         NSNumber *is_facebook = pickJson[@"is_facebook"];
+        NSString *createdString = pickJson[@"challenge_created"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
+        NSDate *created = [dateFormatter dateFromString:createdString];
+        
+
         
         if (!caption || !player || !is_chosen){
             continue;
@@ -525,6 +563,10 @@ typedef void (^AnimationBlock) ();
         if (facebook_id && is_facebook){
             params[@"is_facebook"] = is_facebook;
             params[@"facebook_id"] = facebook_id;
+        }
+        
+        if (created){
+            params[@"created"] = created;
         }
         
         ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
@@ -549,6 +591,8 @@ typedef void (^AnimationBlock) ();
                 self.errorLabel = nil;
                 [self.errorMakeCaptionButton removeFromSuperview];
                 self.errorMakeCaptionButton = nil;
+                [self.errorMakeCaptionTitle removeFromSuperview];
+                self.errorMakeCaptionTitle = nil;
             }
             
             [self adjustTableSize];
@@ -1594,9 +1638,9 @@ typedef void (^AnimationBlock) ();
 - (void)makeCaption:(UIButton *)sender
 {
     [AppDelegate hightlightViewOnTap:sender
-                           withColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]
+                           withColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
                            textColor:[UIColor whiteColor]
-                       originalColor:[UIColor clearColor]
+                       originalColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY]
                    originalTextColor:[UIColor whiteColor]
                             withWait:0.3];
     
@@ -1691,7 +1735,7 @@ typedef void (^AnimationBlock) ();
     }
     
     if (!self.captionIsSplit){
-        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame), self.finalCaptionLabel.frame.size.height +5);
+        self.finalCaptionLabel.frame = CGRectMake(self.currentPoint.x, self.currentPoint.y,CGRectGetMaxX(self.myImageView.frame) - 17, self.finalCaptionLabel.frame.size.height +5);
         
         
         if (self.captionMoved){
@@ -1947,6 +1991,8 @@ typedef void (^AnimationBlock) ();
                                                                   self.errorLabel = nil;
                                                                   [self.errorMakeCaptionButton removeFromSuperview];
                                                                   self.errorMakeCaptionButton = nil;
+                                                                  [self.errorMakeCaptionTitle removeFromSuperview];
+                                                                  self.errorMakeCaptionTitle = nil;
 
                                                               }
                                                           });
@@ -2083,9 +2129,9 @@ typedef void (^AnimationBlock) ();
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-    cell.layer.borderWidth = 2;
-    cell.layer.cornerRadius = 10;
-    cell.contentView.layer.cornerRadius = 10;
+    cell.layer.borderWidth = CAPTIFY_BORDER_SIZE;
+    cell.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
+    cell.contentView.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
 
 
@@ -2349,20 +2395,36 @@ typedef void (^AnimationBlock) ();
          _errorLabel.numberOfLines = 0;
         [_errorLabel sizeToFit];
         if ([self.myChallenge.active intValue] == 1 && [self.data count] == 0){
+              CGFloat width = self.view.frame.size.width;
             _errorLabel.frame = CGRectMake(ivFrame.origin.x + 10, ivFrame.size.height + 120, ivFrame.size.width, 40);
             
             self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-              self.errorMakeCaptionButton.frame = CGRectMake(_errorLabel.frame.origin.x + 35, _errorLabel.frame.origin.y + 60, 203, 45);
-            [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own", nil) forState:UIControlStateNormal];
+            
+            self.errorMakeCaptionButton.frame = CGRectMake(ivFrame.origin.x - 7, _errorLabel.frame.origin.y + 90, width, 45);
+            [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own meme", nil) forState:UIControlStateNormal];
+            self.errorMakeCaptionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            self.errorMakeCaptionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
             [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [self.errorMakeCaptionButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] forState:UIControlStateHighlighted];
             self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];
-            self.errorMakeCaptionButton.backgroundColor = [UIColor clearColor];
-            self.errorMakeCaptionButton.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE] CGColor];
-            self.errorMakeCaptionButton.layer.borderWidth = CAPTIFY_BUTTON_LAYER;
-            self.errorMakeCaptionButton.layer.cornerRadius = 5;
+            self.errorMakeCaptionButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
+            self.errorMakeCaptionButton.layer.cornerRadius = 0;
             [ self.errorMakeCaptionButton addTarget:self action:@selector(makeCaption:) forControlEvents:UIControlEventTouchUpInside];
             
+            CGRect buttonFrame = self.errorMakeCaptionButton.frame;
+            self.errorMakeCaptionTitle = [[UILabel alloc] init];
+            self.errorMakeCaptionTitle.frame = CGRectMake(_errorLabel.frame.origin.x, buttonFrame.origin.y - 50, buttonFrame.size.width, 70);
+            self.errorMakeCaptionTitle.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:13];
+            self.errorMakeCaptionTitle.text = NSLocalizedString(@"Don't want to play the challenge?", nil);
+            self.errorMakeCaptionTitle.textColor = [UIColor whiteColor];
+            
+            UILabel *labelArrow = [[UILabel alloc] init];
+            labelArrow.frame = CGRectMake(buttonFrame.size.width - 25, 2, 70, buttonFrame.size.height);
+            labelArrow.font = [UIFont fontWithName:kFontAwesomeFamilyName size:30];
+            labelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
+            labelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+            
+            [self.errorMakeCaptionButton addSubview:labelArrow];
+            [self.scrollView addSubview:self.errorMakeCaptionTitle];
             [self.scrollView addSubview:self.errorMakeCaptionButton];
         }
         else{

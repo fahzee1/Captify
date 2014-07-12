@@ -280,7 +280,10 @@
                                                       // mark challenge inactive
                                                       if ([message containsString:@"longer active"]){
                                                           self.myChallenge.active = [NSNumber numberWithInt:0];
-                                                          self.myChallenge.fields_count = [NSNumber numberWithInt:333]; // use this field since its not being used, used to mark the challenge inactive since server sends back active
+                                                          // use this field since its not being used
+                                                          // used to mark the challenge inactive since server sends back active
+                                                          // ignore field name its hackish but does the job
+                                                          self.myChallenge.fields_count = [NSNumber numberWithInt:333];
                                                           NSError *error;
                                                           if (![self.myChallenge.managedObjectContext save:&error]){
                                                               DLog(@"%@",error);

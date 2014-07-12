@@ -20,7 +20,7 @@
     // put defaults here
     
     self.timestamp = [NSDate date];
-    self.first_open = [NSNumber numberWithInt:15];
+    self.first_open = [NSNumber numberWithInt:1];
 
 }
 
@@ -71,6 +71,11 @@
             pick.is_chosen = [params valueForKey:@"is_chosen"];
             pick.pick_id = [params valueForKey:@"pick_id"];
             pick.player = user;
+            
+            if ([params valueForKey:@"created"]){
+                pick.timestamp = [params valueForKey:@"created"];
+            }
+
             
             NSError *error;
             if (![pick.managedObjectContext save:&error]){

@@ -115,6 +115,12 @@
         
     }
     
+    double delayInSeconds = 5.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self fetchMediaRedisForPicks:YES];
+    });
+    
     
 }
 
@@ -328,10 +334,16 @@
         NSString *pick_id = pickJson[@"pick_id"];
         NSString *facebook_id = pickJson[@"facebook_id"];
         NSNumber *is_facebook = pickJson[@"is_facebook"];
+        NSString *createdString = pickJson[@"pick_created"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
+        NSDate *created = [dateFormatter dateFromString:createdString];
         
         if (!caption || !player || !is_chosen){
             continue;
         }
+        
         
         NSMutableDictionary *params = [@{@"player": player,
                                          @"context":self.myUser.managedObjectContext,
@@ -342,6 +354,10 @@
         if (facebook_id && is_facebook){
             params[@"is_facebook"] = is_facebook;
             params[@"facebook_id"] = facebook_id;
+        }
+        
+        if (created){
+            params[@"created"] = created;
         }
         
         ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];

@@ -467,11 +467,11 @@
     static NSString *cellIdentifier = @"historyCells";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-    cell.layer.borderWidth = 2;
-    cell.layer.cornerRadius = 10;
-    cell.contentView.layer.cornerRadius = 10;
-    cell.backgroundView.layer.cornerRadius = 10;
-    cell.layer.cornerRadius = 10;
+    cell.layer.borderWidth = CAPTIFY_BORDER_SIZE;
+    cell.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
+    cell.contentView.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
+    cell.backgroundView.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
+    cell.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
 

@@ -443,8 +443,8 @@
     static NSString *cellIdentifier = @"historySentCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     cell.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-    cell.layer.borderWidth = 2;
-    cell.layer.cornerRadius = 10;
+    cell.layer.borderWidth = CAPTIFY_BORDER_SIZE;
+    cell.layer.cornerRadius = CAPTIFY_ROUNDED_CORNERS;
     //cell.contentView.layer.cornerRadius = 10;
     cell.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
