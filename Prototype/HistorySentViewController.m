@@ -414,8 +414,23 @@
         // send api request to server to delete challenge
         // remove object from data source
         // reload table
-        DLog(@"delete this row");
+        Challenge *challenge = [self.data objectAtIndex:indexPath.section];
+        NSDictionary *params = @{@"username": self.myUser.username,
+                                 @"challenge_id":challenge.challenge_id,
+                                 @"location":@"sent"
+                                 };
+        [Challenge deleteChallengeWithParams:params block:^(BOOL wasSuccessful) {
+            if (wasSuccessful){
+                [challenge.managedObjectContext deleteObject:challenge];
+                [self.myTable reloadData];
+                
+            }
+            else{
+                [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Error deleting challenge", nil)];
+            }
+        }];
     }
+
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -678,6 +693,23 @@
     
     return _errorLabel;
 }
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *a = [[UIAlertView alloc]
+                          initWithTitle:title
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil];
+        [a show];
+        
+    });
+}
+
 
 
 @end
