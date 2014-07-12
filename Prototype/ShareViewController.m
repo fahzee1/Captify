@@ -21,6 +21,7 @@
 #import "AppDelegate.h"
 #import "MenuViewController.h"
 #import "TWTSideMenuViewController.h"
+#import "UIView+Screenshot.h"
 
 #import <Pinterest/Pinterest.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -1099,7 +1100,8 @@ typedef void (^ShareToNetworksBlock) ();
         compression = 0.5;
     }
 
-    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
+    UIImage *shareImage = [self.shareImageView convertViewToImage];
+    NSData *imageData = UIImageJPEGRepresentation(shareImage, compression);
     
     
     NSData *mediaData = [imageData base64EncodedDataWithOptions:0];
