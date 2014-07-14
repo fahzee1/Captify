@@ -2116,7 +2116,7 @@ typedef void (^AnimationBlock) ();
 {
     ChallengePicks *pick = [self.data objectAtIndex:indexPath.section];
     if ([pick.answer length] > 40){
-        return 130;
+        return 110;
     }
     else{
         return 93;
@@ -2197,6 +2197,14 @@ typedef void (^AnimationBlock) ();
             [usernameLabel sizeToFit];
     
              captionLabel.text = [NSString stringWithFormat:@"\"%@\"",pick.answer];
+            
+            if ([captionLabel.text length] >= 40){
+                NSString *uString = [captionLabel.text substringToIndex:39];
+                captionLabel.text = [NSString stringWithFormat:@"\"%@...\"",uString];
+                //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
+            }
+            
+
         
             // set width and height so "sizeToFit" uses those constraints
           
