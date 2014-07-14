@@ -421,7 +421,15 @@
                                  };
         [Challenge deleteChallengeWithParams:params block:^(BOOL wasSuccessful) {
             if (wasSuccessful){
+                
+                
                 [challenge.managedObjectContext deleteObject:challenge];
+                NSError *error;
+                [challenge.managedObjectContext save:&error];
+                //NSMutableArray *copy = [self.data mutableCopy];
+                //[copy removeObject:challenge];
+                //self.data = [NSArray arrayWithArray:copy];
+                
                 [self.myTable reloadData];
                 
             }
@@ -635,8 +643,8 @@
      */
     
     
-    _data = [Challenge getHistoryChallengesForUser:self.myUser
-                                                 sent:YES];
+    _data = [[Challenge getHistoryChallengesForUser:self.myUser
+                                                 sent:YES] mutableCopy];
 
     
     return _data;

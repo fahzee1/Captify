@@ -446,6 +446,8 @@
         [Challenge deleteChallengeWithParams:params block:^(BOOL wasSuccessful) {
             if (wasSuccessful){
                 [challenge.managedObjectContext deleteObject:challenge];
+                NSError *error;
+                [challenge.managedObjectContext save:&error];
                 [self.myTable reloadData];
                 
             }
