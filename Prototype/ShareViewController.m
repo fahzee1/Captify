@@ -678,11 +678,6 @@ typedef void (^ShareToNetworksBlock) ();
 - (void)shareToFacebookAndTwitterWithBlock:(ShareToNetworksBlock)block
 {
     
-    if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
-        [self showAlertWithTitle:@"Error" message:NSLocalizedString(@"Choose a network to share too", nil)];
-        return;
-    }
-
     
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
@@ -927,6 +922,13 @@ typedef void (^ShareToNetworksBlock) ();
     
     if (!self.shareTwitter && !self.shareInstagram && !self.shareFacebook && !self.sharePinterest){
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isPrivate"];
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.hud.mode = MBProgressHUDModeIndeterminate;
+        self.hud.labelText = NSLocalizedString(@"Sharing", nil);
+        self.hud.labelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        //self.hud.detailsLabelText = NSLocalizedString(@"and saving to photo library", nil);
+        //self.hud.detailsLabelColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        self.hud.color = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] colorWithAlphaComponent:0.8];
         [self updateChallengeOnBackend];
         return;
     }
