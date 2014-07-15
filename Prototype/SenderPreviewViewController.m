@@ -493,6 +493,17 @@
     [popUp showFromRect:self.bottomSendButton.frame inView:self.view animated:YES];
 }
 
+- (void)scheduleLocalNotifForChallenge:(Challenge *)challenge
+{
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [[NSDate date] dateByAddingTimeInterval:60*60*23];
+    notification.alertBody = [NSString stringWithFormat:@"\"%@\" expires in one hour!",self.name];
+    NSDictionary *payload = @{@"id": challenge.challenge_id};
+    notification.userInfo = payload;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
+    
+}
 
 
 - (void)sendChallenge
@@ -621,6 +632,11 @@
                                                                       
                                                                       // send notification
                                                                       [self notifyFriendsWithParams:params];
+                                                                      
+                                                                      // schedule local notification to fire in 23 hours
+                                                                      [self scheduleLocalNotifForChallenge:challenge];
+                                                                      
+                                                                      
                                                                       
                                                                       // leave screen
                                                                       [self notifyDelegateAndGoHome];

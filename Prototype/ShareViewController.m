@@ -1090,6 +1090,24 @@ typedef void (^ShareToNetworksBlock) ();
 
 }
 
+- (void)cancelLocalNotifs
+{
+    UILocalNotification *notifToCancel = nil;
+    for (UILocalNotification *notif in [[UIApplication sharedApplication] scheduledLocalNotifications]){
+        NSString *notifID = notif.userInfo[@"id"];
+        if (notifID){
+            if ([notifID isEqualToString:self.myChallenge.challenge_id]){
+                notifToCancel = notif;
+                break;
+            }
+        }
+    }
+    if (notifToCancel){
+        [[UIApplication sharedApplication] cancelLocalNotification:notifToCancel];
+    }
+}
+
+
 - (void)updateChallengeOnBackend
 {
     float compression;
@@ -1135,6 +1153,8 @@ typedef void (^ShareToNetworksBlock) ();
                                            // sending image url in message response
                                            
                     
+                                           [self cancelLocalNotifs];
+                                           
                                            self.myChallenge.shared = [NSNumber numberWithBool:YES];
                                            self.myChallenge.active = [NSNumber numberWithBool:NO];
                                            self.myPick.is_chosen = [NSNumber numberWithBool:YES];

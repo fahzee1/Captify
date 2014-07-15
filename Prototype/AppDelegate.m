@@ -569,6 +569,8 @@
    
     
     DLog(@"%@ 22",userInfo);
+    
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
