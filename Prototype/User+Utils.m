@@ -106,7 +106,7 @@
 
     
     else{
-        iV.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
+        iV.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC_BIG];
         /*
         iV.image = nil;
         FAImageView *imageView2 = (FAImageView *)iV;
