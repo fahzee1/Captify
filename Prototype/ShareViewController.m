@@ -1133,8 +1133,10 @@ typedef void (^ShareToNetworksBlock) ();
     }
     
     
-    NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id,
-                                     @"pick_id":self.myPick.pick_id} mutableCopy];
+    NSMutableDictionary *params = [@{@"challenge_id": self.myChallenge.challenge_id} mutableCopy];
+    if (self.myPick){
+        params[@"pick_id"] = self.myPick.pick_id;
+    }
     if (mediaData){
 
         NSString *media = [[NSString alloc] initWithBytes:mediaData.bytes length:mediaData.length encoding:NSUTF8StringEncoding];
@@ -1207,6 +1209,7 @@ typedef void (^ShareToNetworksBlock) ();
                                        }
                                        else{
                                            [self showAlertWithTitle:@"Error" message:@"There was an error updating your challenge. Try again"];
+                                           [self.hud hide:YES];
                                        }
                                    }];
 

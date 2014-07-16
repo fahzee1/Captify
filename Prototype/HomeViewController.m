@@ -699,7 +699,7 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     int count = [[defaults valueForKey:@"homeToolTip"] intValue];
-    if (count < 3){
+    if (count < 10){
         self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap to take picture", nil)];
 
         self.toolTip.backgroundColor = [UIColor whiteColor];
