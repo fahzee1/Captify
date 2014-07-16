@@ -85,7 +85,6 @@ typedef void (^ShareToNetworksBlock) ();
 {
     [super viewDidLoad];
     
-    [AppDelegate clearImageCaches];
     
 	// Do any additional setup after loading the view.
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-left"] style:UIBarButtonItemStylePlain target:self action:@selector(popToDetail)];
