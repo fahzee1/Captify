@@ -25,6 +25,7 @@
 #import "MZFormSheetController.h"
 #import "ChallengeResponsesViewController.h"
 #import "UserProfileViewController.h"
+#import "NSString+utils.h"
 
 #define TEST 1
 
@@ -47,6 +48,8 @@
 @property (strong, nonatomic)UIBarButtonItem *backButton;
 @property (strong, nonatomic)UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) UIButton *retryButton;
+
+@property BOOL triedCaptionedMedia;
 
 @end
 
@@ -208,14 +211,41 @@
                                           });
                                           
                                           if (!image){
-                                              double delayInSeconds = 2.0;
-                                              dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                                              dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                                  self.retryButton.hidden = NO;
-                                                  
-                                                  
-                                              });
                                               
+                                              if (!self.triedCaptionedMedia){
+                                                  
+                                                  NSString *mediaString = [self.mediaURL absoluteString];
+                                                  int chopValue = 5;
+                                                  
+                                                  if ([mediaString containsString:@".jpg"]){
+                                                      chopValue = 4;
+                                                  }
+                                                  else if ([mediaString containsString:@".jpeg"]){
+                                                      chopValue = 5;
+                                                  }
+                                                  
+                                                  NSString *choppedString = [mediaString substringToIndex:[mediaString length] - chopValue];
+                                                  NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.jpg",choppedString];
+                                                  self.mediaURL = [NSURL URLWithString:captionedMediaName];
+                                                  self.triedCaptionedMedia = YES;
+                                                  [self downloadImage];
+
+                                              }
+                                              else{
+                                                  double delayInSeconds = 2.0;
+                                                  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                                  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                      self.retryButton.hidden = NO;
+                                                      
+                                                      
+                                                  });
+                                              }
+                                              
+                                          }
+                                          else{
+                                              if (self.triedCaptionedMedia){
+                                                  self.myChallenge.image_path = [self.mediaURL absoluteString];
+                                              }
                                           }
 
                                       }];

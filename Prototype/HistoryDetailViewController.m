@@ -733,18 +733,15 @@ typedef void (^AnimationBlock) ();
                                                NSString *mediaString = [self.mediaURL absoluteString];
                                                int chopValue = 5;
                                                
-                                               NSString *imageType;
                                                if ([mediaString containsString:@".jpg"]){
                                                    chopValue = 4;
-                                                   imageType = @"jpg";
                                                }
                                                else if ([mediaString containsString:@".jpeg"]){
                                                    chopValue = 5;
-                                                   imageType = @"jpeg";
                                                }
                                                
                                                NSString *choppedString = [mediaString substringToIndex:[mediaString length] - chopValue];
-                                               NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.%@",choppedString,imageType];
+                                               NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.jpg",choppedString];
                                                self.mediaURL = [NSURL URLWithString:captionedMediaName];
                                                self.triedCaptionedMedia = YES;
                                                [self downloadImage];
