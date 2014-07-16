@@ -31,6 +31,7 @@
 #import "UIStepper+FlatUI.h"
 #import "UIColor+FlatUI.h"
 #import "AppDelegate.h"
+#import "NSString+utils.h"
 
 /*
  mark challenge as done when complete
@@ -117,6 +118,7 @@ typedef void (^AnimationBlock) ();
 @property int rotateAttempts;
 @property int reverseRotateAttempts;
 @property int filterAttempts;
+@property BOOL triedCaptionedMedia;
 
 
 // filters
@@ -191,6 +193,7 @@ typedef void (^AnimationBlock) ();
     
     // we will have an image from the filesystem on view did load if
     // we sent the challenge, if not we download it from url
+    
     if (!self.image){
         [self downloadImage];
     }
@@ -700,14 +703,16 @@ typedef void (^AnimationBlock) ();
 
 - (void)downloadImage
 {
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.spinner.center = self.myImageView.center;
-    self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
-    CGRect spinnerFrame = self.spinner.frame;
-    spinnerFrame.origin.x -= 30;
-    self.spinner.frame = spinnerFrame;
-    [self.myImageView addSubview:self.spinner];
-    [self.spinner startAnimating];
+    if (!self.spinner){
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.spinner.center = self.myImageView.center;
+        self.spinner.color = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        CGRect spinnerFrame = self.spinner.frame;
+        spinnerFrame.origin.x -= 30;
+        self.spinner.frame = spinnerFrame;
+        [self.myImageView addSubview:self.spinner];
+        [self.spinner startAnimating];
+    }
 
     if (!self.retryButton.isHidden){
         self.retryButton.hidden = YES;
@@ -724,11 +729,35 @@ typedef void (^AnimationBlock) ();
                                        });
                                        
                                        if (!image){
-                                           double delayInSeconds = 2.0;
-                                           dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                                           dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                                               self.retryButton.hidden = NO;
-                                           });
+                                           if (!self.triedCaptionedMedia){
+                                               NSString *mediaString = [self.mediaURL absoluteString];
+                                               int chopValue = 5;
+                                               
+                                               NSString *imageType;
+                                               if ([mediaString containsString:@".jpg"]){
+                                                   chopValue = 4;
+                                                   imageType = @"jpg";
+                                               }
+                                               else if ([mediaString containsString:@".jpeg"]){
+                                                   chopValue = 5;
+                                                   imageType = @"jpeg";
+                                               }
+                                               
+                                               NSString *choppedString = [mediaString substringToIndex:[mediaString length] - chopValue];
+                                               NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.%@",choppedString,imageType];
+                                               self.mediaURL = [NSURL URLWithString:captionedMediaName];
+                                               self.triedCaptionedMedia = YES;
+                                               [self downloadImage];
+                                           }
+                                           
+                                           else{
+                                           
+                                               double delayInSeconds = 2.0;
+                                               dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                               dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                   self.retryButton.hidden = NO;
+                                               });
+                                           }
                                            
                                        }
                                        else{
@@ -754,6 +783,13 @@ typedef void (^AnimationBlock) ();
                                                    }
                                                }
                                                
+                                           }
+                                           
+                                           else if (self.triedCaptionedMedia){
+                                               self.myChallenge.image_path = [self.mediaURL absoluteString];
+                                               NSError *error;
+                                               [self.myChallenge.managedObjectContext save:&error];
+
                                            }
                                        }
 
