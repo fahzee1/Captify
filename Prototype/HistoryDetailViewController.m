@@ -341,7 +341,7 @@ typedef void (^AnimationBlock) ();
                 self.errorMakeCaptionTitle.frame = CGRectMake(12, buttonFrame.origin.y - 50, buttonFrame.size.width, 70);
                 self.errorMakeCaptionTitle.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:13];
                 self.errorMakeCaptionTitle.text = NSLocalizedString(@"Don't want to play the challenge?", nil);
-                self.errorMakeCaptionTitle.textColor = [UIColor whiteColor];
+                self.errorMakeCaptionTitle.textColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
 
                 UILabel *labelArrow = [[UILabel alloc] init];
                 labelArrow.frame = CGRectMake(buttonFrame.size.width - 25, 2, 70, buttonFrame.size.height);
