@@ -703,6 +703,15 @@ typedef void (^AnimationBlock) ();
 
 - (void)downloadImage
 {
+    if (self.hideSelectButtonsMax){
+        if ([self.myChallenge.first_open intValue] == 1){
+            [AppDelegate clearImageCaches];
+            self.myChallenge.first_open = [NSNumber numberWithBool:NO];
+            NSError *error;
+            [self.myChallenge.managedObjectContext save:&error];
+        }
+    }
+    
     if (!self.spinner){
         self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         self.spinner.center = self.myImageView.center;

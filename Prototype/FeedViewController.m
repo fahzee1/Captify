@@ -36,6 +36,7 @@
 @property BOOL refreshedImages;
 @property BOOL alertedError;
 @property BOOL reloaded;
+@property BOOL addedLatestJson;
 @end
 
 @implementation FeedViewController
@@ -201,18 +202,20 @@
         }
     }
     
-    if (self.lastestJson){
-        NSMutableArray *mutableResults = [NSMutableArray array];
-        [mutableResults addObject:self.lastestJson];
-        [mutableResults addObjectsFromArray:_data];
-        
-        NSArray *finalResults = [NSArray arrayWithArray:mutableResults];
-        _data = finalResults;
-        
-        [[TMCache sharedCache] removeObjectForKey:FEED_CACHE_NAME];
-        [[TMCache sharedCache] setObject:_data forKey:FEED_CACHE_NAME];
+    if (!self.addedLatestJson){
+        if (self.lastestJson){
+            NSMutableArray *mutableResults = [NSMutableArray array];
+            [mutableResults addObject:self.lastestJson];
+            [mutableResults addObjectsFromArray:_data];
+            
+            NSArray *finalResults = [NSArray arrayWithArray:mutableResults];
+            _data = finalResults;
+            
+            [[TMCache sharedCache] removeObjectForKey:FEED_CACHE_NAME];
+            [[TMCache sharedCache] setObject:_data forKey:FEED_CACHE_NAME];
+            self.addedLatestJson = YES;
+        }
     }
-    
     if (!self.refreshedImages){
         double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
