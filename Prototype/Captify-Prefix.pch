@@ -61,7 +61,8 @@
 // colors
 
 #define CAPTIFY_ORANGE @"#ffcd04"
-#define CAPTIFY_DARK_GREY @"#343432"
+//#define CAPTIFY_DARK_GREY @"#343432"
+#define CAPTIFY_DARK_GREY @"#181818"
 #define CAPTIFY_LIGHT_GREY @"#515151"
 #define CAPTIFY_LIGHT_BLUE @"#69c9d0"
 #define CAPTIFY_DARK_BLUE @"#4698aa"
@@ -126,4 +127,5 @@
 #define MENU_SETTINGS_ACTIVE @"settings-blue"
 #define MENU_SETTINGS_INACTIVE @"settings-white"
 
-#define CAPTIFY_BG @"bg"
+#define CAPTIFY_BG @"captify_bg"
+//#define CAPTIFY_BG @"bg"
