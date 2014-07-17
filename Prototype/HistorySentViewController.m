@@ -406,6 +406,25 @@
 }
 
 
+- (void)cancelLocalNotifForChallenge:(Challenge *)challenge
+{
+    UILocalNotification *notifToCancel = nil;
+    for (UILocalNotification *notif in [[UIApplication sharedApplication] scheduledLocalNotifications]){
+        NSString *notifID = notif.userInfo[@"id"];
+        if (notifID){
+            if ([notifID isEqualToString:challenge.challenge_id]){
+                notifToCancel = notif;
+                break;
+            }
+        }
+    }
+    if (notifToCancel){
+        [[UIApplication sharedApplication] cancelLocalNotification:notifToCancel];
+    }
+    
+
+}
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -431,6 +450,7 @@
                 //self.data = [NSArray arrayWithArray:copy];
                 
                 [self.myTable reloadData];
+                [self cancelLocalNotifForChallenge:challenge];
                 
             }
             else{
