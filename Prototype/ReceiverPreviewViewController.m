@@ -290,6 +290,13 @@
 
                                                           [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }
+                                                      
+                                                      if ([message containsString:@"was deleted"]){
+                                                          [self.myChallenge.managedObjectContext deleteObject:self.myChallenge];
+                                                          NSError *error;
+                                                          [self.myChallenge.managedObjectContext save:&error];
+                                                          [self.navigationController popToRootViewControllerAnimated:YES];
+                                                      }
 
                                                   }
                                               }];
@@ -299,6 +306,7 @@
 
 - (void)notifyChallengeSender
 {
+    
     
     ParseNotifications *p = [ParseNotifications new];
     

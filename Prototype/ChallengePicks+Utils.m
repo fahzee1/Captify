@@ -179,18 +179,25 @@
                  return;
              }
              
-             if (code == -12){
+             else if (code == -12 || code == 437){
                  if (block){
                      block(NO,YES,responseObject[@"message"],nil);
                  }
                  return;
              }
              
-             if (code == -10){
+             else if (code == -10){
                  if (block){
                      block(NO, NO, @"There was an error",nil);
                  }
                  return;
+             }
+             else{
+                 if (block){
+                     block(NO, NO, @"There was an error",nil);
+                 }
+                 return;
+
              }
         
          }

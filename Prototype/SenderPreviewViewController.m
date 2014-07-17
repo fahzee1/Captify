@@ -700,6 +700,7 @@
 
 - (void)notifyFriendsWithParams:(NSDictionary *)params
 {
+    /*
     ParseNotifications *p = [[ParseNotifications alloc] init];
     
     [p sendNotification:[NSString stringWithFormat:@"Caption challenge from %@",[self.myUser displayName]]
@@ -709,13 +710,9 @@
                   block:nil];
     
     [p addChannelWithChallengeID:params[@"challenge_id"]];
-
-    /*
-     [p sendTestNotification:@"Cj you should see this"
-     withData:@{@"challenge_name": self.name}
-     notificationType:ParseNotificationCreateChallenge
-     block:nil];
      */
+    
+
      
     
 

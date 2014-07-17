@@ -229,6 +229,15 @@
                                                   self.mediaURL = [NSURL URLWithString:captionedMediaName];
                                                   self.triedCaptionedMedia = YES;
                                                   [self downloadImage];
+                                                  
+                                                  NSError *error;
+                                                  self.myChallenge.active = [NSNumber numberWithBool:NO];
+                                                  // use this field since its not being used
+                                                  // used to mark the challenge inactive since server sends back active
+                                                  // ignore field name its hackish but does the job
+                                                  self.myChallenge.fields_count = [NSNumber numberWithInt:333];
+                                                  [self.myChallenge.managedObjectContext save:&error];
+    
 
                                               }
                                               else{
