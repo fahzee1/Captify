@@ -20,7 +20,7 @@
 
 @interface UserProfileViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (strong, nonatomic)NSArray *sentMedia;
-
+@property int mediaPage;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
@@ -78,6 +78,8 @@
     
     self.navigationController.navigationBarHidden = NO;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.mediaPage = 1;
     
     if (self.fromExplorePage){
         CGRect imageFrame = self.myProfileImage.frame;
@@ -347,6 +349,52 @@
     }
 }
 
+- (void)launchReload
+{
+    DLog(@"fetch more data");
+    if (self.usernameString){
+        NSDictionary *params = @{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                 @"forProfile":[NSNumber numberWithBool:YES],
+                                 @"page":[NSNumber numberWithInt:self.mediaPage + 1]};
+        [User fetchUserProfileWithData:params
+                                 block:^(BOOL wasSuccessful, NSNumber *json, id data) {
+                                     if (wasSuccessful){
+                                          if ([json intValue] == 1){
+                                              // get users sent pics
+                                              NSArray *challengeList = data[@"challenge_data"];
+                                              NSMutableArray *challengeTemp = [NSMutableArray array];
+                                              for (NSString *challenge in challengeList){
+                                                  NSData *challengeData = [challenge dataUsingEncoding:NSUTF8StringEncoding];
+                                                  NSDictionary *challengeDict = [NSJSONSerialization JSONObjectWithData:challengeData options:0 error:nil];
+                                                  NSString *media = challengeDict[@"media_url"];
+                                                  NSString *name = challengeDict[@"name"];
+                                                  if (media && ![media isKindOfClass:[NSNull class]]){
+                                                      if (name && ![name isKindOfClass:[NSNull class]]){
+                                                          [challengeTemp addObject:@{@"media_url": media,@"name":name}];
+                                                          
+                                                          
+                                                      }
+                                                  }
+                                              }
+                                              
+                                              NSMutableArray *sentMediaTemp = [NSMutableArray arrayWithArray:self.sentMedia];
+                                              [sentMediaTemp addObjectsFromArray:challengeTemp];
+                                              self.sentMedia = [NSArray arrayWithArray:sentMediaTemp];
+                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                  [self.collectionView reloadData];
+                                              });
+                                              
+
+                                          }
+                                     }
+                                 }];
+    }
+    else{
+        [self showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Error fetching users profile.", nil)];
+    }
+
+}
+
 - (void)popScreen
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -522,6 +570,10 @@
 
                                    }];
           
+    }
+    
+    else if (indexPath.row == [self.sentMedia count] - 1){
+        [self launchReload];
     }
     else{
         // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
