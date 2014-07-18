@@ -573,10 +573,11 @@
     }
     
     /*
-    else if (indexPath.row == [self.sentMedia count] - 1){
+    else if (indexPath.row == [self.sentMedia count]){
         [self launchReload];
     }
      */
+    
     else{
         // DLog(@"row %ld is greater then %ld so dont show",(long)indexPath.row,(long)count)
         
