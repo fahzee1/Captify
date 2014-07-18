@@ -186,6 +186,23 @@
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 
+- (void)cancelLocalNotifs
+{
+    UILocalNotification *notifToCancel = nil;
+    for (UILocalNotification *notif in [[UIApplication sharedApplication] scheduledLocalNotifications]){
+        NSString *notifID = notif.userInfo[@"id"];
+        if (notifID){
+            if ([notifID isEqualToString:self.myChallenge.challenge_id]){
+                notifToCancel = notif;
+                break;
+            }
+        }
+    }
+    if (notifToCancel){
+        [[UIApplication sharedApplication] cancelLocalNotification:notifToCancel];
+        
+    }
+}
 
 - (IBAction)sendRecieverPick:(UIButton *)sender
 {
@@ -237,6 +254,7 @@
                                                           
                                                           
                                                           [self notifyChallengeSender];
+                                                          [self cancelLocalNotifs];
                                                           
                                                           [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }

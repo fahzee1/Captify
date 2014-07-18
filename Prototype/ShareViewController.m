@@ -1105,6 +1105,7 @@ typedef void (^ShareToNetworksBlock) ();
     }
     if (notifToCancel){
         [[UIApplication sharedApplication] cancelLocalNotification:notifToCancel];
+        
     }
 }
 

@@ -236,8 +236,8 @@
                                             
                                             Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
                                             
-                                            
                                             if (challenge){
+                                                [self scheduleLocalNotifForChallenge:challenge];
                                                 
                                                 [self.myUser addRecipient_challengesObject:challenge];
                                                 
@@ -364,13 +364,28 @@
         params[@"sent"] = [NSNumber numberWithBool:NO];
         
         
-        [Challenge createChallengeWithRecipientsWithParams:params];
+        Challenge *challenge = [Challenge createChallengeWithRecipientsWithParams:params];
+        if (challenge){
+            [self scheduleLocalNotifForChallenge:challenge];
+        }
         
     
         
         
     }
 
+}
+
+- (void)scheduleLocalNotifForChallenge:(Challenge *)challenge
+{
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [[NSDate date] dateByAddingTimeInterval:60*60*12];
+    notification.alertBody = [NSString stringWithFormat:@"Don't for get to send your caption for \"%@\"!",challenge.name];
+    NSDictionary *payload = @{@"id": challenge.challenge_id};
+    notification.userInfo = payload;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
+    
 }
 
 #pragma -mark Uitableview delegate
