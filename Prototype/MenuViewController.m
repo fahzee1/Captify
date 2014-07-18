@@ -180,11 +180,11 @@
         }
     }
     
-    UIColor *homeColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHomeScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
-    UIColor *historyColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHistoryScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
+    UIColor *homeColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHomeScreen]])? [UIColor colorWithHexString:CAPTIFY_DARK_BLUE]:[UIColor whiteColor];
+    UIColor *historyColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHistoryScreen]])? [UIColor colorWithHexString:CAPTIFY_DARK_BLUE]:[UIColor whiteColor];
     //UIColor *inviteColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFriendsScreen]])? [UIColor colorWithHexString:CAPTIFY_DARK_BLUE]:[UIColor whiteColor];
-    UIColor *feedColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFeedScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
-    UIColor *settingsColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE]:[UIColor whiteColor];
+    UIColor *feedColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuFeedScreen]])? [UIColor colorWithHexString:CAPTIFY_DARK_BLUE]:[UIColor whiteColor];
+    UIColor *settingsColor = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuSettingsScreen]])? [UIColor colorWithHexString:CAPTIFY_DARK_BLUE]:[UIColor whiteColor];
     
     
     UIImage *homeIcon = ([self.currentScreen isEqualToNumber:[NSNumber numberWithInt:MenuHomeScreen]])? [UIImage imageNamed:MENU_HOME_ACTIVE]:[UIImage imageNamed:MENU_HOME_INACTIVE];
