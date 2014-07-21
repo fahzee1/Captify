@@ -125,6 +125,13 @@
     [self.menuSettings setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.menuFeed setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
+    [self.menuCamera setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    [self.menuHistory setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    [self.menuFriends setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    [self.menuSettings setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+    [self.menuFeed setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
+
+    
     /*
     self.menuCamera.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];
     self.menuHistory.titleLabel.font = [UIFont fontWithName:@"ProximaNova-Semibold" size:20];

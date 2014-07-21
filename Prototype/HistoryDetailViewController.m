@@ -328,7 +328,7 @@ typedef void (^AnimationBlock) ();
                 self.errorMakeCaptionButton = [UIButton buttonWithType:UIButtonTypeSystem];
                 self.errorMakeCaptionButton.frame = CGRectMake(0 , height + 90, width, 45);
                 self.errorMakeCaptionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-                self.errorMakeCaptionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 17, 0, 0);
+                self.errorMakeCaptionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0);
                 [self.errorMakeCaptionButton setTitle:NSLocalizedString(@"Make your own meme", nil) forState:UIControlStateNormal];
                 [self.errorMakeCaptionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 self.errorMakeCaptionButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:15];

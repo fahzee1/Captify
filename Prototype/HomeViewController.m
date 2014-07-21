@@ -699,7 +699,7 @@
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     int count = [[defaults valueForKey:@"homeToolTip"] intValue];
-    if (count < 10){
+    if (count < 4){
         self.toolTip = [[CMPopTipView alloc] initWithMessage:NSLocalizedString(@"Tap to take picture", nil)];
 
         self.toolTip.backgroundColor = [UIColor whiteColor];
@@ -1150,8 +1150,17 @@
     self.showingPreview = YES;
 
     
-    
+    [self showPhotoLibAlert];
 
+}
+
+- (void)showPhotoLibAlert
+{
+    BOOL shown = [[NSUserDefaults standardUserDefaults] boolForKey:@"photoLibAlert"];
+    if (!shown){
+        [self showAlertWithTitle:NSLocalizedString(@"Reminder", nil) message:NSLocalizedString(@"Double tap to use photos from your photo library. Just a friendly reminder \xF0\x9F\x98\x8A", nil)];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"photoLibAlert"];
+    }
 }
 
 - (void)cancelPreviewImage

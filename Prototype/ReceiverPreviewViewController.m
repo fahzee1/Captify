@@ -254,7 +254,7 @@
                                                           
                                                           
                                                           [self notifyChallengeSender];
-                                                          [self cancelLocalNotifs];
+                                                          //[self cancelLocalNotifs];
                                                           
                                                           [self.navigationController popToRootViewControllerAnimated:YES];
                                                       }

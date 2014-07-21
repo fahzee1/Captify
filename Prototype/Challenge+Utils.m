@@ -427,6 +427,7 @@
                             abort();
                             
                         }
+                        
                     }
                     
                 });
@@ -508,7 +509,22 @@
 }
 
 
-
+/*
++ (void)scheduleLocalNotifForChallenge:(Challenge *)challenge
+{
+    if ([challenge.active intValue] == 1){
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        //notification.fireDate = [[NSDate date] dateByAddingTimeInterval:60*60*12];
+        notification.fireDate = [[NSDate date] dateByAddingTimeInterval:60];
+        notification.alertBody = [NSString stringWithFormat:@"Don't forget to send your caption for \"%@\"!",challenge.name];
+        NSDictionary *payload = @{@"id": challenge.challenge_id};
+        notification.userInfo = payload;
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+    
+    
+}
+ */
 
 + (NSURLSessionDataTask *)sendCreateChallengeRequest:(NSDictionary *)params
                                                image:(NSData *)image
