@@ -1158,7 +1158,7 @@
 {
     BOOL shown = [[NSUserDefaults standardUserDefaults] boolForKey:@"photoLibAlert"];
     if (!shown){
-        [self showAlertWithTitle:NSLocalizedString(@"Reminder", nil) message:NSLocalizedString(@"Double tap to use photos from your photo library. Just a friendly reminder \xF0\x9F\x98\x8A", nil)];
+        [self showAlertWithTitle:NSLocalizedString(@"Friendly Reminder", nil) message:NSLocalizedString(@"Double tap to use photos from your photo library \xF0\x9F\x98\x8A", nil)];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"photoLibAlert"];
     }
 }
