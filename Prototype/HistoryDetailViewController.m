@@ -32,6 +32,7 @@
 #import "UIColor+FlatUI.h"
 #import "AppDelegate.h"
 #import "NSString+utils.h"
+#import "UIImageView+MyInfo.h"
 
 /*
  mark challenge as done when complete
@@ -478,6 +479,12 @@ typedef void (^AnimationBlock) ();
                                                  NSString *pick_id = pick[@"pick_id"];
                                                  NSString *facebook_id = pick[@"facebook_id"];
                                                  NSNumber *is_facebook = pick[@"is_facebook"];
+                                                 NSString *createdString = pick[@"pick_created"];
+                                                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                                 dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+                                                 dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
+                                                 NSDate *created = [dateFormatter dateFromString:createdString];
+
                                                  
                                                  NSMutableDictionary *params = [@{@"player": player,
                                                                            @"context":self.myUser.managedObjectContext,
@@ -488,6 +495,10 @@ typedef void (^AnimationBlock) ();
                                                  if (facebook_id && is_facebook){
                                                      params[@"is_facebook"] = is_facebook;
                                                      params[@"facebook_id"] = facebook_id;
+                                                 }
+                                                 
+                                                 if (created){
+                                                     params[@"created"] = created;
                                                  }
                                                  
                                                  ChallengePicks *pick = [ChallengePicks createChallengePickWithParams:params];
@@ -545,7 +556,7 @@ typedef void (^AnimationBlock) ();
         NSString *pick_id = pickJson[@"pick_id"];
         NSString *facebook_id = pickJson[@"facebook_id"];
         NSNumber *is_facebook = pickJson[@"is_facebook"];
-        NSString *createdString = pickJson[@"challenge_created"];
+        NSString *createdString = pickJson[@"pick_created"];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         dateFormatter.timeZone = [NSTimeZone timeZoneWithName:CAPTIFY_TIMEZONE];
@@ -1821,6 +1832,35 @@ typedef void (^AnimationBlock) ();
 
 }
 
+- (void)showProfile:(UIGestureRecognizer *)tap
+{
+    NSString *username;
+    if ([tap.view isKindOfClass:[UILabel class]]){
+        username = ((UILabel *)tap.view).text;
+        [User showProfileOnVC:self
+                 withUsername:[username stringByReplacingOccurrencesOfString:@" " withString:@"-"]
+                   usingMZHud:YES
+              fromExplorePage:YES
+              showCloseButton:YES
+            delaySetupWithTme:0.8f];
+        
+    }
+    
+    else if ([tap.view isKindOfClass:[UIImageView class]]){
+        UIImageView *image = (UIImageView *)tap.view;
+        if (image.myInfo[@"username"]){
+            username = image.myInfo[@"username"];
+            [User showProfileOnVC:self
+                     withUsername:[username stringByReplacingOccurrencesOfString:@" " withString:@"-"]
+                       usingMZHud:YES
+                  fromExplorePage:YES
+                  showCloseButton:YES
+                delaySetupWithTme:0.8f];
+
+        }
+    }
+}
+
 /*
 - (void)setupShareStyles
 {
@@ -2189,30 +2229,15 @@ typedef void (^AnimationBlock) ();
             UIImageView *imageView = ((HistoryDetailCell *)cell).myImageVew;
             imageView.layer.masksToBounds = YES;
             imageView.layer.cornerRadius = 30;
-            
+            imageView.userInteractionEnabled = YES;
+            NSDictionary *info = @{@"username": pick.player.username};
+            imageView.myInfo = info;
+            UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile:)];
+            imageTap.numberOfTapsRequired = 1;
+            imageTap.numberOfTouchesRequired = 1;
+            [imageView addGestureRecognizer:imageTap];
             [pick.player getCorrectProfilePicWithImageView:imageView];
             
-            if ([pick.player.facebook_user intValue] == 1){
-                NSString *fbString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal",pick.player.facebook_id];
-                NSURL * fbUrl = [NSURL URLWithString:fbString];
-                [imageView sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
-                
-            }
-            
-            else if ([pick.player.is_teamCaptify intValue] == 1 || [pick.player.username isEqualToString:@"Team-Captify"]){
-                imageView.image = [UIImage imageNamed:CAPTIFY_LOGO];
-            }
-            
-            else{
-                imageView.image = [UIImage imageNamed:CAPTIFY_CONTACT_PIC];
-                /*
-                imageView.image = nil;
-                FAImageView *imageView2 = (FAImageView *)imageView;
-                [imageView2 setDefaultIconIdentifier:@"fa-user"];
-                 */
-                
-            }
-
     
             NSString *username;
             if (pick.player.username){
@@ -2237,6 +2262,12 @@ typedef void (^AnimationBlock) ();
             usernameLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:17];
             usernameLabel.numberOfLines = 0;
             [usernameLabel sizeToFit];
+            usernameLabel.userInteractionEnabled = YES;
+            UITapGestureRecognizer *usernameTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showProfile:)];
+            usernameTap.numberOfTapsRequired = 1;
+            usernameTap.numberOfTouchesRequired = 1;
+            [usernameLabel addGestureRecognizer:usernameTap];
+    
     
              captionLabel.text = [NSString stringWithFormat:@"\"%@\"",pick.answer];
             

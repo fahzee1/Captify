@@ -276,6 +276,7 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
+		118ACD88197EBAAE00683CF8 /* UIImageView+MyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */; };
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
@@ -940,6 +941,8 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ChallengeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		118ACD86197EBAAE00683CF8 /* UIImageView+MyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MyInfo.h"; sourceTree = "<group>"; };
+		118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MyInfo.m"; sourceTree = "<group>"; };
 		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
 		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
 		118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriendsViewController.h; sourceTree = "<group>"; };
@@ -1613,6 +1616,8 @@
 				110593F0191BED4F00866C92 /* FeedViewCell.m */,
 				11554C8219708EEE0086369C /* NSString+utils.h */,
 				11554C8319708EEE0086369C /* NSString+utils.m */,
+				118ACD86197EBAAE00683CF8 /* UIImageView+MyInfo.h */,
+				118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2711,6 +2716,7 @@
 				11EFDD741934E0EA0088F2BA /* FeedDetailViewController.m in Sources */,
 				11F6D0211954809600027137 /* UIImage+GIF.m in Sources */,
 				114F827B1913D4CE000F9E54 /* PhoneNumberViewController.m in Sources */,
+				118ACD88197EBAAE00683CF8 /* UIImageView+MyInfo.m in Sources */,
 				11ED4C801905B04F00A2E9B5 /* Appirater.m in Sources */,
 				11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */,
 				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
