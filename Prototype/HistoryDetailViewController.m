@@ -1836,7 +1836,17 @@ typedef void (^AnimationBlock) ();
 {
     NSString *username;
     if ([tap.view isKindOfClass:[UILabel class]]){
+        [AppDelegate hightlightViewOnTap:tap.view
+                               withColor:[UIColor clearColor]
+                               textColor:[UIColor colorWithHexString:CAPTIFY_ORANGE]
+                           originalColor:[UIColor clearColor]
+                       originalTextColor:[UIColor whiteColor]
+                                withWait:0.3f];
+        
         username = ((UILabel *)tap.view).text;
+        if ([username isEqualToString:@"you"] || [username isEqualToString:@"You"]){
+            username = self.myUser.username;
+        }
         [User showProfileOnVC:self
                  withUsername:[username stringByReplacingOccurrencesOfString:@" " withString:@"-"]
                    usingMZHud:YES
