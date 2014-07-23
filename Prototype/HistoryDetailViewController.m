@@ -948,7 +948,7 @@ typedef void (^AnimationBlock) ();
     if (!CGPointEqualToPoint(self.finalCaptionLabel.center, self.priorPoint)){
         self.finalCaptionLabel.center = self.priorPoint;
     }
-    self.finalCaptionLabel.text = [self.selectedCaption capitalizedString];
+    self.finalCaptionLabel.text = self.selectedCaption;
     self.finalCaptionLabel.font = [UIFont fontWithName:CAPTIFY_FONT_CAPTION size:CAPTIFY_CAPTION_SIZE];
     /*
     if ([self.finalCaptionLabel.text length] > 15){
