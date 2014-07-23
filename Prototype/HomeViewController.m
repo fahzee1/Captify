@@ -590,8 +590,8 @@
     // add info button next to snap button
     CGRect snapButtonFrame = self.snapPicButton.frame;
     self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.infoButton.frame = CGRectMake(snapButtonFrame.origin.x + 20, snapButtonFrame.origin.y, 30, 30);
-    self.infoButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:15];
+    self.infoButton.frame = CGRectMake(snapButtonFrame.origin.x + snapButtonFrame.size.width + 20, snapButtonFrame.origin.y, 30, 30);
+    self.infoButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.infoButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-info-circle"] forState:UIControlStateNormal];
     [self.infoButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
     [self.infoButton addTarget:self action:@selector(showInfoAlert) forControlEvents:UIControlEventTouchUpInside];
@@ -697,9 +697,9 @@
 {
     NSString *title = NSLocalizedString(@"Getting Started", nil);
     NSString *message = NSLocalizedString(@"1). Take a picture or choose from your library. Add a title for the"
-                                                "photo, then choose friends to send the challenge to.\n"
+                                                " photo, then choose friends to send the challenge to.\n"
                                            "2). Choose your favorite caption. That caption will then become a customizable meme.\n"
-                                           "3). Use fun filters, fonts, and colors to create your meme. Finally post your meme to Captify and share to other social media.", nil);
+                                           " 3). Use fun filters, fonts, and colors to create your meme. Finally post your meme to Captify and share to other social media.", nil);
     [self showAlertWithTitle:title message:message];
 }
 
@@ -1753,6 +1753,7 @@
         ImageCropper *cropper = [[ImageCropper alloc] initWithImage:self.previewOriginalSnapshot];
         cropper.delegate = self;
         [self presentViewController:cropper animated:YES completion:nil];
+
         
     }
     

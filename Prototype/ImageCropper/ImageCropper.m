@@ -14,7 +14,7 @@
 	self = [super init];
 	
 	if (self) {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 		
 		scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 480.0)];
 		[scrollView setBackgroundColor:[UIColor blackColor]];
@@ -43,16 +43,14 @@
 		[navigationBar setTranslucent:YES];
 		
 		UINavigationItem *aNavigationItem = [[UINavigationItem alloc] initWithTitle:@"Move and Scale"];
-		[aNavigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCropping)] autorelease]];
-		[aNavigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishCropping)] autorelease]];
+		[aNavigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCropping)]];
+		[aNavigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishCropping)]];
 		
 		[navigationBar setItems:[NSArray arrayWithObject:aNavigationItem]];
 		
-		[aNavigationItem release];
 		
-		[[self view] addSubview:navigationBar];
+        [self.view addSubview:navigationBar];
 		
-		[navigationBar release];
 	}
 	
 	return self;
@@ -84,11 +82,6 @@
 	return imageView;
 }
 
-- (void)dealloc {
-	[imageView release];
-	[scrollView release];
-	
-    [super dealloc];
-}
+
 
 @end

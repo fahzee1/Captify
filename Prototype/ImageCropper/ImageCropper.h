@@ -7,12 +7,8 @@
 
 @protocol ImageCropperDelegate;
 
-@interface ImageCropper : UIViewController <UIScrollViewDelegate> {
-	UIScrollView *scrollView;
-	UIImageView *imageView;
-	
-	id <ImageCropperDelegate> delegate;
-}
+@interface ImageCropper : UIViewController <UIScrollViewDelegate>
+
 
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) UIImageView *imageView;
@@ -22,6 +18,8 @@
 - (id)initWithImage:(UIImage *)image;
 
 @end
+
+
 
 @protocol ImageCropperDelegate <NSObject>
 - (void)imageCropper:(ImageCropper *)cropper didFinishCroppingWithImage:(UIImage *)image;
