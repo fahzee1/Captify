@@ -293,6 +293,11 @@
         
         
     }
+    
+    [self showInfoAlert];
+
+    
+
 
     
     //[self testNotifs];
@@ -587,15 +592,7 @@
         self.snapPicButton.frame = snapPicFrame;
     }
     
-    // add info button next to snap button
-    CGRect snapButtonFrame = self.snapPicButton.frame;
-    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.infoButton.frame = CGRectMake(snapButtonFrame.origin.x + snapButtonFrame.size.width + 20, snapButtonFrame.origin.y, 30, 30);
-    self.infoButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
-    [self.infoButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-info-circle"] forState:UIControlStateNormal];
-    [self.infoButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
-    [self.infoButton addTarget:self action:@selector(showInfoAlert) forControlEvents:UIControlEventTouchUpInside];
-    [self.mainControls addSubview:self.infoButton];
+
     
     
     
@@ -695,12 +692,19 @@
 
 - (void)showInfoAlert
 {
-    NSString *title = NSLocalizedString(@"Getting Started", nil);
-    NSString *message = NSLocalizedString(@"1). Take a picture or choose from your library. Add a title for the"
-                                                " photo, then choose friends to send the challenge to.\n"
-                                           "2). Choose your favorite caption. That caption will then become a customizable meme.\n"
-                                           " 3). Use fun filters, fonts, and colors to create your meme. Finally post your meme to Captify and share to other social media.", nil);
-    [self showAlertWithTitle:title message:message];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:@"shownInfo"]){
+        NSString *title = NSLocalizedString(@"Getting Started", nil);
+        NSString *message = NSLocalizedString(@"1). Take a picture or choose from your library. Add a title for the"
+                                                    " photo, then choose friends to send the challenge to."
+                                               " 2). Choose your favorite caption. That caption will then become a customizable meme."
+                                               " 3). Use fun filters, fonts, and colors to create your meme. Finally post your meme to Captify and share to other social media.", nil);
+        [self showAlertWithTitle:title message:message];
+        
+        [defaults setBool:YES forKey:@"shownInfo"];
+    
+    
+    }
 }
 
 - (void)showAlertForPhoneNumber
@@ -762,7 +766,8 @@
     self.toolTip.titleFont = [UIFont fontWithName:CAPTIFY_FONT_LEAGUE size:20];
     [self.toolTip autoDismissAnimated:YES atTimeInterval:5.0];
     [self.toolTip presentPointingAtView:self.snapPicButton inView:self.mainControls animated:YES];
-
+    
+   
 }
 
 
@@ -1723,22 +1728,8 @@
     }
 }
 
-#pragma -mark imagecropper delegate
-- (void)imageCropper:(ImageCropper *)cropper didFinishCroppingWithImage:(UIImage *)image
-{
-    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
-    
-    vc.image = image;
-    vc.name = self.challengeTitle;
-    vc.delegate = self;
-    [self.sideMenuViewController.mainViewController presentViewController:vc animated:YES completion:nil];
 
-}
 
-- (void)imageCropperDidCancel:(ImageCropper *)cropper
-{
-    DLog(@"canceled crop");
-}
 
 #pragma -mark UIImagepickercontroller delegate
 
@@ -1746,14 +1737,9 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
-        //[self setupImagePreviewScreen];
-        
-        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
-        
-        ImageCropper *cropper = [[ImageCropper alloc] initWithImage:self.previewOriginalSnapshot];
-        cropper.delegate = self;
-        [self presentViewController:cropper animated:YES completion:nil];
+        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+        [self setupImagePreviewScreen];
+       
 
         
     }

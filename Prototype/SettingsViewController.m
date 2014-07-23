@@ -349,6 +349,7 @@
     [defaults removeObjectForKey:@"fbServerSuccess"];
     [defaults setBool:NO forKey:@"alreadyLogged"];
     [defaults setBool:NO forKey:@"photoLibAlert"];
+    [defaults setBool:NO forKey:@"shownInfo"];
 
     
     // since logging out set active menu button to home
