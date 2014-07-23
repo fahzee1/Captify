@@ -261,6 +261,7 @@
 		11600E2F18C10983002D46B0 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11600E2E18C10983002D46B0 /* HistoryDetailViewController.m */; };
 		116A0E6D18AD22AF00CF1399 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116A0E6C18AD22AF00CF1399 /* FriendCell.m */; };
 		117594E318A1FF670078EFA2 /* GoHomeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 117594E218A1FF670078EFA2 /* GoHomeTransition.m */; };
+		117F186D198045E70017B95E /* ImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 117F186C198045E70017B95E /* ImageCropper.m */; };
 		11827BB018A2BA2400DAF07C /* Challenge+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */; };
 		1184FDDD18BCFB3700FDEAE0 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FDDC18BCFB3700FDEAE0 /* AddFriendCell.m */; };
 		1184FE1418BD053800FDEAE0 /* TMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184FE0F18BD053800FDEAE0 /* TMCache.m */; };
@@ -914,6 +915,8 @@
 		116A0E6C18AD22AF00CF1399 /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		117594E118A1FF670078EFA2 /* GoHomeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoHomeTransition.h; sourceTree = "<group>"; };
 		117594E218A1FF670078EFA2 /* GoHomeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoHomeTransition.m; sourceTree = "<group>"; };
+		117F186B198045E70017B95E /* ImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCropper.h; sourceTree = "<group>"; };
+		117F186C198045E70017B95E /* ImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropper.m; sourceTree = "<group>"; };
 		11827BAE18A2BA2400DAF07C /* Challenge+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Challenge+Utils.h"; sourceTree = "<group>"; };
 		11827BAF18A2BA2400DAF07C /* Challenge+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Challenge+Utils.m"; sourceTree = "<group>"; };
 		1184FDDB18BCFB3700FDEAE0 /* AddFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendCell.h; sourceTree = "<group>"; };
@@ -1394,6 +1397,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				117F186A198045E70017B95E /* ImageCropper */,
 				11F6CFF71954809600027137 /* SDWebImage */,
 				113BD8C019250FE40099BEA0 /* MZFormSheetController */,
 				11A302401919417F00882275 /* Address Book Wrappers */,
@@ -2050,6 +2054,15 @@
 			name = Transitions;
 			sourceTree = "<group>";
 		};
+		117F186A198045E70017B95E /* ImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				117F186B198045E70017B95E /* ImageCropper.h */,
+				117F186C198045E70017B95E /* ImageCropper.m */,
+			);
+			path = ImageCropper;
+			sourceTree = "<group>";
+		};
 		1184FE0D18BD053800FDEAE0 /* TMCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -2629,6 +2642,7 @@
 				1153E19B18A9DF4800AD950E /* GPUImageNonMaximumSuppressionFilter.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				118EF1B918FC6F4F00755552 /* UIStepper+FlatUI.m in Sources */,
+				117F186D198045E70017B95E /* ImageCropper.m in Sources */,
 				1153E18C18A9DF4800AD950E /* GPUImageLuminanceRangeFilter.m in Sources */,
 				1153E14F18A9DF4800AD950E /* GPUImageCGAColorspaceFilter.m in Sources */,
 				118EF1BC18FC6F4F00755552 /* UIToolbar+FlatUI.m in Sources */,

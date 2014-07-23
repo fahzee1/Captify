@@ -39,14 +39,14 @@
 #import "ABWrappers.h"
 #import "AwesomeAPICLient.h"
 #import "NSString+utils.h"
-
+#import "ImageCropper.h"
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define ONEFIELD_TAG 1990
 #define PHONE_LIMIT 12
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate, TWTSideMenuViewControllerDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate, TWTSideMenuViewControllerDelegate,ImageCropperDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *snapPicButton;
 @property CGRect firstFrame;
@@ -1723,14 +1723,37 @@
     }
 }
 
+#pragma -mark imagecropper delegate
+- (void)imageCropper:(ImageCropper *)cropper didFinishCroppingWithImage:(UIImage *)image
+{
+    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
+    
+    vc.image = image;
+    vc.name = self.challengeTitle;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)imageCropperDidCancel:(ImageCropper *)cropper
+{
+    DLog(@"canceled crop");
+}
+
 #pragma -mark UIImagepickercontroller delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
-        [self setupImagePreviewScreen];
+        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+        //[self setupImagePreviewScreen];
+        
+        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
+        
+        ImageCropper *cropper = [[ImageCropper alloc] initWithImage:self.previewOriginalSnapshot];
+        cropper.delegate = self;
+        [self presentViewController:cropper animated:YES completion:nil];
+        
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
