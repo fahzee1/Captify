@@ -215,7 +215,9 @@
         [GAI sharedInstance].trackUncaughtExceptions = YES;
         [GAI sharedInstance].dispatchInterval = 20;
         [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-        [[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
+        //[[GAI sharedInstance] trackerWithTrackingId:@"UA-50324419-1"];
+        [[GAI sharedInstance] trackerWithTrackingId:@"UA-53095119-1"]; // this is live version
+     
     }
     
        

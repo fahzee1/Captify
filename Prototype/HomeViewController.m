@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
 @property (weak, nonatomic) IBOutlet UIButton *flashButton;
 @property (weak, nonatomic) IBOutlet UIButton *rotateButton;
+@property (weak, nonatomic) UIButton *infoButton;
 
 @property (strong,nonatomic)AVCaptureSession *session;
 @property (strong,nonatomic)AVCaptureDevice *cameraDevice;
@@ -586,6 +587,19 @@
         self.snapPicButton.frame = snapPicFrame;
     }
     
+    // add info button next to snap button
+    CGRect snapButtonFrame = self.snapPicButton.frame;
+    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.infoButton.frame = CGRectMake(snapButtonFrame.origin.x + 20, snapButtonFrame.origin.y, 30, 30);
+    self.infoButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:15];
+    [self.infoButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-info-circle"] forState:UIControlStateNormal];
+    [self.infoButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+    [self.infoButton addTarget:self action:@selector(showInfoAlert) forControlEvents:UIControlEventTouchUpInside];
+    [self.mainControls addSubview:self.infoButton];
+    
+    
+    
+    
     // alert shows in viewdidappear which is to late from where this is being
     // called so delay a second then run
     if (!self.makePhoneAlert.isVisible){
@@ -677,6 +691,16 @@
     
 
     
+}
+
+- (void)showInfoAlert
+{
+    NSString *title = NSLocalizedString(@"Getting Started", nil);
+    NSString *message = NSLocalizedString(@"1). Take a picture or choose from your library. Add a title for the"
+                                                "photo, then choose friends to send the challenge to.\n"
+                                           "2). Choose your favorite caption. That caption will then become a customizable meme.\n"
+                                           "3). Use fun filters, fonts, and colors to create your meme. Finally post your meme to Captify and share to other social media.", nil);
+    [self showAlertWithTitle:title message:message];
 }
 
 - (void)showAlertForPhoneNumber
