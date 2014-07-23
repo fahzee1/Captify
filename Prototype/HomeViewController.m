@@ -1731,7 +1731,8 @@
     vc.image = image;
     vc.name = self.challengeTitle;
     vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.sideMenuViewController.mainViewController presentViewController:vc animated:YES completion:nil];
+
 }
 
 - (void)imageCropperDidCancel:(ImageCropper *)cropper
