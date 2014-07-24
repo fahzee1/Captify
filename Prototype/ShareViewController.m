@@ -641,7 +641,7 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (NSString *)shareCaption
 {
-    return [NSString stringWithFormat:@"Captify by %@",[self.myPick.player displayName]];
+    return [NSString stringWithFormat:@"Captify by %@.\n Get Captify at http://gocaptify.com/download/",[self.myPick.player displayName]];
 }
 
 - (void)notifyFriends
