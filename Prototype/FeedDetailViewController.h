@@ -10,7 +10,19 @@
 #import "User+Utils.h"
 #import "AppDelegate.h"
 
+#ifdef USE_GOOGLE_ANALYTICS
+#import "GAITrackedViewController.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAI.h"
+#endif
+
+#ifdef USE_GOOGLE_ANALYTICS
+@interface FeedDetailViewController : GAITrackedViewController
+#else
+
 @interface FeedDetailViewController : UIViewController
+#endif
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *myImageView;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;

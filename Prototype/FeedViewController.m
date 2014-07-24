@@ -97,7 +97,13 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Explore page";
+    }
 
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

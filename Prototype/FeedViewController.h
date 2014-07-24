@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef USE_GOOGLE_ANALYTICS
+#import "GAITrackedViewController.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAI.h"
+#endif
+
+#ifdef USE_GOOGLE_ANALYTICS
+@interface FeedViewController : GAITrackedViewController
+#else
+
 @interface FeedViewController : UIViewController
+#endif
 
 
 @property (strong,nonatomic)UIImage *latestImage;

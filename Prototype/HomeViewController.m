@@ -39,14 +39,14 @@
 #import "ABWrappers.h"
 #import "AwesomeAPICLient.h"
 #import "NSString+utils.h"
-#import "ImageCropper.h"
+
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define ONEFIELD_TAG 1990
 #define PHONE_LIMIT 12
 
-@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate, TWTSideMenuViewControllerDelegate,ImageCropperDelegate>
+@interface HomeViewController ()<UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,ODelegate,SenderPreviewDelegate,MenuDelegate,UITextFieldDelegate, TWTSideMenuViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *snapPicButton;
 @property CGRect firstFrame;

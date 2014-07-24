@@ -88,6 +88,11 @@
 {
     [super viewWillAppear:animated];
     
+    if (USE_GOOGLE_ANALYTICS){
+        self.screenName = @"Explore detail page";
+    }
+
+    
     if (self.showTopLabel){
         [self setupTopAndBottomLabel];
         [self animateTopLabels];
