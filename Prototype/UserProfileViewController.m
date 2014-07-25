@@ -15,6 +15,7 @@
 #import "FeedViewCell.h"
 #import "FeedDetailViewController.h"
 #import "AppDelegate.h"
+#import "NSString+utils.h"
 
 
 
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
+
+@property BOOL triedCaptionedMedia;
 
 @end
 
@@ -502,6 +505,46 @@
 
 }
 
+- (void)loadMediaForCell:(FeedViewCell *)cell
+          andMediaString:(NSString *)media
+{
+    
+    [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media]
+                        placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                 options:SDWebImageRefreshCached
+                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   if (!image){
+                                       DLog(@"%@",error);
+                                       if (!self.triedCaptionedMedia){
+                                           int chopValue = 5;
+                                           
+                                           if ([media containsString:@".jpg"]){
+                                               chopValue = 4;
+                                           }
+                                           else if ([media containsString:@".jpeg"]){
+                                               chopValue = 5;
+                                           }
+                                           
+                                           NSString *choppedString = [media substringToIndex:[media length] - chopValue];
+                                           NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.jpg",choppedString];
+                                           
+                                           [self loadMediaForCell:cell andMediaString:captionedMediaName];
+                                           
+                                           self.triedCaptionedMedia = YES;
+                                       }
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                   }
+                                   
+                               }];
+
+}
+
 
 - (NSArray *)sentMedia
 {
@@ -560,16 +603,10 @@
         }
         
 
-        [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media_url]
-                            placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
-                                     options:SDWebImageRefreshCached
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       if (!image){
-                                           DLog(@"%@",error);
-                                       }
-
-                                   }];
-          
+        
+        [self loadMediaForCell:cell andMediaString:media_url];
+        
+                 
     }
     
     /*

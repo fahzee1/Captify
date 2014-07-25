@@ -856,9 +856,14 @@
                                                         DLog(@"%@",exception);
                                                     }
                                                     
+                                                    if ([user[@"username"] isKindOfClass:[NSNull class]]){
+                                                        continue;
+                                                    }
+
+                                                    
                                                     if ([user[@"username"] isEqualToString:self.myUser.username])
                                                     {
-                                                        return;
+                                                        continue;
                                                     }
 
                                                     
