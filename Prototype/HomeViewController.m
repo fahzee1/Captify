@@ -285,11 +285,24 @@
 
     }
     
-    
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"username"]){
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults valueForKey:@"username"]){
+        NSString *channels = @"channels";
         PFInstallation *currentOnstallation = [PFInstallation currentInstallation];
-        [currentOnstallation setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] forKey:@"username"];
+        [currentOnstallation setValue:[defaults valueForKey:@"username"] forKey:@"username"];
+        [currentOnstallation addUniqueObject:@"captify-all" forKey:channels];
+        
+        if ([[defaults valueForKey:@"facebook_user"]boolValue]){
+            [currentOnstallation addUniqueObject:@"captify-facebook" forKey:channels];
+
+        }
+        else{
+            [currentOnstallation addUniqueObject:@"captify-nonfacebook" forKey:channels];
+        }
+        
+        
         [currentOnstallation saveInBackground];
+        
         
         
     }
