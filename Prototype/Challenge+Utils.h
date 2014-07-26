@@ -60,6 +60,9 @@ typedef void (^DeleteChallengeBlock) (BOOL wasSuccessful);
 + (void)deleteChallengeWithParams:(NSDictionary *)params
                             block:(DeleteChallengeBlock)block;
 
++(void)likeExlorePagePicWithParams:(NSDictionary *)params
+                             block:(DeleteChallengeBlock)block;
+
 
 + (Challenge *) createTestChallengeWithUser:(User *)user;
 

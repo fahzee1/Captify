@@ -13,6 +13,7 @@
 #import "NSString+FontAwesome.h"
 #import "UserProfileViewController.h"
 #import "ParseNotifications.h"
+#import "Challenge+Utils.h"
 
 #define NOTIFICATION_CREATE_TAG 112
 #define NOTIFICATION_ERROR_TAG 111
@@ -220,6 +221,7 @@
         }
         
         
+        
         [view addSubview:image];
         [view addSubview:friendName];
         view.userInteractionEnabled = YES;
@@ -249,20 +251,44 @@
             if ([self.winnerLabelButton.titleLabel.text length] >= 17){
                 self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
             }
-
             
         }
+        
+        
+        if (!self.likes){
+            self.likes = @0;
+            
+        }
+        
+        CGRect winnerLabelFrame = self.winnerLabel.frame;
+        self.likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(winnerLabelFrame.origin.x, winnerLabelFrame.origin.y + 21, winnerLabelFrame.size.width, winnerLabelFrame.size.height)];
+        if ([self.likes intValue] == 1){
+            self.likesLabel.text = [NSString stringWithFormat:@"%@ like",self.likes];
+        }
+        else{
+            self.likesLabel.text = [NSString stringWithFormat:@"%@ likes",self.likes];
+        }
+        self.likesLabel.textColor = [UIColor whiteColor];
+        self.likesLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+                
+            
+        
+        
+        
         
 
         
         [self.view addSubview:self.winnerLabel];
         [self.view addSubview:self.winnerLabelButton];
+        [self.view addSubview:self.likesLabel];
     }
     [self.view addSubview:self.topLabel];
 
     
     
 }
+
+
 
 - (void)removeTopLabel
 {
@@ -324,6 +350,18 @@
     
     [self sendNotificationWithMessage:nil andButton:sender];
     
+    if (self.challenge_id){
+        [Challenge likeExlorePagePicWithParams:@{@"challenge_id": self.challenge_id}
+                                         block:^(BOOL wasSuccessful) {
+                                             if (wasSuccessful){
+                                                 DLog(@"successfully liked it");
+                                             }
+                                             else{
+                                                 DLog(@"failed to like it");
+                                             }
+                                         }];
+    }
+    
     
 }
 
@@ -360,6 +398,17 @@
                          message:NSLocalizedString(@"Saved to liked photos", nil)
                  forNotification:NO];
         button.hidden = YES;
+        
+        int likes = [self.likes intValue];
+        likes += 1;
+        self.likes = [NSNumber numberWithInt:likes];
+        if ([self.likes intValue] == 1){
+            self.likesLabel.text = [NSString stringWithFormat:@"%@ like",self.likes];
+        }
+        else{
+            self.likesLabel.text = [NSString stringWithFormat:@"%@ likes",self.likes];
+        }
+
         
     }
     else{

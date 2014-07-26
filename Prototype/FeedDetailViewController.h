@@ -30,6 +30,8 @@
 @property (strong, nonatomic) NSURL *facebookPicURL;
 @property (strong, nonatomic) NSString *profileUsername;
 @property (strong, nonatomic) NSString *winnerUsername;
+@property (strong, nonatomic) NSNumber *likes;
+@property (strong, nonatomic) UILabel *likesLabel;
 @property (strong, nonatomic) NSNumber *facebookUser;
 @property (strong, nonatomic) NSString *profileScore;
 @property (strong, nonatomic)UIView *topLabel;
@@ -37,6 +39,7 @@
 @property (strong, nonatomic)UIButton *winnerLabelButton;
 @property (strong, nonatomic)UILabel *winnerLabel;
 @property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString *challenge_id;
 
 @property (strong, nonatomic)User *myUser;
 @property BOOL showTopLabel;

@@ -567,6 +567,7 @@
     }
     
 }
+
 + (void)deleteChallengeWithParams:(NSDictionary *)params
                             block:(DeleteChallengeBlock)block
 {
@@ -600,6 +601,50 @@
 
     }];
     
+}
+
+
++ (void)likeExlorePagePicWithParams:(NSDictionary *)params
+                              block:(DeleteChallengeBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPIChallengeExploreLike parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             [client stopNetworkActivity];
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             if (code == 1){
+                 if (block){
+                    block(YES);
+                 }
+             }
+             
+             if (code == -10){
+                 DLog(@"%@",[responseObject valueForKey:@"message"]);
+                 if (block){
+                     block(NO);
+                 }
+             }
+
+             
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error) {
+             [client stopNetworkActivity];
+             [JDStatusBarNotification showWithStatus:error.localizedDescription
+                                        dismissAfter:2.0
+                                           styleName:JDStatusBarStyleError];
+             if ([error.localizedDescription isEqualToString:CAPTIFY_UNAUTHORIZED]){
+                 [self showAlertWithTitle:@"Error" message:@"You're currently unauthorized. Try logging out then logging back in."];
+             }
+             
+             
+             DLog(@"%@",error);
+             if (block){
+                 block(NO);
+             }
+
+    }];
+
 }
 
 + (void)updateChallengeWithParams:(NSDictionary *)params

@@ -348,7 +348,7 @@
     [defaults removeObjectForKey:@"phone_number"];
     [defaults removeObjectForKey:@"fbServerSuccess"];
     [defaults setBool:NO forKey:@"alreadyLogged"];
-    [defaults setBool:NO forKey:@"photoLibAlert"];
+    //[defaults setBool:NO forKey:@"photoLibAlert"];
     //[defaults setBool:NO forKey:@"shownInfo"];
 
     

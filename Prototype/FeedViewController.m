@@ -366,9 +366,11 @@
         NSString *name = json[@"name"];
         NSString *username = json[@"sender"][0][@"username"];
         NSNumber *is_facebook = json[@"sender"][0][@"is_facebook"];
+        NSString *challenge_id = json[@"id"];
         NSString *score;
         NSString *winnerUsername;
-        
+        NSNumber *likes;
+
         @try {
             winnerUsername = json[@"winner"];
         }
@@ -383,6 +385,12 @@
             score = @"0";
         }
         
+        @try {
+            likes = json[@"likes"];
+        }
+        @catch (NSException *exception) {
+            likes = @0;
+        }
         
         NSURL *fbURL;
         if ([is_facebook intValue] == 1){
@@ -405,6 +413,8 @@
                 ((FeedDetailViewController *)detailVC).showTopLabel = YES;
                 ((FeedDetailViewController *)detailVC).winnerUsername = winnerUsername;
                 ((FeedDetailViewController *)detailVC).name = name;
+                ((FeedDetailViewController *)detailVC).likes = likes;
+                ((FeedDetailViewController *)detailVC).challenge_id = challenge_id;
                 if (indexPath.row == 0 && self.latestImage){
                     ((FeedDetailViewController *)detailVC).image = self.latestImage;
                 }
