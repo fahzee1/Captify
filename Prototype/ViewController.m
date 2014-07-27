@@ -214,8 +214,8 @@
                                                   
                                                   // get this users friends using the app to notify them of joing the app
                                                   self.friendIDS = [@[] mutableCopy];
-                                                  FBRequest *friendsRequest = [FBRequest requestWithGraphPath:@"me/friends?fields=installed"
-                                                                                                   parameters:nil
+                                                  FBRequest *friendsRequest = [FBRequest requestWithGraphPath:@"me/friends"
+                                                                                                   parameters:@{@"fields":@"name,installed,first_name"}
                                                                                                    HTTPMethod:@"GET"];
                                                   [friendsRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                                       NSArray *friends = result[@"data"];
@@ -223,8 +223,10 @@
                                                   
                                                       if (!error){
                                                           for (NSDictionary<FBGraphUser> *friend in friends){
-                                                              [self.friendIDS addObject:friend.id];
-                                                               DLog(@"name: %@ id: %@", friend.name,friend.id);
+                                                              if (friend[@"installed"]){
+                                                                  [self.friendIDS addObject:friend.id];
+                                                                   DLog(@"name: %@ id: %@", friend.name,friend.id);
+                                                              }
                                                           }
                                                       }
                                                       else{

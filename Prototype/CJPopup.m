@@ -242,7 +242,7 @@
     
     CGRect titleFrame = title.frame;
     UILabel *message = [[UILabel alloc] init];
-    message.text = [NSString stringWithFormat:@"%@ %@",sender,NSLocalizedString(@"selected your caption!", nil)];
+    message.text = [NSString stringWithFormat:@"%@ %@",sender,NSLocalizedString(@"selected your caption! \n \n              +10", nil)];
     message.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:30];
     //message.frame = CGRectMake(titleFrame.origin.x - 20, titleFrame.size.height + 30, 300, 300);
     message.numberOfLines = 0;
