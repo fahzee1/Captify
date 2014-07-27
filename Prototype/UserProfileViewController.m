@@ -27,6 +27,7 @@
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
 
 @property BOOL triedCaptionedMedia;
+@property BOOL triedMedia;
 
 @end
 
@@ -508,35 +509,44 @@
 - (void)loadMediaForCell:(FeedViewCell *)cell
           andMediaString:(NSString *)media
 {
+    NSString *captionedMediaName = nil;
+     if (!self.triedCaptionedMedia){
+        int chopValue = 5;
+            
+        if ([media containsString:@".jpg"]){
+            chopValue = 4;
+        }
+        else if ([media containsString:@".jpeg"]){
+            chopValue = 5;
+        }
+        
+        NSString *choppedString = [media substringToIndex:[media length] - chopValue];
+        captionedMediaName = [NSString stringWithFormat:@"%@-2.jpg",choppedString];
+         
+        self.triedCaptionedMedia = YES;
+     }
     
-    [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media]
+   
+    if (!captionedMediaName){
+        captionedMediaName = media;
+    }
+    
+
+    [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:captionedMediaName]
                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
                                  options:SDWebImageRefreshCached
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                    if (!image){
                                        DLog(@"%@",error);
-                                       if (!self.triedCaptionedMedia){
-                                           int chopValue = 5;
+                                    
+                                       if (!self.triedMedia){
                                            
-                                           if ([media containsString:@".jpg"]){
-                                               chopValue = 4;
-                                           }
-                                           else if ([media containsString:@".jpeg"]){
-                                               chopValue = 5;
-                                           }
-                                           
-                                           NSString *choppedString = [media substringToIndex:[media length] - chopValue];
-                                           NSString *captionedMediaName = [NSString stringWithFormat:@"%@-2.jpg",choppedString];
-                                           
-                                           [self loadMediaForCell:cell andMediaString:captionedMediaName];
-                                           
-                                           self.triedCaptionedMedia = YES;
+                            
+                                           [self loadMediaForCell:cell andMediaString:media];
+                                           self.triedMedia = YES;
+
                                        }
-                                       
-                                       
-                                       
-                                       
-                                       
+
                                        
                                        
                                    }

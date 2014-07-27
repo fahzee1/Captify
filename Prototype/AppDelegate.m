@@ -22,10 +22,9 @@
 #import "UIColor+HexValue.h"
 #import "Appirater.h"
 #import "SDImageCache.h"
-#import <CrashReporter/CrashReporter.h>
 #import <CoreData/CoreData.h>
 #import <Parse/Parse.h>
-#import <Instabug/Instabug.h>
+//#import <Instabug/Instabug.h>
 #import <NewRelicAgent/NewRelic.h>
 
 
@@ -156,15 +155,11 @@
     
     
     
-    /*
-    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                                              NSFontAttributeName: [UIFont fontWithName:@"ProximaNova-Semibold" size:15],} forState:UIControlStateDisabled];
-     */
-   
-    [Instabug startWithToken:@"030fec824f91225989cf6376fc5ffe72" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventShake];
-    [Instabug setEmailIsRequired:YES];
-    [Instabug setCommentPlaceholder:@"Please describe the issue in detail so we can get it fixed ASAP."];
-    [Instabug setiPhoneShakingThreshold:1.5];
+    
+    //[Instabug startWithToken:@"030fec824f91225989cf6376fc5ffe72" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventShake];
+    //[Instabug setEmailIsRequired:YES];
+    //[Instabug setCommentPlaceholder:@"Please describe the issue in detail so we can get it fixed ASAP."];
+    //[Instabug setiPhoneShakingThreshold:1.5];
     
     
     [NewRelicAgent startWithApplicationToken:@"AA8bf8afa1c4ec185948e41ec43207f71974da8f0e"];
@@ -177,17 +172,6 @@
      UIRemoteNotificationTypeAlert|
      UIRemoteNotificationTypeSound];
     
-    
-    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    NSError *error;
-    
-    if ([crashReporter hasPendingCrashReport]){
-        [self handleCrashReport];
-    }
-    
-    if (![crashReporter enableCrashReporterAndReturnError:&error]){
-        NSLog(@"Could not enable crash reporter");
-    }
     
    
     // Extract the notification data
@@ -207,8 +191,7 @@
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     [Appirater setDebug:NO];
-    
-     [Appirater appLaunched:YES];
+    [Appirater appLaunched:YES];
     
     
     if (USE_GOOGLE_ANALYTICS){
@@ -224,43 +207,7 @@
     return YES;
 }
 
-- (void)handleCrashReport
-{
-    
-    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    NSData *crashData;
-    NSError *error;
-   
-    // Try loading the crash report
-    crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-    if (crashData == nil) {
-        NSLog(@"Could not load crash report: %@", error);
-        [self finish];
-    }
-    
-    // We could send the report from here, but we'll just print out
-    // some debugging info instead
-    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
-    if (report == nil) {
-        NSLog(@"Could not parse crash report");
-        [self finish];
-    }
-    
-    NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-    NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
-        report.signalInfo.code, report.signalInfo.address);
-    
-    // Purge the report
-    finish:
-    [crashReporter purgePendingCrashReport];
-    return;
-}
 
-- (void)finish
-{
-    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    [crashReporter purgePendingCrashReport];
-}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

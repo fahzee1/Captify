@@ -113,7 +113,7 @@
 
 #define CAPTIFY_UNAUTHORIZED @"Request failed: unauthorized (401)"
 
-#define USE_GOOGLE_ANALYTICS 0
+#define USE_GOOGLE_ANALYTICS 1
 
 
 #define MENU_HOME_ACTIVE @"captify-blue"

@@ -350,18 +350,6 @@
     
     [self sendNotificationWithMessage:nil andButton:sender];
     
-    if (self.challenge_id){
-        [Challenge likeExlorePagePicWithParams:@{@"challenge_id": self.challenge_id}
-                                         block:^(BOOL wasSuccessful) {
-                                             if (wasSuccessful){
-                                                 DLog(@"successfully liked it");
-                                             }
-                                             else{
-                                                 DLog(@"failed to like it");
-                                             }
-                                         }];
-    }
-    
     
 }
 
@@ -394,9 +382,11 @@
         
         [self savePicToLiked];
         
+        /*
         [self showAlertWithTitle:NSLocalizedString(@"Success", nil)
                          message:NSLocalizedString(@"Saved to liked photos", nil)
                  forNotification:NO];
+         */
         button.hidden = YES;
         
         int likes = [self.likes intValue];
@@ -408,6 +398,19 @@
         else{
             self.likesLabel.text = [NSString stringWithFormat:@"%@ likes",self.likes];
         }
+        
+        if (self.challenge_id){
+            [Challenge likeExlorePagePicWithParams:@{@"challenge_id": self.challenge_id}
+                                             block:^(BOOL wasSuccessful) {
+                                                 if (wasSuccessful){
+                                                     DLog(@"successfully liked it");
+                                                 }
+                                                 else{
+                                                     DLog(@"failed to like it");
+                                                 }
+                                             }];
+        }
+
 
         
     }
