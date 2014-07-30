@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWTableViewCell.h"
 
-@interface HistoryDetailCell : UITableViewCell
+@interface HistoryDetailCell : SWTableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *myImageVew;
 

@@ -32,7 +32,8 @@
 #import "UIColor+FlatUI.h"
 #import "AppDelegate.h"
 #import "NSString+utils.h"
-#import "UIImageView+MyInfo.h"
+#import "UIView+MyInfo.h"
+#import "NSMutableArray+SWUtilityButtons.h"
 
 /*
  mark challenge as done when complete
@@ -47,7 +48,7 @@
 #define FINAL_CAPTION_TAG 3433
 typedef void (^AnimationBlock) ();
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate,SWTableViewCellDelegate>
 
 @property (strong, nonatomic) NSArray *data;
 @property BOOL shareToFacebook;
@@ -99,6 +100,8 @@ typedef void (^AnimationBlock) ();
 @property (strong,nonatomic)CMPopTipView *toolTip;
 @property (strong, nonatomic)UIAlertView *confirmCaptionAlert;
 @property (strong, nonatomic)UIAlertView *makeCaptionAlert;
+@property (strong, nonatomic)UIAlertView *deleteAlert;
+@property (strong, nonatomic)UIAlertView *reportAlert;
 @property (strong, nonatomic)UIButton *makeButton;
 @property (strong,nonatomic)NSArray *activeFonts;
 @property (strong, nonatomic)NSString *currentFont;
@@ -1969,7 +1972,18 @@ typedef void (^AnimationBlock) ();
     // if user chooses caption. Hide caption select buttons
     // and add caption to the image
 
-    if (alertView == self.makeCaptionAlert){
+
+    if (alertView == self.reportAlert){
+        if (buttonIndex == 1){
+            [self showAlertWithTitle:NSLocalizedString(@"Thanks", nil)
+                             message:NSLocalizedString(@"This caption and it's sender has been reported. Thanks for helping improve Captify!", nil)];
+            if (self.reportAlert.myInfo[@"cell"]){
+                 [((SWTableViewCell *)self.reportAlert.myInfo[@"cell"]) hideUtilityButtonsAnimated:YES];
+            }
+        }
+    }
+    
+    else if (alertView == self.makeCaptionAlert){
         if ([alertView textFieldAtIndex:0].delegate == self){
             [alertView textFieldAtIndex:0].delegate = nil;
         }
@@ -2104,6 +2118,83 @@ typedef void (^AnimationBlock) ();
     }
 }
 
+#pragma -mark SWTableviewcell delegate
+// click event on left utility button
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index
+{
+    
+}
+
+// click event on right utility button
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    if (index == 0){
+        // report
+        DLog(@"report this");
+        NSString *title = NSLocalizedString(@"Report", nil);
+        NSString *message = NSLocalizedString(@"Are you sure you want to report this?", nil);
+        NSString *cancel = NSLocalizedString(@"Cancel", nil);
+        NSString *confirm = NSLocalizedString(@"Yes", nil);
+        self.reportAlert = [[UIAlertView alloc]
+                            initWithTitle:title
+                            message:message
+                            delegate:self
+                            cancelButtonTitle:cancel
+                            otherButtonTitles:confirm, nil];
+        NSDictionary *info = @{@"cell": cell};
+        self.reportAlert.myInfo = info;
+        
+        [self.reportAlert show];
+    }
+    
+    /*
+    else if (index == 1){
+        // delete from  core data
+        DLog(@"delete this");
+        
+        NSIndexPath *index = [self.myTable indexPathForCell:cell];
+        NSString *title = NSLocalizedString(@"Delete", nil);
+        NSString *message = NSLocalizedString(@"Are you sure you want to delete this?", nil);
+        NSString *cancel = NSLocalizedString(@"Cancel", nil);
+        NSString *confirm = NSLocalizedString(@"Yes", nil);
+        self.deleteAlert = [[UIAlertView alloc]
+                            initWithTitle:title
+                            message:message
+                            delegate:self
+                            cancelButtonTitle:cancel
+                            otherButtonTitles:confirm, nil];
+        NSDictionary *info = @{@"section": [NSNumber numberWithInteger:index.section]};
+        self.deleteAlert.myInfo = info;
+        [self.deleteAlert show];
+
+    }
+     */
+}
+
+// utility button open/close event
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
+{
+    
+}
+
+// prevent multiple cells from showing utilty buttons simultaneously
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    return YES;
+}
+
+// prevent cell(s) from displaying left/right utility buttons
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
+{
+    if (!self.hideSelectButtonsMax){
+        return NO;
+    }
+    else{
+        return YES;
+    }
+}
+
+
 #pragma -mark Uitableview delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -2217,6 +2308,25 @@ typedef void (^AnimationBlock) ();
     }
 }
 
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] title:NSLocalizedString(@"Report", nil)];
+    
+    /*
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                title:NSLocalizedString(@"Delete", nil)];
+     */
+    
+    return rightUtilityButtons;
+}
+
+- (NSArray *)leftButtons
+{
+    return @[];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"historyDetailCell";
@@ -2234,6 +2344,10 @@ typedef void (^AnimationBlock) ();
     if ([pick isKindOfClass:[ChallengePicks class]]){
         
         if ([cell isKindOfClass:[HistoryDetailCell class]]){
+            ((HistoryDetailCell *)cell).rightUtilityButtons = [self rightButtons];
+            ((HistoryDetailCell *)cell).leftUtilityButtons = [self leftButtons];
+            ((HistoryDetailCell *)cell).delegate = self;
+            
             UILabel *captionLabel = ((HistoryDetailCell *)cell).myCaptionLabel;
             UILabel *usernameLabel = ((HistoryDetailCell *)cell).myUsername;
             UIButton *selectButton = ((HistoryDetailCell *)cell).mySelectButton;

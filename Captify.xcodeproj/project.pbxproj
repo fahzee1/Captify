@@ -274,7 +274,6 @@
 		1186B1C0188F6A280082F35F /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1BF188F6A280082F35F /* CoreDataTableViewController.m */; };
 		1186B1C3188F79250082F35F /* MyUserModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1C1188F79250082F35F /* MyUserModel.xcdatamodeld */; };
 		1186B1D2189749BB0082F35F /* ChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1186B1D1189749BB0082F35F /* ChallengeViewController.m */; };
-		118ACD88197EBAAE00683CF8 /* UIImageView+MyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */; };
 		118D513318B65947001AA7FC /* FriendsContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513218B65947001AA7FC /* FriendsContainerController.m */; };
 		118D513718B6639E001AA7FC /* FacebookFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513518B6639E001AA7FC /* FacebookFriendsViewController.m */; };
 		118D513B18B66807001AA7FC /* SearchFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118D513A18B66807001AA7FC /* SearchFriendsViewController.m */; };
@@ -326,6 +325,13 @@
 		11A3024B1919417F00882275 /* ABContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302441919417F00882275 /* ABContactsHelper.m */; };
 		11A3024C1919417F00882275 /* ABGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302461919417F00882275 /* ABGroup.m */; };
 		11A3024D1919417F00882275 /* ABStandin.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A302481919417F00882275 /* ABStandin.m */; };
+		11A661C619894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661BB19894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.m */; };
+		11A661C719894AF600B8F2A1 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661BD19894AF600B8F2A1 /* SWCellScrollView.m */; };
+		11A661C819894AF600B8F2A1 /* SWLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661BF19894AF600B8F2A1 /* SWLongPressGestureRecognizer.m */; };
+		11A661C919894AF600B8F2A1 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661C119894AF600B8F2A1 /* SWTableViewCell.m */; };
+		11A661CA19894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661C319894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.m */; };
+		11A661CB19894AF600B8F2A1 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661C519894AF600B8F2A1 /* SWUtilityButtonView.m */; };
+		11A661CE1989549400B8F2A1 /* UIView+MyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A661CD1989549400B8F2A1 /* UIView+MyInfo.m */; };
 		11A8525118EDE4EA00557A5B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525018EDE4EA00557A5B /* CFNetwork.framework */; };
 		11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525218EDE4F700557A5B /* CoreLocation.framework */; };
 		11A8525518EDE50300557A5B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 11A8525418EDE50300557A5B /* libz.dylib */; };
@@ -936,8 +942,6 @@
 		1186B1C2188F79250082F35F /* MyUserModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel.xcdatamodel; sourceTree = "<group>"; };
 		1186B1D0189749BB0082F35F /* ChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeViewController.h; sourceTree = "<group>"; };
 		1186B1D1189749BB0082F35F /* ChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ChallengeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		118ACD86197EBAAE00683CF8 /* UIImageView+MyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MyInfo.h"; sourceTree = "<group>"; };
-		118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MyInfo.m"; sourceTree = "<group>"; };
 		118D513118B65947001AA7FC /* FriendsContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsContainerController.h; sourceTree = "<group>"; };
 		118D513218B65947001AA7FC /* FriendsContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsContainerController.m; sourceTree = "<group>"; };
 		118D513418B6639E001AA7FC /* FacebookFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookFriendsViewController.h; sourceTree = "<group>"; };
@@ -1023,6 +1027,20 @@
 		11A302471919417F00882275 /* ABStandin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABStandin.h; sourceTree = "<group>"; };
 		11A302481919417F00882275 /* ABStandin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABStandin.m; sourceTree = "<group>"; };
 		11A302491919417F00882275 /* ABWrappers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABWrappers.h; sourceTree = "<group>"; };
+		11A661BA19894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
+		11A661BB19894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SWUtilityButtons.m"; sourceTree = "<group>"; };
+		11A661BC19894AF600B8F2A1 /* SWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWCellScrollView.h; sourceTree = "<group>"; };
+		11A661BD19894AF600B8F2A1 /* SWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWCellScrollView.m; sourceTree = "<group>"; };
+		11A661BE19894AF600B8F2A1 /* SWLongPressGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLongPressGestureRecognizer.h; sourceTree = "<group>"; };
+		11A661BF19894AF600B8F2A1 /* SWLongPressGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		11A661C019894AF600B8F2A1 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
+		11A661C119894AF600B8F2A1 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
+		11A661C219894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonTapGestureRecognizer.h; sourceTree = "<group>"; };
+		11A661C319894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
+		11A661C419894AF600B8F2A1 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonView.h; sourceTree = "<group>"; };
+		11A661C519894AF600B8F2A1 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonView.m; sourceTree = "<group>"; };
+		11A661CC1989549400B8F2A1 /* UIView+MyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MyInfo.h"; sourceTree = "<group>"; };
+		11A661CD1989549400B8F2A1 /* UIView+MyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MyInfo.m"; sourceTree = "<group>"; };
 		11A8525018EDE4EA00557A5B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		11A8525218EDE4F700557A5B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11A8525418EDE50300557A5B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1383,6 +1401,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11A661B919894AF600B8F2A1 /* SWTableViewCell */,
 				11F6CFF71954809600027137 /* SDWebImage */,
 				113BD8C019250FE40099BEA0 /* MZFormSheetController */,
 				11A302401919417F00882275 /* Address Book Wrappers */,
@@ -1605,8 +1624,8 @@
 				110593F0191BED4F00866C92 /* FeedViewCell.m */,
 				11554C8219708EEE0086369C /* NSString+utils.h */,
 				11554C8319708EEE0086369C /* NSString+utils.m */,
-				118ACD86197EBAAE00683CF8 /* UIImageView+MyInfo.h */,
-				118ACD87197EBAAE00683CF8 /* UIImageView+MyInfo.m */,
+				11A661CC1989549400B8F2A1 /* UIView+MyInfo.h */,
+				11A661CD1989549400B8F2A1 /* UIView+MyInfo.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2198,6 +2217,25 @@
 			path = "Address Book Wrappers";
 			sourceTree = "<group>";
 		};
+		11A661B919894AF600B8F2A1 /* SWTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				11A661BA19894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.h */,
+				11A661BB19894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.m */,
+				11A661BC19894AF600B8F2A1 /* SWCellScrollView.h */,
+				11A661BD19894AF600B8F2A1 /* SWCellScrollView.m */,
+				11A661BE19894AF600B8F2A1 /* SWLongPressGestureRecognizer.h */,
+				11A661BF19894AF600B8F2A1 /* SWLongPressGestureRecognizer.m */,
+				11A661C019894AF600B8F2A1 /* SWTableViewCell.h */,
+				11A661C119894AF600B8F2A1 /* SWTableViewCell.m */,
+				11A661C219894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.h */,
+				11A661C319894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.m */,
+				11A661C419894AF600B8F2A1 /* SWUtilityButtonView.h */,
+				11A661C519894AF600B8F2A1 /* SWUtilityButtonView.m */,
+			);
+			path = SWTableViewCell;
+			sourceTree = "<group>";
+		};
 		11AB2E4718AAA61000B511E1 /* AFNetworking-AutoRetry-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -2614,6 +2652,7 @@
 				1153E1DB18A9DF4800AD950E /* GPUImageZoomBlurFilter.m in Sources */,
 				1153E14418A9DF4800AD950E /* GPUImageAddBlendFilter.m in Sources */,
 				1153E1A318A9DF4800AD950E /* GPUImagePinchDistortionFilter.m in Sources */,
+				11A661CB19894AF600B8F2A1 /* SWUtilityButtonView.m in Sources */,
 				1153E19B18A9DF4800AD950E /* GPUImageNonMaximumSuppressionFilter.m in Sources */,
 				1107314C18863B1E0065D77F /* AFSecurityPolicy.m in Sources */,
 				118EF1B918FC6F4F00755552 /* UIStepper+FlatUI.m in Sources */,
@@ -2637,6 +2676,7 @@
 				1153E1C818A9DF4800AD950E /* GPUImageThresholdEdgeDetectionFilter.m in Sources */,
 				11F6D0181954809600027137 /* NSData+ImageContentType.m in Sources */,
 				112153B718983DB100EADE97 /* SSKeychain.m in Sources */,
+				11A661C919894AF600B8F2A1 /* SWTableViewCell.m in Sources */,
 				11C8E8D418C9277F00FE6B5E /* CJFilterView.m in Sources */,
 				1153E15C18A9DF4800AD950E /* GPUImageCrosshatchFilter.m in Sources */,
 				1153E1B318A9DF4800AD950E /* GPUImageSaturationFilter.m in Sources */,
@@ -2652,6 +2692,7 @@
 				1153E1D018A9DF4800AD950E /* GPUImageTwoInputFilter.m in Sources */,
 				1153E17E18A9DF4800AD950E /* GPUImageHueFilter.m in Sources */,
 				118EF1B218FC6F4F00755552 /* UIColor+FlatUI.m in Sources */,
+				11A661C619894AF600B8F2A1 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				1126C0A918EA0E3E00838484 /* ChallengePicks.m in Sources */,
 				11F6D0241954809600027137 /* UIImageView+HighlightedWebCache.m in Sources */,
 				1153E14918A9DF4800AD950E /* GPUImageBilateralFilter.m in Sources */,
@@ -2704,7 +2745,6 @@
 				11EFDD741934E0EA0088F2BA /* FeedDetailViewController.m in Sources */,
 				11F6D0211954809600027137 /* UIImage+GIF.m in Sources */,
 				114F827B1913D4CE000F9E54 /* PhoneNumberViewController.m in Sources */,
-				118ACD88197EBAAE00683CF8 /* UIImageView+MyInfo.m in Sources */,
 				11ED4C801905B04F00A2E9B5 /* Appirater.m in Sources */,
 				11ABFC8A18C7870600639A20 /* UIView+Glow.m in Sources */,
 				1114293A18BDBAFD00D36F0D /* DraggableCaption.m in Sources */,
@@ -2717,6 +2757,7 @@
 				1153E14018A9DF4800AD950E /* GLProgram.m in Sources */,
 				1153E1A018A9DF4800AD950E /* GPUImageOverlayBlendFilter.m in Sources */,
 				1153E19F18A9DF4800AD950E /* GPUImageOutput.m in Sources */,
+				11A661C719894AF600B8F2A1 /* SWCellScrollView.m in Sources */,
 				1153E19818A9DF4800AD950E /* GPUImageMovieComposition.m in Sources */,
 				1144915518AE8BEB009B47B6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				118EF1AF18FC6F4F00755552 /* FUISwitch.m in Sources */,
@@ -2741,6 +2782,7 @@
 				1153E15718A9DF4800AD950E /* GPUImageColorMatrixFilter.m in Sources */,
 				11F6D01A1954809600027137 /* SDWebImageCompat.m in Sources */,
 				113F9FA3194E9AD20051A58D /* Challenge.m in Sources */,
+				11A661CA19894AF600B8F2A1 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				1153E1DD18A9DF4800AD950E /* GPUImageMovieWriter.m in Sources */,
 				1153E15518A9DF4800AD950E /* GPUImageColorDodgeBlendFilter.m in Sources */,
 				1153E17F18A9DF4800AD950E /* GPUImageiOSBlurFilter.m in Sources */,
@@ -2759,6 +2801,7 @@
 				1153E19318A9DF4800AD950E /* GPUImageMonochromeFilter.m in Sources */,
 				110731011876640F0065D77F /* AppDelegate.m in Sources */,
 				11AB2E4F18AAA61000B511E1 /* AFHTTPSessionManager+AutoRetry.m in Sources */,
+				11A661CE1989549400B8F2A1 /* UIView+MyInfo.m in Sources */,
 				11FA2F4118D79380000F6DB9 /* Contacts.m in Sources */,
 				1153E1B418A9DF4800AD950E /* GPUImageScreenBlendFilter.m in Sources */,
 				11DC6B6C18B717AA00C129D6 /* UIFont+FontAwesome.m in Sources */,
@@ -2811,6 +2854,7 @@
 				1107314F18863B1E0065D77F /* AFURLResponseSerialization.m in Sources */,
 				1153E1DC18A9DF4800AD950E /* GPUImageContext.m in Sources */,
 				1153E18918A9DF4800AD950E /* GPUImageLocalBinaryPatternFilter.m in Sources */,
+				11A661C819894AF600B8F2A1 /* SWLongPressGestureRecognizer.m in Sources */,
 				118F24F818BFC2C90007797E /* UIImage+Utils.m in Sources */,
 				1153E14118A9DF4800AD950E /* GPUImage3x3ConvolutionFilter.m in Sources */,
 				11F6D0201954809600027137 /* UIButton+WebCache.m in Sources */,

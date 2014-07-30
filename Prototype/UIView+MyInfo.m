@@ -1,15 +1,15 @@
 //
-//  UIImageView+MyInfo.m
+//  UIView+MyInfo.m
 //  Captify
 //
-//  Created by CJ Ogbuehi on 7/22/14.
+//  Created by CJ Ogbuehi on 7/30/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
-#import "UIImageView+MyInfo.h"
+#import "UIView+MyInfo.h"
 #import <objc/runtime.h>
 
-@implementation UIImageView (MyInfo)
+@implementation UIView (MyInfo)
 
 -(void)setMyInfo:(id)info
 {
