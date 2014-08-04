@@ -172,6 +172,9 @@
         }
         else if (!IS_IPHONE5){
             cushion = 110;
+            if ([self.sentMedia count] < 3){
+                cushion = 135;
+            }
         }
         if (!self.fromExplorePage){
             height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
