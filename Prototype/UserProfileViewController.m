@@ -197,8 +197,9 @@
 - (void)fetchProfile
 {
     if (self.usernameString){
-    [User fetchUserProfileWithData:@{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"],
-                                     @"forProfile":[NSNumber numberWithBool:YES]}
+        NSDictionary *params = @{@"username": [self.usernameString stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                 @"forProfile":[NSNumber numberWithBool:YES]};
+    [User fetchUserProfileWithData:params
                              block:^(BOOL wasSuccessful, NSNumber *json, id data) {
                                  //DLog(@"%@",data);
                                  if (wasSuccessful){
@@ -228,7 +229,6 @@
                                          }
                                          
                                          self.sentMedia = challengeTemp;
-                                         
                                              
                                          //[[NSUserDefaults standardUserDefaults] setObject:challengeTemp forKey:@"sentMedia"];
                                          // reload table
