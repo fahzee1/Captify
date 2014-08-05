@@ -172,15 +172,24 @@
         }
         else if (!IS_IPHONE5){
             cushion = 110;
-            if ([self.sentMedia count] < 3){
-                cushion = 135;
             }
-        }
+        int boost = 50;
         if (!self.fromExplorePage){
-            height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+            if ([self.sentMedia count] == 1 && !IS_IPHONE5){
+                height = cushion * (int)[self.sentMedia count] + boost;
+            }
+            else{
+                height = cushion * (int)[self.sentMedia count];
+            }//cell height times amount of cells to add to scrollview
         }
         else{
-            height = cushion * (int)[self.sentMedia count]; //cell height times amount of cells to add to scrollview
+            if ([self.sentMedia count] == 1 && !IS_IPHONE5){
+                height = cushion * (int)[self.sentMedia count] + boost;
+            }
+            else{
+                height = cushion * (int)[self.sentMedia count];
+            }//cell height times amount of cells to add to scrollview
+
         }
         int scrollHeight = [UIScreen mainScreen].bounds.size.height + height;
         self.scrollView.contentSize = CGSizeMake(320, scrollHeight);
@@ -513,6 +522,8 @@
           andMediaString:(NSString *)media
 {
     NSString *captionedMediaName = nil;
+
+    
      if (!self.triedCaptionedMedia){
         int chopValue = 5;
             
@@ -551,7 +562,9 @@
                                        }
 
                                        
-                                       
+                                   }
+                                   else{
+                                       self.triedCaptionedMedia = NO;
                                    }
                                    
                                }];
