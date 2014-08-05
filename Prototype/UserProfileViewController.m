@@ -550,21 +550,37 @@
                         placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
                                  options:SDWebImageRefreshCached
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   
                                    if (!image){
-                                       DLog(@"%@",error);
+                                       DLog(@"no captioned image for url: %@",[imageURL absoluteString]);
                                     
                                        if (!self.triedMedia){
                                            
-                            
-                                           [self loadMediaForCell:cell andMediaString:media];
-                                           self.triedMedia = YES;
+                                            self.triedMedia = YES;
+                                           [cell.myImageView sd_setImageWithURL:[NSURL URLWithString:media]
+                                                               placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]
+                                                                        options:SDWebImageRefreshCached
+                                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                                                          if (!image){
+                                                                                 DLog(@"no regular image for url: %@",[imageURL absoluteString]);
+                                                                          }
+                                                                          else{
+                                                                               DLog(@"got regular image for url: %@",[imageURL absoluteString]);
+                                                                          }
+                                                                      }];
+        
 
+                                       }
+                                       else{
+                                           return;
                                        }
 
                                        
                                    }
                                    else{
+                                        DLog(@"got captioned image for url: %@",[imageURL absoluteString]);
                                        self.triedCaptionedMedia = NO;
+                                       self.triedMedia = NO;
                                    }
                                    
                                }];
