@@ -27,7 +27,7 @@
 #define TITLE_LIMIT 40
 #define CAPTION_LIMIT 100
 #define historyNOTIFPOINT CGPointMake([UIScreen mainScreen].bounds.size.width - 40 ,7)
-#define INVITE_TEXT @"Captify me :) http://gocaptify.com/download"
+#define INVITE_TEXT @"Play with me on the new Captify app. A caption contest game app. Click the link to download. http://gocaptify.com/download"
 #define TICK NSDate *startTime = [NSDate date]
 #define TOCK NSLog(@"Elapsed Time: %f", -[startTime timeIntervalSinceNow])
 

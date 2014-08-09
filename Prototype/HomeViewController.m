@@ -820,9 +820,17 @@
             NSString *phoneNumber = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"+0123456789"] invertedSet]] componentsJoinedByString:@""];
             DLog(@"%@ formatted number is %@",contact.firstname,phoneNumber);
             
-            if (contact.phonenumbers){
-                [list addObject:phoneNumber];
+            if (phoneNumber && contact.firstname){
+                NSDictionary *nameAndNumber = @{contact.firstname: phoneNumber};
+                if (contact.phonenumbers){
+                    [list addObject:nameAndNumber];
+                }
+
             }
+            else{
+                continue;
+            }
+    
         }
         
         
@@ -844,12 +852,12 @@
                                                         facebook_id = user[@"facebook_id"];
                                                     }
                                                     
-                                                    NSDictionary *params;
+                                                    NSMutableDictionary *params;
                                                     @try {
-                                                        params = @{@"username": user[@"username"],
+                                                        params = [@{@"username": user[@"username"],
                                                                    @"facebook_user":user[@"is_facebook"],
                                                                    @"facebook_id":facebook_id,
-                                                                   @"is_contact":[NSNumber numberWithBool:YES]};
+                                                                   @"is_contact":[NSNumber numberWithBool:YES]} mutableCopy];
                                                         
                                                     }
                                                     @catch (NSException *exception) {
@@ -865,16 +873,20 @@
                                                     {
                                                         continue;
                                                     }
+                                                    
+                                                    if (user[@"display_name"]){
+                                                        params[@"display_name"] = user[@"display_name"];
+                                                    }
 
                                                     
                                                     User *userCreated = [User createFriendWithParams:params
                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
                                                     if (userCreated){
-                                                        DLog(@"successfully created %@", user[@"username"]);
+                                                        DLog(@"successfully created username:%@ displayname:%@", user[@"username"],user[@"display_name"]);
                                                     }
                                                     else
                                                     {
-                                                        DLog(@"failerd created %@", user[@"username"]);
+                                                        DLog(@"failed created username:%@ displayname:%@", user[@"username"],user[@"display_name"]);
                                                     }
                                                     
                                                 }
