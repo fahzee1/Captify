@@ -9,7 +9,7 @@
 #import "PhoneNumberViewController.h"
 #import "UIColor+HexValue.h"
 
-@interface PhoneNumberViewController ()<UITextFieldDelegate>
+@interface PhoneNumberViewController ()<UITextFieldDelegate,UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
 @property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
 
@@ -32,7 +32,7 @@
 {
     [super viewDidLoad];
 	
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tappedCancel)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tappedCancelAlert)];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tappedSave)];
     
     self.navigationItem.leftBarButtonItem = leftButton;
@@ -77,6 +77,22 @@
 
 
     
+}
+
+
+- (void)tappedCancelAlert
+{
+    NSString *title = NSLocalizedString(@"Are you sure?", nil);
+    NSString *message = NSLocalizedString(@"You will not show up as a contact to any of your friends using Captify.", nil);
+    NSString *cancelButton = NSLocalizedString(@"Cancel", nil);
+    NSString *okButton = NSLocalizedString(@"Ok", nil);
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                     message:message
+                                                    delegate:self
+                                           cancelButtonTitle:cancelButton
+                                           otherButtonTitles:okButton, nil];
+    [alert show];
 }
 
 - (void)tappedCancel
@@ -130,6 +146,13 @@
     return YES;
 }
 
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1){
+        [self tappedCancel];
+    }
+}
 
 
 

@@ -53,6 +53,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *topMenuButton;
 @property (weak, nonatomic) IBOutlet UIButton *flashButton;
 @property (weak, nonatomic) IBOutlet UIButton *rotateButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *showFriendsButton;
 @property (weak, nonatomic) UIButton *infoButton;
 
 @property (strong,nonatomic)AVCaptureSession *session;
@@ -622,6 +624,11 @@
     [self.topMenuButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
 
 
+    self.showFriendsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
+    [self.showFriendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-list"] forState:UIControlStateNormal];
+    [self.showFriendsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+    
+    
     
     self.flashButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:20];
     [self.flashButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ On", @" On button for camera flash"),[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bolt"]] forState:UIControlStateNormal];
@@ -1051,8 +1058,20 @@
 }
 
 
-- (IBAction)tappedRotateCamera:(UIButton *)sender {
+- (IBAction)tappedRotateCamera:(UIButton *)sender
+{
     [self toggleCameraPosition];
+}
+
+
+- (IBAction)tappedShowFriends:(UIButton *)sender
+{
+    SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
+    vc.delegate = self;
+    vc.onlyShowFriends = YES;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 

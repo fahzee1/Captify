@@ -2,7 +2,7 @@
 //  User.m
 //  Captify
 //
-//  Created by CJ Ogbuehi on 5/30/14.
+//  Created by CJ Ogbuehi on 8/10/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @dynamic is_contactFriend;
 @dynamic is_deleted;
 @dynamic is_friend;
+@dynamic is_teamCaptify;
 @dynamic phone_number;
 @dynamic pic_url;
 @dynamic private;
@@ -28,7 +29,7 @@
 @dynamic sync_status;
 @dynamic timestamp;
 @dynamic username;
-@dynamic is_teamCaptify;
+@dynamic display_name;
 @dynamic picks;
 @dynamic recipient_challenges;
 @dynamic sent_challenges;

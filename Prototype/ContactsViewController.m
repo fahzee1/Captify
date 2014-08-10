@@ -54,7 +54,12 @@
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
      */
     
-    self.navigationItem.title = NSLocalizedString(@"Select Friends", nil);
+    if (!self.onlyShowFriends){
+        self.navigationItem.title = NSLocalizedString(@"Select Friends", nil);
+    }
+    else{
+        self.navigationItem.title = NSLocalizedString(@"Contacts", nil);
+    }
     self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationItem.rightBarButtonItem = rightButton;
 
@@ -197,6 +202,20 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1){
+        NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+        User *user = [sectionArray objectAtIndex:indexPath.row];
+        if (user.display_name){
+            return 60;
+        }
+    }
+    
+    return 48;
+    
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -220,6 +239,7 @@
                     ((FriendCell *)cell).myFriendUsername.text = [[friend stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
                 }
                 
+                
        
                 
             }
@@ -232,6 +252,9 @@
                 [((FriendCell *)cell).myFriendPic sd_setImageWithURL:fbUrl placeholderImage:[UIImage imageNamed:CAPTIFY_CHALLENGE_PLACEHOLDER]];
         
             }
+            
+            UILabel *displayName = ((FriendCell *)cell).myFriendDisplayName;
+            displayName.text = nil;
         
             
         }
@@ -244,7 +267,17 @@
             if ([user isKindOfClass:[User class]]){
                 //((FriendCell *)cell).myFriendScore.text = [user.score stringValue];
                 UILabel *username = ((FriendCell *)cell).myFriendUsername;
+                UILabel *displayName = ((FriendCell *)cell).myFriendDisplayName;
                 username.text = [user displayName];
+                
+                if (user.display_name){
+                    displayName.text = user.display_name;
+                }
+                else{
+                    displayName.text = @"";
+                }
+                
+                
                 
                 //[[user.username stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString];
                 //[cell.contentView sendSubviewToBack:((FriendCell *)cell).myFriendPic];
@@ -282,85 +315,86 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 0){
-        // recents
-        id friend = [self.recents objectAtIndex:indexPath.row];
-        NSString *username;
-        if ([friend isKindOfClass:[NSString class]]){
-            username = friend;
-        }
-        else if ([friend isKindOfClass:[NSDictionary class]]){
-            username = friend[@"username"];
-        }
-        
-        
-        if ([self.selection containsObject:username]){
-            [self.selection removeObject:username];
-        }
-        else{
-            [self.selection addObject:username];
-        }
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerDataChanged:)]){
-            [self.delegate ContactViewControllerDataChanged:self];
-        }
-        
-        
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        if (![self.indexPaths containsObject:indexPath]){
-            [self.indexPaths addObject:indexPath];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if (!self.onlyShowFriends){
+        if (indexPath.section == 0){
+            // recents
+            id friend = [self.recents objectAtIndex:indexPath.row];
+            NSString *username;
+            if ([friend isKindOfClass:[NSString class]]){
+                username = friend;
+            }
+            else if ([friend isKindOfClass:[NSDictionary class]]){
+                username = friend[@"username"];
+            }
             
-        }
-        else{
-            [self.indexPaths removeObject:indexPath];
-            cell.accessoryType = UITableViewCellAccessoryNone;
             
-        }
-        
-        [self.myTable reloadData];
-
-        
-        
-        
-    }
-    // regular
-    else{
-        NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
-        
-        User *user = [sectionArray objectAtIndex:indexPath.row];
-        if ([user isKindOfClass:[User class]]){
-            
-            if ([self.selection containsObject:user.username]){
-                [self.selection removeObject:user.username];
+            if ([self.selection containsObject:username]){
+                [self.selection removeObject:username];
             }
             else{
-                [self.selection addObject:user.username];
+                [self.selection addObject:username];
             }
             
             if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerDataChanged:)]){
                 [self.delegate ContactViewControllerDataChanged:self];
             }
-        }
-        
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        if (![self.indexPaths containsObject:indexPath]){
-            [self.indexPaths addObject:indexPath];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            
+            
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            
+            if (![self.indexPaths containsObject:indexPath]){
+                [self.indexPaths addObject:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                
+            }
+            else{
+                [self.indexPaths removeObject:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                
+            }
+            
+            [self.myTable reloadData];
+
+            
+            
             
         }
+        // regular
         else{
-            [self.indexPaths removeObject:indexPath];
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+            
+            User *user = [sectionArray objectAtIndex:indexPath.row];
+            if ([user isKindOfClass:[User class]]){
+                
+                if ([self.selection containsObject:user.username]){
+                    [self.selection removeObject:user.username];
+                }
+                else{
+                    [self.selection addObject:user.username];
+                }
+                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(ContactViewControllerDataChanged:)]){
+                    [self.delegate ContactViewControllerDataChanged:self];
+                }
+            }
+            
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            
+            if (![self.indexPaths containsObject:indexPath]){
+                [self.indexPaths addObject:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                
+            }
+            else{
+                [self.indexPaths removeObject:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryNone;
 
+            }
+            
+            [self.myTable reloadData];
         }
-        
-        [self.myTable reloadData];
-    }
 
-    
+    }
 }
 
 

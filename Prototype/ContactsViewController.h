@@ -31,6 +31,7 @@
 @property (nonatomic, retain)User *myUser;
 @property (strong, nonatomic)NSArray *myFriends;
 @property (strong,nonatomic)NSMutableArray *selection;
+@property BOOL onlyShowFriends;
 
 - (void)clearSelections;
 

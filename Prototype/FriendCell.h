@@ -16,4 +16,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *myFriendUsername;
 @property (nonatomic, weak) IBOutlet UILabel *myFriendScore;
 @property (nonatomic, weak) IBOutlet UIImageView *myFriendPic;
+
+@property (weak, nonatomic) IBOutlet UILabel *myFriendDisplayName;
+
 @end

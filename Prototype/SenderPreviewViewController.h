@@ -35,6 +35,7 @@
 @property (strong, nonatomic) UIImage *image;
 @property (weak) id <SenderPreviewDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
+@property BOOL onlyShowFriends;
 
 
 

@@ -1,8 +1,8 @@
 //
 //  ChallengePicks.m
-//  Prototype
+//  Captify
 //
-//  Created by CJ Ogbuehi on 3/31/14.
+//  Created by CJ Ogbuehi on 8/10/14.
 //  Copyright (c) 2014 CJ Ogbuehi. All rights reserved.
 //
 
@@ -14,11 +14,12 @@
 @implementation ChallengePicks
 
 @dynamic answer;
+@dynamic first_open;
 @dynamic is_chosen;
 @dynamic pick_id;
 @dynamic timestamp;
-@dynamic first_open;
-@dynamic player;
+@dynamic is_deleted;
 @dynamic challenge;
+@dynamic player;
 
 @end

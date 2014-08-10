@@ -80,28 +80,38 @@
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = leftButton;
     self.navigationController.navigationBarHidden = NO;
-    self.navigationItem.title = NSLocalizedString(@"Preview", nil);
+    if (!self.onlyShowFriends){
+        self.navigationItem.title = NSLocalizedString(@"Preview", nil);
+        
+        //self.name = @"Guess what im eating";
+        //self.phrase = @"Nothing stupid";
+        self.previewImage.image = [UIImage imageWithImage:self.image convertToSize:self.previewImage.frame.size];
+        //self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
+        //self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
+        
+        
+        self.topLabel.text = self.name;
+        self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
+        if (!IS_IPHONE5){
+            self.scrollView.contentSize = CGSizeMake(320, 700);
+        }
+        else{
+            self.scrollView.contentSize = CGSizeMake(320, 620);
+        }
+        
+        self.automaticallyAdjustsScrollViewInsets = NO;
+
+        
+    }
+    else{
+        self.navigationItem.title = NSLocalizedString(@"Friends", nil);
+        [self.previewImage removeFromSuperview];
+        self.previewImage = nil;
+    }
     
     [self setupStyles];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    //self.name = @"Guess what im eating";
-    //self.phrase = @"Nothing stupid";
-    self.previewImage.image = [UIImage imageWithImage:self.image convertToSize:self.previewImage.frame.size];
-    //self.friendsArray = @[@"joe_bryant22",@"quiver_hut",@"dSanders21",@"theCantoon",@"darkness",@"fruity_cup",@"d_rose",@"splacca",@"on_fire",@"IAM"];
-    //self.facebookFriendsArray = @[@"dSanders21",@"theCantoon",@"darkness"];
- 
-    self.topLabel.text = self.name;
-    self.sections = @[NSLocalizedString(@"Facebook", nil), NSLocalizedString(@"Contacts", nil)];
-    if (!IS_IPHONE5){
-        self.scrollView.contentSize = CGSizeMake(320, 700);
-    }
-    else{
-        self.scrollView.contentSize = CGSizeMake(320, 620);
-    }
-    
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self fetchContacts2];
     
@@ -179,37 +189,48 @@
 {
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
     
-    self.topLabel.textColor = [UIColor whiteColor];
-    self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
-    self.topLabel.layer.borderWidth = 2;
-    self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
-    self.topLabel.layer.cornerRadius = 5;
-    if ([self.name length] > 30){
-        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+    if (!self.onlyShowFriends){
+        self.topLabel.textColor = [UIColor whiteColor];
+        self.topLabel.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_DARK_GREY] CGColor];
+        self.topLabel.layer.borderWidth = 2;
+        self.topLabel.layer.borderColor = [[UIColor colorWithHexString:CAPTIFY_LIGHT_GREY] CGColor];
+        self.topLabel.layer.cornerRadius = 5;
+        if ([self.name length] > 30){
+            self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:15];
+        }
+        else{
+            self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+        }
+        self.topLabel.textAlignment = NSTextAlignmentCenter;
+        self.topLabel.numberOfLines = 0;
+        [self.topLabel sizeToFit];
+        self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
+                                         self.topLabel.frame.origin.y,
+                                         [UIScreen mainScreen].bounds.size.width,
+                                         self.topLabel.frame.size.height);
+        
+        CGRect labelFrame = self.topLabel.frame;
+        labelFrame.size.height += 10;
+        self.topLabel.frame = labelFrame;
+        
+        
+
+        self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
+        self.selectedContainerView.layer.cornerRadius = 5;
+        self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:12];
     }
     else{
-        self.topLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:17];
+        
+        [self.topLabel removeFromSuperview];
+        [self.selectedContainerView removeFromSuperview];
+        self.topLabel = nil;
+        self.selectedContainerView = nil;
     }
-    self.topLabel.textAlignment = NSTextAlignmentCenter;
-    self.topLabel.numberOfLines = 0;
-    [self.topLabel sizeToFit];
-    self.topLabel.frame = CGRectMake(self.topLabel.frame.origin.x,
-                                     self.topLabel.frame.origin.y,
-                                     [UIScreen mainScreen].bounds.size.width,
-                                     self.topLabel.frame.size.height);
-    
-    CGRect labelFrame = self.topLabel.frame;
-    labelFrame.size.height += 10;
-    self.topLabel.frame = labelFrame;
-    
-
-    self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.selectedContainerView.layer.cornerRadius = 5;
-    self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:12];
     
     
  
 
+    
     self.contactsButton.backgroundColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_GREY];
     [self.contactsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.contactsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_BLUE] forState:UIControlStateHighlighted];
@@ -249,6 +270,29 @@
     self.facebookLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
     self.facebookLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
+    if (self.onlyShowFriends){
+        [self.view addSubview:self.facebookButton];
+        [self.view addSubview:self.facebookLabelArrow];
+        [self.view addSubview:self.contactsButton];
+        [self.view addSubview:self.contactsLabelArrow];
+        
+        CGRect fbFrame = self.facebookButton.frame;
+        CGRect coFrame = self.contactsButton.frame;
+        CGRect fbArrowFrame = self.facebookLabelArrow.frame;
+        CGRect coArrowFrame = self.contactsLabelArrow.frame;
+        
+        fbFrame.origin.x -= 20;
+        coFrame.origin.x -= 20;
+        fbFrame.origin.y -= 250;
+        coFrame.origin.y -= 250;
+        fbArrowFrame.origin.y -= 250;
+        coArrowFrame.origin.y -= 250;
+        
+        self.facebookButton.frame = fbFrame;
+        self.contactsButton.frame = coFrame;
+        self.facebookLabelArrow.frame = fbArrowFrame;
+        self.contactsLabelArrow.frame = coArrowFrame;
+    }
 
     
 
@@ -265,14 +309,20 @@
     
     
     
-    // the bottom send button
-    [self.bottomSendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
-    self.bottomSendButton.layer.opacity = 0.6f;
-    self.bottomSendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
-    self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
-    self.bottomSendButton.layer.cornerRadius = 5;
-    self.bottomSendButton.userInteractionEnabled = NO;
-    [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    if (!self.onlyShowFriends){
+        // the bottom send button
+        [self.bottomSendButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_DARK_GREY] forState:UIControlStateNormal];
+        self.bottomSendButton.layer.opacity = 0.6f;
+        self.bottomSendButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:20];
+        self.bottomSendButton.layer.backgroundColor = [[UIColor colorWithHexString:CAPTIFY_ORANGE] CGColor];
+        self.bottomSendButton.layer.cornerRadius = 5;
+        self.bottomSendButton.userInteractionEnabled = NO;
+        [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else{
+        [self.bottomSendButton removeFromSuperview];
+        self.bottomSendButton = nil;
+    }
 
 
 
@@ -994,9 +1044,13 @@
 
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
-    
-    self.facebookFriendsArray = friendPicker.selection;
-    //[friendPicker clearSelection];
+    if (!self.onlyShowFriends){
+        self.facebookFriendsArray = friendPicker.selection;
+    }
+    else{
+        [friendPicker clearSelection];
+    }
+
     
 
 }
@@ -1072,6 +1126,9 @@
         _contactsScreen = [[UINavigationController alloc] initWithRootViewController:contactScreen];
         if ([contactScreen isKindOfClass:[ContactsViewController class]]){
             ((ContactsViewController *)contactScreen).delegate = self;
+            if (self.onlyShowFriends){
+                ((ContactsViewController *)contactScreen).onlyShowFriends = YES;
+            }
         }
     }
     
@@ -1083,9 +1140,15 @@
     if (!_facebookScreen){
         NSSet *fields = [NSSet setWithObjects:@"installed", nil];
         _facebookScreen = [[FBFriendPickerViewController alloc] init];
-        _facebookScreen.title = @"Select Friends";
         _facebookScreen.delegate = self;
-        _facebookScreen.allowsMultipleSelection = YES;
+        if (!self.onlyShowFriends){
+            _facebookScreen.title = @"Select Friends";
+            _facebookScreen.allowsMultipleSelection = YES;
+        }
+        else{
+            _facebookScreen.title = @"Facebook";
+            _facebookScreen.allowsMultipleSelection = NO;
+        }
         _facebookScreen.fieldsForRequest = fields;
         [_facebookScreen loadData];
         

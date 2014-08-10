@@ -10,6 +10,7 @@
                 <outlet property="cameraOptionsContainerView" destination="BGi-lM-cM6" id="Hi5-YM-Uc5"/>
                 <outlet property="flashButton" destination="O9U-Lk-TIO" id="GiU-jn-034"/>
                 <outlet property="rotateButton" destination="nwN-wY-RFL" id="lgs-M0-25a"/>
+                <outlet property="showFriendsButton" destination="ufE-b1-yWT" id="xYq-vO-MOF"/>
                 <outlet property="snapPicButton" destination="g1Z-mL-RyG" id="etM-lO-pkS"/>
                 <outlet property="topMenuButton" destination="ZqY-AN-cLc" id="fJ4-6S-Uqg"/>
             </connections>
@@ -75,6 +76,16 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ufE-b1-yWT">
+                    <rect key="frame" x="253" y="506" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tappedShowFriends:" destination="-1" eventType="touchUpInside" id="PBW-BV-FBe"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

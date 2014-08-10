@@ -442,7 +442,8 @@
             if (wasSuccessful){
                 
                 
-                [challenge.managedObjectContext deleteObject:challenge];
+                //[challenge.managedObjectContext deleteObject:challenge];
+                challenge.is_deleted = [NSNumber numberWithBool:YES];
                 NSError *error;
                 [challenge.managedObjectContext save:&error];
                 //NSMutableArray *copy = [self.data mutableCopy];

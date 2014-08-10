@@ -2396,8 +2396,8 @@ typedef void (^AnimationBlock) ();
     
              captionLabel.text = [NSString stringWithFormat:@"\"%@\"",pick.answer];
             
-            if ([captionLabel.text length] >= 40){
-                NSString *uString = [captionLabel.text substringToIndex:39];
+            if ([captionLabel.text length] >= 50){
+                NSString *uString = [captionLabel.text substringToIndex:49];
                 captionLabel.text = [NSString stringWithFormat:@"\"%@...\"",uString];
                 //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
             }

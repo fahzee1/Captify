@@ -185,6 +185,13 @@
         is_teamCaptify = params[@"is_teamCaptify"];
     }
     
+    NSString *display_name;
+    if (params[@"display_name"]){
+        display_name = params[@"display_name"];
+        
+    }
+    
+    
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     request.predicate = [NSPredicate predicateWithFormat:@"username = %@",[params valueForKey:@"username"]];
@@ -202,10 +209,13 @@
             user.facebook_user = facebook_user;
             user.facebook_id = facebook_id;
             user.is_teamCaptify = is_teamCaptify;
-            NSError *error;
-            [user.managedObjectContext save:&error];
-
         }
+        
+        user.display_name = display_name;
+        NSError *error;
+        [user.managedObjectContext save:&error];
+
+        
 
         return user;
     }
@@ -226,6 +236,7 @@
     user.is_contactFriend = is_contact;
     user.score = score;
     user.is_teamCaptify = is_teamCaptify;
+    user.display_name = display_name;
     
     if (![user.managedObjectContext save:&error]){
         DLog(@"Unresolved error %@, %@", error, [error userInfo]);

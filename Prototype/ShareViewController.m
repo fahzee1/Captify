@@ -22,6 +22,7 @@
 #import "MenuViewController.h"
 #import "TWTSideMenuViewController.h"
 #import "UIView+Screenshot.h"
+#import "UIView+Screenshot.h"
 
 #import <Pinterest/Pinterest.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -32,6 +33,7 @@ typedef void (^ShareToNetworksBlock) ();
 
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate,UIDocumentInteractionControllerDelegate, UIActionSheetDelegate,UIAlertViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *stampImageView;
 @property (weak, nonatomic) IBOutlet UIButton *myShareButton;
 @property (weak, nonatomic) IBOutlet UIButton *myFacebookButton;
 @property (weak, nonatomic) IBOutlet UIButton *myInstagramButton;
@@ -42,6 +44,7 @@ typedef void (^ShareToNetworksBlock) ();
 @property (strong, nonatomic)UIAlertView *chooseCaptionAlert;
 @property (weak, nonatomic) IBOutlet UIView *shareContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 @property (strong,nonatomic)MBProgressHUD *hud;
 @property (strong,nonatomic)SocialFriends *friends;
 
@@ -179,6 +182,12 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)setupShareStyles
 {
+    [self.shareImageView addSubview:self.stampImageView];
+    CGRect imageFrame = self.shareImageView.bounds;
+    CGRect stampFrame = self.stampImageView.frame;
+    self.stampImageView.frame = CGRectMake(imageFrame.size.width - 50, imageFrame.size.height - 35, stampFrame.size.width, stampFrame.size.height);
+    self.shareImageView.clipsToBounds = YES;
+    
     [self.myShareButton setTitle:NSLocalizedString(@"Share", nil) forState:UIControlStateNormal];
     self.shareImageView.image = self.shareImage;
     
@@ -359,6 +368,8 @@ typedef void (^ShareToNetworksBlock) ();
 
 - (void)saveImage
 {
+    self.shareImage = [self.shareImageView convertViewToImage];
+    
     NSParameterAssert(self.shareImage);
     UIImageWriteToSavedPhotosAlbum(self.shareImage, nil, nil, nil);
 }
@@ -1120,8 +1131,7 @@ typedef void (^ShareToNetworksBlock) ();
         compression = 0.5;
     }
 
-    UIImage *shareImage = [self.shareImageView convertViewToImage];
-    NSData *imageData = UIImageJPEGRepresentation(shareImage, compression);
+    NSData *imageData = UIImageJPEGRepresentation(self.shareImage, compression);
     
     
     NSData *mediaData = [imageData base64EncodedDataWithOptions:0];
