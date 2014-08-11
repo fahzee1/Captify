@@ -82,17 +82,25 @@
 
 - (void)tappedCancelAlert
 {
-    NSString *title = NSLocalizedString(@"Are you sure?", nil);
-    NSString *message = NSLocalizedString(@"You will not show up as a contact to any of your friends using Captify.", nil);
-    NSString *cancelButton = NSLocalizedString(@"Cancel", nil);
-    NSString *okButton = NSLocalizedString(@"Ok", nil);
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                     message:message
-                                                    delegate:self
-                                           cancelButtonTitle:cancelButton
-                                           otherButtonTitles:okButton, nil];
-    [alert show];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:@"phoneCancelAlert"]){
+        NSString *title = NSLocalizedString(@"Are you sure?", nil);
+        NSString *message = NSLocalizedString(@"You will not show up as a contact to any of your friends using Captify.", nil);
+        NSString *cancelButton = NSLocalizedString(@"Cancel", nil);
+        NSString *okButton = NSLocalizedString(@"Ok", nil);
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                         message:message
+                                                        delegate:self
+                                               cancelButtonTitle:cancelButton
+                                               otherButtonTitles:okButton, nil];
+        [alert show];
+        
+        [defaults setBool:YES forKey:@"phoneCancelAlert"];
+    }
+    else{
+        [self tappedCancel];
+    }
 }
 
 - (void)tappedCancel

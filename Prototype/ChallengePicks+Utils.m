@@ -94,8 +94,10 @@
                                      @"facebook_user":[params valueForKey:@"is_facebook"],
                                      @"facebook_id":[params valueForKey:@"facebook_id"]};
             
-            User *newUser =[User createFriendWithParams:params2
-                                  inMangedObjectContext:[params valueForKey:@"context"]];
+            NSDictionary *userDict = [User createFriendWithParams:params2
+                                            inMangedObjectContext:[params valueForKey:@"context"]];
+            User *newUser = userDict[@"user"];
+            
             if (newUser){
                 retrys += 1;
                 if (retrys < 4){

@@ -29,7 +29,7 @@ typedef void (^ProfileFetchBlock) (BOOL wasSuccessful, NSNumber *json, id data);
 
 + (BOOL)validPhoneNumber:(NSString *)number;
 
-+ (User *)createFriendWithParams:(NSDictionary *)params
++ (NSDictionary *)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context;
 
 + (User *)getUserWithUsername:(NSString *)username

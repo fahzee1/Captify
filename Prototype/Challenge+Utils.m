@@ -456,8 +456,10 @@
                         params2[@"facebook_user"] = params[@"facebook_user"];
                 }
                 
-                User *newUser =[User createFriendWithParams:params2
-                                      inMangedObjectContext:[params valueForKey:@"context"]];
+                NSDictionary *userDict = [User createFriendWithParams:params2
+            inMangedObjectContext:[params valueForKey:@"context"]];
+                User *newUser = userDict[@"user"];
+                
                 if (newUser){
                     [self createChallengeWithRecipientsWithParams:params];
                 }

@@ -145,7 +145,7 @@
     }
 }
 
-+ (User *)createFriendWithParams:(NSDictionary *)params
++ (NSDictionary *)createFriendWithParams:(NSDictionary *)params
            inMangedObjectContext:(NSManagedObjectContext *)context
 {
     User *user;
@@ -216,8 +216,9 @@
         [user.managedObjectContext save:&error];
 
         
-
-        return user;
+        NSDictionary *returnData = @{@"user": user,
+                                     @"created":[NSNumber numberWithBool:NO]};
+        return returnData;
     }
     
 
@@ -244,7 +245,11 @@
         
     }
     
-    return user;
+    NSDictionary *returnData = @{@"user": user,
+                                 @"created":[NSNumber numberWithBool:YES]};
+
+    
+    return returnData;
 
 }
 
@@ -473,8 +478,9 @@
                                         NSManagedObjectContext *context = ((AppDelegate *) [UIApplication sharedApplication].delegate).managedObjectContext;
                                         
                                         if (context){
-                                            user = [self createFriendWithParams:params
-                                                          inMangedObjectContext:context];
+                                            NSDictionary *userDict = [self createFriendWithParams:params
+                                                                            inMangedObjectContext:context];
+                                            user = userDict[@"user"];
                                         }
 
                                     }

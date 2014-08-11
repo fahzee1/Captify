@@ -13,7 +13,7 @@
 
 //static NSString * const AwesomeAPIBaseUrlString = @"http://127.0.0.1:8000";
 
-//static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
+static NSString * const AwesomeAPIBaseUrlString = @"http://192.168.1.72:8000";
 
 //static NSString * const AwesomeAPIBaseUrlString = @"http://209.86.112.72:8000";
 
@@ -22,7 +22,7 @@
 
 // live urls http and https versions
 
-static NSString * const AwesomeAPIBaseUrlString = @"http://api.gocaptify.com";
+//static NSString * const AwesomeAPIBaseUrlString = @"http://api.gocaptify.com";
 
 static NSString * const AwesomeAPILoginUrlString = @"api/v1/profile/login";
 static NSString * const AwesomeAPIRegisterUrlString = @"api/v1/register";

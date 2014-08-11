@@ -426,8 +426,9 @@
                                       @"is_teamCaptify":[NSNumber numberWithBool:YES]
                                       };
             
+            NSDictionary *userDict = [User createFriendWithParams:params inMangedObjectContext:self.myUser.managedObjectContext];
             
-            User *captify = [User createFriendWithParams:params inMangedObjectContext:self.myUser.managedObjectContext];
+            User *captify = userDict[@"user"];
             if (captify){
                 [defaults setBool:YES forKey:@"createdTeamCaptify"];
             }
@@ -885,15 +886,28 @@
                                                         params[@"display_name"] = user[@"display_name"];
                                                     }
 
+                                                    NSDictionary *userDict = [User createFriendWithParams:params
+                                                                                    inMangedObjectContext:self.myUser.managedObjectContext];
                                                     
-                                                    User *userCreated = [User createFriendWithParams:params
-                                                                               inMangedObjectContext:self.myUser.managedObjectContext];
-                                                    if (userCreated){
+                                                    User *userCreated = userDict[@"user"];
+                                                    NSNumber *created = userDict[@"created"];
+                                                    
+                                                    if (userCreated && [created boolValue] == YES){
                                                         DLog(@"successfully created username:%@ displayname:%@", user[@"username"],user[@"display_name"]);
+                                                        
+                                                        ParseNotifications *p = [ParseNotifications new];
+                                                        NSString *message = [NSString stringWithFormat:@"Your contact friend joined Captify as %@",[self.myUser displayName]];
+                                                        [p sendNotification:message
+                                                                   toFriend:userCreated.username
+                                                                   withData:nil
+                                                           notificationType:ParseNotificationNewFriend
+                                                                      block:^(BOOL wasSuccessful) {
+                                                                          DLog(@"sent %@ a just joined notifcation",userCreated.username);
+                                                                      }];
                                                     }
                                                     else
                                                     {
-                                                        DLog(@"failed created username:%@ displayname:%@", user[@"username"],user[@"display_name"]);
+                                                        DLog(@"failed created or already created username:%@ displayname:%@", user[@"username"],user[@"display_name"]);
                                                     }
                                                     
                                                 }
@@ -977,14 +991,19 @@
                                                                      DLog(@"%@",exception);
                                                                 }
                                                                 
-                                                                User *create = [User createFriendWithParams:params
-                                                                                       inMangedObjectContext:self.myUser.managedObjectContext];
-                                                                if (create){
+                                                                NSDictionary *userDict = [User createFriendWithParams:params
+                                                                                                inMangedObjectContext:self.myUser.managedObjectContext];
+                                                                
+                                                                User *userObj = userDict[@"user"];
+                                                                NSNumber *created = userDict[@"created"];
+                                                                
+                                                                if (userObj && [created boolValue] == YES){
                                                                     DLog(@"successfully created %@", user[@"username"]);
+                                                                    
                                                                 }
                                                                 else
                                                                 {
-                                                                    DLog(@"failerd created %@", user[@"username"]);
+                                                                    DLog(@"failerd created or already created %@", user[@"username"]);
                                                                 }
                                                                 
                                                             }

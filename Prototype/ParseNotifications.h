@@ -15,7 +15,8 @@ typedef enum {
     ParseNotificationCreateChallenge = 100,
     ParseNotificationSendCaptionPick,
     ParseNotificationSenderChoseCaption,
-    ParseNotificationNotifySelectedCaptionSender
+    ParseNotificationNotifySelectedCaptionSender,
+    ParseNotificationNewFriend
     
     
 } ParseNotificationTypes;
