@@ -718,6 +718,7 @@ typedef void (^AnimationBlock) ();
 
 - (void)downloadImage
 {
+    /*
     if (self.hideSelectButtonsMax){
         if ([self.myChallenge.first_open intValue] == 1){
             [AppDelegate clearImageCaches];
@@ -726,6 +727,7 @@ typedef void (^AnimationBlock) ();
             [self.myChallenge.managedObjectContext save:&error];
         }
     }
+     */
     
     if (!self.spinner){
         self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
