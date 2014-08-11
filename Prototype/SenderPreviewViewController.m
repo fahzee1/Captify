@@ -25,6 +25,7 @@
 #import "AwesomeAPICLient.h"
 #import "ABWrappers.h"
 #import "Contacts.h"
+#import "FUISwitch.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define SCROLLPICMULTIPLY_VALUE 100
@@ -56,6 +57,7 @@
 @property (strong,nonatomic) UIView *errorContainerView;
 
 @property BOOL hudWasHidden;
+@property BOOL randomGame;
 @end
 
 @implementation SenderPreviewViewController
@@ -218,6 +220,28 @@
         self.selectedContainerView.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         self.selectedContainerView.layer.cornerRadius = 5;
         self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:12];
+        
+        //for random design
+        CGRect containerFrame = self.selectedContainerView.frame;
+        containerFrame.origin.y += 40;
+        self.selectedContainerView.frame = containerFrame;
+        
+        
+        FUISwitch *randomSwitch = [[FUISwitch alloc] initWithFrame:CGRectMake(containerFrame.origin.x,containerFrame.origin.y -20, 100, 35)];
+        randomSwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE]; //[UIColor turquoiseColor];
+        randomSwitch.offColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
+        randomSwitch.onBackgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_BLUE];//[UIColor midnightBlueColor];
+        randomSwitch.offBackgroundColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
+        randomSwitch.offLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+        randomSwitch.onLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+        randomSwitch.onLabel.text = NSLocalizedString(@"Friends", nil);
+        randomSwitch.offLabel.text = NSLocalizedString(@"Suggested", nil);
+        //randomSwitch.layer.cornerRadius = 15;
+        [randomSwitch addTarget:self action:@selector(playRandom:) forControlEvents:UIControlEventValueChanged];
+        
+        [self.scrollView addSubview:randomSwitch];
+        
+
     }
     else{
         
@@ -270,16 +294,36 @@
     self.facebookLabelArrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
     self.facebookLabelArrow.textColor = [UIColor colorWithHexString:CAPTIFY_ORANGE];
 
+  
+    
+    CGRect fbFrame = self.facebookButton.frame;
+    CGRect coFrame = self.contactsButton.frame;
+    CGRect fbArrowFrame = self.facebookLabelArrow.frame;
+    CGRect coArrowFrame = self.contactsLabelArrow.frame;
+    
+    // for random design
+    fbFrame.origin.y += 40;
+    coFrame.origin.y += 40;
+    fbArrowFrame.origin.y += 40;
+    coArrowFrame.origin.y += 40;
+    
+    self.facebookButton.frame = fbFrame;
+    self.contactsButton.frame = coFrame;
+    self.facebookLabelArrow.frame = fbArrowFrame;
+    self.contactsLabelArrow.frame = coArrowFrame;
+
+    
+    
     if (self.onlyShowFriends){
         [self.view addSubview:self.facebookButton];
         [self.view addSubview:self.facebookLabelArrow];
         [self.view addSubview:self.contactsButton];
         [self.view addSubview:self.contactsLabelArrow];
         
-        CGRect fbFrame = self.facebookButton.frame;
-        CGRect coFrame = self.contactsButton.frame;
-        CGRect fbArrowFrame = self.facebookLabelArrow.frame;
-        CGRect coArrowFrame = self.contactsLabelArrow.frame;
+        fbFrame = self.facebookButton.frame;
+        coFrame = self.contactsButton.frame;
+        fbArrowFrame = self.facebookLabelArrow.frame;
+        coArrowFrame = self.contactsLabelArrow.frame;
         
         fbFrame.origin.x -= 20;
         coFrame.origin.x -= 20;
@@ -318,12 +362,17 @@
         self.bottomSendButton.layer.cornerRadius = 5;
         self.bottomSendButton.userInteractionEnabled = NO;
         [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // for random design
+        CGRect bottomButtonFrame = self.bottomSendButton.frame;
+        bottomButtonFrame.origin.y += 40;
+        self.bottomSendButton.frame = bottomButtonFrame;
     }
     else{
         [self.bottomSendButton removeFromSuperview];
         self.bottomSendButton = nil;
     }
-
+    
 
 
 }
@@ -470,6 +519,15 @@
 }
 
 
+- (void)playRandom:(FUISwitch *)sender
+{
+    if (sender.on){
+        DLog(@"play friends");
+    }
+    else{
+        DLog(@"play random");
+    }
+}
 
 - (IBAction)tappedContacts:(UIButton *)sender
 {
