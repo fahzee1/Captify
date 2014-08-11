@@ -204,12 +204,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1){
+    if (tableView == self.myTable){
         NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
-        User *user = [sectionArray objectAtIndex:indexPath.row];
-        if (user.display_name){
-            return 60;
+        if ([sectionArray count] > 0){
+            User *user = [sectionArray objectAtIndex:indexPath.row];
+            if (user.display_name){
+                return 60;
+            }
         }
+
     }
     
     return 48;
