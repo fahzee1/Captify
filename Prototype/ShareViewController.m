@@ -754,6 +754,21 @@ typedef void (^ShareToNetworksBlock) ();
     if (self.shareInstagram){
         [self sendInstagram];
         self.sendIG = YES;
+        
+        if (USE_GOOGLE_ANALYTICS){
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            NSString *targetUrl = @"https://developers.google.com/analytics";
+            [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Instagram" action:@"Share" target:targetUrl] build]];
+        }
+        
+        if (USE_GOOGLE_ANALYTICS){
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                  action:@"instagram"
+                                                                   label:@"share"
+                                                                   value:nil] build]];
+        }
+
     }
 
     
@@ -1194,9 +1209,24 @@ typedef void (^ShareToNetworksBlock) ();
                                                    self.sentPIN = YES;
                                                    if (self.sendPIN){
                                                        self.sendPIN = NO;
+                                                       if (USE_GOOGLE_ANALYTICS){
+                                                           id tracker = [[GAI sharedInstance] defaultTracker];
+                                                           NSString *targetUrl = @"https://developers.google.com/analytics";
+                                                           [tracker send:[[GAIDictionaryBuilder createSocialWithNetwork:@"Pinterest" action:@"Share" target:targetUrl] build]];
+                                                       }
+                                                       
+                                                       if (USE_GOOGLE_ANALYTICS){
+                                                           id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                                           [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UI_Actions"
+                                                                                                                 action:@"Pinterest"
+                                                                                                                  label:@"share"
+                                                                                                                  value:nil] build]];
+                                                       }
+
                                                        [self.friends postImageToPinterestWithUrl:[NSURL URLWithString:mediaUrl]
                                                                                         sourceUrl:[NSURL URLWithString:@"http://gocaptify.com"]
                                                                                    andDescription:self.caption];
+                                                       
                     
                                                    }
                                                }
