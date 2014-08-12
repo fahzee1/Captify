@@ -16,6 +16,7 @@
 #import "FeedDetailViewController.h"
 #import "AppDelegate.h"
 #import "NSString+utils.h"
+#import "UIView+MyInfo.h"
 
 
 
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)UIActivityIndicatorView *spinner;
+
 
 @property BOOL triedCaptionedMedia;
 @property BOOL triedMedia;
@@ -230,9 +232,17 @@
                                              NSDictionary *challengeDict = [NSJSONSerialization JSONObjectWithData:challengeData options:0 error:nil];
                                              NSString *media = challengeDict[@"media_url"];
                                              NSString *name = challengeDict[@"name"];
+                                             NSString *winner;
+                                             if (challengeDict[@"winner"]){
+                                                 winner = challengeDict[@"winner"];
+                                             }
                                              if (media && ![media isKindOfClass:[NSNull class]]){
                                                  if (name && ![name isKindOfClass:[NSNull class]]){
-                                                     [challengeTemp addObject:@{@"media_url": media,@"name":name}];
+                                                     NSMutableDictionary *data = [@{@"media_url": media,@"name":name} mutableCopy];
+                                                     if (winner){
+                                                         data[@"winner"] = winner;
+                                                     }
+                                                     [challengeTemp addObject:data];
                                                  }
                                              }
                                          }
@@ -518,6 +528,23 @@
 
 }
 
+- (void)tappedWinnerLabel:(UIButton *)sender
+{
+    // show user profile
+    
+    if (sender.myInfo[@"winner"]){
+    
+        NSString *winner = sender.myInfo[@"winner"];
+        [User showProfileOnVC:self
+                 withUsername:winner
+                   usingMZHud:NO
+              fromExplorePage:YES
+              showCloseButton:NO
+            delaySetupWithTme:0.8];
+    }
+    
+}
+
 - (void)loadMediaForCell:(FeedViewCell *)cell
           andMediaString:(NSString *)media
 {
@@ -608,6 +635,7 @@
 
 }
 
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //DLog(@"collection called");
@@ -624,6 +652,10 @@
         NSDictionary *challengeDict = [self.sentMedia objectAtIndex:indexPath.row];
         NSString *media_url = challengeDict[@"media_url"];
         NSString *name = challengeDict[@"name"];
+        NSString *winner;
+        if (challengeDict[@"winner"]){
+            winner = challengeDict[@"winner"];
+        }
         
 
         cell.name.text = [name capitalizedString];
@@ -634,6 +666,38 @@
             cell.name.text = [NSString stringWithFormat:@"%@...",uString];
             
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
+        }
+        
+        if (winner){
+            // label
+            CGRect imageFrame = cell.myImageView.frame;
+            UILabel *winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageFrame.origin.x + 10, imageFrame.size.height + 50, 100, 40)];
+            winnerLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+            winnerLabel.textColor = [UIColor whiteColor];
+            winnerLabel.text = NSLocalizedString(@"Captified by:", nil);
+            
+            //button
+            CGRect labelFrame = winnerLabel.frame;
+            UIButton *winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            winnerLabelButton.frame = CGRectMake(labelFrame.size.width - 5, labelFrame.origin.y, imageFrame.size.width, 40);
+            winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+            [winnerLabelButton setTitle:[[winner stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
+            
+            [winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+            winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel:) forControlEvents:UIControlEventTouchUpInside];
+            if ([winnerLabelButton.titleLabel.text length] >= 17){
+                winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+            }
+            NSDictionary *info = @{@"winner": winner};
+            winnerLabelButton.myInfo = info;
+
+            
+            
+            [cell.contentView addSubview:winnerLabel];
+            [cell.contentView addSubview:winnerLabelButton];
+
+            
         }
         
         if (self.fromExplorePage){
