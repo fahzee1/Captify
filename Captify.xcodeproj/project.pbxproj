@@ -48,7 +48,6 @@
 		110A48E218F0C1DD0001308A /* ParseNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 110A48E118F0C1DD0001308A /* ParseNotifications.m */; };
 		110B087B18CF867300EC850F /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087A18CF867300EC850F /* Accounts.framework */; };
 		110B087D18CF896900EC850F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110B087C18CF896900EC850F /* Social.framework */; };
-		1113437C199805F500B96CF9 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1113437B199805F500B96CF9 /* NewRelicAgent.framework */; };
 		1113439119980C5700B96CF9 /* Challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1113439019980C5700B96CF9 /* Challenge.m */; };
 		1113439419980C5800B96CF9 /* ChallengePicks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1113439319980C5800B96CF9 /* ChallengePicks.m */; };
 		1113439719980C5800B96CF9 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 1113439619980C5800B96CF9 /* User.m */; };
@@ -361,6 +360,7 @@
 		11ABFCAE18C7D28300639A20 /* UIColor+NEOColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCA218C7D28300639A20 /* UIColor+NEOColor.m */; };
 		11ABFCB218C7DA9200639A20 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11ABFCB118C7DA9200639A20 /* CMPopTipView.m */; };
 		11BC442718C46A7B0052D98F /* HistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC442618C46A7B0052D98F /* HistoryDetailCell.m */; };
+		11BFBD11199A734900E59FE3 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BFBD10199A734900E59FE3 /* NewRelicAgent.framework */; };
 		11C2F7DA18BF091B00F89327 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */; };
 		11C8E8D418C9277F00FE6B5E /* CJFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C8E8D318C9277F00FE6B5E /* CJFilterView.m */; };
 		11C8E8D618C930E900FE6B5E /* filterControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11C8E8D518C930E900FE6B5E /* filterControls.xib */; };
@@ -500,8 +500,7 @@
 		110A48E118F0C1DD0001308A /* ParseNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseNotifications.m; sourceTree = "<group>"; };
 		110B087A18CF867300EC850F /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		110B087C18CF896900EC850F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		1113436F1997FA3F00B96CF9 /* MyUserModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = MyUserModel2.xcdatamodel; sourceTree = "<group>"; };
-		1113437B199805F500B96CF9 /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NewRelicAgent.framework; path = ../../Downloads/NewRelic_iOS_Agent_3.380/NewRelicAgent.framework; sourceTree = "<group>"; };
+		1113436F1997FA3F00B96CF9 /* MyUserModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyUserModel2.xcdatamodel; sourceTree = "<group>"; };
 		1113438F19980C5700B96CF9 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
 		1113439019980C5700B96CF9 /* Challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Challenge.m; sourceTree = "<group>"; };
 		1113439219980C5800B96CF9 /* ChallengePicks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengePicks.h; sourceTree = "<group>"; };
@@ -1084,6 +1083,7 @@
 		11ABFCB118C7DA9200639A20 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		11BC442518C46A7B0052D98F /* HistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailCell.h; sourceTree = "<group>"; };
 		11BC442618C46A7B0052D98F /* HistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailCell.m; sourceTree = "<group>"; };
+		11BFBD10199A734900E59FE3 /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NewRelicAgent.framework; path = ../../Downloads/NewRelic_iOS_Agent_3.380/NewRelicAgent.framework; sourceTree = "<group>"; };
 		11C2F7D918BF091B00F89327 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		11C8E8D218C9277F00FE6B5E /* CJFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJFilterView.h; sourceTree = "<group>"; };
 		11C8E8D318C9277F00FE6B5E /* CJFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJFilterView.m; sourceTree = "<group>"; };
@@ -1212,13 +1212,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11BFBD11199A734900E59FE3 /* NewRelicAgent.framework in Frameworks */,
 				11AAC228196397700050E37E /* CoreFoundation.framework in Frameworks */,
 				11AAC226196397550050E37E /* GLKit.framework in Frameworks */,
 				1153DFE618A9DEFA00AD950E /* OpenGLES.framework in Frameworks */,
 				11A8525918EDE53000557A5B /* SystemConfiguration.framework in Frameworks */,
 				1153DFEA18A9DF0F00AD950E /* QuartzCore.framework in Frameworks */,
 				1153DFDD18A9CBB300AD950E /* AudioToolbox.framework in Frameworks */,
-				1113437C199805F500B96CF9 /* NewRelicAgent.framework in Frameworks */,
 				11A8525318EDE4F700557A5B /* CoreLocation.framework in Frameworks */,
 				11AAC224196397040050E37E /* CoreTelephony.framework in Frameworks */,
 				11AAC222196396F70050E37E /* CoreMotion.framework in Frameworks */,
@@ -1282,7 +1282,7 @@
 		110730EF1876640E0065D77F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1113437B199805F500B96CF9 /* NewRelicAgent.framework */,
+				11BFBD10199A734900E59FE3 /* NewRelicAgent.framework */,
 				11AAC227196397700050E37E /* CoreFoundation.framework */,
 				11AAC225196397550050E37E /* GLKit.framework */,
 				11AAC223196397040050E37E /* CoreTelephony.framework */,
