@@ -668,38 +668,7 @@
             //DLog(@"%@ is to long at count %lu",cell.name.text,(unsigned long)[cell.name.text length]);
         }
         
-        if (winner){
-            // label
-            CGRect imageFrame = cell.myImageView.frame;
-            UILabel *winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageFrame.origin.x + 10, imageFrame.size.height + 50, 100, 40)];
-            winnerLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
-            winnerLabel.textColor = [UIColor whiteColor];
-            winnerLabel.text = NSLocalizedString(@"Captified by:", nil);
-            
-            //button
-            CGRect labelFrame = winnerLabel.frame;
-            UIButton *winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
-            winnerLabelButton.frame = CGRectMake(labelFrame.size.width - 5, labelFrame.origin.y, imageFrame.size.width, 40);
-            winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
-            [winnerLabelButton setTitle:[[winner stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
-            
-            [winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
-            winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-            [winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel:) forControlEvents:UIControlEventTouchUpInside];
-            if ([winnerLabelButton.titleLabel.text length] >= 17){
-                winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
-            }
-            NSDictionary *info = @{@"winner": winner};
-            winnerLabelButton.myInfo = info;
-
-            
-            
-            [cell.contentView addSubview:winnerLabel];
-            [cell.contentView addSubview:winnerLabelButton];
-
-            
-        }
-        
+               
         if (self.fromExplorePage){
             // reposition name label cause cell is smaller
             CGRect nameFrame = cell.name.frame;
@@ -748,10 +717,19 @@
             if ([detailRoot isKindOfClass:[UINavigationController class]]){
                 UIViewController *detailVC = ((UINavigationController *)detailRoot).topViewController;
                 if ([detailVC isKindOfClass:[FeedDetailViewController class]]){
+                    NSDictionary *challengeDict = [self.sentMedia objectAtIndex:indexPath.row];
+                    NSString *winner;
+                    if (challengeDict[@"winner"]){
+                        winner = challengeDict[@"winner"];
+                    }
+
                     //NSURL *mediaUrl = ((FeedViewCell *)cell).myImageView.imageURL;
                     ((FeedDetailViewController *)detailVC).showTopLabel = NO;
                     //((FeedDetailViewController *)detailVC).urlString = [mediaUrl absoluteString];
                     ((FeedDetailViewController *)detailVC).image = ((FeedViewCell *)cell).myImageView.image;
+                    if (winner){
+                        ((FeedDetailViewController *)detailVC).winnerUsername = winner;
+                    }
                     [self.navigationController pushViewController:detailVC animated:YES];
                     return;
                     

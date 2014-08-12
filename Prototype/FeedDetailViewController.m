@@ -105,6 +105,9 @@
         self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
         self.navigationController.navigationBarHidden = NO;
         self.likeButton.hidden = YES;
+        if (self.winnerUsername){
+            [self setupBottomLabel];
+        }
     }
 
    
@@ -175,6 +178,38 @@
     
 }
 
+- (void)setupBottomLabel
+{
+    if (self.winnerUsername){
+        CGRect imageRect = self.myImageView.frame;
+        if (!self.winnerLabel){
+            self.winnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageRect.origin.x + 10, imageRect.size.height + 50, 100, 40)];
+            self.winnerLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:13];
+            self.winnerLabel.textColor = [UIColor whiteColor];
+            self.winnerLabel.text = NSLocalizedString(@"Captified by:", nil);
+        }
+        
+        if (!self.winnerLabelButton){
+            CGRect labelFrame = self.winnerLabel.frame;
+            self.winnerLabelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            self.winnerLabelButton.frame = CGRectMake(labelFrame.size.width - 5, labelFrame.origin.y, imageRect.size.width, 40);
+            self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:16];
+            [self.winnerLabelButton setTitle:[[self.winnerUsername stringByReplacingOccurrencesOfString:@"-" withString:@" "] capitalizedString] forState:UIControlStateNormal];
+            //[self.winnerLabelButton setTitle:@"Mary Lou Rettin" forState:UIControlStateNormal];
+            [self.winnerLabelButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
+            self.winnerLabelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [self.winnerLabelButton addTarget:self action:@selector(tappedWinnerLabel) forControlEvents:UIControlEventTouchUpInside];
+            if ([self.winnerLabelButton.titleLabel.text length] >= 17){
+                self.winnerLabelButton.titleLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL_BOLD size:14];
+            }
+            
+        }
+
+    }
+    
+    [self.view addSubview:self.winnerLabel];
+    [self.view addSubview:self.winnerLabelButton];
+}
 
 - (void)setupTopAndBottomLabel
 {
