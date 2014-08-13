@@ -40,8 +40,6 @@
 #import "AwesomeAPICLient.h"
 #import "NSString+utils.h"
 
-#warning testing cropper
-#import "AGSimpleImageEditorView.h"
 
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
@@ -98,7 +96,6 @@
 @property BOOL showHistory;
 @property BOOL showingPreview;
 
-@property AGSimpleImageEditorView *snapper2;
 
 @end
 
@@ -1154,9 +1151,7 @@
     [self animateTextFieldUp:0];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
     
-#warning testing cropper
-    //vc.image = [UIImage imageCrop:self.previewOriginalSnapshot];
-    vc.image = self.snapper2.output;
+    vc.image = [UIImage imageCrop:self.previewOriginalSnapshot];
     vc.name = self.challengeTitle;
     vc.delegate = self;
     
@@ -1244,17 +1239,14 @@
 
 - (void)setupImagePreviewScreen
 {
-#warning testing cropper
     [self toggleCameraControls];
-    //self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
-    //self.previewSnap.contentMode = UIViewContentModeScaleAspectFit;
-    //self.previewSnap.image = self.previewOriginalSnapshot;
-    self.snapper2 = [[AGSimpleImageEditorView alloc] initWithImage:self.previewOriginalSnapshot];
+    self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.previewSnap.contentMode = UIViewContentModeScaleAspectFit;
+    self.previewSnap.image = self.previewOriginalSnapshot;
     
     
     [self.view addSubview:self.previewBackground];
-    //[self.view addSubview:self.previewSnap];
-    [self.view addSubview:self.snapper2];
+    [self.view addSubview:self.previewSnap];
     [self.view addSubview:self.previewControls];
     
     
@@ -1822,9 +1814,7 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-#warning testing cropper
-        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
-        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
+        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
         [self setupImagePreviewScreen];
        
 

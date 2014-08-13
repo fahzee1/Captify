@@ -927,7 +927,7 @@
 {
     NSFetchRequest *firstRequest;
     if (contacts){
-        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1) and (is_deleted = 0)";
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1)";
         
         firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
         firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
