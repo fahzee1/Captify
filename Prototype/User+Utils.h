@@ -12,6 +12,7 @@ typedef void (^AwesomeAPICompleteBlock) (BOOL wasSuccessful, id data, User *user
 typedef void (^DeviceTokenSendBlock) (BOOL wasSuccessful);
 typedef void (^BlobFetchBlock) (BOOL wasSuccessful, id data, NSString* message);
 typedef void (^ProfileFetchBlock) (BOOL wasSuccessful, NSNumber *json, id data);
+typedef void (^SearchBlock) (BOOL wasSuccessful,NSArray *data);
 
 @interface User (Utils)
 
@@ -71,6 +72,10 @@ typedef void (^ProfileFetchBlock) (BOOL wasSuccessful, NSNumber *json, id data);
 
 + (void)fetchUserProfileWithData:(NSDictionary *)params
                               block:(ProfileFetchBlock)block;
+
++ (void)searchForUserWithData:(NSDictionary *)params
+                           block:(SearchBlock)block;
+
 
 +(void)showProfileOnVC:(UIViewController *)controller
           withUsername:(NSString *)name

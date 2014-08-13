@@ -30,6 +30,7 @@ static NSString * const AwesomeAPISettingsString = @"/api/v1/profile/settings";
 static NSString * const AwesomeAPIFriendsString = @"/api/v1/profile/friends";
 static NSString * const AwesomeAPIFetchString = @"/api/v1/profile/fetch";
 static NSString * const AwesomeAPIProfileString = @"/api/v1/profile/get_profile";
+static NSString * const AwesomeAPISearchString = @"/api/v1/profile/search";
 
 
 // challenge urls

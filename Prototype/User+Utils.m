@@ -29,7 +29,6 @@
 
     self.timestamp = [NSDate date];
     self.phone_number = nil;
-    self.is_deleted = [NSNumber numberWithBool:NO];
     
 }
 
@@ -927,7 +926,7 @@
 {
     NSFetchRequest *firstRequest;
     if (contacts){
-        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1)";
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1) and (is_deleted = nil)";
         
         firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
         firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
@@ -1114,6 +1113,36 @@
 
           }
     }];
+}
+
++ (void)searchForUserWithData:(NSDictionary *)params
+                        block:(SearchBlock)block
+{
+    AwesomeAPICLient *client = [AwesomeAPICLient sharedClient];
+    [client startNetworkActivity];
+    [client POST:AwesomeAPISearchString parameters:params
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             int code = [[responseObject valueForKey:@"code"] intValue];
+             int status = [[responseObject valueForKey:@"status"] intValue];
+             NSArray *data = responseObject[@"search_data"];
+             if (code == 1 && status == 1){
+                 if (block){
+                     block(YES,data);
+                 }
+             }
+             
+             else if (code == 1 && status == 0){
+                 if (block){
+                     block(YES,nil);
+                 }
+             }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if (block){
+            block(NO,nil);
+        }
+    }];
+
 }
 
 
