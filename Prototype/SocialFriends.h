@@ -23,6 +23,7 @@ typedef void (^TwitterPostStatus) (BOOL wasSuccessful, BOOL isGranted);
 typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
 
 
+
 @interface SocialFriends : NSObject
 
 
@@ -87,6 +88,12 @@ typedef void (^FacebookFriendUsername) (BOOL wasSuccessful, id name);
                  withCaption:(NSString *)caption
                       inView:(UIView *)view
                     delegate:(id<UIDocumentInteractionControllerDelegate>)delegate;
+
+
+
+
+
+
 
 
 // the methods below are used as phone number formatters

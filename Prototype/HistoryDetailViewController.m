@@ -47,7 +47,7 @@
 #define FINAL_CAPTION_TAG 3433
 typedef void (^AnimationBlock) ();
 
-@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate,SWTableViewCellDelegate>
+@interface HistoryDetailViewController ()<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, NEOColorPickerViewControllerDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate,SWTableViewCellDelegate,UIActionSheetDelegate>
 
 @property (strong, nonatomic) NSArray *data;
 @property BOOL shareToFacebook;
@@ -108,6 +108,7 @@ typedef void (^AnimationBlock) ();
 @property (strong, nonatomic)NSString *currentFilter;
 @property (strong, nonatomic)NSIndexPath *previousCellIndex;
 @property (strong, nonatomic)UITableViewCell *previousCell;
+@property (strong,nonatomic)SocialFriends *friends;
 
 @property BOOL pendingRequest;
 @property BOOL makeButtonVisible;
@@ -192,6 +193,15 @@ typedef void (^AnimationBlock) ();
     [leftButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
                                          NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = leftButton;
+    
+    if (self.hideSelectButtonsMax){
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-share-square-o"] style:UIBarButtonItemStylePlain target:self action:@selector(showShare)];
+        
+        [rightButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:kFontAwesomeFamilyName size:25],
+                                             NSForegroundColorAttributeName:[UIColor colorWithHexString:CAPTIFY_ORANGE]} forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem=rightButton;
+
+    }
 
     
     [self setupStylesAndMore];
@@ -283,6 +293,19 @@ typedef void (^AnimationBlock) ();
 - (void)popToHistory
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)showShare
+{
+    NSString *title = NSLocalizedString(@"Share", nil);
+    UIActionSheet *popUp = [[UIActionSheet alloc] initWithTitle:title
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Facebook",@"Twitter",@"Save", nil];
+    
+    [popUp showFromRect:self.view.frame inView:self.view animated:YES];
+
 }
 
 
@@ -1966,6 +1989,67 @@ typedef void (^AnimationBlock) ();
 }
 
 
+#pragma -mark uiactionsheet delegate
+
+- (void)saveImage
+{
+    
+    NSParameterAssert(self.myImageView.image);
+    UIImageWriteToSavedPhotosAlbum(self.myImageView.image, nil, nil, nil);
+}
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *caption = self.topLabel.text;
+    if (buttonIndex == 0){
+        // facebook
+   
+        [self.friends postImageToFacebookFeed:self.finalImage
+                                      message:caption
+                                      caption:caption
+                                         name:caption
+                                      albumID:nil
+                                 facebookUser:NO
+                                    feedBlock:^(BOOL wasSuccessful) {
+                                        if (wasSuccessful){
+                                            DLog(@"fb success");
+                                        }
+                                    }];
+        
+    }
+    
+    else if (buttonIndex == 1){
+        // twitter
+        [self.friends postImageToTwitterFeed:self.finalImage
+                                     caption:caption
+                                       block:^(BOOL wasSuccessful, BOOL isGranted) {
+                                           if (wasSuccessful){
+                                               DLog(@"twitter success");
+                                           }
+                                       }];
+    }
+    
+    else if (buttonIndex == 2){
+        // save
+        [self saveImage];
+        
+        
+    }
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    [actionSheet.subviews enumerateObjectsUsingBlock:^(id _currentView, NSUInteger idx, BOOL *stop) {
+        if ([_currentView isKindOfClass:[UIButton class]]) {
+            [((UIButton *)_currentView).titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+            // OR
+            //[((UIButton *)_currentView).titleLabel setFont:[UIFont fontWithName:@"Exo2-SemiBold" size:17]];
+        }
+    }];
+}
+
+
+
 #pragma -mark Uialertview delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -2671,6 +2755,13 @@ typedef void (^AnimationBlock) ();
 }
 
 
+- (SocialFriends *)friends
+{
+    if (!_friends){
+        _friends = [[SocialFriends alloc] init];
+    }
+    return _friends;
+}
 
 
 @end

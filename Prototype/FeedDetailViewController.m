@@ -383,7 +383,8 @@
     sender.tag = NOTIFICATION_LIKE_BUTTON_TAG;
      */
     
-    [self sendNotificationWithMessage:nil andButton:sender];
+    NSString *message = [NSString stringWithFormat:@"%@ liked your photo",[self.myUser displayName]];
+    [self sendNotificationWithMessage:message andButton:sender];
     
     
 }
@@ -396,7 +397,7 @@
     
     if (![allLikes containsObject:self.urlString]){
         
-        /*
+        
         
         ParseNotifications *p = [ParseNotifications new];
         
@@ -408,12 +409,9 @@
                       block:^(BOOL wasSuccessful) {
                           if (wasSuccessful){
                               button.hidden = YES;
-                              [self showAlertWithTitle:NSLocalizedString(@"Success", nil)
-                                               message:NSLocalizedString(@"Notification sent", nil)
-                                       forNotification:NO];
-                          }
+                            }
                       }];
-         */
+        
         
         [self savePicToLiked];
         
