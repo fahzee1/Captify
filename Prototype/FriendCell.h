@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWTableViewCell.h"
 
 // incase of issue with table cells content views and i forget
 // drag a cell from ib instead of using default
 
-@interface FriendCell : UITableViewCell
+@interface FriendCell : SWTableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *myFriendUsername;
 @property (nonatomic, weak) IBOutlet UILabel *myFriendScore;

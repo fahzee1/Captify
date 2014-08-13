@@ -21,6 +21,7 @@
     
     self.timestamp = [NSDate date];
     self.first_open = [NSNumber numberWithInt:1];
+    self.is_deleted = [NSNumber numberWithBool:NO];
 
 }
 

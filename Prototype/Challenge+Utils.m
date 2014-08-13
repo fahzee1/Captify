@@ -30,6 +30,7 @@
     self.first_open = [NSNumber numberWithInt:1];
     self.chose_own_caption = [NSNumber numberWithBool:NO];
     self.final_fetch = [NSNumber numberWithBool:NO];
+    self.is_deleted = [NSNumber numberWithBool:NO];
     
 
 }

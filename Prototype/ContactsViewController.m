@@ -16,7 +16,7 @@
 
 #define test 0
 
-@interface ContactsViewController ()
+@interface ContactsViewController ()<SWTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *myTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *mySearch;
@@ -68,8 +68,14 @@
     self.myTable.delegate = self;
     self.myTable.dataSource = self;
     self.view.backgroundColor = [UIColor colorWithHexString:CAPTIFY_DARK_GREY];
-    self.sections = [NSArray arrayWithObjects:@"Recents",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
+    if (self.onlyShowFriends){
+        self.sections = [NSArray arrayWithObjects:@"",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
 
+    }
+    else{
+        self.sections = [NSArray arrayWithObjects:@"Recents",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
+
+    }
     
     
     if ([self.myFriends count] == 0){
@@ -135,6 +141,15 @@
 }
 
 
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                title:@"Delete"];
+    
+    return rightUtilityButtons;
+}
 
 
 #pragma -mark UITABLEVIEW delegate
@@ -225,6 +240,9 @@
     static NSString *cellIdentifier = @"friendCells";
     if (tableView == self.myTable){
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        
+        ((FriendCell *)cell).rightUtilityButtons = [self rightButtons];
+        ((FriendCell *)cell).delegate = self;
         
         if (indexPath.section == 0){
             // recents
@@ -424,6 +442,58 @@
     }
     return _searchFetchRequest;
 }
+
+#pragma -mark SWTableviewcell delegate
+// click event on left utility button
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index
+{
+    
+}
+
+// click event on right utility button
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    if (index == 0){
+        DLog(@"delete");
+        NSIndexPath *indexPath = [self.myTable indexPathForCell:cell];
+        NSArray *sectionArray = [self.myFriends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.username beginswith[c] %@",[self.sections objectAtIndex:indexPath.section]]];
+        
+        User *user = [sectionArray objectAtIndex:indexPath.row];
+        if (user){
+            user.is_deleted = [NSNumber numberWithBool:YES];
+            NSError *error;
+            [user.managedObjectContext save:&error];
+            [self.myTable reloadData];
+        }
+
+        
+    }
+    
+}
+
+// utility button open/close event
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell scrollingToState:(SWCellState)state
+{
+    
+}
+
+// prevent multiple cells from showing utilty buttons simultaneously
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    return YES;
+}
+
+// prevent cell(s) from displaying left/right utility buttons
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state
+{
+    NSIndexPath *path = [self.myTable indexPathForCell:cell];
+    if (path.section == 0){
+        // if recents no
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma -mark Lazy inst
 - (User *)myUser

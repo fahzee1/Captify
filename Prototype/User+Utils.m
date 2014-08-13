@@ -29,6 +29,7 @@
 
     self.timestamp = [NSDate date];
     self.phone_number = nil;
+    self.is_deleted = [NSNumber numberWithBool:NO];
     
 }
 
@@ -926,7 +927,7 @@
 {
     NSFetchRequest *firstRequest;
     if (contacts){
-        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1)";
+        NSString *contactFriendsFilter = @"(super_user = 0) and (is_friend = 1) and (is_contactFriend = 1) and (is_deleted = 0)";
         
         firstRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
         firstRequest.predicate = [NSPredicate predicateWithFormat:contactFriendsFilter];
