@@ -453,6 +453,9 @@
 - (NSArray *)recents
 {
     if (!_recents){
+        if (self.onlyShowFriends){
+            return @[];
+        }
         _recents = [[NSUserDefaults standardUserDefaults] valueForKey:@"recents"];
         
     }

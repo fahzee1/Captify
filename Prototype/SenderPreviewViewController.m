@@ -222,11 +222,11 @@
         self.chooseFriendsLabel.font = [UIFont fontWithName:CAPTIFY_FONT_GLOBAL size:12];
         
         //for random design
-        CGRect containerFrame = self.selectedContainerView.frame;
-        containerFrame.origin.y += 40;
-        self.selectedContainerView.frame = containerFrame;
+        //CGRect containerFrame = self.selectedContainerView.frame;
+        //containerFrame.origin.y += 40;
+        //self.selectedContainerView.frame = containerFrame;
         
-        
+        /*
         FUISwitch *randomSwitch = [[FUISwitch alloc] initWithFrame:CGRectMake(containerFrame.origin.x,containerFrame.origin.y -20, 100, 35)];
         randomSwitch.onColor = [UIColor colorWithHexString:CAPTIFY_ORANGE]; //[UIColor turquoiseColor];
         randomSwitch.offColor = [UIColor colorWithHexString:CAPTIFY_LIGHT_BLUE];
@@ -240,6 +240,7 @@
         [randomSwitch addTarget:self action:@selector(playRandom:) forControlEvents:UIControlEventValueChanged];
         
         [self.scrollView addSubview:randomSwitch];
+         */
         
 
     }
@@ -302,10 +303,10 @@
     CGRect coArrowFrame = self.contactsLabelArrow.frame;
     
     // for random design
-    fbFrame.origin.y += 40;
-    coFrame.origin.y += 40;
-    fbArrowFrame.origin.y += 40;
-    coArrowFrame.origin.y += 40;
+    //fbFrame.origin.y += 40;
+    //coFrame.origin.y += 40;
+    //fbArrowFrame.origin.y += 40;
+    //coArrowFrame.origin.y += 40;
     
     self.facebookButton.frame = fbFrame;
     self.contactsButton.frame = coFrame;
@@ -364,9 +365,9 @@
         [self.bottomSendButton addTarget:self action:@selector(sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         // for random design
-        CGRect bottomButtonFrame = self.bottomSendButton.frame;
-        bottomButtonFrame.origin.y += 40;
-        self.bottomSendButton.frame = bottomButtonFrame;
+        //CGRect bottomButtonFrame = self.bottomSendButton.frame;
+        //bottomButtonFrame.origin.y += 40;
+        //self.bottomSendButton.frame = bottomButtonFrame;
     }
     else{
         [self.bottomSendButton removeFromSuperview];
