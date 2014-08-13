@@ -230,11 +230,40 @@
 
     
     [Appirater appEnteredForeground:YES];
+    
+    // set a reminder notification in a week
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [[NSDate date] dateByAddingTimeInterval:604800]; // a week
+    notification.alertBody = [NSString stringWithFormat:@"Send your new friends a Captify challenge!"];
+    NSDictionary *payload = @{@"id": @"reminder"};
+    notification.userInfo = payload;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
+    
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    // cancel local notif
+    UILocalNotification *notifToCancel = nil;
+    for (UILocalNotification *notif in [[UIApplication sharedApplication] scheduledLocalNotifications]){
+        NSString *notifID = notif.userInfo[@"id"];
+        if (notifID){
+            if ([notifID isEqualToString:@"reminder"]){
+                notifToCancel = notif;
+                break;
+            }
+        }
+    }
+    if (notifToCancel){
+        [[UIApplication sharedApplication] cancelLocalNotification:notifToCancel];
+        
+    }
+
+    
     
     
 }
