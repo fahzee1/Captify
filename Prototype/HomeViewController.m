@@ -40,6 +40,9 @@
 #import "AwesomeAPICLient.h"
 #import "NSString+utils.h"
 
+#warning testing cropper
+#import "AGSimpleImageEditorView.h"
+
 
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
@@ -94,6 +97,8 @@
 @property (strong,nonatomic) NSTimer *contactFetchTimer;
 @property BOOL showHistory;
 @property BOOL showingPreview;
+
+@property AGSimpleImageEditorView *snapper2;
 
 @end
 
@@ -1143,12 +1148,15 @@
 
 - (void)pushFinalPreview
 {
+    
     self.challengeTitle = self.previewTextField.text;
     [self.previewTextField resignFirstResponder];
     [self animateTextFieldUp:0];
     SenderPreviewViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"finalPreview"];
     
-    vc.image = [UIImage imageCrop:self.previewOriginalSnapshot];
+#warning testing cropper
+    //vc.image = [UIImage imageCrop:self.previewOriginalSnapshot];
+    vc.image = self.snapper2.output;
     vc.name = self.challengeTitle;
     vc.delegate = self;
     
@@ -1159,6 +1167,7 @@
         self.previewNextButton.userInteractionEnabled = YES;
 
     });
+     
 }
 
 
@@ -1235,13 +1244,17 @@
 
 - (void)setupImagePreviewScreen
 {
+#warning testing cropper
     [self toggleCameraControls];
-    self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.previewSnap.contentMode = UIViewContentModeScaleAspectFit;
-    self.previewSnap.image = self.previewOriginalSnapshot;
-
+    //self.previewSnap = [[UIImageView alloc] initWithFrame:self.view.frame];
+    //self.previewSnap.contentMode = UIViewContentModeScaleAspectFit;
+    //self.previewSnap.image = self.previewOriginalSnapshot;
+    self.snapper2 = [[AGSimpleImageEditorView alloc] initWithImage:self.previewOriginalSnapshot];
+    
+    
     [self.view addSubview:self.previewBackground];
-    [self.view addSubview:self.previewSnap];
+    //[self.view addSubview:self.previewSnap];
+    [self.view addSubview:self.snapper2];
     [self.view addSubview:self.previewControls];
     
     
@@ -1809,7 +1822,9 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *) kUTTypeImage]){
-        self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+#warning testing cropper
+        //self.previewOriginalSnapshot = [UIImage imageCrop:info[UIImagePickerControllerOriginalImage]];
+        self.previewOriginalSnapshot = info[UIImagePickerControllerOriginalImage];
         [self setupImagePreviewScreen];
        
 

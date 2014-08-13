@@ -366,6 +366,7 @@
 		11C8E8D618C930E900FE6B5E /* filterControls.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11C8E8D518C930E900FE6B5E /* filterControls.xib */; };
 		11C994C418C51BA400A01F31 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */; };
 		11C994C618C51F7200A01F31 /* NSDateTimeAgo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */; };
+		11D4B839199BF2EA0064D57A /* AGSimpleImageEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D4B836199BF2EA0064D57A /* AGSimpleImageEditorView.m */; };
 		11D4EDC8190D9942005B4981 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDC7190D9942005B4981 /* FacebookSDK.framework */; };
 		11D4EDCA190D998C005B4981 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDC9190D998C005B4981 /* Parse.framework */; };
 		11D4EDCE190D9A16005B4981 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */; };
@@ -1091,6 +1092,8 @@
 		11C994C218C51BA300A01F31 /* NSDate+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+TimeAgo.h"; sourceTree = "<group>"; };
 		11C994C318C51BA400A01F31 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+TimeAgo.m"; sourceTree = "<group>"; };
 		11C994C518C51F7200A01F31 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NSDateTimeAgo.bundle; sourceTree = "<group>"; };
+		11D4B835199BF2EA0064D57A /* AGSimpleImageEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGSimpleImageEditorView.h; sourceTree = "<group>"; };
+		11D4B836199BF2EA0064D57A /* AGSimpleImageEditorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGSimpleImageEditorView.m; sourceTree = "<group>"; };
 		11D4EDC7190D9942005B4981 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		11D4EDC9190D998C005B4981 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		11D4EDCD190D9A16005B4981 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../Downloads/GoogleAnalyticsServicesiOS_3.06/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
@@ -1402,6 +1405,7 @@
 		1107313318863AC20065D77F /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				11D4B834199BF2EA0064D57A /* AGSimpleImageEditorView */,
 				11A661B919894AF600B8F2A1 /* SWTableViewCell */,
 				11F6CFF71954809600027137 /* SDWebImage */,
 				113BD8C019250FE40099BEA0 /* MZFormSheetController */,
@@ -2283,6 +2287,15 @@
 			path = CMPopTipView;
 			sourceTree = "<group>";
 		};
+		11D4B834199BF2EA0064D57A /* AGSimpleImageEditorView */ = {
+			isa = PBXGroup;
+			children = (
+				11D4B835199BF2EA0064D57A /* AGSimpleImageEditorView.h */,
+				11D4B836199BF2EA0064D57A /* AGSimpleImageEditorView.m */,
+			);
+			path = AGSimpleImageEditorView;
+			sourceTree = "<group>";
+		};
 		11DF518518F5F1ED008A3B0D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2682,6 +2695,7 @@
 				1153E1B318A9DF4800AD950E /* GPUImageSaturationFilter.m in Sources */,
 				1107314918863B1E0065D77F /* AFHTTPRequestOperationManager.m in Sources */,
 				1153E19018A9DF4800AD950E /* GPUImageMaskFilter.m in Sources */,
+				11D4B839199BF2EA0064D57A /* AGSimpleImageEditorView.m in Sources */,
 				1153E18418A9DF4800AD950E /* GPUImageLaplacianFilter.m in Sources */,
 				1153E16518A9DF4800AD950E /* GPUImageErosionFilter.m in Sources */,
 				119711D518ADE5EF008AD895 /* SettingsViewController.m in Sources */,
