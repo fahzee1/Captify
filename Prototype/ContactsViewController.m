@@ -513,10 +513,10 @@
 
 - (NSArray *)myFriends
 {
-    if (!_myFriends){
-        _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
+    
+    _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
         
-    }
+    
     return _myFriends;
 }
 
