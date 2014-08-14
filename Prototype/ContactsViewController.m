@@ -463,6 +463,7 @@
             user.is_deleted = [NSNumber numberWithBool:YES];
             NSError *error;
             [user.managedObjectContext save:&error];
+            self.myFriends = nil;
             [self.myTable reloadData];
         }
 
@@ -513,9 +514,10 @@
 
 - (NSArray *)myFriends
 {
+    if (!_myFriends){
+        _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
+    }
     
-    _myFriends = [User fetchFriendsInContext:self.myUser.managedObjectContext getContacts:YES];
-        
     
     return _myFriends;
 }
