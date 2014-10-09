@@ -627,6 +627,13 @@
     [self.topMenuButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
 
 
+    
+    CGRect friendRect = self.showFriendsButton.frame;
+    if (!IS_IPHONE5){
+        //friendRect.origin.x -= 30;
+        friendRect.origin.y -= 85;
+        self.showFriendsButton.frame = friendRect;
+    }
     self.showFriendsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:25];
     [self.showFriendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-list"] forState:UIControlStateNormal];
     [self.showFriendsButton setTitleColor:[UIColor colorWithHexString:CAPTIFY_ORANGE] forState:UIControlStateNormal];
